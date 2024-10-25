@@ -2,9 +2,49 @@
 
 import { FiHome } from 'react-icons/fi';
 import Select from 'react-select';
-import { ButtonSky, ButtonSkyBorder, ButtonGreen, ButtonRedBorder } from '@/components/global/Button';
+import { useState, useEffect } from 'react';
+import { ButtonSky, ButtonSkyBorder, ButtonGreen, ButtonRed, ButtonRedBorder } from '@/components/global/Button';
+import { ModalRenaksi } from '@/components/pages/rencanakinerja/ModalRenaksi';
+import { ModalDasarHukum } from '@/components/pages/rencanakinerja/ModalDasarHukum';
+import { ModalGambaranUmum } from '@/components/pages/rencanakinerja/ModalGambaranUmum';
+import { ModalInovasi } from '@/components/pages/rencanakinerja/ModalInovasi';
 
 const rincianRencanaKinerja = () => {
+
+    const [isOpenNewRenaksi, setIsOpenNewRenaksi] = useState<boolean>(false);
+    const [isOpenNewDasarHukum, setIsOpenNewDasarHukum] = useState<boolean>(false);
+    const [isOpenNewGambaranUmum, setIsOpenNewGambaranUmum] = useState<boolean>(false);
+    const [isOpenNewInovasi, setIsOpenNewInovasi] = useState<boolean>(false);
+    
+    const handleModalNewRenaksi = () => {
+        if(isOpenNewRenaksi){
+            setIsOpenNewRenaksi(false);
+        } else {
+            setIsOpenNewRenaksi(true);
+        }
+    }
+    const handleModalNewDasarHukum = () => {
+        if(isOpenNewDasarHukum){
+            setIsOpenNewDasarHukum(false);
+        } else {
+            setIsOpenNewDasarHukum(true);
+        }
+    }
+    const handleModalNewGambaranUmum = () => {
+        if(isOpenNewGambaranUmum){
+            setIsOpenNewGambaranUmum(false);
+        } else {
+            setIsOpenNewGambaranUmum(true);
+        }
+    }
+    const handleModalNewInovasi = () => {
+        if(isOpenNewInovasi){
+            setIsOpenNewInovasi(false);
+        } else {
+            setIsOpenNewInovasi(true);
+        }
+    }
+
     return(
         <>
             <div className="flex items-center">
@@ -183,7 +223,7 @@ const rincianRencanaKinerja = () => {
             <div className="mt-3 rounded-t-xl border px-5 py-3">
                 <div className="flex justify-between">
                     <h1>Sasaran Kinerja</h1>
-                    <ButtonSky>Edit Sasaran</ButtonSky>
+                    <ButtonSky halaman_url='/rencanakinerja/1/edit'>Edit Sasaran</ButtonSky>
                 </div>
                 <div className="mx-2 mt-3">
                     <table className="w-full">
@@ -238,7 +278,8 @@ const rincianRencanaKinerja = () => {
                     <h1>Rencana Aksi</h1>
                     <div className="flex flex-wrap">
                         <ButtonGreen className="m-1">Fix Jumlah Target</ButtonGreen>
-                        <ButtonSky className="m-1">Tambah Tahapan</ButtonSky>
+                        <ButtonSky className="m-1" onClick={() => handleModalNewRenaksi()}>Tambah Tahapan</ButtonSky>
+                        <ModalRenaksi isOpen={isOpenNewRenaksi} onClose={handleModalNewRenaksi}/>
                     </div>
                 </div>
                 <div className="overflow-auto mt-3 rounded-t-xl border">
@@ -489,7 +530,8 @@ const rincianRencanaKinerja = () => {
             {/* Dasar Hukum */}
             <div className="flex flex-wrap justify-between items-center mt-3 rounded-t-xl border px-5 py-3">
                 <h1>Dasar Hukum</h1>
-                <ButtonSky>Tambah Dasar Hukum</ButtonSky>
+                <ButtonSky onClick={handleModalNewDasarHukum}>Tambah Dasar Hukum</ButtonSky>
+                <ModalDasarHukum onClose={handleModalNewDasarHukum} isOpen={isOpenNewDasarHukum}/>
             </div>
             <div className="rounded-b-xl shadow-lg border-x border-b px-5 py-3">
                 <div className="overflow-auto m-2 rounded-t-xl border">
@@ -521,7 +563,8 @@ const rincianRencanaKinerja = () => {
             {/* gambaran umum */}
             <div className="flex flex-wrap justify-between items-center mt-3 rounded-t-xl border px-5 py-3">
                 <h1>Gambaran Umum</h1>
-                <ButtonSky>Tambah Gambaran Umum</ButtonSky>
+                <ButtonSky onClick={handleModalNewGambaranUmum}>Tambah Gambaran Umum</ButtonSky>
+                <ModalGambaranUmum onClose={handleModalNewGambaranUmum} isOpen={isOpenNewGambaranUmum} />
             </div>
             <div className="rounded-b-xl shadow-lg border-x border-b px-5 py-3">
                 <div className="overflow-auto m-2 rounded-t-xl border">
@@ -598,7 +641,8 @@ const rincianRencanaKinerja = () => {
                                 <td className="border px-6 py-3">Baru</td>
                                 <td className="border px-6 py-3">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nobis explicabo, magnam dolorum quae laborum, eos ad repudiandae voluptates, enim quis sequi. Obcaecati labore dolorem sunt eos magnam, blanditiis rem ipsa.</td>
                                 <td className="border px-6 py-3">
-                                    <ButtonSkyBorder className="w-full">Edit</ButtonSkyBorder>
+                                    <ButtonSkyBorder className="w-full" onClick={handleModalNewInovasi}>Edit</ButtonSkyBorder>
+                                    <ModalInovasi onClose={handleModalNewInovasi} isOpen={isOpenNewInovasi}/>
                                 </td>
                             </tr>
                         </tbody>

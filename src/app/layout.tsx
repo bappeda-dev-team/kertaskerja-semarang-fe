@@ -69,9 +69,14 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
         <NextTopLoader 
           color="linear-gradient(to right, rgb(134, 239, 172), rgb(59, 130, 246), rgb(147, 51, 234))"
         />
-        {user == 'asn' ? 
+        {user == 'asn' &&
           !loginPage && <SidebarAsn isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>
-        :
+        
+        }
+        { user == 'super_admin' &&
+          !loginPage && <SidebarSuper isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>
+        }
+        { user == 'admin_opd' &&
           !loginPage && <SidebarSuper isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>
         }
         <div className={`w-full ${isOpen ? 'pl-[16rem]' : 'pl-10'}`}>

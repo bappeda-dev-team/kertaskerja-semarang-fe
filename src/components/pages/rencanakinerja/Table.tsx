@@ -103,7 +103,7 @@ export const TablePerencanaan = () => {
                                     <TbPencilDown className="mr-1"/>
                                     Input Rincian
                                 </ButtonGreenBorder>
-                                <ButtonSkyBorder className="w-full">
+                                <ButtonSkyBorder className="w-full" halaman_url="/rencanakinerja/1/edit">
                                     <TbPencil className="mr-1"/>
                                     Edit Rekin
                                 </ButtonSkyBorder>

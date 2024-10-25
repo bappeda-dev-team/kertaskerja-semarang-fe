@@ -7,10 +7,10 @@ const pohoncascading = () => {
                 <ul>
                     <li>
                         <div className="tf-nc tf flex flex-col w-[700px] rounded-lg">
-                            <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black">
+                            <div className="header flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black">
                                 <h1>Tematik Kota</h1>
                             </div>
-                            <div className="flex justify-center my-3">
+                            <div className="body flex justify-center my-3">
                                 <table>
                                     <tbody>
                                         <tr>
@@ -32,12 +32,14 @@ const pohoncascading = () => {
                                     </tbody>
                                 </table>
                             </div>
+                            {/* button */}
                             <div className="flex justify-center border my-3 py-3 border-black">
                                 <button className="border px-5 py-1 rounded-lg border-black">Review</button>
                             </div>
                             <div className="flex justify-center border my-3 py-3 border-black">
                                 <button className="border px-5 py-1 rounded-lg border-black">Edit</button>
                             </div>
+                            {/* footer */}
                             <div className="flex justify-between my-3 py-3">
                                 <button className="border px-5 py-1 rounded-lg border-black">Tampilkan semua</button>
                                 <button className="border px-5 py-1 rounded-lg border-black">+ subtema</button>

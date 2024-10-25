@@ -54,7 +54,8 @@ const login = () => {
                     onChange={(e) => setSelectedUser(e.target.value)}
                 >
                     <option value="">pilih role</option>
-                    <option value="admin">admin</option>
+                    <option value="super_admin">super admin</option>
+                    <option value="admin_opd">admin opd</option>
                     <option value="asn">asn</option>
                 </select>
                 <button

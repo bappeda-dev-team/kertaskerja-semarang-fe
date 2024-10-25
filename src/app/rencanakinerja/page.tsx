@@ -35,7 +35,10 @@ const rencanakinerja = () => {
                 <div className="flex items-center justify-between border-b px-5 py-5">
                     <div className="flex flex-col">
                         <h1 className="font-bold text-2xl uppercase">rencana kinerja {Tahun?.label}</h1>
-                        <ButtonSky className="flex items-center justify-center">
+                        <ButtonSky 
+                            className="flex items-center justify-center"
+                            halaman_url='/rencanakinerja/tambah'
+                        >
                             <TbCirclePlus className="mr-1"/>
                             Rencana kinerja baru
                         </ButtonSky>

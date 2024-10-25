@@ -132,8 +132,11 @@ const Header = () => {
                     value={Tahun}
                     isSearchable
                 />
-                {user == "admin" && 
+                {user == "super_admin" && 
                     <button className="border border-white text-white px-3 py-2 mx-1 min-w-20 rounded-lg hover:bg-white hover:text-gray-800">Super Admin</button>
+                }
+                {user == "admin_opd" && 
+                    <button className="border border-white text-white px-3 py-2 mx-1 min-w-20 rounded-lg hover:bg-white hover:text-gray-800">Admin Opd</button>
                 }
                 {user == "asn" && 
                     <button className="border border-white text-white px-3 py-2 mx-1 min-w-20 rounded-lg hover:bg-white hover:text-gray-800">ASN</button>
