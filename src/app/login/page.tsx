@@ -5,6 +5,7 @@ import Image from "next/image";
 import { setCookie } from "@/components/lib/Cookie";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AlertNotification } from "@/components/global/Alert";
 
 const login = () => {
 
@@ -13,6 +14,7 @@ const login = () => {
 
     const setLogin = () => {
         setCookie('user', JSON.stringify(SelectedUser));
+        AlertNotification("Berhasil Login", "", "success", 1000);
         router.push("/");
         setTimeout(() => {
           window.location.reload();
@@ -50,6 +52,7 @@ const login = () => {
                     </div>
                 </div> */}
                 <select
+                    className="w-full"
                     value={SelectedUser}
                     onChange={(e) => setSelectedUser(e.target.value)}
                 >
@@ -61,7 +64,7 @@ const login = () => {
                 <button
                     onClick={setLogin}
                     type="button"
-                    className="w-full py-1 mt-2 px-4 border-2 rounded-lg"
+                    className="w-full py-1 mt-2 px-4 border-2 rounded-lg hover:bg-gray-500 hover:text-white"
                 >
                     Login
                 </button>

@@ -1,4 +1,4 @@
-import FormRencanaKinerja from '@/components/pages/rencanakinerja/FormRencanaKinerja'
+import { FormRencanaKinerja } from "@/components/pages/rencanakinerja/FormRencanaKinerja";
 import { FiHome } from "react-icons/fi";
 
 const tambahRencanaKinerja = () => {

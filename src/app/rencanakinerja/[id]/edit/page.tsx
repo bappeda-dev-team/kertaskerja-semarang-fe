@@ -1,7 +1,9 @@
+import { FormEditRencanaKinerja } from "@/components/pages/rencanakinerja/FormRencanaKinerja";
+
 const editRencanaKinerja = () => {
     return(
         <>
-            <h1>Edit rencana kinerja</h1>
+            <FormEditRencanaKinerja />
         </>
     )
 }

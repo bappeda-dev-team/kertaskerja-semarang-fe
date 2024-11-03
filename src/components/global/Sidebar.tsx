@@ -4,8 +4,9 @@ import { useEffect, useState} from 'react';
 import { 
   TbBook, TbFileImport, TbApps, TbChecklist, TbShoppingCartDollar, TbRefreshAlert,
   TbLogout,TbBook2,TbBulb,TbFileAlert,TbTooltip,TbBinaryTree,TbBuildingFortress,
-  TbBuildingCommunity,TbDatabaseCog,TbHome,
-  TbCircleArrowLeftFilled
+  TbBuildingCommunity,TbDatabaseCog,TbHome,TbFileDelta, TbFile3D,
+  TbCircleArrowLeftFilled, TbBadges, TbBuilding,
+  TbBuildingEstate
 } from "react-icons/tb";
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -24,8 +25,18 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
   //state menu, submenu, subsmenu
   const [Dashboard, setDashboard] = useState<boolean | null>(null);
   const [DataMaster, setDataMaster] = useState<boolean | null>(null);
+    const [MasterOPD, setMasterOPD] = useState<boolean | null>(null);
+    const [MasterPegawai, setMasterPegawai] = useState<boolean | null>(null);
+    const [MasterProgramKegiatan, setMasterProgramKegiatan] = useState<boolean | null>(null);
+      const [MasterUrusan, setMasterUrusan] = useState<boolean | null>(null);
+      const [MasterBidangUrusan, setMasterBidangUrusan] = useState<boolean | null>(null);
+      const [MasterProgram, setMasterProgram] = useState<boolean | null>(null);
+      const [MasterKegiatan, setMasterKegiatan] = useState<boolean | null>(null);
+      const [MasterSubKegiatan, setMasterSubKegiatan] = useState<boolean | null>(null);
+      const [MasterLembaga, setMasterLembaga] = useState<boolean | null>(null);
+    const [MasterJabatan, setMasterJabatan] = useState<boolean | null>(null);
   const [PerencanaanKota, setPerencanaanKota] = useState<boolean | null>(null);
-    const [KotaPohonKinerjaKota, KotasetPohonKinerjaKota] = useState<boolean | null>(null);
+    const [KotaPohonKinerjaKota, setKotaPohonKinerjaKota] = useState<boolean | null>(null);
   const [PerencanaanOPD, setPerencanaanOPD] = useState<boolean | null>(null);
     const [OpdPohonKinerjaKota, setOpdPohonKinerjaKota] = useState<boolean | null>(null);
     const [PohonKinerja, setPohonKinerja] = useState<boolean | null>(null);
@@ -44,7 +55,282 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
   useEffect(() => {
     if(url == "/"){
       setDashboard(true);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
       setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    //Data Master
+    if(url == "/DataMaster/masteropd"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(true);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/DataMaster/masterpegawai"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(true);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    //master program kegiatan
+    if(url == "/DataMaster/masterprogramkegiatan/bidangurusan"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(true);
+      setMasterBidangUrusan(true);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/DataMaster/masterprogramkegiatan/kegiatan"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(true);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(true);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/DataMaster/masterprogramkegiatan/program"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(true);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(true);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/DataMaster/masterprogramkegiatan/subkegiatan"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(true);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(true);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/DataMaster/masterprogramkegiatan/urusan"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(true);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(true);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/DataMaster/masterjabatan"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(true);
+      setMasterLembaga(false);      
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/DataMaster/masterlembaga"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(true);      
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    //PERENCANAAN KOTA
+    if(url == "/pohonkinerjakota"){
+      setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);      
+      setPerencanaanKota(true);
+      setKotaPohonKinerjaKota(true);
       setPerencanaanOPD(false);
       setLaporan(false);
       setUsulan(false);
@@ -59,7 +345,19 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
     //perencanaanKota
     if(url == "/rencanakinerja"){
       setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
       setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
       setUsulan(false);
       setMusrenbang(false);
       setPokokPikiran(false);
@@ -72,7 +370,19 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
     }
     if(url == "/rincianbelanja"){
       setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
       setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
       setRencanaKinerjaKAK(false);
       setLaporan(true);
       setUsulan(false);
@@ -85,6 +395,17 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
     }
     if(url == "/musrenbang"){
       setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
       setPerencanaanKota(true);
       setUsulan(true);
       setRencanaKinerjaKAK(false);
@@ -97,6 +418,17 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
     }
     if(url == "/pokokpikiran"){
       setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
       setPerencanaanKota(true);
       setUsulan(true);
       setRencanaKinerjaKAK(false);
@@ -109,6 +441,17 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
     }
     if(url == "/mandatori"){
       setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
       setPerencanaanKota(true);
       setUsulan(true);
       setRencanaKinerjaKAK(false);
@@ -121,6 +464,17 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
     }
     if(url == "/manajemenresiko"){
       setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
       setPerencanaanKota(true);
       setUsulan(false);
       setRencanaKinerjaKAK(false);
@@ -133,7 +487,19 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
     }
     if(url == "/pohoncascading"){
       setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
       setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(true);
       setUsulan(false);
       setRencanaKinerjaKAK(false);
@@ -151,7 +517,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       {/* tombol sidebar zoom 150% */}
       {isZoomed && (
         <div 
-          className={`fixed top-1 bg-gray-800 border border-white p-2 cursor-pointer duration-200 text-white rounded-md z-50 ${!isOpen ? 'rotate-180 left-12' : 'left-[13rem]'}`}
+          className={`fixed top-1 bg-gray-800 border border-white p-2 cursor-pointer duration-200 text-white rounded-md z-50 ${!isOpen ? 'rotate-180 ' : 'left-[13rem]'}`}
           onClick={() => toggleSidebar()}
         >
           <TbCircleArrowLeftFilled/>
@@ -204,10 +570,83 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
               <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Dashboard</span>
             </li>
           </Link>
-            <li className={`flex items-center font-medium gap-x-2 cursor-pointer p-2 rounded-xl ${DataMaster ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-              <TbDatabaseCog className="text-xl" />
-              <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Data Master</span>
-            </li>
+          <li 
+            className={`flex items-center font-medium gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700`}
+            onClick={() => setDataMaster(DataMaster ? false : true)}
+            >
+            <TbDatabaseCog className="text-xl" />
+            <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Data Master</span>
+          </li>
+          {/* submenu */}
+          {DataMaster && 
+            <div className="flex flex-col border-l-2 border-white rounded-b-xl px-3 py-2 ml-2 duration-200">
+              <Link href="/DataMaster/masteropd">
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterOPD ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <TbBuilding className="text-xl" />
+                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master OPD</span>
+                </li>
+              </Link>
+              <Link href="/DataMaster/masterpegawai">
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterPegawai ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <TbFileDelta className="text-xl" />
+                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Pegawai</span>
+                </li>
+              </Link>
+              <li 
+                className={`flex gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700`}
+                onClick={() => setMasterProgramKegiatan(MasterProgramKegiatan ? false : true)}
+              >
+                <TbFile3D className="text-xl mt-1" />
+                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Program Kegiatan</span>
+              </li>
+              {MasterProgramKegiatan && 
+                <div className="flex flex-col border-l-2 border-white rounded-b-xl px-3 py-2 ml-2 duration-200">
+                  <Link href="/DataMaster/masterprogramkegiatan/bidangurusan">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterBidangUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                      <TbBuilding className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Bidang Urusan</span>
+                    </li>
+                  </Link>
+                  <Link href="/DataMaster/masterprogramkegiatan/kegiatan">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                      <TbFileDelta className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Kegiatan</span>
+                    </li>
+                  </Link>
+                  <Link href="/DataMaster/masterprogramkegiatan/program">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterProgram ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                      <TbFileDelta className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Program</span>
+                    </li>
+                  </Link>
+                  <Link href="/DataMaster/masterprogramkegiatan/subkegiatan">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterSubKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                      <TbFileDelta className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Sub Kegiatan</span>
+                    </li>
+                  </Link>
+                  <Link href="/DataMaster/masterprogramkegiatan/urusan">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                      <TbFileDelta className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Urusan</span>
+                    </li>
+                  </Link>
+                </div>
+              }
+              <Link href="/DataMaster/masterjabatan">
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterJabatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <TbBadges className="text-xl" />
+                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Jabatan</span>
+                </li>
+              </Link>
+              <Link href="/DataMaster/masterlembaga">
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterLembaga ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <TbBuildingEstate className="text-xl" />
+                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Lembaga</span>
+                </li>
+              </Link>
+            </div>
+            }
           <li 
             className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700`}
             onClick={() => setPerencanaanKota(PerencanaanKota ? false : true)}
@@ -218,7 +657,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
           {PerencanaanKota &&
           <div className="flex flex-col border-l-2 border-white rounded-b-xl px-3 py-2 ml-2 duration-200">
             {/* submenu */}
-            <Link href="#">
+            <Link href="/pohonkinerjakota">
               <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${KotaPohonKinerjaKota ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                 <TbBinaryTree className="text-xl" />
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pohon Kinerja Kota</span>
@@ -462,7 +901,7 @@ export const SidebarAsn = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       {/* tombol sidebar zoom 150% */}
       {isZoomed && (
         <div 
-          className={`fixed top-1 bg-gray-800 border border-white p-2 cursor-pointer duration-200 text-white rounded-md z-50 ${!isOpen ? 'rotate-180 left-12' : 'left-[13rem]'}`}
+          className={`fixed top-1 bg-gray-800 border border-white p-2 cursor-pointer duration-200 text-white rounded-md z-50 ${!isOpen ? 'rotate-180 ' : 'left-[13rem]'}`}
           onClick={() => toggleSidebar()}
         >
           <TbCircleArrowLeftFilled/>
