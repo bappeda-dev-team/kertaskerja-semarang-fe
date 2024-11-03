@@ -1,5 +1,5 @@
 import { FiHome } from "react-icons/fi";
-import Table from "@/components/pages/datamaster/masterprogramkegiatan/bidangurusan/Table";
+import Table from "@/components/pages/datamaster/masterprogramkegiatan/kegiatan/Table";
 import { TbCirclePlus } from "react-icons/tb";
 import { ButtonSky } from "@/components/global/Button";
 

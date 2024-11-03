@@ -10,31 +10,28 @@ interface OptionTypeString {
     label: string;
 }
 interface FormValue {
-    nama: string;
+    nama_program: string;
+    kode_program: string;
     kode_opd: string;
-    nip: string;
-    role: string;
 }
 
-export const FormMasterPegawai = () => {
+export const FormProgram = () => {
 
     const {
       control,
       handleSubmit,
       formState: { errors },
     } = useForm<FormValue>();
-    const [Nama, setNama] = useState<string>('');
+    const [NamaProgram, setNamaProgram] = useState<string>('');
+    const [KodeProgram, setKodeProgram] = useState<string>('');
     const [KodeOpd, setKodeOpd] = useState<string>('');
-    const [Nip, setNip] = useState<string>('');
-    const [Role, setRole] = useState<string>('');
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const formData = {
             //key : value
+            nama_program : data.nama_program,
+            kode_program : data.kode_program,
             kode_opd : data.kode_opd,
-            nama : data.nama,
-            nip : data.nip,
-            role : data.role, 
         };
         console.log(formData);
       };
@@ -42,7 +39,7 @@ export const FormMasterPegawai = () => {
     return(
     <>
         <div className="border p-5 rounded-xl shadow-xl">
-            <h1 className="uppercase font-bold">Form Tambah Pegawai :</h1>
+            <h1 className="uppercase font-bold">Form Tambah Program :</h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col mx-5 py-5"
@@ -50,34 +47,70 @@ export const FormMasterPegawai = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama"
+                        htmlFor="nama_program"
                     >
-                        Nama :
+                        Nama Program :
                     </label>
                     <Controller
-                        name="nama"
+                        name="nama_program"
                         control={control}
-                        rules={{ required: "Nama harus terisi" }}
+                        rules={{ required: "Nama Program harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="nama"
+                                    id="nama_program"
                                     type="text"
-                                    placeholder="masukkan Nama"
-                                    value={field.value || Nama}
+                                    placeholder="masukkan Nama Program"
+                                    value={field.value || NamaProgram}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setNama(e.target.value);
+                                        setNamaProgram(e.target.value);
                                     }}
                                 />
-                                {errors.nama ?
+                                {errors.nama_program ?
                                     <h1 className="text-red-500">
-                                    {errors.nama.message}
+                                    {errors.nama_program.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Nama Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Nama Program Harus Terisi</h1>
+                                }
+                            </>
+                        )}
+                    />
+                </div>
+                <div className="flex flex-col py-3">
+                    <label
+                        className="uppercase text-xs font-bold text-gray-700 my-2"
+                        htmlFor="kode_program"
+                    >
+                        Kode Program :
+                    </label>
+                    <Controller
+                        name="kode_program"
+                        control={control}
+                        rules={{ required: "Kode Program harus terisi" }}
+                        render={({ field }) => (
+                            <>
+                                <input
+                                    {...field}
+                                    className="border px-4 py-2 rounded-lg"
+                                    id="tahun"
+                                    type="text"
+                                    placeholder="masukkan Kode Program"
+                                    value={field.value || KodeProgram}
+                                    onChange={(e) => {
+                                        field.onChange(e);
+                                        setKodeProgram(e.target.value);
+                                    }}
+                                />
+                                {errors.kode_program ?
+                                    <h1 className="text-red-500">
+                                    {errors.kode_program.message}
+                                    </h1>
+                                    :
+                                    <h1 className="text-slate-300 text-xs">*Kode Program Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -99,7 +132,7 @@ export const FormMasterPegawai = () => {
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="kode_opd"
+                                    id="tahun"
                                     type="text"
                                     placeholder="masukkan Kode OPD"
                                     value={field.value || KodeOpd}
@@ -119,79 +152,6 @@ export const FormMasterPegawai = () => {
                         )}
                     />
                 </div>
-                <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nip"
-                    >
-                        NIP :
-                    </label>
-                    <Controller
-                        name="nip"
-                        control={control}
-                        rules={{ required: "NIP harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="nip"
-                                    type="text"
-                                    placeholder="masukkan NIP"
-                                    value={field.value || Nip}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setNip(e.target.value);
-                                    }}
-                                />
-                                {errors.nip ?
-                                    <h1 className="text-red-500">
-                                    {errors.nip.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*NIP Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div>
-                <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="role"
-                    >
-                        Role :
-                    </label>
-                    <Controller
-                        name="role"
-                        control={control}
-                        rules={{ required: "Role harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="role"
-                                    type="text"
-                                    placeholder="masukkan Role"
-                                    value={field.value || Role}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setRole(e.target.value);
-                                    }}
-                                />
-                                {errors.role ?
-                                    <h1 className="text-red-500">
-                                    {errors.role.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Role Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div>
-                
                 <ButtonGreen
                     type="submit"
                     className="my-4"
@@ -206,17 +166,16 @@ export const FormMasterPegawai = () => {
     </>
     )
 }
-export const FormEditMasterPegawai = () => {
+export const FormEditProgram = () => {
 
     const {
       control,
       handleSubmit,
       formState: { errors },
     } = useForm<FormValue>();
-    const [Nama, setNama] = useState<string>('');
+    const [NamaProgram, setNamaProgram] = useState<string>('');
+    const [KodeProgram, setKodeProgram] = useState<string>('');
     const [KodeOpd, setKodeOpd] = useState<string>('');
-    const [Nip, setNip] = useState<string>('');
-    const [Role, setRole] = useState<string>('');
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
@@ -235,17 +194,14 @@ export const FormEditMasterPegawai = () => {
                     setIdNull(true);
                 } else {
                     const data = result.data;
-                    if(data.nama){
-                        setNama(data.nama);
+                    if(data.nama_program){
+                        setNamaProgram(data.nama_program);
+                    }
+                    if(data.kode_program){
+                        setKodeProgram(data.kode_program);
                     }
                     if(data.kode_opd){
                         setKodeOpd(data.kode_opd);
-                    }
-                    if(data.nip){
-                        setNip(data.nip);
-                    }
-                    if(data.role){
-                        setRole(data.role)
                     }
                 }
             } catch(err) {
@@ -260,10 +216,9 @@ export const FormEditMasterPegawai = () => {
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
       const formData = {
           //key : value
+          nama_program : data.nama_program,
+          kode_program : data.kode_program,
           kode_opd : data.kode_opd,
-          nama : data.nama,
-          nip : data.nip,
-          role : data.role, 
       };
       console.log(formData);
     };
@@ -271,21 +226,21 @@ export const FormEditMasterPegawai = () => {
     if(loading){
         return (    
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Pegawai :</h1>
+                <h1 className="uppercase font-bold">Form Edit Program :</h1>
                 <LoadingClip className="mx-5 py-5"/>
             </div>
         );
     } else if(error){
         return (
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Pegawai :</h1>
+                <h1 className="uppercase font-bold">Form Edit Program :</h1>
                 <h1 className="text-red-500 mx-5 py-5">{error}</h1>
             </div>
         )
     } else if(idNull){
         return (
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Pegawai :</h1>
+                <h1 className="uppercase font-bold">Form Edit Program :</h1>
                 <h1 className="text-red-500 mx-5 py-5">id tidak ditemukan</h1>
             </div>
         )
@@ -294,7 +249,7 @@ export const FormEditMasterPegawai = () => {
     return(
     <>
         <div className="border p-5 rounded-xl shadow-xl">
-            <h1 className="uppercase font-bold">Form Edit Pegawai :</h1>
+            <h1 className="uppercase font-bold">Form Edit Program :</h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col mx-5 py-5"
@@ -302,34 +257,70 @@ export const FormEditMasterPegawai = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama"
+                        htmlFor="nama_program"
                     >
-                        Nama :
+                        Nama Program :
                     </label>
                     <Controller
-                        name="nama"
+                        name="nama_program"
                         control={control}
-                        rules={{ required: "Nama harus terisi" }}
+                        rules={{ required: "Nama Program harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="nama"
+                                    id="nama_program"
                                     type="text"
-                                    placeholder="masukkan Nama"
-                                    value={field.value || Nama}
+                                    placeholder="masukkan Nama Program"
+                                    value={field.value || NamaProgram}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setNama(e.target.value);
+                                        setNamaProgram(e.target.value);
                                     }}
                                 />
-                                {errors.nama ?
+                                {errors.nama_program ?
                                     <h1 className="text-red-500">
-                                    {errors.nama.message}
+                                    {errors.nama_program.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Nama Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Nama Program Harus Terisi</h1>
+                                }
+                            </>
+                        )}
+                    />
+                </div>
+                <div className="flex flex-col py-3">
+                    <label
+                        className="uppercase text-xs font-bold text-gray-700 my-2"
+                        htmlFor="kode_program"
+                    >
+                        Kode Program :
+                    </label>
+                    <Controller
+                        name="kode_program"
+                        control={control}
+                        rules={{ required: "Kode Program harus terisi" }}
+                        render={({ field }) => (
+                            <>
+                                <input
+                                    {...field}
+                                    className="border px-4 py-2 rounded-lg"
+                                    id="tahun"
+                                    type="text"
+                                    placeholder="masukkan Kode Program"
+                                    value={field.value || KodeProgram}
+                                    onChange={(e) => {
+                                        field.onChange(e);
+                                        setKodeProgram(e.target.value);
+                                    }}
+                                />
+                                {errors.kode_program ?
+                                    <h1 className="text-red-500">
+                                    {errors.kode_program.message}
+                                    </h1>
+                                    :
+                                    <h1 className="text-slate-300 text-xs">*Kode Program Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -351,7 +342,7 @@ export const FormEditMasterPegawai = () => {
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="kode_opd"
+                                    id="tahun"
                                     type="text"
                                     placeholder="masukkan Kode OPD"
                                     value={field.value || KodeOpd}
@@ -371,79 +362,6 @@ export const FormEditMasterPegawai = () => {
                         )}
                     />
                 </div>
-                <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nip"
-                    >
-                        NIP :
-                    </label>
-                    <Controller
-                        name="nip"
-                        control={control}
-                        rules={{ required: "NIP harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="nip"
-                                    type="text"
-                                    placeholder="masukkan NIP"
-                                    value={field.value || Nip}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setNip(e.target.value);
-                                    }}
-                                />
-                                {errors.nip ?
-                                    <h1 className="text-red-500">
-                                    {errors.nip.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*NIP Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div>
-                <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="role"
-                    >
-                        Role :
-                    </label>
-                    <Controller
-                        name="role"
-                        control={control}
-                        rules={{ required: "Role harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="role"
-                                    type="text"
-                                    placeholder="masukkan Role"
-                                    value={field.value || Role}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setRole(e.target.value);
-                                    }}
-                                />
-                                {errors.role ?
-                                    <h1 className="text-red-500">
-                                    {errors.role.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Role Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div>
-                
                 <ButtonGreen
                     type="submit"
                     className="my-4"

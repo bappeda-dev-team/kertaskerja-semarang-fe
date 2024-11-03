@@ -10,25 +10,25 @@ interface OptionTypeString {
     label: string;
 }
 interface FormValue {
-    nama_bidang_urusan: string;
-    kode_bidang_urusan: string;
+    nama_urusan: string;
+    kode_urusan: string;
 }
 
-export const FormBidangUrusan = () => {
+export const FormUrusan = () => {
 
     const {
       control,
       handleSubmit,
       formState: { errors },
     } = useForm<FormValue>();
-    const [NamaBidangUrusan, setNamaBidangUrusan] = useState<string>('');
-    const [KodeBidangUrusan, setKodeBidangUrusan] = useState<string>('');
+    const [NamaUrusan, setNamaUrusan] = useState<string>('');
+    const [KodeUrusan, setKodeUrusan] = useState<string>('');
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const formData = {
             //key : value
-            nama_bidang_urusan : data.nama_bidang_urusan,
-            kode_bidang_urusan : data.kode_bidang_urusan,
+            nama_urusan : data.nama_urusan,
+            kode_urusan : data.kode_urusan,
         };
         console.log(formData);
       };
@@ -36,7 +36,7 @@ export const FormBidangUrusan = () => {
     return(
     <>
         <div className="border p-5 rounded-xl shadow-xl">
-            <h1 className="uppercase font-bold">Form Tambah Bidang Urusan :</h1>
+            <h1 className="uppercase font-bold">Form Tambah Urusan :</h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col mx-5 py-5"
@@ -44,34 +44,34 @@ export const FormBidangUrusan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama_bidang_urusan"
+                        htmlFor="nama_urusan"
                     >
-                        Nama bidang Urusan :
+                        Nama Urusan :
                     </label>
                     <Controller
-                        name="nama_bidang_urusan"
+                        name="nama_urusan"
                         control={control}
-                        rules={{ required: "Nama bidang Urusan harus terisi" }}
+                        rules={{ required: "Nama Urusan harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="nama_bidang_urusan"
+                                    id="nama_urusan"
                                     type="text"
-                                    placeholder="masukkan Nama bidang Urusan"
-                                    value={field.value || NamaBidangUrusan}
+                                    placeholder="masukkan Nama Urusan"
+                                    value={field.value || NamaUrusan}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setNamaBidangUrusan(e.target.value);
+                                        setNamaUrusan(e.target.value);
                                     }}
                                 />
-                                {errors.nama_bidang_urusan ?
+                                {errors.nama_urusan ?
                                     <h1 className="text-red-500">
-                                    {errors.nama_bidang_urusan.message}
+                                    {errors.nama_urusan.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Nama bidang Urusan Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Nama Urusan Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -80,14 +80,14 @@ export const FormBidangUrusan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="kode_bidang_urusan"
+                        htmlFor="kode_urusan"
                     >
-                        Kode Bidang Urusan :
+                        Kode Urusan :
                     </label>
                     <Controller
-                        name="kode_bidang_urusan"
+                        name="kode_urusan"
                         control={control}
-                        rules={{ required: "Kode Bidang Urusan harus terisi" }}
+                        rules={{ required: "Kode Urusan harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
@@ -95,19 +95,19 @@ export const FormBidangUrusan = () => {
                                     className="border px-4 py-2 rounded-lg"
                                     id="tahun"
                                     type="text"
-                                    placeholder="masukkan Kode Bidang Urusan"
-                                    value={field.value || KodeBidangUrusan}
+                                    placeholder="masukkan Kode Urusan"
+                                    value={field.value || KodeUrusan}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setKodeBidangUrusan(e.target.value);
+                                        setKodeUrusan(e.target.value);
                                     }}
                                 />
-                                {errors.kode_bidang_urusan ?
+                                {errors.kode_urusan ?
                                     <h1 className="text-red-500">
-                                    {errors.kode_bidang_urusan.message}
+                                    {errors.kode_urusan.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Kode Bidang Urusan Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Kode Urusan Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -127,15 +127,15 @@ export const FormBidangUrusan = () => {
     </>
     )
 }
-export const FormEditBidangUrusan = () => {
+export const FormEditUrusan = () => {
 
     const {
       control,
       handleSubmit,
       formState: { errors },
     } = useForm<FormValue>();
-    const [NamaBidangUrusan, setNamaBidangUrusan] = useState<string>('');
-    const [KodeBidangUrusan, setKodeBidangUrusan] = useState<string>('');
+    const [NamaUrusan, setNamaUrusan] = useState<string>('');
+    const [KodeUrusan, setKodeUrusan] = useState<string>('');
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
@@ -154,11 +154,11 @@ export const FormEditBidangUrusan = () => {
                     setIdNull(true);
                 } else {
                     const data = result.data;
-                    if(data.nama_bidang_urusan){
-                        setNamaBidangUrusan(data.nama_bidang_urusan);
+                    if(data.nama_urusan){
+                        setNamaUrusan(data.nama_urusan);
                     }
-                    if(data.kode_bidang_urusan){
-                        setKodeBidangUrusan(data.kode_bidang_urusan);
+                    if(data.kode_urusan){
+                        setKodeUrusan(data.kode_urusan);
                     }
                 }
             } catch(err) {
@@ -173,8 +173,8 @@ export const FormEditBidangUrusan = () => {
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
       const formData = {
           //key : value
-          nama_bidang_urusan : data.nama_bidang_urusan,
-          kode_bidang_urusan : data.kode_bidang_urusan,
+          nama_urusan : data.nama_urusan,
+          kode_urusan : data.kode_urusan,
       };
       console.log(formData);
     };
@@ -182,21 +182,21 @@ export const FormEditBidangUrusan = () => {
     if(loading){
         return (    
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Bidang Urusan :</h1>
+                <h1 className="uppercase font-bold">Form Edit Urusan :</h1>
                 <LoadingClip className="mx-5 py-5"/>
             </div>
         );
     } else if(error){
         return (
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Bidang Urusan :</h1>
+                <h1 className="uppercase font-bold">Form Edit Urusan :</h1>
                 <h1 className="text-red-500 mx-5 py-5">{error}</h1>
             </div>
         )
     } else if(idNull){
         return (
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Bidang Urusan :</h1>
+                <h1 className="uppercase font-bold">Form Edit Urusan :</h1>
                 <h1 className="text-red-500 mx-5 py-5">id tidak ditemukan</h1>
             </div>
         )
@@ -205,7 +205,7 @@ export const FormEditBidangUrusan = () => {
     return(
     <>
         <div className="border p-5 rounded-xl shadow-xl">
-            <h1 className="uppercase font-bold">Form Edit Bidang Urusan :</h1>
+            <h1 className="uppercase font-bold">Form Edit Urusan :</h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col mx-5 py-5"
@@ -213,34 +213,34 @@ export const FormEditBidangUrusan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama_bidang_urusan"
+                        htmlFor="nama_urusan"
                     >
-                        Nama bidang Urusan :
+                        Nama Urusan :
                     </label>
                     <Controller
-                        name="nama_bidang_urusan"
+                        name="nama_urusan"
                         control={control}
-                        rules={{ required: "Nama bidang Urusan harus terisi" }}
+                        rules={{ required: "Nama Urusan harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="nama_bidang_urusan"
+                                    id="nama_urusan"
                                     type="text"
-                                    placeholder="masukkan Nama bidang Urusan"
-                                    value={field.value || NamaBidangUrusan}
+                                    placeholder="masukkan Nama Urusan"
+                                    value={field.value || NamaUrusan}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setNamaBidangUrusan(e.target.value);
+                                        setNamaUrusan(e.target.value);
                                     }}
                                 />
-                                {errors.nama_bidang_urusan ?
+                                {errors.nama_urusan ?
                                     <h1 className="text-red-500">
-                                    {errors.nama_bidang_urusan.message}
+                                    {errors.nama_urusan.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Nama bidang Urusan Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Nama Urusan Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -249,14 +249,14 @@ export const FormEditBidangUrusan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="kode_bidang_urusan"
+                        htmlFor="kode_urusan"
                     >
-                        Kode Bidang Urusan :
+                        Kode Urusan :
                     </label>
                     <Controller
-                        name="kode_bidang_urusan"
+                        name="kode_urusan"
                         control={control}
-                        rules={{ required: "Kode Bidang Urusan harus terisi" }}
+                        rules={{ required: "Kode Urusan harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
@@ -264,19 +264,19 @@ export const FormEditBidangUrusan = () => {
                                     className="border px-4 py-2 rounded-lg"
                                     id="tahun"
                                     type="text"
-                                    placeholder="masukkan Kode Bidang Urusan"
-                                    value={field.value || KodeBidangUrusan}
+                                    placeholder="masukkan Kode Urusan"
+                                    value={field.value || KodeUrusan}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setKodeBidangUrusan(e.target.value);
+                                        setKodeUrusan(e.target.value);
                                     }}
                                 />
-                                {errors.kode_bidang_urusan ?
+                                {errors.kode_urusan ?
                                     <h1 className="text-red-500">
-                                    {errors.kode_bidang_urusan.message}
+                                    {errors.kode_urusan.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Kode Bidang Urusan Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Kode Urusan Harus Terisi</h1>
                                 }
                             </>
                         )}

@@ -22,7 +22,7 @@ const masterpegawai = () => {
                             halaman_url='/DataMaster/masterpegawai/tambah'
                         >
                             <TbCirclePlus className="mr-1"/>
-                            Tambah User
+                            Tambah Pegawai
                         </ButtonSky>
                     </div>
                 </div>
