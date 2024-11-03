@@ -19,6 +19,7 @@ interface SidebarProps {
   toggleSidebar: () => void;
 }
 
+// TODO: REFACTOR SIDEBAR LOGIC
 export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
 
   const url = usePathname();
@@ -580,6 +581,12 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
           {/* submenu */}
           {DataMaster && 
             <div className="flex flex-col border-l-2 border-white rounded-b-xl px-3 py-2 ml-2 duration-200">
+              <Link href="/DataMaster/masterlembaga">
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterLembaga ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <TbBuildingEstate className="text-xl" />
+                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Lembaga</span>
+                </li>
+              </Link>
               <Link href="/DataMaster/masteropd">
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterOPD ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                   <TbBuilding className="text-xl" />
@@ -592,6 +599,12 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Pegawai</span>
                 </li>
               </Link>
+              <Link href="/DataMaster/masterjabatan">
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterJabatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <TbBadges className="text-xl" />
+                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Jabatan</span>
+                </li>
+              </Link>
               <li 
                 className={`flex gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700`}
                 onClick={() => setMasterProgramKegiatan(MasterProgramKegiatan ? false : true)}
@@ -601,16 +614,16 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
               </li>
               {MasterProgramKegiatan && 
                 <div className="flex flex-col border-l-2 border-white rounded-b-xl px-3 py-2 ml-2 duration-200">
+                  <Link href="/DataMaster/masterprogramkegiatan/urusan">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                      <TbFileDelta className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Urusan</span>
+                    </li>
+                  </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/bidangurusan">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterBidangUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                       <TbBuilding className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Bidang Urusan</span>
-                    </li>
-                  </Link>
-                  <Link href="/DataMaster/masterprogramkegiatan/kegiatan">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                      <TbFileDelta className="text-xl" />
-                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Kegiatan</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/program">
@@ -619,32 +632,20 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Program</span>
                     </li>
                   </Link>
+                  <Link href="/DataMaster/masterprogramkegiatan/kegiatan">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                      <TbFileDelta className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Kegiatan</span>
+                    </li>
+                  </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/subkegiatan">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterSubKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                       <TbFileDelta className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Sub Kegiatan</span>
                     </li>
                   </Link>
-                  <Link href="/DataMaster/masterprogramkegiatan/urusan">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                      <TbFileDelta className="text-xl" />
-                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Urusan</span>
-                    </li>
-                  </Link>
                 </div>
               }
-              <Link href="/DataMaster/masterjabatan">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterJabatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                  <TbBadges className="text-xl" />
-                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Jabatan</span>
-                </li>
-              </Link>
-              <Link href="/DataMaster/masterlembaga">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterLembaga ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                  <TbBuildingEstate className="text-xl" />
-                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Lembaga</span>
-                </li>
-              </Link>
             </div>
             }
           <li 
