@@ -66,7 +66,7 @@ export const FormMasterOpd = () => {
                     <Controller
                         name="lembaga"
                         control={control}
-                        rules={{ required: "Lembaga harus terisi" }}
+                        rules={{ required: "Lembaga harus dipilih" }}
                         render={({ field }) => (
                             <>
                                 <input
@@ -86,115 +86,7 @@ export const FormMasterOpd = () => {
                                     {errors.lembaga.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Lembaga Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div>
-                <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama_opd"
-                    >
-                        Nama OPD :
-                    </label>
-                    <Controller
-                        name="nama_opd"
-                        control={control}
-                        rules={{ required: "Nama OPD harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="nama_opd"
-                                    type="text"
-                                    placeholder="masukkan Nama OPD"
-                                    value={field.value || NamaOpd}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setNamaOpd(e.target.value);
-                                    }}
-                                />
-                                {errors.nama_opd ?
-                                    <h1 className="text-red-500">
-                                    {errors.nama_opd.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Nama OPD Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div>
-                <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="id_opd_skp"
-                    >
-                        ID OPD SKP :
-                    </label>
-                    <Controller
-                        name="id_opd_skp"
-                        control={control}
-                        rules={{ required: "ID OPD SKP harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="id_opd_skp"
-                                    type="text"
-                                    placeholder="masukkan ID OPD SKP"
-                                    value={field.value || IdOpdSkp}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setIdOpdSkp(e.target.value);
-                                    }}
-                                />
-                                {errors.id_opd_skp ?
-                                    <h1 className="text-red-500">
-                                    {errors.id_opd_skp.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Id OPD SKP Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div>
-                <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama_kepala"
-                    >
-                        Nama Kepala :
-                    </label>
-                    <Controller
-                        name="nama_kepala"
-                        control={control}
-                        rules={{ required: "Nama Kepala harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="nama_kepala"
-                                    type="text"
-                                    placeholder="masukkan Nama Kepala"
-                                    value={field.value || NamaKepala}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setNamaKepala(e.target.value);
-                                    }}
-                                />
-                                {errors.nama_kepala ?
-                                    <h1 className="text-red-500">
-                                    {errors.nama_kepala.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Nama Kepala Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Lembaga Harus Dipilih</h1>
                                 }
                             </>
                         )}
@@ -205,7 +97,7 @@ export const FormMasterOpd = () => {
                         className="uppercase text-xs font-bold text-gray-700 my-2"
                         htmlFor="kode_unik_opd"
                     >
-                        Kode Unik OPD :
+                        Kode Perangkat Daerah :
                     </label>
                     <Controller
                         name="kode_unik_opd"
@@ -239,34 +131,70 @@ export const FormMasterOpd = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="pangkat_kepala"
+                        htmlFor="nama_opd"
                     >
-                        Pangkat Kepala :
+                        Nama Perangkat Daerah :
                     </label>
                     <Controller
-                        name="pangkat_kepala"
+                        name="nama_opd"
                         control={control}
-                        rules={{ required: "Pangkat Kepala harus terisi" }}
+                        rules={{ required: "Nama Perangkat Daerah harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="pangkat_kepala"
+                                    id="nama_opd"
                                     type="text"
-                                    placeholder="masukkan Pangkat Kepala"
-                                    value={field.value || PangkatKepala}
+                                    placeholder="masukkan Nama Perangkat Daerah"
+                                    value={field.value || NamaOpd}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setPangkatKepala(e.target.value);
+                                        setNamaOpd(e.target.value);
                                     }}
                                 />
-                                {errors.pangkat_kepala ?
+                                {errors.nama_opd ?
                                     <h1 className="text-red-500">
-                                    {errors.pangkat_kepala.message}
+                                    {errors.nama_opd.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Pangkat Kepala Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Nama OPD Harus Terisi</h1>
+                                }
+                            </>
+                        )}
+                    />
+                </div>
+                <div className="flex flex-col py-3">
+                    <label
+                        className="uppercase text-xs font-bold text-gray-700 my-2"
+                        htmlFor="nama_kepala"
+                    >
+                        Nama Kepala Perangkat Daerah:
+                    </label>
+                    <Controller
+                        name="nama_kepala"
+                        control={control}
+                        rules={{ required: "Nama Kepala harus terisi" }}
+                        render={({ field }) => (
+                            <>
+                                <input
+                                    {...field}
+                                    className="border px-4 py-2 rounded-lg"
+                                    id="nama_kepala"
+                                    type="text"
+                                    placeholder="masukkan Nama Kepala"
+                                    value={field.value || NamaKepala}
+                                    onChange={(e) => {
+                                        field.onChange(e);
+                                        setNamaKepala(e.target.value);
+                                    }}
+                                />
+                                {errors.nama_kepala ?
+                                    <h1 className="text-red-500">
+                                    {errors.nama_kepala.message}
+                                    </h1>
+                                    :
+                                    <h1 className="text-slate-300 text-xs">*Nama Kepala Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -308,7 +236,43 @@ export const FormMasterOpd = () => {
                         )}
                     />
                 </div>
-                
+                <div className="flex flex-col py-3">
+                    <label
+                        className="uppercase text-xs font-bold text-gray-700 my-2"
+                        htmlFor="pangkat_kepala"
+                    >
+                        Pangkat Kepala :
+                    </label>
+                    <Controller
+                        name="pangkat_kepala"
+                        control={control}
+                        rules={{ required: "Pangkat Kepala harus terisi" }}
+                        render={({ field }) => (
+                            <>
+                                <input
+                                    {...field}
+                                    className="border px-4 py-2 rounded-lg"
+                                    id="pangkat_kepala"
+                                    type="text"
+                                    placeholder="masukkan Pangkat Kepala"
+                                    value={field.value || PangkatKepala}
+                                    onChange={(e) => {
+                                        field.onChange(e);
+                                        setPangkatKepala(e.target.value);
+                                    }}
+                                />
+                                {errors.pangkat_kepala ?
+                                    <h1 className="text-red-500">
+                                    {errors.pangkat_kepala.message}
+                                    </h1>
+                                    :
+                                    <h1 className="text-slate-300 text-xs">*Pangkat Kepala Harus Terisi</h1>
+                                }
+                            </>
+                        )}
+                    />
+                </div>
+
                 <ButtonGreen
                     type="submit"
                     className="my-4"
