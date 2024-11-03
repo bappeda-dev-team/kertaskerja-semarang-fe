@@ -75,7 +75,6 @@ const Header = () => {
     const TahunOption = [
         {label: "Tahun 2019", value: 2019},
         {label: "Tahun 2020", value: 2020},
-        {label: "Tahun 2020", value: 2020},
         {label: "Tahun 2021", value: 2021},
         {label: "Tahun 2022", value: 2022},
         {label: "Tahun 2023", value: 2023},
