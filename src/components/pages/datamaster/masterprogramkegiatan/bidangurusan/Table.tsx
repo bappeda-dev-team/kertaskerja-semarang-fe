@@ -1,4 +1,4 @@
-import { ButtonGreen } from "@/components/global/Button";
+import { ButtonGreen, ButtonRed } from "@/components/global/Button";
 
 const Table = () => {
     return(
@@ -19,8 +19,9 @@ const Table = () => {
                             <td className="border-r border-b px-6 py-4">Rehabilitasi Sedang/Berat Sarana, Prasarana dan Utilitas Sekolah</td>
                             <td className="border-r border-b px-6 py-4 text-center">9376497236</td>
                             <td className="border-r border-b px-6 py-4">
-                                <div className="flex flex-col jutify-center items-center">
-                                    <ButtonGreen halaman_url="/DataMaster/masterprogramkegiatan/bidangurusan/1">Edit</ButtonGreen>
+                                <div className="flex flex-col jutify-center items-center gap-2">
+                                    <ButtonGreen className="w-full" halaman_url="/DataMaster/masterprogramkegiatan/bidangurusan/1">Edit</ButtonGreen>
+                                    <ButtonRed className="w-full">Hapus</ButtonRed>
                                 </div>
                             </td>
                         </tr>

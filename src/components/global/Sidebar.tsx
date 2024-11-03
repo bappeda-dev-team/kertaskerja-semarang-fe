@@ -6,7 +6,13 @@ import {
   TbLogout,TbBook2,TbBulb,TbFileAlert,TbTooltip,TbBinaryTree,TbBuildingFortress,
   TbBuildingCommunity,TbDatabaseCog,TbHome,TbFileDelta, TbFile3D,
   TbCircleArrowLeftFilled, TbBadges, TbBuilding,
-  TbBuildingEstate
+  TbBuildingEstate,
+  TbHexagonalPyramid,
+  TbFileChart,
+  TbFileDots,
+  TbFileCode,
+  TbFileCode2,
+  TbUsers
 } from "react-icons/tb";
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -28,6 +34,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
   const [DataMaster, setDataMaster] = useState<boolean | null>(null);
     const [MasterOPD, setMasterOPD] = useState<boolean | null>(null);
     const [MasterPegawai, setMasterPegawai] = useState<boolean | null>(null);
+    const [LevelPohon, setLevelPohon] = useState<boolean | null>(null);
     const [MasterProgramKegiatan, setMasterProgramKegiatan] = useState<boolean | null>(null);
       const [MasterUrusan, setMasterUrusan] = useState<boolean | null>(null);
       const [MasterBidangUrusan, setMasterBidangUrusan] = useState<boolean | null>(null);
@@ -59,6 +66,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -86,6 +94,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(true);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -112,6 +121,34 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(false);
       setMasterPegawai(true);
+      setLevelPohon(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);
+      setPerencanaanKota(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/DataMaster/levelpohon"){
+      setDashboard(false);
+      setDataMaster(true);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setLevelPohon(true);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -139,6 +176,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(true);
       setMasterBidangUrusan(true);
       setMasterKegiatan(false);
@@ -165,6 +203,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(true);
       setMasterBidangUrusan(false);
       setMasterKegiatan(true);
@@ -191,6 +230,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(true);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -217,6 +257,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(true);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -243,6 +284,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(true);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -269,6 +311,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -295,6 +338,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(true);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -322,6 +366,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -349,6 +394,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -374,6 +420,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -399,6 +446,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -422,6 +470,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -445,6 +494,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -468,6 +518,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -491,6 +542,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
       setDataMaster(false);
       setMasterOPD(false);
       setMasterPegawai(false);
+      setLevelPohon(false);
       setMasterProgramKegiatan(false);
       setMasterBidangUrusan(false);
       setMasterKegiatan(false);
@@ -595,7 +647,7 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
               </Link>
               <Link href="/DataMaster/masterpegawai">
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterPegawai ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                  <TbFileDelta className="text-xl" />
+                  <TbUsers className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Pegawai</span>
                 </li>
               </Link>
@@ -603,6 +655,12 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterJabatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                   <TbBadges className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Jabatan</span>
+                </li>
+              </Link>
+              <Link href="/DataMaster/levelpohon">
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LevelPohon ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <TbHexagonalPyramid className="text-xl" />
+                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Level Pohon</span>
                 </li>
               </Link>
               <li 
@@ -616,31 +674,31 @@ export const SidebarSuper = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) =>
                 <div className="flex flex-col border-l-2 border-white rounded-b-xl px-3 py-2 ml-2 duration-200">
                   <Link href="/DataMaster/masterprogramkegiatan/urusan">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                      <TbFileDelta className="text-xl" />
+                      <TbFileChart className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Urusan</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/bidangurusan">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterBidangUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                      <TbBuilding className="text-xl" />
+                      <TbFileDelta className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Bidang Urusan</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/program">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterProgram ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                      <TbFileDelta className="text-xl" />
+                      <TbFileDots className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Program</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/kegiatan">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                      <TbFileDelta className="text-xl" />
+                      <TbFileCode className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Kegiatan</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/subkegiatan">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterSubKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
-                      <TbFileDelta className="text-xl" />
+                      <TbFileCode2 className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Sub Kegiatan</span>
                     </li>
                   </Link>

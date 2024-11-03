@@ -1,6 +1,6 @@
 'use client'
 
-import { ButtonSky, ButtonGreen } from "@/components/global/Button";
+import { ButtonRed, ButtonGreen } from "@/components/global/Button";
 
 const Table = () => {
     return(
@@ -23,8 +23,9 @@ const Table = () => {
                             <td className="border-r border-b px-6 py-4">Kepala</td>
                             <td className="border-r border-b px-6 py-4">2024</td>
                             <td className="border-r border-b px-6 py-4">
-                                <div className="flex flex-col jutify-center items-center">
-                                    <ButtonGreen halaman_url={`/DataMaster/masterjabatan/1`}>Edit</ButtonGreen>
+                                <div className="flex flex-col jutify-center items-center gap-2">
+                                    <ButtonGreen className="w-full" halaman_url={`/DataMaster/masterjabatan/1`}>Edit</ButtonGreen>
+                                    <ButtonRed className="w-full">Hapus</ButtonRed>
                                 </div>
                             </td>
                         </tr>
