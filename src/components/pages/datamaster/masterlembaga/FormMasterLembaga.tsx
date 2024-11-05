@@ -4,10 +4,13 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { ButtonGreen, ButtonRedBorder, ButtonSkyBorder, ButtonRed } from "@/components/global/Button";
 import { LoadingClip } from "@/components/global/Loading";
+import { AlertNotification } from "@/components/global/Alert";
+import { useRouter, useParams } from "next/navigation";
 
 interface FormValue {
+    id: string;
     nama_lembaga: string;
-    kode_lembaga: number;
+    id_lembaga: number;
 }
 
 export const FormMasterLembaga = () => {
@@ -19,14 +22,33 @@ export const FormMasterLembaga = () => {
     } = useForm<FormValue>();
     const [NamaLembaga, setNamaLembaga] = useState<string>('');
     const [KodeLembaga, setKodeLembaga] = useState<string>('');
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const router = useRouter();
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const formData = {
             //key : value
             nama_lembaga : data.nama_lembaga,
-            kode_lembaga : data.kode_lembaga,
+            // kode_lembaga : data.kode_lembaga,
         };
-        console.log(formData);
+        // console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/lembaga/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            if(response.ok){
+                AlertNotification("Berhasil", "Berhasil menambahkan data master lembaga", "success", 1000);
+                router.push("/DataMaster/masterlembaga");
+            } else {
+                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+            }
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        }
       };
 
     return(
@@ -73,7 +95,7 @@ export const FormMasterLembaga = () => {
                         )}
                     />
                 </div>
-                <div className="flex flex-col py-3">
+                {/* <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
                         htmlFor="kode_lembaga"
@@ -108,7 +130,7 @@ export const FormMasterLembaga = () => {
                             </>
                         )}
                     />
-                </div>
+                </div> */}
                 
                 <ButtonGreen
                     type="submit"
@@ -116,7 +138,7 @@ export const FormMasterLembaga = () => {
                 >
                     Simpan
                 </ButtonGreen>
-                <ButtonRed type="button" halaman_url="/DataMaster/masterjabatan">
+                <ButtonRed type="button" halaman_url="/DataMaster/masterlembaga">
                     Kembali
                 </ButtonRed>
             </form>
@@ -129,6 +151,7 @@ export const FormEditMasterLembaga = () => {
     const {
       control,
       handleSubmit,
+      reset,
       formState: { errors },
     } = useForm<FormValue>();
     const [NamaLembaga, setNamaLembaga] = useState<string>('');
@@ -137,25 +160,29 @@ export const FormEditMasterLembaga = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
     const [idNull, setIdNull] = useState<boolean | null>(null);
+    const {id} = useParams();
+    const router = useRouter();
 
     useEffect(() => {
-        const fetchIdOpd = async() => {
+        const fetchLembagaId = async() => {
             setLoading(true);
             try{
-                const response = await fetch(`${API_URL}/lorem`);
+                const response = await fetch(`${API_URL}/lembaga/detail/${id}`);
                 if(!response.ok){
                     throw new Error('terdapat kesalahan di koneksi backend');
                 }
                 const result = await response.json();
-                if(result.code == 500){
+                if(result.code == 404){
                     setIdNull(true);
                 } else {
                     const data = result.data;
                     if(data.nama_lembaga){
                         setNamaLembaga(data.nama_lembaga);
+                        reset((prev) => ({ ...prev, nama_lembaga: data.nama_lembaga }))
                     }
                     if(data.kode_lembaga){
                         setKodeLembaga(data.kode_lembaga);
+                        reset((prev) => ({ ...prev, kode_lembaga: data.kode_lembaga }))
                     }
                 }
             } catch(err) {
@@ -164,16 +191,33 @@ export const FormEditMasterLembaga = () => {
                 setLoading(false);
             }
         }
-        fetchIdOpd();
+        fetchLembagaId();
     },[]);
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
       const formData = {
           //key : value
           nama_lembaga : data.nama_lembaga,
-          kode_lembaga : data.kode_lembaga,
+        //   kode_lembaga : data.kode_lembaga,
       };
-      console.log(formData);
+    //   console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/lembaga/update/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            if(response.ok){
+                AlertNotification("Berhasil", "Berhasil edit data master lembaga", "success", 1000);
+                router.push("/DataMaster/masterlembaga");
+            } else {
+                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+            }
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        }
     };
 
     if(loading){
@@ -242,7 +286,7 @@ export const FormEditMasterLembaga = () => {
                             )}
                         />
                     </div>
-                    <div className="flex flex-col py-3">
+                    {/* <div className="flex flex-col py-3">
                         <label
                             className="uppercase text-xs font-bold text-gray-700 my-2"
                             htmlFor="kode_lembaga"
@@ -277,14 +321,14 @@ export const FormEditMasterLembaga = () => {
                                 </>
                             )}
                         />
-                    </div>
+                    </div> */}
                     <ButtonGreen
                         type="submit"
                         className="my-4"
                     >
                         Simpan
                     </ButtonGreen>
-                    <ButtonRed type="button" halaman_url="/DataMaster/masterjabatan">
+                    <ButtonRed type="button" halaman_url="/DataMaster/masterlembaga">
                         Kembali
                     </ButtonRed>
                 </form>

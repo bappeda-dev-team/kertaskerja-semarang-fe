@@ -4,12 +4,14 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { ButtonGreen, ButtonRedBorder, ButtonSkyBorder, ButtonRed } from "@/components/global/Button";
 import { LoadingClip } from "@/components/global/Loading";
+import { AlertNotification } from "@/components/global/Alert";
+import { useParams, useRouter } from "next/navigation";
 
 interface FormValue {
-    nama_jenis: string;
-    nilai: number;
-    keterangan: string;
-    tahun: string;
+    id: string;
+    nama_jabatan: string;
+    kode_jabatan: number;
+    kode_opd: string;
 }
 
 export const FormMasterJabatan = () => {
@@ -19,21 +21,38 @@ export const FormMasterJabatan = () => {
       handleSubmit,
       formState: { errors },
     } = useForm<FormValue>();
-    const [NamaJenis, setNamaJenis] = useState<string>('');
-    const [Nilai, setNilai] = useState<number>(0);
-    const [Keterangan, setKeterangan] = useState<string>('');
-    const [Tahun, setTahun] = useState<string>('');
+    const [NamaJabatan, setNamaJabatan] = useState<string>('');
+    const [KodeJabatan, setKodeJabatan] = useState<string>('');
+    const [KodeOpd, setKodeOpd] = useState<string>('');
+    const router = useRouter();
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
-        const formData = {
-            //key : value
-            nama_jenis : data.nama_jenis,
-            nilai : data.nilai,
-            keterangan : data.keterangan,
-            tahun : data.tahun,
-        };
-        console.log(formData);
+      const formData = {
+          //key : value
+          nama_jabatan : data.nama_jabatan,
+          kode_jabatan : data.kode_jabatan,
+          kode_opd : data.kode_opd,
       };
+      // console.log(formData);
+      try{
+          const response = await fetch(`${API_URL}/jabatan/create`, {
+              method: "POST",
+              headers: {
+                  "Content-Type" : "application/json",
+              },
+              body: JSON.stringify(formData),
+          });
+          if(response.ok){
+              AlertNotification("Berhasil", "Berhasil menambahkan data master jabatan", "success", 1000);
+              router.push("/DataMaster/masterjabatan");
+          } else {
+              AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+          }
+      } catch(err){
+          AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+      }
+    };
 
     return(
     <>
@@ -46,34 +65,34 @@ export const FormMasterJabatan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama_jenis"
+                        htmlFor="nama_jabatan"
                     >
-                        Nama Jenis :
+                        Nama Jabatan :
                     </label>
                     <Controller
-                        name="nama_jenis"
+                        name="nama_jabatan"
                         control={control}
-                        rules={{ required: "Nama Jenis harus terisi" }}
+                        rules={{ required: "Nama Jabatan harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="nama_jenis"
+                                    id="nama_jabatan"
                                     type="text"
-                                    placeholder="masukkan Nama jenis"
-                                    value={field.value || NamaJenis}
+                                    placeholder="masukkan Nama Jabatan"
+                                    value={field.value || NamaJabatan}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setNamaJenis(e.target.value);
+                                        setNamaJabatan(e.target.value);
                                     }}
                                 />
-                                {errors.nama_jenis ?
+                                {errors.nama_jabatan ?
                                     <h1 className="text-red-500">
-                                    {errors.nama_jenis.message}
+                                    {errors.nama_jabatan.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Nama Jenis Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Nama Jabatan Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -82,34 +101,34 @@ export const FormMasterJabatan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nilai"
+                        htmlFor="kode_jabatan"
                     >
-                        Nilai :
+                        Kode Jabatan :
                     </label>
                     <Controller
-                        name="nilai"
+                        name="kode_jabatan"
                         control={control}
-                        rules={{ required: "Nilai harus terisi" }}
+                        rules={{ required: "Kode Jabatan harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="nilai"
-                                    type="number"
-                                    placeholder="masukkan Nilai"
-                                    value={field.value || Nilai}
+                                    id="kode_jabatan"
+                                    type="text"
+                                    placeholder="masukkan Kode Jabatan"
+                                    value={field.value || KodeJabatan}
                                     onChange={(e) => {
-                                        field.onChange(Number(e));
-                                        setNilai(Number(e.target.value));
+                                        field.onChange(e);
+                                        setKodeJabatan(e.target.value);
                                     }}
                                 />
-                                {errors.nilai ?
+                                {errors.kode_jabatan ?
                                     <h1 className="text-red-500">
-                                    {errors.nilai.message}
+                                    {errors.kode_jabatan.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Nilai Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Kode Jabatan Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -118,76 +137,39 @@ export const FormMasterJabatan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="keterangan"
+                        htmlFor="kode_opd"
                     >
-                        Keterangan :
+                        Kode Perangkat Daerah :
                     </label>
                     <Controller
-                        name="keterangan"
+                        name="kode_opd"
                         control={control}
-                        rules={{ required: "Keterangan harus terisi" }}
+                        rules={{ required: "Kode Perangkat Daerah harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="keterangan"
+                                    id="kode_opd"
                                     type="text"
-                                    placeholder="masukkan Keterangan"
-                                    value={field.value || Keterangan}
+                                    placeholder="masukkan Kode Perangkat Daerah"
+                                    value={field.value || KodeOpd}
                                     onChange={(e) => {
                                         field.onChange(e);
-                                        setKeterangan(e.target.value);
+                                        setKodeOpd(e.target.value);
                                     }}
                                 />
-                                {errors.keterangan ?
+                                {errors.kode_opd ?
                                     <h1 className="text-red-500">
-                                    {errors.keterangan.message}
+                                    {errors.kode_opd.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Keterangan Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Kode Perangkat Daerah Harus Terisi</h1>
                                 }
                             </>
                         )}
                     />
                 </div>
-                <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="tahun"
-                    >
-                        Tahun :
-                    </label>
-                    <Controller
-                        name="tahun"
-                        control={control}
-                        rules={{ required: "Tahun harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="tahun"
-                                    type="text"
-                                    placeholder="masukkan Tahun"
-                                    value={field.value || Tahun}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setTahun(e.target.value);
-                                    }}
-                                />
-                                {errors.tahun ?
-                                    <h1 className="text-red-500">
-                                    {errors.tahun.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Tahun Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div>
-                
                 <ButtonGreen
                     type="submit"
                     className="my-4"
@@ -207,16 +189,18 @@ export const FormEditMasterJabatan = () => {
     const {
       control,
       handleSubmit,
+      reset,
       formState: { errors },
     } = useForm<FormValue>();
-    const [NamaJenis, setNamaJenis] = useState<string>('');
-    const [Nilai, setNilai] = useState<number>(0);
-    const [Keterangan, setKeterangan] = useState<string>('');
-    const [Tahun, setTahun] = useState<string>('');
+    const [NamaJabatan, setNamaJabatan] = useState<string>('');
+    const [KodeJabatan, setKodeJabatan] = useState<string>('');
+    const [KodeOpd, setKodeOpd] = useState<string>('');
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
     const [idNull, setIdNull] = useState<boolean | null>(null);
+    const router = useRouter();
+    const {id} = useParams();
 
     useEffect(() => {
         const fetchIdOpd = async() => {
@@ -231,17 +215,17 @@ export const FormEditMasterJabatan = () => {
                     setIdNull(true);
                 } else {
                     const data = result.data;
-                    if(data.nama_jenis){
-                        setNamaJenis(data.nama_jenis);
+                    if(data.nama_jabatan){
+                        setNamaJabatan(data.nama_jabatan);
+                        reset((prev) => ({ ...prev, nama_jabatan: result.nama_jabatan }))
                     }
-                    if(data.nilai){
-                        setNilai(data.nilai);
+                    if(data.kode_jabatan){
+                        setKodeJabatan(data.kode_jabatan);
+                        reset((prev) => ({ ...prev, kode_jabatan: result.kode_jabatan }))
                     }
-                    if(data.keterangan){
-                        setKeterangan(data.keterangan);
-                    }
-                    if(data.tahun){
-                        setTahun(data.tahun);
+                    if(data.kode_opd){
+                        setKodeOpd(data.kode_opd);
+                        reset((prev) => ({ ...prev, kode_opd: result.kode_opd }))
                     }
                 }
             } catch(err) {
@@ -256,12 +240,28 @@ export const FormEditMasterJabatan = () => {
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
       const formData = {
           //key : value
-          nama_jenis : data.nama_jenis,
-          nilai : data.nilai,
-          keterangan : data.keterangan,
-          tahun : data.tahun,
+          nama_jabatan : data.nama_jabatan,
+          kode_jabatan : data.kode_jabatan,
+          kode_opd : data.kode_opd,
       };
-      console.log(formData);
+    //   console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/jabatan/update/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            if(response.ok){
+                AlertNotification("Berhasil", "Berhasil menambahkan data master jabatan", "success", 1000);
+                router.push("/DataMaster/masterjabatan");
+            } else {
+                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+            }
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        }
     };
 
     if(loading){
@@ -297,34 +297,34 @@ export const FormEditMasterJabatan = () => {
                     <div className="flex flex-col py-3">
                         <label
                             className="uppercase text-xs font-bold text-gray-700 my-2"
-                            htmlFor="nama_jenis"
+                            htmlFor="nama_jabatan"
                         >
-                            Nama Jenis :
+                            Nama jabatan :
                         </label>
                         <Controller
-                            name="nama_jenis"
+                            name="nama_jabatan"
                             control={control}
-                            rules={{ required: "Nama Jenis harus terisi" }}
+                            rules={{ required: "Nama jabatan harus terisi" }}
                             render={({ field }) => (
                                 <>
                                     <input
                                         {...field}
                                         className="border px-4 py-2 rounded-lg"
-                                        id="nama_jenis"
+                                        id="nama_jabatan"
                                         type="text"
-                                        placeholder="masukkan Nama jenis"
-                                        value={field.value || NamaJenis}
+                                        placeholder="masukkan Nama jabatan"
+                                        value={field.value || NamaJabatan}
                                         onChange={(e) => {
                                             field.onChange(e);
-                                            setNamaJenis(e.target.value);
+                                            setNamaJabatan(e.target.value);
                                         }}
                                     />
-                                    {errors.nama_jenis ?
+                                    {errors.nama_jabatan ?
                                         <h1 className="text-red-500">
-                                        {errors.nama_jenis.message}
+                                        {errors.nama_jabatan.message}
                                         </h1>
                                         :
-                                        <h1 className="text-slate-300 text-xs">*Nama Jenis Harus Terisi</h1>
+                                        <h1 className="text-slate-300 text-xs">*Nama jabatan Harus Terisi</h1>
                                     }
                                 </>
                             )}
@@ -333,34 +333,34 @@ export const FormEditMasterJabatan = () => {
                     <div className="flex flex-col py-3">
                         <label
                             className="uppercase text-xs font-bold text-gray-700 my-2"
-                            htmlFor="nilai"
+                            htmlFor="kode_jabatan"
                         >
-                            Nilai :
+                            Kode jabatan :
                         </label>
                         <Controller
-                            name="nilai"
+                            name="kode_jabatan"
                             control={control}
-                            rules={{ required: "Nilai harus terisi" }}
+                            rules={{ required: "Kode jabatan harus terisi" }}
                             render={({ field }) => (
                                 <>
                                     <input
                                         {...field}
                                         className="border px-4 py-2 rounded-lg"
-                                        id="nilai"
-                                        type="number"
-                                        placeholder="masukkan Nilai"
-                                        value={field.value || Nilai}
+                                        id="kode_jabatan"
+                                        type="text"
+                                        placeholder="masukkan Kode jabatan"
+                                        value={field.value || KodeJabatan}
                                         onChange={(e) => {
-                                            field.onChange(Number(e));
-                                            setNilai(Number(e.target.value));
+                                            field.onChange(e);
+                                            setKodeJabatan(e.target.value);
                                         }}
                                     />
-                                    {errors.nilai ?
+                                    {errors.kode_jabatan ?
                                         <h1 className="text-red-500">
-                                        {errors.nilai.message}
+                                        {errors.kode_jabatan.message}
                                         </h1>
                                         :
-                                        <h1 className="text-slate-300 text-xs">*Nilai Harus Terisi</h1>
+                                        <h1 className="text-slate-300 text-xs">*Kode jabatan Harus Terisi</h1>
                                     }
                                 </>
                             )}
@@ -369,76 +369,39 @@ export const FormEditMasterJabatan = () => {
                     <div className="flex flex-col py-3">
                         <label
                             className="uppercase text-xs font-bold text-gray-700 my-2"
-                            htmlFor="keterangan"
+                            htmlFor="kode_opd"
                         >
-                            Keterangan :
+                            Kode Perangkat Daerah :
                         </label>
                         <Controller
-                            name="keterangan"
+                            name="kode_opd"
                             control={control}
-                            rules={{ required: "Keterangan harus terisi" }}
+                            rules={{ required: "Kode Perangkata Daerah harus terisi" }}
                             render={({ field }) => (
                                 <>
                                     <input
                                         {...field}
                                         className="border px-4 py-2 rounded-lg"
-                                        id="keterangan"
+                                        id="kode_opd"
                                         type="text"
-                                        placeholder="masukkan Keterangan"
-                                        value={field.value || Keterangan}
+                                        placeholder="masukkan Kode Perangkat Daerah"
+                                        value={field.value || KodeOpd}
                                         onChange={(e) => {
                                             field.onChange(e);
-                                            setKeterangan(e.target.value);
+                                            setKodeOpd(e.target.value);
                                         }}
                                     />
-                                    {errors.keterangan ?
+                                    {errors.kode_opd ?
                                         <h1 className="text-red-500">
-                                        {errors.keterangan.message}
+                                        {errors.kode_opd.message}
                                         </h1>
                                         :
-                                        <h1 className="text-slate-300 text-xs">*Keterangan Harus Terisi</h1>
+                                        <h1 className="text-slate-300 text-xs">*Kode Perangkat Daerah Harus Terisi</h1>
                                     }
                                 </>
                             )}
                         />
                     </div>
-                    <div className="flex flex-col py-3">
-                        <label
-                            className="uppercase text-xs font-bold text-gray-700 my-2"
-                            htmlFor="tahun"
-                        >
-                            Tahun :
-                        </label>
-                        <Controller
-                            name="tahun"
-                            control={control}
-                            rules={{ required: "Tahun harus terisi" }}
-                            render={({ field }) => (
-                                <>
-                                    <input
-                                        {...field}
-                                        className="border px-4 py-2 rounded-lg"
-                                        id="tahun"
-                                        type="text"
-                                        placeholder="masukkan Tahun"
-                                        value={field.value || Tahun}
-                                        onChange={(e) => {
-                                            field.onChange(e);
-                                            setTahun(e.target.value);
-                                        }}
-                                    />
-                                    {errors.tahun ?
-                                        <h1 className="text-red-500">
-                                        {errors.tahun.message}
-                                        </h1>
-                                        :
-                                        <h1 className="text-slate-300 text-xs">*Tahun Harus Terisi</h1>
-                                    }
-                                </>
-                            )}
-                        />
-                    </div>
-                    
                     <ButtonGreen
                         type="submit"
                         className="my-4"

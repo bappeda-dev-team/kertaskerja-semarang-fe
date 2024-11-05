@@ -1,8 +1,95 @@
 'use client'
 
 import { ButtonGreen, ButtonRed } from "@/components/global/Button";
+import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
+import { useState, useEffect } from "react";
+import { LoadingClip } from "@/components/global/Loading";
+
+interface opd {
+    id: string;
+    kode_opd: string;
+    nama_opd: string;
+    singkatan: string;
+    alamat: string;
+    telepon: string;
+    fax: string;
+    email: string;
+    website: string;
+    nama_kepala_opd: string;
+    nip_kepala_opd: string;
+    pangkat_kepala: string;
+    id_lembaga: lembaga;
+}
+
+interface lembaga {
+    id: string;
+    nama_lembaga: string;
+    is_active: boolean; 
+}
 
 const Table = () => {
+
+    const [Opd, setOpd] = useState<opd[]>([]);
+    const [Error, setError] = useState<boolean | null>(null);
+    const [Loading, setLoading] = useState<boolean | null>(null);
+    const [DataNull, setDataNull] = useState<boolean | null>(null);
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+    useEffect(() => {
+        const fetchOpd = async() => {
+            setLoading(true)
+            try{
+                const response = await fetch(`${API_URL}/opd/findall`);
+                const result = await response.json();
+                const data = result.data;
+                if(data == null){
+                    setDataNull(true);
+                    setOpd([]);
+                } else {
+                    setDataNull(false);
+                    setOpd(data);
+                }
+                setOpd(data);
+            } catch(err){
+                setError(true);
+                console.error(err)
+            } finally{
+                setLoading(false);
+            }
+        }
+        fetchOpd();
+    }, []);
+
+    const hapusOpd = async(id: any) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        try{
+            const response = await fetch(`${API_URL}/opd/delete/${id}`, {
+                method: "DELETE",
+            })
+            if(!response.ok){
+                alert("cant fetch data")
+            }
+            setOpd(Opd.filter((data) => (data.id !== id)))
+            AlertNotification("Berhasil", "Data Perangkat Daerah Berhasil Dihapus", "success", 1000);
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
+        }
+    };
+
+    if(Loading){
+        return (    
+            <div className="border p-5 rounded-xl shadow-xl">
+                <LoadingClip className="mx-5 py-5"/>
+            </div>
+        );
+    } else if(Error){
+        return (
+            <div className="border p-5 rounded-xl shadow-xl">
+                <h1 className="text-red-500 mx-5 py-5">Periksa koneksi internet atau database server</h1>
+            </div>
+        )
+    }
+
     return(
         <>
             <div className="overflow-auto m-2 rounded-t-xl border">
@@ -20,21 +107,42 @@ const Table = () => {
                         </tr>
                     </thead>
                     <tbody>
+                    {DataNull ? 
                         <tr>
-                            <td className="border-r border-b px-6 py-4">1</td>
-                            <td className="border-r border-b px-6 py-4">5.01.5.05.0.00.02.0000</td>
-                            <td className="border-r border-b px-6 py-4">Badan Perencanaan, Penelitian dan Pengembangan Daerah Kabupaten Madiun</td>
-                            <td className="border-r border-b px-6 py-4">Ir. SUWARNO, M.Si</td>
-                            <td className="border-r border-b px-6 py-4">1208741824</td>
-                            <td className="border-r border-b px-6 py-4">Pembina Utama Muda</td>
-                            <td className="border-r border-b px-6 py-4">88.324</td>
+                            <td className="px-6 py-3 uppercase" colSpan={13}>
+                                Data Kosong / Belum Ditambahkan
+                            </td>
+                        </tr>
+                    :
+                        Opd.map((data, index) => (
+                        <tr>
+                            <td className="border-r border-b px-6 py-4">{index + 1}</td>
+                            <td className="border-r border-b px-6 py-4">{data.kode_opd ? data.kode_opd : "-"}</td>
+                            <td className="border-r border-b px-6 py-4">{data.nama_opd ? data.nama_opd : "-"}</td>
+                            <td className="border-r border-b px-6 py-4">{data.nama_kepala_opd ? data.nama_kepala_opd : "-"}</td>
+                            <td className="border-r border-b px-6 py-4">{data.nip_kepala_opd ? data.nip_kepala_opd : "-"}</td>
+                            <td className="border-r border-b px-6 py-4">{data.pangkat_kepala ? data.pangkat_kepala : "-"}</td>
+                            <td className="border-r border-b px-6 py-4">{data.id_lembaga ? data.id_lembaga.id : "-"}</td>
                             <td className="border-r border-b px-6 py-4">
                                 <div className="flex flex-col jutify-center items-center gap-2">
-                                    <ButtonGreen className="w-full" halaman_url={`/DataMaster/masteropd/1`}>Edit</ButtonGreen>
-                                    <ButtonRed className="w-full">Hapus</ButtonRed>
+                                    <ButtonGreen className="w-full" halaman_url={`/DataMaster/masteropd/${data.id}`}>Edit</ButtonGreen>
+                                    <ButtonRed 
+                                        className="w-full"
+                                        onClick={() => {
+                                            AlertQuestion("Hapus?", "Hapus Perangkat Daerah yang dipilih?", "question", "Hapus", "Batal").then((result) => {
+                                                if(result.isConfirmed){
+                                                    hapusOpd(data.id);
+                                                }
+                                            });
+                                        }}
+                                    >
+                                        Hapus
+                                    </ButtonRed>
                                 </div>
                             </td>
                         </tr>
+                        ))
+                    }
                     </tbody>
                 </table>
             </div>

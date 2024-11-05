@@ -4,12 +4,15 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { ButtonGreen, ButtonRedBorder, ButtonSkyBorder, ButtonRed } from "@/components/global/Button";
 import { LoadingClip } from "@/components/global/Loading";
+import { AlertNotification } from "@/components/global/Alert";
+import { useRouter, useParams } from "next/navigation";
 
 interface OptionTypeString {
     value: string;
     label: string;
 }
 interface FormValue {
+    id: string;
     nama_urusan: string;
     kode_urusan: string;
 }
@@ -23,6 +26,8 @@ export const FormUrusan = () => {
     } = useForm<FormValue>();
     const [NamaUrusan, setNamaUrusan] = useState<string>('');
     const [KodeUrusan, setKodeUrusan] = useState<string>('');
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const router = useRouter();
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const formData = {
@@ -30,8 +35,25 @@ export const FormUrusan = () => {
             nama_urusan : data.nama_urusan,
             kode_urusan : data.kode_urusan,
         };
-        console.log(formData);
-      };
+        // console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/urusan/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            if(response.ok){
+                AlertNotification("Berhasil", "Berhasil menambahkan data master urusan", "success", 1000);
+                router.push("/DataMaster/masterprogramkegiatan/urusan");
+            } else {
+                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+            }
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        }
+    };
 
     return(
     <>
@@ -132,6 +154,7 @@ export const FormEditUrusan = () => {
     const {
       control,
       handleSubmit,
+      reset,
       formState: { errors },
     } = useForm<FormValue>();
     const [NamaUrusan, setNamaUrusan] = useState<string>('');
@@ -140,12 +163,14 @@ export const FormEditUrusan = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
     const [idNull, setIdNull] = useState<boolean | null>(null);
+    const {id} = useParams();
+    const router = useRouter();
 
     useEffect(() => {
-        const fetchIdOpd = async() => {
+        const fetchIdUrusan = async() => {
             setLoading(true);
             try{
-                const response = await fetch(`${API_URL}/lorem`);
+                const response = await fetch(`${API_URL}/urusan/detail/${id}`);
                 if(!response.ok){
                     throw new Error('terdapat kesalahan di koneksi backend');
                 }
@@ -156,9 +181,11 @@ export const FormEditUrusan = () => {
                     const data = result.data;
                     if(data.nama_urusan){
                         setNamaUrusan(data.nama_urusan);
+                        reset((prev) => ({ ...prev, nama_urusan: result.nama_urusan }))
                     }
                     if(data.kode_urusan){
                         setKodeUrusan(data.kode_urusan);
+                        reset((prev) => ({ ...prev, kode_urusan: result.kode_urusan }))
                     }
                 }
             } catch(err) {
@@ -167,7 +194,7 @@ export const FormEditUrusan = () => {
                 setLoading(false);
             }
         }
-        fetchIdOpd();
+        fetchIdUrusan();
     },[]);
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
@@ -176,7 +203,24 @@ export const FormEditUrusan = () => {
           nama_urusan : data.nama_urusan,
           kode_urusan : data.kode_urusan,
       };
-      console.log(formData);
+        //console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/urusan/update/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            if(response.ok){
+                AlertNotification("Berhasil", "Berhasil menambahkan data urusan", "success", 1000);
+                router.push("/DataMaster/masterprogramkegiatan/urusan");
+            } else {
+                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+            }
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        }
     };
 
     if(loading){

@@ -3,20 +3,38 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { ButtonGreen, ButtonRedBorder, ButtonSkyBorder, ButtonRed } from "@/components/global/Button";
+import { AlertNotification } from "@/components/global/Alert";
 import { LoadingClip } from "@/components/global/Loading";
+import { useParams, useRouter } from "next/navigation";
+import Select from "react-select";
 
 interface OptionTypeString {
     value: string;
     label: string;
 }
 interface FormValue {
+    id: string;
     kode_opd: string;
     nama_opd: string;
+    singkatan: string;
+    alamat: string;
+    telepon: string;
+    fax: string;
+    email: string;
+    website: string;
     nama_kepala_opd: string;
     nip_kepala_opd: string;
-    pangkat_kepala_opd: string;
-    kode_lembaga: string;
+    pangkat_kepala: string;
+    id_lembaga: OptionTypeString;
 }
+
+interface lembaga {
+    id: string;
+    nama_lembaga: string;
+    is_active: boolean; 
+}
+
+
 
 export const FormMasterOpd = () => {
 
@@ -30,20 +48,67 @@ export const FormMasterOpd = () => {
     const [NamaKepalaOpd, setNamaKepalaOpd] = useState<string>('');
     const [NipKepalaOpd, setNipKepalaOpd] = useState<string>('');
     const [PangkatKepalaOpd, setPangkatKepalaOpd] = useState<string>('');
-    const [KodeLembaga, setKodeLembaga] = useState<string>('');
+    const [KodeLembaga, setKodeLembaga] = useState<OptionTypeString | null>(null);
+    const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
+    const [IsLoading, setIsLoading] = useState<boolean>(false);
+    const router = useRouter();
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
-        const formData = {
-            //key : value
-            kode_opd : data.kode_opd,
-            nama_opd : data.nama_opd,
-            nama_kepala_opd : data.nama_kepala_opd,
-            nip_kepala_opd : data.nip_kepala_opd,
-            pangkat_kepala_opd : data.pangkat_kepala_opd,
-            kode_lembaga : data.kode_lembaga,
-        };
-        console.log(formData);
+      const formData = {
+          //key : value
+          kode_opd : data.kode_opd,
+          nama_opd : data.nama_opd,
+          nama_kepala_opd : data.nama_kepala_opd,
+          nip_kepala_opd : data.nip_kepala_opd,
+          pangkat_kepala : data.pangkat_kepala,
+          id_lembaga : data.id_lembaga?.value,
       };
+    //   console.log(formData);
+      try{
+          const response = await fetch(`${API_URL}/opd/create`, {
+              method: "POST",
+              headers: {
+                  "Content-Type" : "application/json",
+              },
+              body: JSON.stringify(formData),
+          });
+          if(response.ok){
+              AlertNotification("Berhasil", "Berhasil menambahkan data master perangkat daerah", "success", 1000);
+              router.push("/DataMaster/masteropd");
+          } else {
+              AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+          }
+      } catch(err){
+          AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+      }
+    };
+
+    const fetchLembaga = async() => {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      setIsLoading(true);
+      try{ 
+        const response = await fetch(`${API_URL}/lembaga/findall`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if(!response.ok){
+          throw new Error('cant fetch data opd');
+        }
+        const data = await response.json();
+        const opd = data.data.map((item: any) => ({
+          value : item.id,
+          label : item.nama_lembaga,
+        }));
+        setOpdOption(opd);
+      } catch (err){
+        console.log('gagal mendapatkan data opd');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
     return(
     <>
@@ -200,12 +265,12 @@ export const FormMasterOpd = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="pangkat_kepala_opd"
+                        htmlFor="pangkat_kepala"
                     >
                         Pangkat Kepala Perangkat Daerah :
                     </label>
                     <Controller
-                        name="pangkat_kepala_opd"
+                        name="pangkat_kepala"
                         control={control}
                         rules={{ required: "Pangkat Kepala Perangkat Daerah harus terisi" }}
                         render={({ field }) => (
@@ -213,7 +278,7 @@ export const FormMasterOpd = () => {
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="pangkat_kepala_opd"
+                                    id="pangkat_kepala"
                                     type="text"
                                     placeholder="masukkan Pangkat Kepala Perangkat Daerah"
                                     value={field.value || PangkatKepalaOpd}
@@ -222,9 +287,9 @@ export const FormMasterOpd = () => {
                                         setPangkatKepalaOpd(e.target.value);
                                     }}
                                 />
-                                {errors.pangkat_kepala_opd ?
+                                {errors.pangkat_kepala ?
                                     <h1 className="text-red-500">
-                                    {errors.pangkat_kepala_opd.message}
+                                    {errors.pangkat_kepala.message}
                                     </h1>
                                     :
                                     <h1 className="text-slate-300 text-xs">*Pangkat Kepala Perangkat Daerah Harus Terisi</h1>
@@ -234,41 +299,56 @@ export const FormMasterOpd = () => {
                     />
                 </div>
                 <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="kode_lembaga"
-                    >
-                        Kode Lembaga :
-                    </label>
-                    <Controller
-                        name="kode_lembaga"
-                        control={control}
-                        rules={{ required: "Kode Lembaga harus terisi" }}
-                        render={({ field }) => (
+                        <label
+                            className="uppercase text-xs font-bold text-gray-700 my-2"
+                            htmlFor="id_lembaga"
+                        >
+                            Lembaga:
+                        </label>
+                        <Controller
+                            name="id_lembaga"
+                            control={control}
+                            rules={{required : "Lembaga Harus Terisi"}}
+                            render={({ field }) => (
                             <>
-                                <input
+                                <Select
                                     {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="kode_lembaga"
-                                    type="text"
-                                    placeholder="masukkan Kode Lembaga"
-                                    value={field.value || KodeLembaga}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setKodeLembaga(e.target.value);
+                                    placeholder="Masukkan Lembaga"
+                                    value={KodeLembaga}
+                                    options={OpdOption}
+                                    isLoading={IsLoading}
+                                    isSearchable
+                                    isClearable
+                                    onMenuOpen={() => {
+                                        if (OpdOption.length === 0) {
+                                        fetchLembaga();
+                                        }
+                                    }}
+                                    onMenuClose={() => {
+                                        setOpdOption([]);
+                                    }}
+                                    onChange={(option) => {
+                                        field.onChange(option);
+                                        setKodeLembaga(option);
+                                    }}
+                                    styles={{
+                                        control: (baseStyles) => ({
+                                        ...baseStyles,
+                                        borderRadius: '8px',
+                                        })
                                     }}
                                 />
-                                {errors.kode_lembaga ?
+                                {errors.id_lembaga ?
                                     <h1 className="text-red-500">
-                                    {errors.kode_lembaga.message}
+                                        {errors.id_lembaga.message}
                                     </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Kode Lembaga Harus Terisi</h1>
+                                :
+                                    <h1 className="text-slate-300 text-xs">*Lembaga Harus Terisi</h1>
                                 }
                             </>
-                        )}
-                    />
-                </div>
+                            )}
+                        />
+                    </div>
 
                 <ButtonGreen
                     type="submit"
@@ -289,6 +369,7 @@ export const FormEditMasterOpd = () => {
     const {
       control,
       handleSubmit,
+      reset,
       formState: { errors },
     } = useForm<FormValue>();
     const [KodeOpd, setKodeOpd] = useState<string>('');
@@ -296,17 +377,47 @@ export const FormEditMasterOpd = () => {
     const [NamaKepalaOpd, setNamaKepalaOpd] = useState<string>('');
     const [NipKepalaOpd, setNipKepalaOpd] = useState<string>('');
     const [PangkatKepalaOpd, setPangkatKepalaOpd] = useState<string>('');
-    const [KodeLembaga, setKodeLembaga] = useState<string>('');
+    const [KodeLembaga, setKodeLembaga] = useState<OptionTypeString | null>(null);
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
+    const [IsLoading, setIsLoading] = useState<boolean>(false);
     const [idNull, setIdNull] = useState<boolean | null>(null);
+    const {id} = useParams();
+    const router = useRouter();
+    const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
+
+    const fetchLembaga = async() => {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      setIsLoading(true);
+      try{ 
+        const response = await fetch(`${API_URL}/lembaga/findall`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if(!response.ok){
+          throw new Error('cant fetch data opd');
+        }
+        const data = await response.json();
+        const opd = data.data.map((item: any) => ({
+          value : item.id,
+          label : item.nama_lembaga,
+        }));
+        setOpdOption(opd);
+      } catch (err){
+        console.log('gagal mendapatkan data opd');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
     useEffect(() => {
         const fetchIdOpd = async() => {
             setLoading(true);
             try{
-                const response = await fetch(`${API_URL}/lorem`);
+                const response = await fetch(`${API_URL}/opd/detail/${id}`);
                 if(!response.ok){
                     throw new Error('terdapat kesalahan di koneksi backend');
                 }
@@ -317,21 +428,31 @@ export const FormEditMasterOpd = () => {
                     const data = result.data;
                     if(data.kode_opd){
                         setKodeOpd(data.kode_opd);
+                        reset((prev) => ({ ...prev, kode_opd: result.kode_opd }))
                     }
                     if(data.nama_opd){
                         setNamaOpd(data.nama_opd);
+                        reset((prev) => ({ ...prev, nama_opd: result.nama_opd }))
                     }
                     if(data.nama_kepala_opd){
                         setNamaKepalaOpd(data.nama_kepala_opd);
+                        reset((prev) => ({ ...prev, nama_kepala_opd: result.nama_kepala_opd }))
                     }
-                    if(data.pangkat_kepala_opd){
-                        setPangkatKepalaOpd(data.pangkat_kepala_opd);
+                    if(data.pangkat_kepala){
+                        setPangkatKepalaOpd(data.pangkat_kepala);
+                        reset((prev) => ({ ...prev, pangkat_kepala: result.pangkat_kepala }))
                     }
                     if(data.nip_kepala_opd){
                         setNipKepalaOpd(data.nip_kepala_opd);
+                        reset((prev) => ({ ...prev, nip_kepala_opd: result.nip_kepala_opd }))
                     }
-                    if(data.kode_lembaga){
-                        setKodeLembaga(data.kode_lembaga);
+                    if(data.id_lembaga){
+                        const lembaga = {
+                            value: data.id_lembaga.id,
+                            label: data.id_lembaga.nama_lembaga,
+                        }
+                        setKodeLembaga(lembaga);
+                        reset((prev) => ({ ...prev, id_lembaga: lembaga }))
                     }
                 }
             } catch(err) {
@@ -350,14 +471,31 @@ export const FormEditMasterOpd = () => {
             nama_opd : data.nama_opd,
             nama_kepala_opd : data.nama_kepala_opd,
             nip_kepala_opd : data.nip_kepala_opd,
-            pangkat_kepala_opd : data.pangkat_kepala_opd,
-            kode_lembaga : data.kode_lembaga,
+            pangkat_kepala : data.pangkat_kepala,
+            id_lembaga : data.id_lembaga?.value,
       };
       console.log(formData);
+      try{
+        const response = await fetch(`${API_URL}/opd/update`, {
+            method: "PUT",
+            headers: {
+                "Content-Type" : "application/json",
+            },
+            body: JSON.stringify(formData),
+        });
+        if(response.ok){
+            AlertNotification("Berhasil", "Berhasil menambahkan data master perangkat daerah", "success", 1000);
+            router.push("/DataMaster/masteropd");
+        } else {
+            AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+        }
+      } catch(err){
+        AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+      }
     };
 
     if(loading){
-        return (    
+        return (
             <div className="border p-5 rounded-xl shadow-xl">
                 <h1 className="uppercase font-bold">Form Edit OPD :</h1>
                 <LoadingClip className="mx-5 py-5"/>
@@ -533,12 +671,12 @@ export const FormEditMasterOpd = () => {
                     <div className="flex flex-col py-3">
                         <label
                             className="uppercase text-xs font-bold text-gray-700 my-2"
-                            htmlFor="pangkat_kepala_opd"
+                            htmlFor="pangkat_kepala"
                         >
                             Pangkat Kepala Perangkat Daerah :
                         </label>
                         <Controller
-                            name="pangkat_kepala_opd"
+                            name="pangkat_kepala"
                             control={control}
                             rules={{ required: "Pangkat Kepala Perangkat Daerah harus terisi" }}
                             render={({ field }) => (
@@ -546,7 +684,7 @@ export const FormEditMasterOpd = () => {
                                     <input
                                         {...field}
                                         className="border px-4 py-2 rounded-lg"
-                                        id="pangkat_kepala_opd"
+                                        id="pangkat_kepala"
                                         type="text"
                                         placeholder="masukkan Pangkat Kepala Perangkat Daerah"
                                         value={field.value || PangkatKepalaOpd}
@@ -555,9 +693,9 @@ export const FormEditMasterOpd = () => {
                                             setPangkatKepalaOpd(e.target.value);
                                         }}
                                     />
-                                    {errors.pangkat_kepala_opd ?
+                                    {errors.pangkat_kepala ?
                                         <h1 className="text-red-500">
-                                        {errors.pangkat_kepala_opd.message}
+                                        {errors.pangkat_kepala.message}
                                         </h1>
                                         :
                                         <h1 className="text-slate-300 text-xs">*Pangkat Kepala Perangkat Daerah Harus Terisi</h1>
@@ -569,36 +707,51 @@ export const FormEditMasterOpd = () => {
                     <div className="flex flex-col py-3">
                         <label
                             className="uppercase text-xs font-bold text-gray-700 my-2"
-                            htmlFor="kode_lembaga"
+                            htmlFor="id_lembaga"
                         >
-                            Kode lembaga :
+                            Lembaga:
                         </label>
                         <Controller
-                            name="kode_lembaga"
+                            name="id_lembaga"
                             control={control}
-                            rules={{ required: "Kode lembaga harus terisi" }}
+                            rules={{required : "Lembaga Harus Terisi"}}
                             render={({ field }) => (
-                                <>
-                                    <input
-                                        {...field}
-                                        className="border px-4 py-2 rounded-lg"
-                                        id="kode_lembaga"
-                                        type="text"
-                                        placeholder="masukkan Kode lembaga"
-                                        value={field.value || NipKepalaOpd}
-                                        onChange={(e) => {
-                                            field.onChange(e);
-                                            setNipKepalaOpd(e.target.value);
-                                        }}
-                                    />
-                                    {errors.kode_lembaga ?
-                                        <h1 className="text-red-500">
-                                        {errors.kode_lembaga.message}
-                                        </h1>
-                                        :
-                                        <h1 className="text-slate-300 text-xs">*Kode lembaga Harus Terisi</h1>
-                                    }
-                                </>
+                            <>
+                                <Select
+                                    {...field}
+                                    placeholder="Masukkan Lembaga"
+                                    value={KodeLembaga}
+                                    options={OpdOption}
+                                    isLoading={IsLoading}
+                                    isSearchable
+                                    isClearable
+                                    onMenuOpen={() => {
+                                        if (OpdOption.length === 0) {
+                                        fetchLembaga();
+                                        }
+                                    }}
+                                    onMenuClose={() => {
+                                        setOpdOption([]);
+                                    }}
+                                    onChange={(option) => {
+                                        field.onChange(option);
+                                        setKodeLembaga(option);
+                                    }}
+                                    styles={{
+                                        control: (baseStyles) => ({
+                                        ...baseStyles,
+                                        borderRadius: '8px',
+                                        })
+                                    }}
+                                />
+                                {errors.id_lembaga ?
+                                    <h1 className="text-red-500">
+                                        {errors.id_lembaga.message}
+                                    </h1>
+                                :
+                                    <h1 className="text-slate-300 text-xs">*Lembaga Harus Terisi</h1>
+                                }
+                            </>
                             )}
                         />
                     </div>

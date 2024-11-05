@@ -4,12 +4,15 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { ButtonGreen, ButtonRedBorder, ButtonSkyBorder, ButtonRed } from "@/components/global/Button";
 import { LoadingClip } from "@/components/global/Loading";
+import { AlertNotification } from "@/components/global/Alert";
+import { useRouter, useParams } from "next/navigation";
 
 interface OptionTypeString {
     value: string;
     label: string;
 }
 interface FormValue {
+    id: string;
     nama_bidang_urusan: string;
     kode_bidang_urusan: string;
 }
@@ -23,6 +26,8 @@ export const FormBidangUrusan = () => {
     } = useForm<FormValue>();
     const [NamaBidangUrusan, setNamaBidangUrusan] = useState<string>('');
     const [KodeBidangUrusan, setKodeBidangUrusan] = useState<string>('');
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const router = useRouter();
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const formData = {
@@ -30,7 +35,24 @@ export const FormBidangUrusan = () => {
             nama_bidang_urusan : data.nama_bidang_urusan,
             kode_bidang_urusan : data.kode_bidang_urusan,
         };
-        console.log(formData);
+        // console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/bidang_urusan/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            if(response.ok){
+                AlertNotification("Berhasil", "Berhasil menambahkan data master bidang urusan", "success", 1000);
+                router.push("/DataMaster/masterprogramkegiatan/bidangurusan");
+            } else {
+                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+            }
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        }
       };
 
     return(
@@ -119,7 +141,7 @@ export const FormBidangUrusan = () => {
                 >
                     Simpan
                 </ButtonGreen>
-                <ButtonRed type="button" halaman_url="/DataMaster/masterpegawai">
+                <ButtonRed type="button" halaman_url="/DataMaster/masterprogramkegiatan/bidangurusan">
                     Kembali
                 </ButtonRed>
             </form>
@@ -132,6 +154,7 @@ export const FormEditBidangUrusan = () => {
     const {
       control,
       handleSubmit,
+      reset,
       formState: { errors },
     } = useForm<FormValue>();
     const [NamaBidangUrusan, setNamaBidangUrusan] = useState<string>('');
@@ -140,12 +163,14 @@ export const FormEditBidangUrusan = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
     const [idNull, setIdNull] = useState<boolean | null>(null);
+    const router = useRouter();
+    const {id} = useParams();
 
     useEffect(() => {
         const fetchIdOpd = async() => {
             setLoading(true);
             try{
-                const response = await fetch(`${API_URL}/lorem`);
+                const response = await fetch(`${API_URL}/bidang_urusan/detail/${id}`);
                 if(!response.ok){
                     throw new Error('terdapat kesalahan di koneksi backend');
                 }
@@ -156,9 +181,11 @@ export const FormEditBidangUrusan = () => {
                     const data = result.data;
                     if(data.nama_bidang_urusan){
                         setNamaBidangUrusan(data.nama_bidang_urusan);
+                        reset((prev) => ({ ...prev, nama_bidang_urusan: data.nama_bidang_urusan }))
                     }
                     if(data.kode_bidang_urusan){
                         setKodeBidangUrusan(data.kode_bidang_urusan);
+                        reset((prev) => ({ ...prev, kode_bidang_urusan: data.kode_bidang_urusan }))
                     }
                 }
             } catch(err) {
@@ -176,7 +203,24 @@ export const FormEditBidangUrusan = () => {
           nama_bidang_urusan : data.nama_bidang_urusan,
           kode_bidang_urusan : data.kode_bidang_urusan,
       };
-      console.log(formData);
+    //   console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/bidang_urusan/update/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            if(response.ok){
+                AlertNotification("Berhasil", "Berhasil edit data master bidang urusan", "success", 1000);
+              router.push("/DataMaster/masterprogramkegiatan/bidangurusan");
+            } else {
+                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+            }
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        }
     };
 
     if(loading){
@@ -288,7 +332,7 @@ export const FormEditBidangUrusan = () => {
                 >
                     Simpan
                 </ButtonGreen>
-                <ButtonRed type="button" halaman_url="/DataMaster/masterpegawai">
+                <ButtonRed type="button" halaman_url="/DataMaster/masterprogramkegiatan/bidangurusan">
                     Kembali
                 </ButtonRed>
             </form>
