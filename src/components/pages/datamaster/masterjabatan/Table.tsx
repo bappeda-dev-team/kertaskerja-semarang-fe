@@ -13,7 +13,6 @@ interface jabatan {
     kode_jabatan: string;
     operasional_daerah: opd;
 }
-
 interface opd {
     kode_opd: string;
     nama_opd: string;
@@ -44,7 +43,7 @@ const Table = () => {
             }
             setTahun(valuetahun);
         }
-     },[])
+     },[]);
      
      useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -70,7 +69,9 @@ const Table = () => {
                 setLoading(false);
             }
         }
-        fetchJabatan();
+        if(SelectedOpd?.value != undefined){
+            fetchJabatan();
+        }
     }, [SelectedOpd]);
 
     const hapusJabatan = async(id: any) => {
@@ -132,6 +133,7 @@ const Table = () => {
                             <td className="border-r border-b px-6 py-4">{data.operasional_daerah ? data.operasional_daerah.nama_opd : "-"}</td>
                             <td className="border-r border-b px-6 py-4">
                                 <div className="flex flex-col jutify-center items-center gap-2">
+                                    <ButtonGreen  halaman_url={`/DataMaster/masterjabatan/${data.id}`} className="w-full">Edit</ButtonGreen>
                                     <ButtonRed 
                                         className="w-full"
                                         onClick={() => {
@@ -144,7 +146,6 @@ const Table = () => {
                                     >
                                         Hapus
                                     </ButtonRed>
-                                    <ButtonRed  halaman_url={`/DataMaster/masterjabatan/1`} className="w-full">Edit</ButtonRed>
                                 </div>
                             </td>
                         </tr>

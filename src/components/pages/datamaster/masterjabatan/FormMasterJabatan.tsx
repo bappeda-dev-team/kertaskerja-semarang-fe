@@ -299,9 +299,13 @@ export const FormEditMasterJabatan = () => {
                         setKodeJabatan(data.kode_jabatan);
                         reset((prev) => ({ ...prev, kode_jabatan: result.kode_jabatan }))
                     }
-                    if(data.kode_opd){
-                        setKodeOpd(data.kode_opd);
-                        reset((prev) => ({ ...prev, kode_opd: result.kode_opd }))
+                    if(data.operasional_daerah){
+                        const opd = {
+                            value: data.operasional_daerah.kode_opd,
+                            label: data.operasional_daerah.nama_opd,
+                        }
+                        setKodeOpd(opd);
+                        reset((prev) => ({ ...prev, kode_opd: opd }))
                     }
                 }
             } catch(err) {
