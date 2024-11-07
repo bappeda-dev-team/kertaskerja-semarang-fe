@@ -130,30 +130,32 @@ const Header = () => {
                     <h1 className="font-light text-sm">{Tahun ? Tahun?.value : "Pilih Tahun"} - Kab. Madiun</h1>
                 </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-                <Select
-                    styles={{
-                        control: (baseStyles) => ({
-                        ...baseStyles,
-                        borderRadius: '8px',
-                        marginLeft: '4px',
-                        marginRight: '4px',
-                        minWidth: '157.562px',
-                        maxWidth: '160px',
-                        })
-                    }}
-                    onChange={(option) => handleOpd(option)}
-                    options={OpdOption}
-                    placeholder="Pilih OPD ..."
-                    value={SelectedOpd}
-                    isLoading={IsLoading}
-                    isSearchable
-                    onMenuOpen={() => {
-                        if(OpdOption.length == 0){
-                            fetchOpd();
-                        }
-                    }}
-                />
+                <div className="flex flex-wrap items-center gap-2">
+                {user == 'super_admin' &&
+                    <Select
+                        styles={{
+                            control: (baseStyles) => ({
+                            ...baseStyles,
+                            borderRadius: '8px',
+                            marginLeft: '4px',
+                            marginRight: '4px',
+                            minWidth: '157.562px',
+                            maxWidth: '160px',
+                            })
+                        }}
+                        onChange={(option) => handleOpd(option)}
+                        options={OpdOption}
+                        placeholder="Pilih OPD ..."
+                        value={SelectedOpd}
+                        isLoading={IsLoading}
+                        isSearchable
+                        onMenuOpen={() => {
+                            if(OpdOption.length == 0){
+                                fetchOpd();
+                            }
+                        }}
+                    />
+                }
                 <Select
                     styles={{
                         control: (baseStyles) => ({

@@ -2,7 +2,7 @@
 
 import { Source_Sans_3 } from "next/font/google";
 import "./globals.css";
-import { SidebarSuper, SidebarAsn } from "@/components/global/Sidebar";
+import { Sidebar } from "@/components/global/Sidebar";
 import Header from "@/components/global/Header";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -69,18 +69,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
         <NextTopLoader 
           color="linear-gradient(to right, rgb(134, 239, 172), rgb(59, 130, 246), rgb(147, 51, 234))"
         />
-        {user == 'asn' &&
-          (!loginPage && <SidebarAsn isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>)
-        }
-        { user == 'super_admin' &&
-          (!loginPage && <SidebarSuper isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>)
-        }
-        { user == 'admin_opd' &&
-          (!loginPage && <SidebarSuper isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>)
-        }
-        {!user && 
-          (!loginPage && <SidebarAsn isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>)
-        }
+        {!loginPage && <Sidebar isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>}
         <div className={`w-full ${isOpen ? 'pl-[16rem]' : ''}`}>
           {!loginPage && <Header />}
           <div className={`${font.className} ${loginPage ? "" : "px-4 py-2"}`}>{children}</div>
