@@ -14,13 +14,14 @@ interface OptionTypeString {
 }
 interface FormValue {
     id: number;
+    parent: number;
     nama_pohon: string;
     jenis_pohon: string;
     keterangan: string;
     tahun: OptionTypeString;
 }
 
-export const FormTematikKab = () => {
+export const FormSubTematikKab = () => {
 
     const {
       control,
@@ -32,6 +33,8 @@ export const FormTematikKab = () => {
     const [Tahun, setTahun] = useState<OptionTypeString | null>(null);
     const router = useRouter();
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const params = useParams();
+    const id = Number(params.id);
 
     const TahunOption = [
         {label: "Tahun 2019", value: "2019"},
@@ -53,8 +56,9 @@ export const FormTematikKab = () => {
           //key : value
           nama_pohon : data.nama_pohon,
           Keterangan : data.keterangan,
-          jenis_pohon : "Tematik",
-          level_pohon : 0,
+          jenis_pohon : "SubTematik",
+          level_pohon : 1,
+          parent: id,
           tahun: data.tahun?.value,
       };
     //   console.log(formData);
@@ -67,8 +71,8 @@ export const FormTematikKab = () => {
               body: JSON.stringify(formData),
           });
           if(response.ok){
-              AlertNotification("Berhasil", "Berhasil menambahkan data tematik kabupaten", "success", 1000);
-              router.push("/tematikkota");
+              AlertNotification("Berhasil", "Berhasil menambahkan data sub tematik kabupaten", "success", 1000);
+              router.push("/subtematik");
           } else {
               AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
           }
@@ -80,7 +84,7 @@ export const FormTematikKab = () => {
     return(
     <>
         <div className="border p-5 rounded-xl shadow-xl">
-            <h1 className="uppercase font-bold">Form Tambah Tematik Kabupaten :</h1>
+            <h1 className="uppercase font-bold">Form Tambah Sub Tematik Kabupaten :</h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col mx-5 py-5"
@@ -90,12 +94,12 @@ export const FormTematikKab = () => {
                         className="uppercase text-xs font-bold text-gray-700 my-2"
                         htmlFor="nama_pohon"
                     >
-                        Nama Tema :
+                        Nama Sub Tema :
                     </label>
                     <Controller
                         name="nama_pohon"
                         control={control}
-                        rules={{ required: "Nama Tema harus terisi" }}
+                        rules={{ required: "Nama Sub Tema harus terisi" }}
                         render={({ field }) => (
                             <>
                                 <input
@@ -103,7 +107,7 @@ export const FormTematikKab = () => {
                                     className="border px-4 py-2 rounded-lg"
                                     id="nama_pohon"
                                     type="text"
-                                    placeholder="masukkan Nama Tema"
+                                    placeholder="masukkan Nama Sub Tema"
                                     value={field.value || NamaPohon}
                                     onChange={(e) => {
                                         field.onChange(e);
@@ -115,7 +119,7 @@ export const FormTematikKab = () => {
                                     {errors.nama_pohon.message}
                                     </h1>
                                     :
-                                    <h1 className="text-slate-300 text-xs">*Nama Tema Harus Terisi</h1>
+                                    <h1 className="text-slate-300 text-xs">*Nama Sub Tema Harus Terisi</h1>
                                 }
                             </>
                         )}
@@ -161,7 +165,7 @@ export const FormTematikKab = () => {
                         className="uppercase text-xs font-bold text-gray-700 my-2"
                         htmlFor="tahun"
                     >
-                        tahun:
+                        Tahun:
                     </label>
                     <Controller
                         name="tahun"
@@ -204,7 +208,7 @@ export const FormTematikKab = () => {
                 >
                     Simpan
                 </ButtonGreen>
-                <ButtonRed type="button" halaman_url="/tematikkota">
+                <ButtonRed type="button" halaman_url="/subtematik">
                     Kembali
                 </ButtonRed>
             </form>
@@ -212,7 +216,7 @@ export const FormTematikKab = () => {
     </>
     )
 }
-export const FormEditTematikKab = () => {
+export const FormEditSubTematikKab = () => {
 
     const {
       control,
@@ -222,13 +226,15 @@ export const FormEditTematikKab = () => {
     } = useForm<FormValue>();
     const [NamaPohon, setNamaPohon] = useState<string>('');
     const [Keterangan, setKeterangan] = useState<string>('');
+    const [Parent, setParent] = useState<Number | null>(null);
     const [Tahun, setTahun] = useState<OptionTypeString | null>(null);
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
     const [idNull, setIdNull] = useState<boolean | null>(null);
     const router = useRouter();
-    const {id} = useParams();
+    const params = useParams();
+    const id = Number(params.id);
 
     const TahunOption = [
         {label: "Tahun 2019", value: "2019"},
@@ -266,6 +272,9 @@ export const FormEditTematikKab = () => {
                         setKeterangan(data.keterangan);
                         reset((prev) => ({ ...prev, keterangan: data.keterangan }))
                     }
+                    if(data.parent){
+                        setParent(data.parent);
+                    }
                     if(data.tahun){
                         const tahun = {
                             value: data.tahun,
@@ -288,8 +297,9 @@ export const FormEditTematikKab = () => {
       const formData = {
           //key : value
           nama_pohon : data.nama_pohon,
-          jenis_pohon : "Tematik",
-          level_pohom : 0,
+          jenis_pohon : "Sub Tematik",
+          level_pohon : 1,
+          parent: Parent,
           keterangan: data.keterangan,
           tahun: data.tahun?.value,
       };
@@ -304,7 +314,7 @@ export const FormEditTematikKab = () => {
             });
             if(response.ok){
                 AlertNotification("Berhasil", "Berhasil edit data tematik kabupaten", "success", 1000);
-                router.push("/tematikkota");
+                router.push("/subtematik");
             } else {
                 AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
             }
@@ -316,21 +326,21 @@ export const FormEditTematikKab = () => {
     if(loading){
         return (    
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Tematik Kabupaten :</h1>
+                <h1 className="uppercase font-bold">Form Edit Sub Tematik Kabupaten :</h1>
                 <LoadingClip className="mx-5 py-5"/>
             </div>
         );
     } else if(error){
         return (
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Tematik Kabupaten :</h1>
+                <h1 className="uppercase font-bold">Form Edit Sub Tematik Kabupaten :</h1>
                 <h1 className="text-red-500 mx-5 py-5">{error}</h1>
             </div>
         )
     } else if(idNull){
         return (
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Tematik Kabupaten :</h1>
+                <h1 className="uppercase font-bold">Form Edit Sub Tematik Kabupaten :</h1>
                 <h1 className="text-red-500 mx-5 py-5">id tidak ditemukan</h1>
             </div>
         )
@@ -338,7 +348,7 @@ export const FormEditTematikKab = () => {
         return(
         <>
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="uppercase font-bold">Form Edit Tematik Kabupaten :</h1>
+                <h1 className="uppercase font-bold">Form Edit Sub Tematik Kabupaten :</h1>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="flex flex-col mx-5 py-5"
@@ -348,12 +358,12 @@ export const FormEditTematikKab = () => {
                             className="uppercase text-xs font-bold text-gray-700 my-2"
                             htmlFor="nama_pohon"
                         >
-                            Nama Tematik :
+                            Nama Sub Tematik :
                         </label>
                         <Controller
                             name="nama_pohon"
                             control={control}
-                            rules={{ required: "Nama Tematik harus terisi" }}
+                            rules={{ required: "Nama Sub Tematik harus terisi" }}
                             render={({ field }) => (
                                 <>
                                     <input
@@ -361,7 +371,7 @@ export const FormEditTematikKab = () => {
                                         className="border px-4 py-2 rounded-lg"
                                         id="nama_pohon"
                                         type="text"
-                                        placeholder="masukkan Nama Tematik"
+                                        placeholder="masukkan Nama Sub Tematik"
                                         value={field.value || NamaPohon}
                                         onChange={(e) => {
                                             field.onChange(e);
@@ -373,7 +383,7 @@ export const FormEditTematikKab = () => {
                                             {errors.nama_pohon.message}
                                         </h1>
                                         :
-                                        <h1 className="text-slate-300 text-xs">*Nama Tematik Harus Terisi</h1>
+                                        <h1 className="text-slate-300 text-xs">*Nama Sub Tematik Harus Terisi</h1>
                                     }
                                 </>
                             )}
@@ -419,7 +429,7 @@ export const FormEditTematikKab = () => {
                             className="uppercase text-xs font-bold text-gray-700 my-2"
                             htmlFor="tahun"
                         >
-                            tahun:
+                            Tahun:
                         </label>
                         <Controller
                             name="tahun"
@@ -462,7 +472,7 @@ export const FormEditTematikKab = () => {
                     >
                         Simpan
                     </ButtonGreen>
-                    <ButtonRed type="button" halaman_url="/tematikkota">
+                    <ButtonRed type="button" halaman_url="/subtematik">
                         Kembali
                     </ButtonRed>
                 </form>

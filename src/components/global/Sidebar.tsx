@@ -48,6 +48,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
     const [MasterJabatan, setMasterJabatan] = useState<boolean | null>(null);
   const [PerencanaanKota, setPerencanaanKota] = useState<boolean | null>(null);
     const [TematikKota, setTematikKota] = useState<boolean | null>(null);
+    const [SubTematik, setSubTematik] = useState<boolean | null>(null);
     const [KotaPohonKinerjaKota, setKotaPohonKinerjaKota] = useState<boolean | null>(null);
   const [PerencanaanOPD, setPerencanaanOPD] = useState<boolean | null>(null);
     const [OpdPohonKinerjaKota, setOpdPohonKinerjaKota] = useState<boolean | null>(null);
@@ -90,6 +91,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -119,6 +121,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -147,6 +150,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -175,6 +179,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -204,6 +209,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -232,6 +238,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -260,6 +267,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -288,6 +296,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -316,6 +325,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -344,6 +354,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(true);
       setMasterLembaga(false);      
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -372,6 +383,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(true);      
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
@@ -401,6 +413,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);      
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(true);
       setKotaPohonKinerjaKota(true);
       setPerencanaanOPD(false);
@@ -430,6 +443,36 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterLembaga(false);      
       setPerencanaanKota(true);
       setTematikKota(true);
+      setSubTematik(false);
+      setKotaPohonKinerjaKota(false);
+      setPerencanaanOPD(false);
+      setLaporan(false);
+      setUsulan(false);
+      setRencanaKinerjaKAK(false);
+      setRincianBelanja(false);
+      setMusrenbang(false);
+      setPokokPikiran(false);
+      setMandatori(false);
+      setManajemenResiko(false);
+      setPohonCascading(false);
+    }
+    if(url == "/subtematik"){
+      setDashboard(false);
+      setDataMaster(false);
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setLevelPohon(false);
+      setMasterProgramKegiatan(false);
+      setMasterBidangUrusan(false);
+      setMasterKegiatan(false);
+      setMasterProgram(false);
+      setMasterSubKegiatan(false);
+      setMasterUrusan(false);
+      setMasterJabatan(false);
+      setMasterLembaga(false);      
+      setPerencanaanKota(true);
+      setTematikKota(false);
+      setSubTematik(true);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(false);
       setLaporan(false);
@@ -457,6 +500,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setUsulan(false);
@@ -484,6 +528,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setRencanaKinerjaKAK(false);
@@ -511,6 +556,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(true);
       setUsulan(true);
       setRencanaKinerjaKAK(false);
@@ -536,6 +582,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(true);
       setUsulan(true);
       setRencanaKinerjaKAK(false);
@@ -561,6 +608,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(true);
       setUsulan(true);
       setRencanaKinerjaKAK(false);
@@ -586,6 +634,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(true);
       setUsulan(false);
       setRencanaKinerjaKAK(false);
@@ -611,6 +660,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setMasterJabatan(false);
       setMasterLembaga(false);
       setTematikKota(false);
+      setSubTematik(false);
       setPerencanaanKota(false);
       setKotaPohonKinerjaKota(false);
       setPerencanaanOPD(true);
@@ -786,6 +836,12 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
               <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TematikKota ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                 <TbArrowUpFromArc className="text-xl" />
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tematik Kab</span>
+              </li>
+            </Link>
+            <Link href="/subtematik">
+              <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${SubTematik ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <TbArrowUpFromArc className="text-xl" />
+                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Sub Tematik</span>
               </li>
             </Link>
             <Link href="/pohonkinerjakota">

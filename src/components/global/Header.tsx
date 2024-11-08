@@ -98,14 +98,7 @@ const Header = () => {
         }, 1000); //reload halaman dengan delay 1 detik
       }
     };
-
-    // const OpdOption = [
-    //     {label: "Badan Perencanaan, penelitian dan pengembangan daerah", value: "Badan Perencanaan, penelitian dan pengembangan daerah"},
-    //     {label: "Dinas Komunikasi dan informasi", value: "Dinas Komunikasi dan informasi"},
-    //     {label: "Dinas Pariwisata, Pemuda dan Olahraga", value: "Dinas Pariwisata, Pemuda dan Olahraga"},
-    //     {label: "Dinas Pendidikan", value: "Dinas Pendidikan"},
-    //     {label: "Badan Pengelolaan Keuangan Daerah", value: "Badan Pengelolaan Keuangan Daerah"},
-    // ];
+    
     const TahunOption = [
         {label: "Tahun 2019", value: 2019},
         {label: "Tahun 2020", value: 2020},

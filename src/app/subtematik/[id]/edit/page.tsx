@@ -1,18 +1,18 @@
 import { FiHome } from "react-icons/fi";
-import { FormEditTematikKab } from "@/components/pages/tematikkota/FormTematikKab";
+import { FormEditSubTematikKab } from "@/components/pages/subtematik/FormSubTematikKab";
 
-const Edittematik = () => {
+const EditSubTematik = () => {
     return(
         <>
             <div className="flex items-center mb-3">
                 <a href="/" className="mr-1"><FiHome /></a>
                 <p className="mr-1">/ Perencanaan Kabupaten</p>
-                <p className="mr-1">/ Tematik Kabupaten</p>
+                <p className="mr-1">/ Sub Tematik Kabupaten</p>
                 <p className="mr-1">/ Edit</p>
             </div>
-            <FormEditTematikKab />
+            <FormEditSubTematikKab />
         </>
     )
 }
 
-export default Edittematik;
+export default EditSubTematik;

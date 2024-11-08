@@ -1,6 +1,6 @@
 'use client'
 
-import { Source_Sans_3 } from "next/font/google";
+import { Karla } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/global/Sidebar";
 import Header from "@/components/global/Header";
@@ -9,9 +9,9 @@ import { usePathname } from "next/navigation";
 import { getUser } from "@/components/lib/Cookie";
 import NextTopLoader from "nextjs-toploader";
 
-const font = Source_Sans_3({
+const font = Karla({
   subsets: ['latin'],
-  weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
+  weight: ['200', '300', '400', '500', '600', '700', '800'],
   display: 'swap', // Mengatur tampilan swap agar tidak ada flash saat font dimuat
 });
 export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
