@@ -228,7 +228,6 @@ export const FormEditSubTematikKab = () => {
     const [Keterangan, setKeterangan] = useState<string>('');
     const [Parent, setParent] = useState<Number | null>(null);
     const [Tahun, setTahun] = useState<OptionTypeString | null>(null);
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
     const [idNull, setIdNull] = useState<boolean | null>(null);
@@ -252,6 +251,7 @@ export const FormEditSubTematikKab = () => {
     ];
 
     useEffect(() => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const fetchTematikKab = async() => {
             setLoading(true);
             try{
@@ -294,6 +294,7 @@ export const FormEditSubTematikKab = () => {
     },[]);
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
       const formData = {
           //key : value
           nama_pohon : data.nama_pohon,

@@ -31,8 +31,7 @@ const Table = () => {
     const [Error, setError] = useState<boolean | null>(null);
     const [DataNull, setDataNull] = useState<boolean | null>(null);
     const [Tahun, setTahun] = useState<any>(null);
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
+    
     useEffect(() => {
         const data = getOpdTahun();
         if(data.tahun){
@@ -43,8 +42,9 @@ const Table = () => {
             setTahun(tahun);
         }
     },[]);
-
+    
     useEffect(() => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const fetchTematik = async() => {
             setLoading(true)
             try{
@@ -146,10 +146,10 @@ const Table = () => {
                             {data.sub_tematiks ?
                                 data.sub_tematiks.map((item, subindex) => (
                                     <tr key={item.id}>
-                                        <td className="border-r border-b px-6 py-4 text-center">{`${index + 1}.${subindex + 1}`}</td>
-                                        <td className="border-r border-b px-6 py-4 text-center">{item.tema_sub_tematik ? item.tema_sub_tematik : "-"}</td>
-                                        <td className="border-r border-b px-6 py-4 text-center">{item.indikators ? item.indikators : "-"}</td>
-                                        <td className="border-r border-b px-6 py-4 text-center">{item.keterangan ? item.keterangan : "-"}</td>
+                                        <td className="border-r border-b px-6 py-4 text-center font-light">{`${index + 1}.${subindex + 1}`}</td>
+                                        <td className="border-r border-b px-6 py-4 text-center font-light">{item.tema_sub_tematik ? item.tema_sub_tematik : "-"}</td>
+                                        <td className="border-r border-b px-6 py-4 text-center font-light">{item.indikators ? item.indikators : "-"}</td>
+                                        <td className="border-r border-b px-6 py-4 text-center font-light">{item.keterangan ? item.keterangan : "-"}</td>
                                         <td className="border-r border-b px-6 py-4">
                                             <div className="flex flex-col jutify-center items-center gap-2">
                                                 <ButtonGreen className="w-full" halaman_url={`/subtematik/${item.id}/edit`}>Edit</ButtonGreen>

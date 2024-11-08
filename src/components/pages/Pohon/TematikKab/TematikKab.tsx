@@ -95,7 +95,7 @@ const TematikKab = () => {
                 <h1 className="font-bold">{Tematik ? Tematik?.label : "Pilih Tema"}</h1>
             </div>
             {Tematik &&
-                <PohonTematik />
+                <PohonTematik id={Tematik?.value}/>
             }
         </>
     )

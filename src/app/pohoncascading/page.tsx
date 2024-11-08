@@ -1,10 +1,10 @@
 // import Maintenance from "@/components/global/Maintenance";
-import TematikKab from "@/components/pages/Pohon/TematikKab/TematikKab";
+import PohonCascading from "@/components/pages/Pohon/pohoncascading";
 
 const pohoncascading = () => {
     return(
         <>
-            <TematikKab />
+            <PohonCascading />
         </>
     )
 }
