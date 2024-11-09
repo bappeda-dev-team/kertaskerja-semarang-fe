@@ -14,11 +14,11 @@ interface OptionTypeString {
 }
 interface FormValue {
     id: string;
-    nama_sub_kegiatan: string;
-    kode_subkegiatan: string;
+    nama_subkegiatan: string;
     indikator_subkegiatan: string;
     target_subkegiatan: string;
     satuan_target_subkegiatan: string;
+    tahun: OptionTypeString;
     kode_opd: OptionTypeString;
 }
 
@@ -30,12 +30,27 @@ export const FormSubKegiatan = () => {
       formState: { errors },
     } = useForm<FormValue>();
     const [NamaSubKegiatan, setNamaSubKegiatan] = useState<string>('');
-    const [KodeSubKegiatan, setKodeSubKegiatan] = useState<string>('');
+    const [Tahun, setTahun] = useState<OptionTypeString | null>(null);
     const [KodeOpd, setKodeOpd] = useState<OptionTypeString | null>(null);
     const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
     const router = useRouter();
+
+    const TahunOption = [
+        {label: "Tahun 2019", value: "2019"},
+        {label: "Tahun 2020", value: "2020"},
+        {label: "Tahun 2021", value: "2021"},
+        {label: "Tahun 2022", value: "2022"},
+        {label: "Tahun 2023", value: "2023"},
+        {label: "Tahun 2024", value: "2024"},
+        {label: "Tahun 2025", value: "2025"},
+        {label: "Tahun 2026", value: "2026"},
+        {label: "Tahun 2027", value: "2027"},
+        {label: "Tahun 2028", value: "2028"},
+        {label: "Tahun 2029", value: "2029"},
+        {label: "Tahun 2030", value: "2030"},
+    ];
 
     const fetchOpd = async() => {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -66,8 +81,8 @@ export const FormSubKegiatan = () => {
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const formData = {
             //key : value
-            nama_subkegiatan : data.nama_sub_kegiatan,
-            // kode_subkegiatan : data.kode_subkegiatan,
+            nama_subkegiatan : data.nama_subkegiatan,
+            tahun : data.tahun?.value,
             kode_opd : data.kode_opd?.value,
         };
         // console.log(formData);
@@ -101,12 +116,12 @@ export const FormSubKegiatan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama_sub_kegiatan"
+                        htmlFor="nama_subkegiatan"
                     >
                         Nama Sub Kegiatan :
                     </label>
                     <Controller
-                        name="nama_sub_kegiatan"
+                        name="nama_subkegiatan"
                         control={control}
                         rules={{ required: "Nama Sub Kegiatan harus terisi" }}
                         render={({ field }) => (
@@ -114,7 +129,7 @@ export const FormSubKegiatan = () => {
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="nama_sub_kegiatan"
+                                    id="nama_subkegiatan"
                                     type="text"
                                     placeholder="masukkan Nama Sub Kegiatan"
                                     value={field.value || NamaSubKegiatan}
@@ -123,9 +138,9 @@ export const FormSubKegiatan = () => {
                                         setNamaSubKegiatan(e.target.value);
                                     }}
                                 />
-                                {errors.nama_sub_kegiatan ?
+                                {errors.nama_subkegiatan ?
                                     <h1 className="text-red-500">
-                                    {errors.nama_sub_kegiatan.message}
+                                    {errors.nama_subkegiatan.message}
                                     </h1>
                                     :
                                     <h1 className="text-slate-300 text-xs">*Nama Sub Kegiatan Harus Terisi</h1>
@@ -134,42 +149,6 @@ export const FormSubKegiatan = () => {
                         )}
                     />
                 </div>
-                {/* <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="kode_subkegiatan"
-                    >
-                        Kode Sub Kegiatan :
-                    </label>
-                    <Controller
-                        name="kode_subkegiatan"
-                        control={control}
-                        rules={{ required: "Kode Sub Kegiatan harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="tahun"
-                                    type="text"
-                                    placeholder="masukkan Kode Sub Kegiatan"
-                                    value={field.value || KodeSubKegiatan}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setKodeSubKegiatan(e.target.value);
-                                    }}
-                                />
-                                {errors.kode_subkegiatan ?
-                                    <h1 className="text-red-500">
-                                    {errors.kode_subkegiatan.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Kode Sub Kegiatan Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div> */}
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
@@ -221,6 +200,49 @@ export const FormSubKegiatan = () => {
                         )}
                     />
                 </div>
+                <div className="flex flex-col py-3">
+                    <label
+                        className="uppercase text-xs font-bold text-gray-700 my-2"
+                        htmlFor="tahun"
+                    >
+                        Tahun:
+                    </label>
+                    <Controller
+                        name="tahun"
+                        control={control}
+                        rules={{required : "Tahun Harus Terisi"}}
+                        render={({ field }) => (
+                        <>
+                            <Select
+                                {...field}
+                                placeholder="Masukkan Tahun"
+                                value={Tahun}
+                                options={TahunOption}
+                                isLoading={IsLoading}
+                                isSearchable
+                                isClearable
+                                onChange={(option) => {
+                                    field.onChange(option);
+                                    setTahun(option);
+                                }}
+                                styles={{
+                                    control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    borderRadius: '8px',
+                                    })
+                                }}
+                            />
+                            {errors.tahun ?
+                                <h1 className="text-red-500">
+                                    {errors.tahun.message}
+                                </h1>
+                            :
+                                <h1 className="text-slate-300 text-xs">*Tahun Harus Terisi</h1>
+                            }
+                        </>
+                        )}
+                    />
+                </div>
                 <ButtonGreen
                     type="submit"
                     className="my-4"
@@ -244,7 +266,7 @@ export const FormEditSubKegiatan = () => {
       formState: { errors },
     } = useForm<FormValue>();
     const [NamaSubKegiatan, setNamaSubKegiatan] = useState<string>('');
-    const [KodeSubKegiatan, setKodeSubKegiatan] = useState<string>('');
+    const [Tahun, setTahun] = useState<OptionTypeString | null>(null);
     const [KodeOpd, setKodeOpd] = useState<OptionTypeString | null>(null);
     const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -254,6 +276,21 @@ export const FormEditSubKegiatan = () => {
     const [idNull, setIdNull] = useState<boolean | null>(null);
     const router = useRouter();
     const {id} = useParams();
+
+    const TahunOption = [
+        {label: "Tahun 2019", value: "2019"},
+        {label: "Tahun 2020", value: "2020"},
+        {label: "Tahun 2021", value: "2021"},
+        {label: "Tahun 2022", value: "2022"},
+        {label: "Tahun 2023", value: "2023"},
+        {label: "Tahun 2024", value: "2024"},
+        {label: "Tahun 2025", value: "2025"},
+        {label: "Tahun 2026", value: "2026"},
+        {label: "Tahun 2027", value: "2027"},
+        {label: "Tahun 2028", value: "2028"},
+        {label: "Tahun 2029", value: "2029"},
+        {label: "Tahun 2030", value: "2030"},
+    ];
 
     useEffect(() => {
         const fetchIdSubKegiatan = async() => {
@@ -272,10 +309,6 @@ export const FormEditSubKegiatan = () => {
                         setNamaSubKegiatan(data.nama_sub_kegiatan);
                         reset((prev) => ({ ...prev, nama_subkegiatan: data.nama_subkegiatan }))
                     }
-                    if(data.kode_sub_kegiatan){
-                        setKodeSubKegiatan(data.kode_sub_kegiatan);
-                        reset((prev) => ({ ...prev, kode_subkegiatan: data.kode_subkegiatan }))
-                    }
                     if(data.kode_opd){
                         const opd = {
                             value: data.kode_opd.kode_opd,
@@ -283,6 +316,14 @@ export const FormEditSubKegiatan = () => {
                         }
                         setKodeOpd(opd);
                         reset((prev) => ({ ...prev, kode_opd: opd }))
+                    }
+                    if(data.tahun){
+                        const tahun = {
+                            value: data.tahun.tahun,
+                            label: data.tahun.tahun,
+                        }
+                        setTahun(tahun);
+                        reset((prev) => ({ ...prev, tahun: tahun }))
                     }
                 }
             } catch(err) {
@@ -323,8 +364,8 @@ export const FormEditSubKegiatan = () => {
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
       const formData = {
           //key : value
-          nama_subkegiatan : data.nama_sub_kegiatan,
-        //   kode_subkegiatan : data.kode_subkegiatan,
+          nama_subkegiatan : data.nama_subkegiatan,
+          tahun : data.tahun?.value,
           kode_opd : data.kode_opd?.value,
       };
         //   console.log(formData);
@@ -381,12 +422,12 @@ export const FormEditSubKegiatan = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="nama_sub_kegiatan"
+                        htmlFor="nama_subkegiatan"
                     >
                         Nama Sub Kegiatan :
                     </label>
                     <Controller
-                        name="nama_sub_kegiatan"
+                        name="nama_subkegiatan"
                         control={control}
                         rules={{ required: "Nama Sub Kegiatan harus terisi" }}
                         render={({ field }) => (
@@ -394,7 +435,7 @@ export const FormEditSubKegiatan = () => {
                                 <input
                                     {...field}
                                     className="border px-4 py-2 rounded-lg"
-                                    id="nama_sub_kegiatan"
+                                    id="nama_subkegiatan"
                                     type="text"
                                     placeholder="masukkan Nama Sub Kegiatan"
                                     value={field.value || NamaSubKegiatan}
@@ -403,9 +444,9 @@ export const FormEditSubKegiatan = () => {
                                         setNamaSubKegiatan(e.target.value);
                                     }}
                                 />
-                                {errors.nama_sub_kegiatan ?
+                                {errors.nama_subkegiatan ?
                                     <h1 className="text-red-500">
-                                    {errors.nama_sub_kegiatan.message}
+                                    {errors.nama_subkegiatan.message}
                                     </h1>
                                     :
                                     <h1 className="text-slate-300 text-xs">*Nama Sub Kegiatan Harus Terisi</h1>
@@ -414,42 +455,6 @@ export const FormEditSubKegiatan = () => {
                         )}
                     />
                 </div>
-                {/* <div className="flex flex-col py-3">
-                    <label
-                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                        htmlFor="kode_subkegiatan"
-                    >
-                        Kode Bidang Urusan :
-                    </label>
-                    <Controller
-                        name="kode_subkegiatan"
-                        control={control}
-                        rules={{ required: "Kode Bidang Urusan harus terisi" }}
-                        render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="tahun"
-                                    type="text"
-                                    placeholder="masukkan Kode Bidang Urusan"
-                                    value={field.value || KodeSubKegiatan}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setKodeSubKegiatan(e.target.value);
-                                    }}
-                                />
-                                {errors.kode_subkegiatan ?
-                                    <h1 className="text-red-500">
-                                    {errors.kode_subkegiatan.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*Kode Bidang Urusan Harus Terisi</h1>
-                                }
-                            </>
-                        )}
-                    />
-                </div> */}
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
@@ -496,6 +501,49 @@ export const FormEditSubKegiatan = () => {
                                 </h1>
                             :
                                 <h1 className="text-slate-300 text-xs">*Perangkat Daerah Harus Terisi</h1>
+                            }
+                        </>
+                        )}
+                    />
+                </div>
+                <div className="flex flex-col py-3">
+                    <label
+                        className="uppercase text-xs font-bold text-gray-700 my-2"
+                        htmlFor="tahun"
+                    >
+                        Tahun:
+                    </label>
+                    <Controller
+                        name="tahun"
+                        control={control}
+                        rules={{required : "Tahun Harus Terisi"}}
+                        render={({ field }) => (
+                        <>
+                            <Select
+                                {...field}
+                                placeholder="Masukkan Tahun"
+                                value={Tahun}
+                                options={TahunOption}
+                                isLoading={IsLoading}
+                                isSearchable
+                                isClearable
+                                onChange={(option) => {
+                                    field.onChange(option);
+                                    setTahun(option);
+                                }}
+                                styles={{
+                                    control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    borderRadius: '8px',
+                                    })
+                                }}
+                            />
+                            {errors.tahun ?
+                                <h1 className="text-red-500">
+                                    {errors.tahun.message}
+                                </h1>
+                            :
+                                <h1 className="text-slate-300 text-xs">*Tahun Harus Terisi</h1>
                             }
                         </>
                         )}
