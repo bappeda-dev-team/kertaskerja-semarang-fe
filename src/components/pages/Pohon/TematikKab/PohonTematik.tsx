@@ -94,10 +94,6 @@ const PohonTematik = ({id} : pohontematik) => {
                                                 <td className="min-w-[300px] border px-2 py-3 border-black text-start">{data.tema? data.tema : "-"}</td>
                                             </tr>
                                             <tr>
-                                                <td className="min-w-[100px] border px-2 py-3 border-black text-start">Indikator</td>
-                                                <td className="min-w-[300px] border px-2 py-3 border-black text-start">{data.indikator ? data.indikator : "-"}</td>
-                                            </tr>
-                                            <tr>
                                                 <td className="min-w-[100px] border px-2 py-3 border-black text-start">Target/Satuan</td>
                                                 <td className="min-w-[300px] border px-2 py-3 border-black text-start">{data.target ? data.target : "-"}{data.satuan ? data.satuan : ""}</td>
                                             </tr>
@@ -137,10 +133,6 @@ const PohonTematik = ({id} : pohontematik) => {
                                                         <tr>
                                                             <td className="min-w-[100px] border px-2 py-1 border-black text-start">Sub Tema</td>
                                                             <td className="min-w-[300px] border px-2 py-1 border-black text-start">{item.tema_sub_tematik ? item.tema_sub_tematik : "-"}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td className="min-w-[100px] border px-2 py-1 border-black text-start">Indikator</td>
-                                                            <td className="min-w-[300px] border px-2 py-1 border-black text-start">{item.indikators ? item.indikators : "-"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td className="min-w-[100px] border px-2 py-1 border-black text-start">Target/Satuan</td>

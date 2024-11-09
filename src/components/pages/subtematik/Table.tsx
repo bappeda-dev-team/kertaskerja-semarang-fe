@@ -130,7 +130,6 @@ const Table = () => {
                         <tr className="bg-[#99CEF5] text-white">
                             <th className="border-r border-b px-6 py-3 min-w-[50px] text-center">No</th>
                             <th className="border-r border-b px-6 py-3 min-w-[200px]">Tema / Sub Tema</th>
-                            <th className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</th>
                             <th className="border-l border-b px-6 py-3 min-w-[200px]">Keterangan</th>
                             <th className="border-l border-b px-6 py-3 min-w-[100px]">Aksi</th>
                         </tr>
@@ -147,7 +146,7 @@ const Table = () => {
                         <>
                             <tr key={data.id}>
                                 <td className="border-r border-b px-6 py-4 text-center">{index + 1}</td>
-                                <td colSpan={3} className="border-r border-b px-6 py-4 font-semibold">{data.tema}</td>
+                                <td colSpan={2} className="border-r border-b px-6 py-4 font-semibold">{data.tema}</td>
                                 <td className="border-r border-b px-6 py-4">
                                     <div className="flex flex-col jutify-center items-center gap-2">
                                         <ButtonSky className="w-full" halaman_url={`/subtematik/${data.id}/tambah`}>Tambah Sub Tema</ButtonSky>
@@ -159,7 +158,6 @@ const Table = () => {
                                     <tr key={item.id}>
                                         <td className="border-r border-b px-6 py-4 text-center font-light">{`${index + 1}.${subindex + 1}`}</td>
                                         <td className="border-r border-b px-6 py-4 text-center font-light">{item.tema_sub_tematik ? item.tema_sub_tematik : "-"}</td>
-                                        <td className="border-r border-b px-6 py-4 text-center font-light">{item.indikators ? item.indikators : "-"}</td>
                                         <td className="border-r border-b px-6 py-4 text-center font-light">{item.keterangan ? item.keterangan : "-"}</td>
                                         <td className="border-r border-b px-6 py-4">
                                             <div className="flex flex-col jutify-center items-center gap-2">
