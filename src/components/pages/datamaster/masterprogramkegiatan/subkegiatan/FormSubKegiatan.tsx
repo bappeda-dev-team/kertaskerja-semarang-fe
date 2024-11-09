@@ -311,16 +311,24 @@ export const FormEditSubKegiatan = () => {
                     }
                     if(data.kode_opd){
                         const opd = {
-                            value: data.kode_opd.kode_opd,
-                            label: data.kode_opd.nama_opd,
+                            value: data.kode_opd,
+                            label: data.kode_opd,
                         }
                         setKodeOpd(opd);
                         reset((prev) => ({ ...prev, kode_opd: opd }))
                     }
+                    // if(data.kode_opd){
+                    //     const opd = {
+                    //         value: data.kode_opd.kode_opd,
+                    //         label: data.kode_opd.nama_opd,
+                    //     }
+                    //     setKodeOpd(opd);
+                    //     reset((prev) => ({ ...prev, kode_opd: opd }))
+                    // }
                     if(data.tahun){
                         const tahun = {
-                            value: data.tahun.tahun,
-                            label: data.tahun.tahun,
+                            value: data.tahun,
+                            label: data.tahun,
                         }
                         setTahun(tahun);
                         reset((prev) => ({ ...prev, tahun: tahun }))
@@ -378,7 +386,7 @@ export const FormEditSubKegiatan = () => {
                 body: JSON.stringify(formData),
             });
             if(response.ok){
-                AlertNotification("Berhasil", "Berhasil menambahkan data master sub kegiatan", "success", 1000);
+                AlertNotification("Berhasil", "Berhasil edit data master sub kegiatan", "success", 1000);
               router.push("/DataMaster/masterprogramkegiatan/subkegiatan");
             } else {
                 AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
