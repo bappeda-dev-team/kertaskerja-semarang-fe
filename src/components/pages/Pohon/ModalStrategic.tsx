@@ -16,6 +16,7 @@ interface modal {
     onClose: () => void;
     id?: number | null;
     level: number;
+    onSuccess: () => void;
 }
 interface FormValue {
     id: number;
@@ -27,7 +28,7 @@ interface FormValue {
     kode_opd: OptionTypeString;
 }
 
-export const ModalAddStrategic: React.FC<modal> = ({isOpen, onClose, id, level}) => {
+export const ModalAddStrategic: React.FC<modal> = ({isOpen, onClose, id, level, onSuccess}) => {
 
     const {
       control,
@@ -92,9 +93,8 @@ export const ModalAddStrategic: React.FC<modal> = ({isOpen, onClose, id, level})
             });
             if(response.ok){
                 AlertNotification("Berhasil", "Berhasil menambahkan strategic", "success", 1000);
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1000);
+                onClose();
+                onSuccess();
             } else {
                 AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
             }
@@ -198,7 +198,7 @@ export const ModalAddStrategic: React.FC<modal> = ({isOpen, onClose, id, level})
     }
 }
 
-export const ModalEditStrategic: React.FC<modal> = ({isOpen, onClose, id, level}) => {
+export const ModalEditStrategic: React.FC<modal> = ({isOpen, onClose, id, level, onSuccess}) => {
 
     const {
       control,
@@ -273,7 +273,7 @@ export const ModalEditStrategic: React.FC<modal> = ({isOpen, onClose, id, level}
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formData = {
             //key : value
-            nama_pohon : data.nama_pohon,
+            tema : data.nama_pohon,
             Keterangan : data.keterangan,
             jenis_pohon:    level === 1 ? "Strategic" :
                             level === 2 ? "Tactical" :
@@ -296,9 +296,8 @@ export const ModalEditStrategic: React.FC<modal> = ({isOpen, onClose, id, level}
             });
             if(response.ok){
                 AlertNotification("Berhasil", "Berhasil edit strategic", "success", 1000);
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1000);
+                onClose();
+                onSuccess();
             } else {
                 AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
             }
