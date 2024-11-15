@@ -5,9 +5,15 @@ import { ButtonSky, ButtonRed } from '@/components/global/Button';
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { getOpdTahun } from '../Cookie';
 import { AlertNotification } from '@/components/global/Alert';
+import Select from 'react-select';
+import { start } from 'repl';
 
 interface OptionTypeString {
     value: string;
+    label: string;
+}
+interface OptionType {
+    value: number;
     label: string;
 }
 interface FormValue {
@@ -18,6 +24,7 @@ interface FormValue {
     keterangan: string;
     tahun: OptionTypeString;
     kode_opd: OptionTypeString;
+    pohon?: OptionType;
 }
 interface form {
     formId: number;
@@ -204,9 +211,13 @@ export const FormAmbilPohon: React.FC<{ formId: number; id: number; level: numbe
     } = useForm<FormValue>();
     const [formData, setFormData] = useState({ tema: '', keterangan: '' });
     const [NamaPohon, setNamaPohon] = useState<string>('');
-    const [Keterangan, setKeterangan] = useState<string>('');
+    const [KodeOpd, setKodeOpd] = useState<OptionTypeString | null>(null);
+    const [Pohon, setPohon] = useState<OptionType | null>(null);
     const [Tahun, setTahun] = useState<any>(null);
     const [SelectedOpd, setSelectedOpd] = useState<any>(null);
+    const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
+    const [PohonOption, setPohonOption] = useState<OptionType[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     
     useEffect(() => {
         const data = getOpdTahun();
@@ -225,29 +236,85 @@ export const FormAmbilPohon: React.FC<{ formId: number; id: number; level: numbe
             setSelectedOpd(opd);
         }
     },[]);
+
+    const fetchOpd = async() => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        setIsLoading(true);
+        try{ 
+          const response = await fetch(`${API_URL}/opd/findall`,{
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if(!response.ok){
+            throw new Error('cant fetch data opd');
+          }
+          const data = await response.json();
+          const opd = data.data.map((item: any) => ({
+            value : item.kode_opd,
+            label : item.nama_opd,
+          }));
+          setOpdOption(opd);
+        } catch (err){
+          console.log('gagal mendapatkan data opd');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+    const fetchPohon = async(SelectedOpd: string) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        setIsLoading(true);
+        try{
+          const url = 
+            level === 1 ? `pohon_kinerja_opd/strategic_no_parent/${SelectedOpd}/${Tahun?.value}` :
+            level === 4 ? `pohon_kinerja/tactical/${SelectedOpd}/${Tahun?.value}` :
+            level === 5 ? `pohon_kinerja/operational/${SelectedOpd}/${Tahun?.value}` :
+            `unknown`;
+          const response = await fetch(`${API_URL}/${url}`,{
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if(!response.ok){
+            throw new Error('cant fetch data opd');
+          }
+          const data = await response.json();
+          if (level === 1) {
+            const pohon = data.data.map((item: any) => ({
+              value: item.id,
+              label: item.strategi,
+            }));
+            setPohonOption(pohon);
+        } else if (level === 4 || level === 5) {
+            const pohon = data.data.map((item: any) => ({
+                value: item.id,
+                label: item.nama_pohon,
+            }));
+            setPohonOption(pohon);
+          }
+        } catch (err){
+          console.log('gagal mendapatkan data pohon');
+        } finally {
+          setIsLoading(false);
+        }
+      };
     
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formData = {
             //key : value
-            nama_pohon : data.nama_pohon,
-            Keterangan : data.keterangan,
+            id: data.pohon?.value,
             jenis_pohon:    level === 0 ? "SubTematik" :
                             level === 1 ? "Strategic" :
                             level === 4 ? "Tactical" :
                             level === 5 ? "Operational" : "Unknown",
-            level_pohon :   level === 0 ? 1 :
-                            level === 1 ? 4 :
-                            level === 4 ? 5 :
-                            level === 5 ? 6 : "Unknown",
             parent: id,
-            tahun: Tahun?.value?.toString(),
-            kode_opd: SelectedOpd?.value,
         };
         // console.log(formData);
         try{
-            const url = level == 0 ? '/pohon_kinerja_admin/create' : '/pohon_kinerja_opd/create';
-            const response = await fetch(`${API_URL}${url}`, {
+            const response = await fetch(`${API_URL}/pohon_kinerja_admin/clone_strategic/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json",
@@ -271,16 +338,16 @@ export const FormAmbilPohon: React.FC<{ formId: number; id: number; level: numbe
         <div className="tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg shadow-slate-500">
             <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black rounded-lg">
                 {level == 0 && 
-                    <h1>Ambil SubTematik Baru {id} level : {level}</h1>
+                    <h1>Ambil SubTematik {id} level : {level}</h1>
                 } 
                 {level == 1 && 
-                    <h1>Ambil Strategic Baru {id} level : {level}</h1>
+                    <h1>Ambil Strategic {id} level : {level}</h1>
                 } 
                 {level == 4 && 
-                    <h1>Ambil Tactical Baru {id} level : {level}</h1>
+                    <h1>Ambil Tactical {id} level : {level}</h1>
                 } 
                 {level == 5 && 
-                    <h1>Ambil Operational Baru {id} level : {level}</h1>
+                    <h1>Ambil Operational {id} level : {level}</h1>
                 }
             </div>
             <div className="flex justify-center my-3 w-full">
@@ -291,62 +358,112 @@ export const FormAmbilPohon: React.FC<{ formId: number; id: number; level: numbe
                     <div className="flex flex-col py-3">
                         <label
                             className="uppercase text-xs font-bold text-gray-700 my-2"
-                            htmlFor="nama_pohon"
+                            htmlFor="kode_opd"
                         >
-                            {level == 0 && 
-                                "SubTematik"
-                            } 
-                            {level == 1 && 
-                                "Strategic"
-                            } 
-                            {level == 4 && 
-                                "Tactical"
-                            } 
-                            {level == 5 && 
-                                "Operational"
-                            }
+                            Perangkat Daerah
                         </label>
                         <Controller
-                            name="nama_pohon"
+                            name="kode_opd"
                             control={control}
+                            rules={{required : "Perangkat Daerah Harus Terisi"}}
                             render={({ field }) => (
-                                <input
+                            <>
+                                <Select
                                     {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="nama_pohon"
-                                    type="text"
-                                    placeholder="masukkan Pohon"
-                                    value={field.value || NamaPohon}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setNamaPohon(e.target.value);
+                                    placeholder="Masukkan Perangkat Daerah"
+                                    value={KodeOpd}
+                                    options={OpdOption}
+                                    isLoading={isLoading}
+                                    isSearchable
+                                    isClearable
+                                    onMenuOpen={() => {
+                                        if (OpdOption.length === 0) {
+                                            fetchOpd();
+                                        }
+                                    }}
+                                    onChange={(option) => {
+                                        field.onChange(option);
+                                        setKodeOpd(option);
+                                    }}
+                                    styles={{
+                                        control: (baseStyles) => ({
+                                        ...baseStyles,
+                                        borderRadius: '8px',
+                                        textAlign: 'start',
+                                        })
                                     }}
                                 />
+                                {errors.kode_opd ?
+                                    <h1 className="text-red-500">
+                                        {errors.kode_opd.message}
+                                    </h1>
+                                :
+                                    <h1 className="text-slate-300 text-xs">*Perangkat Daerah Harus Terisi</h1>
+                                }
+                            </>
                             )}
                         />
                     </div>
                     <div className="flex flex-col py-3">
                         <label
                             className="uppercase text-xs font-bold text-gray-700 my-2"
-                            htmlFor="keterangan"
+                            htmlFor="pohon"
                         >
-                            Keterangan:
+                            {level == 0 && 
+                                <h1>SubTematik</h1>
+                            } 
+                            {level == 1 && 
+                                <h1>Strategic</h1>
+                            } 
+                            {level == 4 && 
+                                <h1>Tactical</h1>
+                            } 
+                            {level == 5 && 
+                                <h1>Operational</h1>
+                            }
                         </label>
                         <Controller
-                            name="keterangan"
+                            name="pohon"
                             control={control}
+                            rules={{required : "Pohon Harus Terisi"}}
                             render={({ field }) => (
-                                <textarea
+                            <>
+                                <Select
                                     {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="keterangan"
-                                    placeholder="masukkan keterangan"
-                                    value={field.value || Keterangan}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setKeterangan(e.target.value);
+                                    placeholder="Pilih OPD terlebih dahulu"
+                                    value={Pohon}
+                                    options={PohonOption}
+                                    isLoading={isLoading}
+                                    isSearchable
+                                    isClearable
+                                    onMenuOpen={() => {
+                                        if (KodeOpd?.value != null) {
+                                            fetchPohon(KodeOpd?.value);
+                                        } else if(KodeOpd?.value == null){
+                                            setPohonOption([]);
+                                            setPohon(null);
+                                        }
+                                    }}
+                                    onChange={(option) => {
+                                        field.onChange(option);
+                                        setPohon(option);
+                                    }}
+                                    styles={{
+                                        control: (baseStyles) => ({
+                                        ...baseStyles,
+                                        borderRadius: '8px',
+                                        textAlign: 'start',
+                                        })
                                     }}
                                 />
+                                {errors.pohon ?
+                                    <h1 className="text-red-500">
+                                        {errors.pohon.message}
+                                    </h1>
+                                :
+                                    <h1 className="text-slate-300 text-xs">*Pohon Harus Terisi</h1>
+                                }
+                            </>
                             )}
                         />
                     </div>
