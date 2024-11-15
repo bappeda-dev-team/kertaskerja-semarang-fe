@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { TbCirclePlus, TbPencil, TbTrash } from 'react-icons/tb';
 import { ButtonSkyBorder, ButtonRedBorder, ButtonGreenBorder } from '@/components/global/Button';
 import { AlertNotification, AlertQuestion } from '@/components/global/Alert';
-import {FormPohon} from './FormPohon';
+import {FormPohon, FormAmbilPohon, FormEditPohon} from './FormPohon';
 
 interface pohon {
     tema: any;
@@ -15,6 +15,7 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     const [formList, setFormList] = useState<number[]>([]); // List of form IDs
     const [strategicPohons, setStrategicPohons] = useState(tema.strategics || []);
     const [Deleted, setDeleted] = useState<boolean>(false);
+    const [edit, setEdit] = useState<boolean>(false);
     
     // Adds a new form entry
     const newChild = () => {
@@ -22,6 +23,10 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     };
     // Add new item and remove form entry
     const addNewItem = (newItem: any, formId: number) => {
+        setChildPohons([...childPohons, newItem]);
+        setFormList(formList.filter((id) => id !== formId)); // Remove form entry
+    };
+    const putNewItem = (newItem: any, formId: number) => {
         setChildPohons([...childPohons, newItem]);
         setFormList(formList.filter((id) => id !== formId)); // Remove form entry
     };
@@ -65,77 +70,90 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
 
     return (
         <li>
-            <div 
-                className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg
-                     ${tema.jenis_pohon === "Tematik" && 'shadow-slate-500'}
-                     ${tema.jenis_pohon === "SubTematik" && 'shadow-slate-500'}
-                     ${tema.jenis_pohon === "Strategic" && 'shadow-red-500 bg-red-700'}
-                     ${tema.jenis_pohon === "Tactical" && 'shadow-blue-500 bg-blue-500'}
-                     ${tema.jenis_pohon === "Operational" && 'shadow-green-500 bg-green-500'}
-                     `}
-                     >
-                {/* HEADER */}
-                <div
-                    className={`flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 rounded-lg bg-white
-                        ${tema.jenis_pohon === "Tematik" && 'border-black'}
-                        ${tema.jenis_pohon === "SubTematik" && 'border-black'}
-                        ${tema.jenis_pohon === "Strategic" && 'border-red-500 text-red-700'}
-                        ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
-                        ${tema.jenis_pohon === "Operational" && 'border-green-500 text-green-500'}
-                        `}
-                        >
-                    <h1>{tema.jenis_pohon}</h1>
-                </div>
-                {/* BODY */}
-                <div className="flex justify-center my-3">
-                    <TablePohon item={tema} />
-                </div>
-                {/* BUTTON ACTION INSIDE BOX */}
+            {edit ? 
+                <FormEditPohon
+                    level={tema.level_pohon}
+                    id={tema.id}
+                    key={tema.id}
+                    formId={tema.id}
+                    onSave={addNewItem}
+                    onCancel={() => setEdit(false)}
+                />
+            :
+            <>
                 <div 
-                    className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white
-                        ${tema.jenis_pohon === "Tematik" && 'border-black'}
-                        ${tema.jenis_pohon === "SubTematik" && 'border-black'}
-                    `}
+                    className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg
+                        ${tema.jenis_pohon === "Tematik" && 'shadow-slate-500'}
+                        ${tema.jenis_pohon === "SubTematik" && 'shadow-slate-500'}
+                        ${tema.jenis_pohon === "Strategic" && 'shadow-red-500 bg-red-700'}
+                        ${tema.jenis_pohon === "Tactical" && 'shadow-blue-500 bg-blue-500'}
+                        ${tema.jenis_pohon === "Operational" && 'shadow-green-500 bg-green-500'}
+                        `}
                 >
-                    <ButtonSkyBorder halaman_url={`/subtematik/${tema.id}/edit`}>
-                        <TbPencil className="mr-1"/>
-                        Edit
-                    </ButtonSkyBorder>
-                    {tema.jenis_pohon !== 'Tematik' && 
-                        <ButtonRedBorder
-                        onClick={() => {
-                            AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
-                                if(result.isConfirmed){
-                                    if(tema.jenis_pohon === 'Tematik' || 'SubTematik' || 'SubSubTematik' || 'SuperSubTematik'){
-                                        hapusSubTematik(tema.id);
-                                    } else {
-                                        hapusPohonOpd(tema.id);
-                                    }
-                                }
-                            });
-                        }}
-                        >
-                            <TbTrash className='mr-1'/>
-                            Hapus
-                        </ButtonRedBorder>
-                    }
-                </div>
-                {/* footer */}
-                <div className="flex justify-evenly my-3 py-3">
-                    <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                        onClick={newChild}
-                        >
-                        <TbCirclePlus className='mr-1' />
-                        {newChildButtonName(tema.jenis_pohon)}
-                    </ButtonGreenBorder>
-                    <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                        onClick={newChild}
+                    {/* HEADER */}
+                    <div
+                        className={`flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 rounded-lg bg-white
+                            ${tema.jenis_pohon === "Tematik" && 'border-black'}
+                            ${tema.jenis_pohon === "SubTematik" && 'border-black'}
+                            ${tema.jenis_pohon === "Strategic" && 'border-red-500 text-red-700'}
+                            ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
+                            ${tema.jenis_pohon === "Operational" && 'border-green-500 text-green-500'}
+                            `}
+                            >
+                        <h1>{tema.jenis_pohon}</h1>
+                    </div>
+                    {/* BODY */}
+                    <div className="flex justify-center my-3">
+                        <TablePohon item={tema} />
+                    </div>
+                    {/* BUTTON ACTION INSIDE BOX */}
+                    <div 
+                        className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white
+                            ${tema.jenis_pohon === "Tematik" && 'border-black'}
+                            ${tema.jenis_pohon === "SubTematik" && 'border-black'}
+                        `}
                     >
-                        <TbCirclePlus className='mr-1' />
-                        {"(Ambil)"}{newChildButtonName(tema.jenis_pohon)}
-                    </ButtonGreenBorder>
+                        <ButtonSkyBorder onClick={() => setEdit(true)}>
+                            <TbPencil className="mr-1"/>
+                            Edit
+                        </ButtonSkyBorder>
+                        {tema.jenis_pohon !== 'Tematik' && 
+                            <ButtonRedBorder
+                            onClick={() => {
+                                AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
+                                    if(result.isConfirmed){
+                                        if(tema.jenis_pohon === 'Tematik' || 'SubTematik' || 'SubSubTematik' || 'SuperSubTematik'){
+                                            hapusSubTematik(tema.id);
+                                        } else {
+                                            hapusPohonOpd(tema.id);
+                                        }
+                                    }
+                                });
+                            }}
+                            >
+                                <TbTrash className='mr-1'/>
+                                Hapus
+                            </ButtonRedBorder>
+                        }
+                    </div>
+                    {/* footer */}
+                    <div className="flex justify-evenly my-3 py-3">
+                        <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
+                            onClick={newChild}
+                            >
+                            <TbCirclePlus className='mr-1' />
+                            {newChildButtonName(tema.jenis_pohon)}
+                        </ButtonGreenBorder>
+                        <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
+                            onClick={newChild}
+                        >
+                            <TbCirclePlus className='mr-1' />
+                            {"(Ambil)"}{newChildButtonName(tema.jenis_pohon)}
+                        </ButtonGreenBorder>
+                    </div>
                 </div>
-            </div>
+            </>
+            }
             <ul>
                 {childPohons.map((dahan: any, index: any) => (
                     <Pohon tema={dahan} key={index} deleteTrigger={handleFetchDelete}/>
@@ -150,6 +168,16 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         key={formId}
                         formId={formId}
                         onSave={addNewItem}
+                        onCancel={() => setFormList(formList.filter((id) => id !== formId))}
+                    />
+                ))}
+                {formList.map((formId) => (
+                    <FormAmbilPohon
+                        level={tema.level_pohon}
+                        id={tema.id}
+                        key={formId}
+                        formId={formId}
+                        onSave={putNewItem}
                         onCancel={() => setFormList(formList.filter((id) => id !== formId))}
                     />
                 ))}
