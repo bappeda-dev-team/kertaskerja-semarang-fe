@@ -406,6 +406,8 @@ export const tambahPohonName = (jenis: string): string => {
       return 'Strategic';
     case 'Strategic':
       return 'Tactical';
+    case 'StrategicKota':
+      return 'Tactical';
     case 'Tactical':
       return 'Opertional';
     default:
@@ -423,6 +425,8 @@ export const ambilPohonName = (jenis: string): string => {
     case 'SuperSubTematik':
       return 'Strategic';
     case 'Strategic':
+      return 'Tactical';
+    case 'StrategicKota':
       return 'Tactical';
     case 'Tactical':
       return 'Opertional';

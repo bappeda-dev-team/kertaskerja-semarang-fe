@@ -35,7 +35,7 @@ interface form {
     onCancle: () => void;
 }
 
-export const FormPohon: React.FC<{ formId: number; id: number; level: number; onSave: (data: any, id: number) => void; onCancel: () => void }> = ({ id, level, formId, onSave, onCancel }) => {
+export const FormPohon: React.FC<{ formId: number; id: number | null; level: number; onSave?: (data: any, id: number) => void; onCancel?: () => void }> = ({ id, level, formId, onSave, onCancel }) => {
     const {
       control,
       handleSubmit,
@@ -129,7 +129,6 @@ export const FormPohon: React.FC<{ formId: number; id: number; level: number; on
             });
             if(response.ok){
                 AlertNotification("Berhasil", "Berhasil menambahkan pohon", "success", 1000);
-                onCancel();
             } else {
                 AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
             }
@@ -144,22 +143,22 @@ export const FormPohon: React.FC<{ formId: number; id: number; level: number; on
         <div className="tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg shadow-slate-500">
             <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black rounded-lg">
                 {level == 0 && 
-                    <h1>Tambah SubTematik Baru {id} level : {level}</h1>
+                    <h1>Tambah SubTematik Baru </h1>
                 } 
                 {level == 1 && 
-                    <h1>Tambah SubSubTematik Baru {id} level : {level}</h1>
+                    <h1>Tambah SubSubTematik Baru </h1>
                 } 
                 {level == 2 && 
-                    <h1>Tambah SuperSubTematik Baru {id} level : {level}</h1>
+                    <h1>Tambah SuperSubTematik Baru </h1>
                 } 
                 {level == 3 && 
-                    <h1>Tambah Strategic Baru {id} level : {level}</h1>
+                    <h1>Tambah Strategic Baru </h1>
                 } 
                 {level == 4 && 
-                    <h1>Tambah Tactical Baru {id} level : {level}</h1>
+                    <h1>Tambah Tactical Baru </h1>
                 } 
                 {level == 5 && 
-                    <h1>Tambah Operational Baru {id} level : {level}</h1>
+                    <h1>Tambah Operational Baru </h1>
                 }
             </div>
             <div className="flex justify-center my-3 w-full">
@@ -593,7 +592,7 @@ export const FormAmbilPohon: React.FC<{ formId: number; id: number; level: numbe
             throw new Error('cant fetch data opd');
           }
           const data = await response.json();
-          if (level === 1) {
+          if (level === 0 || level === 1 || level === 2 || level === 3) {
             const pohon = data.data.map((item: any) => ({
               value: item.id,
               label: item.strategi,
@@ -649,13 +648,13 @@ export const FormAmbilPohon: React.FC<{ formId: number; id: number; level: numbe
         <div className="tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg shadow-slate-500">
             <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black rounded-lg">
                 {(level === 0 || level === 1 || level === 2 || level === 3) && 
-                    <h1>Ambil Strategic {id} level : {level}</h1>
+                    <h1>Ambil Strategic </h1>
                 }
                 {level === 4 && 
-                    <h1>Ambil Tactical {id} level : {level}</h1>
+                    <h1>Ambil Tactical </h1>
                 }
                 {level === 5 && 
-                    <h1>Ambil Operational {id} level : {level}</h1>
+                    <h1>Ambil Operational </h1>
                 }
             </div>
             <div className="flex justify-center my-3 w-full">
@@ -882,16 +881,16 @@ export const FormEditPohon: React.FC<{ formId: number; id: number; level: number
         <div className="tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg shadow-slate-500">
             <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black rounded-lg">
                 {level == 1 && 
-                    <h1>Edit Sub Tematik {id} level : {level}</h1>
+                    <h1>Edit Sub Tematik </h1>
                 } 
                 {level == 4 && 
-                    <h1>Edit Strategic {id} level : {level}</h1>
+                    <h1>Edit Strategic </h1>
                 } 
                 {level == 5 && 
-                    <h1>Edit Tactical {id} level : {level}</h1>
+                    <h1>Edit Tactical </h1>
                 }
                 {level == 6 && 
-                    <h1>Edit Operational {id} level : {level}</h1>
+                    <h1>Edit Operational </h1>
                 }
             </div>
             <div className="flex justify-center my-3 w-full">

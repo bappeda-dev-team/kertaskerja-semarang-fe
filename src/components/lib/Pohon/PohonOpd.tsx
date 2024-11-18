@@ -12,12 +12,7 @@ interface pohon {
 export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
 
     const [childPohons, setChildPohons] = useState(tema.childs || []);
-    const [PutPohons, setPutPohons] = useState(tema.childs || []);
     const [formList, setFormList] = useState<number[]>([]); // List of form IDs
-    const [PutList, setPutList] = useState<number[]>([]); // List of form IDs
-    const [strategicPohons, setStrategicPohons] = useState(tema.strategic || []);
-    const [TacticalPohons, setTacticalPohons] = useState(tema.tacticals || []);
-    const [OperationalPohons, setOperationalPohons] = useState(tema.operational || []);
     const [Deleted, setDeleted] = useState<boolean>(false);
     const [edit, setEdit] = useState<boolean>(false);
     
@@ -25,16 +20,9 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     const newChild = () => {
         setFormList([...formList, Date.now()]); // Using unique IDs
     };
-    const newPutChild = () => {
-        setPutList([...PutList, Date.now()]); // Using unique IDs
-    };
     // Add new item and remove form entry
     const addNewItem = (newItem: any, formId: number) => {
         setChildPohons([...childPohons, newItem]);
-        setFormList(formList.filter((id) => id !== formId)); // Remove form entry
-    };
-    const putNewItem = (newItem: any, formId: number) => {
-        setPutPohons([...PutPohons, newItem]);
         setFormList(formList.filter((id) => id !== formId)); // Remove form entry
     };
 
@@ -74,6 +62,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
             <>
                 <div 
                     className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg
+                        ${tema.jenis_pohon === "StrategicKota" && 'shadow-red-300 bg-red-300'}
                         ${tema.jenis_pohon === "Strategic" && 'shadow-red-500 bg-red-700'}
                         ${tema.jenis_pohon === "Tactical" && 'shadow-blue-500 bg-blue-500'}
                         ${tema.jenis_pohon === "Operational" && 'shadow-green-500 bg-green-500'}
@@ -87,7 +76,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${tema.jenis_pohon === "Operational" && 'border-green-500 text-green-500'}
                             `}
                             >
-                        <h1>{tema.jenis_pohon}</h1>
+                        <h1>{tema.jenis_pohon} parent {tema.parent? tema.parent : 'null'}</h1>
                     </div>
                     {/* BODY */}
                     <div className="flex justify-center my-3">
@@ -127,24 +116,12 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             <TbCirclePlus className='mr-1' />
                             {newChildButtonName(tema.jenis_pohon)}
                         </ButtonGreenBorder>
-                        <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                            onClick={newPutChild}
-                        >
-                            <TbCirclePlus className='mr-1' />
-                            {"(Ambil)"}{newChildButtonName(tema.jenis_pohon)}
-                        </ButtonGreenBorder>
                     </div>
                 </div>
             </>
             }
             <ul>
-                {strategicPohons.map((dahan: any, index: any) => (
-                    <PohonOpd tema={dahan} key={index} deleteTrigger={handleFetchDelete}/>
-                ))}
-                {TacticalPohons.map((dahan: any, index: any) => (
-                    <PohonOpd tema={dahan} key={index} deleteTrigger={handleFetchDelete}/>
-                ))}
-                {OperationalPohons.map((dahan: any, index: any) => (
+                {childPohons.map((dahan: any, index: any) => (
                     <PohonOpd tema={dahan} key={index} deleteTrigger={handleFetchDelete}/>
                 ))}
                 {formList.map((formId) => (
@@ -155,16 +132,6 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         formId={formId}
                         onSave={addNewItem}
                         onCancel={() => setFormList(formList.filter((id) => id !== formId))}
-                    />
-                ))}
-                {PutList.map((formId) => (
-                    <FormAmbilPohon
-                        level={tema.level_pohon}
-                        id={tema.id}
-                        key={formId}
-                        formId={formId}
-                        onSave={putNewItem}
-                        onCancel={() => setPutList(PutList.filter((id) => id !== formId))}
                     />
                 ))}
             </ul>
@@ -187,6 +154,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[100px] border px-2 py-3 bg-white text-start rounded-tl-lg
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}
                 `}
@@ -196,6 +164,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start rounded-tr-lg
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}
                 `}
@@ -207,6 +176,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}
                 `}
@@ -216,6 +186,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}
                 `}
@@ -227,6 +198,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}    
                 `}
@@ -236,6 +208,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}    
                 `}
@@ -248,6 +221,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[100px] border px-2 py-1 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}    
                 `}
@@ -257,6 +231,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}    
                 `}
@@ -269,6 +244,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[100px] border px-2 py-1 bg-white text-start rounded-bl-lg
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}    
                 `}
@@ -278,6 +254,7 @@ export const TablePohon = (props: any) => {
             <td 
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start rounded-br-lg
                     ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
                     ${jenis === "Tactical" && "border-blue-500"}
                     ${jenis === "Operational" && "border-green-500"}    
                 `}
@@ -292,6 +269,8 @@ export const TablePohon = (props: any) => {
 
 export const newChildButtonName = (jenis: string): string => {
   switch (jenis) {
+    case 'StrategicKota':
+      return 'Tactical';
     case 'Strategic':
       return 'Tactical';
     case 'Tactical':
