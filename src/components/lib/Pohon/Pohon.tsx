@@ -86,6 +86,7 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                     key={tema.id}
                     formId={tema.id}
                     onSave={addNewItem}
+                    pokin={'pemda'}
                     onCancel={() => setEdit(false)}
                 />
             :
@@ -199,6 +200,7 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         key={formId}
                         formId={formId}
                         onSave={addNewItem}
+                        pokin={'pemda'}
                         onCancel={() => setFormList(formList.filter((id) => id !== formId))}
                     />
                 ))}

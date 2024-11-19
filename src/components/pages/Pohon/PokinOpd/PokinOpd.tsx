@@ -184,6 +184,8 @@ const PokinOpd = () => {
                                         id={null}
                                         key={formId}
                                         formId={formId}
+                                        pokin={'opd'}
+                                        onCancel={() => setFormList(formList.filter((id) => id !== formId))}
                                     />
                                 ))}
                             </ul>

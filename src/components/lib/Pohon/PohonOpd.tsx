@@ -56,6 +56,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                     key={tema.id}
                     formId={tema.id}
                     onSave={addNewItem}
+                    pokin={'opd'}
                     onCancel={() => setEdit(false)}
                 />
             :
@@ -76,7 +77,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${tema.jenis_pohon === "Operational" && 'border-green-500 text-green-500'}
                             `}
                             >
-                        <h1>{tema.jenis_pohon} parent {tema.parent? tema.parent : 'null'}</h1>
+                        <h1>{tema.jenis_pohon}</h1>
                     </div>
                     {/* BODY */}
                     <div className="flex justify-center my-3">
@@ -116,6 +117,12 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             <TbCirclePlus className='mr-1' />
                             {newChildButtonName(tema.jenis_pohon)}
                         </ButtonGreenBorder>
+                        <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
+                            onClick={newChild}
+                            >
+                            <TbCirclePlus className='mr-1' />
+                            Pelaksana
+                        </ButtonGreenBorder>
                     </div>
                 </div>
             </>
@@ -131,6 +138,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         key={formId}
                         formId={formId}
                         onSave={addNewItem}
+                        pokin={'opd'}
                         onCancel={() => setFormList(formList.filter((id) => id !== formId))}
                     />
                 ))}
@@ -145,6 +153,7 @@ export const TablePohon = (props: any) => {
   const opd = props.item.perangkat_daerah?.nama_opd;
   const jenis = props.item.jenis_pohon;
   const indikator = props.item.indikator;
+  const pelaksana = props.item.pelaksana;
   const target = props.item.target;
   const satuan = props.item.satuan;
   return (
@@ -240,6 +249,30 @@ export const TablePohon = (props: any) => {
             </td>
         </tr>
         }
+        <tr>
+            <td 
+                className={`min-w-[100px] border px-2 py-1 bg-white text-start
+                    ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
+                    ${jenis === "Tactical" && "border-blue-500"}
+                    ${jenis === "Operational" && "border-green-500"}    
+                `}
+            >
+                Pelaksana
+            </td>
+            <td 
+                className={`min-w-[300px] border px-2 py-3 bg-white text-start
+                    ${jenis === "Strategic" && "border-red-700"}
+                    ${jenis === "StrategicKota" && "border-red-300"}
+                    ${jenis === "Tactical" && "border-blue-500"}
+                    ${jenis === "Operational" && "border-green-500"}    
+                `}
+            >
+                {pelaksana ? pelaksana.map((data: any) => (
+                    <p key={data.nama_pegawai}>{data.nama_pegawai}</p>
+                )) : "-"}
+            </td>
+        </tr>
         <tr>
             <td 
                 className={`min-w-[100px] border px-2 py-1 bg-white text-start rounded-bl-lg
