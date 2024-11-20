@@ -26,10 +26,6 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
         setFormList(formList.filter((id) => id !== formId)); // Remove form entry
     };
 
-    const handleFetchDelete = () => {
-        setDeleted((prev) => !prev);
-    };
-
     const hapusPohonOpd = async(id: any) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         try{
@@ -129,7 +125,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
             }
             <ul>
                 {childPohons.map((dahan: any, index: any) => (
-                    <PohonOpd tema={dahan} key={index} deleteTrigger={handleFetchDelete}/>
+                    <PohonOpd tema={dahan} key={index} deleteTrigger={deleteTrigger}/>
                 ))}
                 {formList.map((formId) => (
                     <FormPohon

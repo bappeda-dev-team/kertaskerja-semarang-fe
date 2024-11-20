@@ -62,10 +62,6 @@ const PokinOpd = () => {
         }
     },[]);
 
-    const handleFetchDelete = () => {
-        setDeleted((prev) => !prev);
-    };
-
     // Adds a new form entry
     const newChild = () => {
         setFormList([...formList, Date.now()]); // Using unique IDs
@@ -92,7 +88,7 @@ const PokinOpd = () => {
         if(SelectedOpd?.value != undefined && Tahun?.value != undefined){
             fetchPokinOpd();
         }
-    },[SelectedOpd, Tahun]);
+    },[SelectedOpd, Tahun, Deleted]);
 
     if(Loading){
         return(
@@ -175,7 +171,7 @@ const PokinOpd = () => {
                             <ul>
                                 {Pokin.childs.map((data: any) => (
                                     <li key={data.id}>
-                                        <PohonOpd tema={data} deleteTrigger={handleFetchDelete}/>
+                                        <PohonOpd tema={data} deleteTrigger={() => setDeleted((prev) => !prev)}/>
                                     </li>
                                 ))}
                                 {formList.map((formId) => (

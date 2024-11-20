@@ -17,7 +17,6 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     const [PutList, setPutList] = useState<number[]>([]); // List of form IDs
     const [FormStrategic, setFormStrategic] = useState<number[]>([]); // List of form IDs
     const [strategicPohons, setStrategicPohons] = useState(tema.strategics || []);
-    const [Deleted, setDeleted] = useState<boolean>(false);
     const [edit, setEdit] = useState<boolean>(false);
     
     // Adds a new form entry
@@ -38,10 +37,6 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     const putNewItem = (newItem: any, formId: number) => {
         setPutPohons([...PutPohons, newItem]);
         setFormList(formList.filter((id) => id !== formId)); // Remove form entry
-    };
-
-    const handleFetchDelete = () => {
-        setDeleted((prev) => !prev);
     };
 
     const hapusSubTematik = async(id: any) => {
@@ -188,10 +183,10 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
             }
             <ul>
                 {childPohons.map((dahan: any, index: any) => (
-                    <Pohon tema={dahan} key={index} deleteTrigger={handleFetchDelete}/>
+                    <Pohon tema={dahan} key={index} deleteTrigger={deleteTrigger}/>
                 ))}
                 {strategicPohons.map((dahan: any, index: any) => (
-                    <Pohon tema={dahan} key={index} deleteTrigger={handleFetchDelete}/>
+                    <Pohon tema={dahan} key={index} deleteTrigger={deleteTrigger}/>
                 ))}
                 {formList.map((formId) => (
                     <FormPohon
