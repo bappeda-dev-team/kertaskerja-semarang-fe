@@ -9,7 +9,7 @@ import { LoadingBeat } from '@/components/global/Loading';
 import { ModalDasarHukum } from '../../rencanakinerja/ModalDasarHukum';
 import { OpdTahunNull } from '@/components/global/OpdTahunNull';
 import { PohonOpd } from '@/components/lib/Pohon/PohonOpd';
-import { FormPohon } from '@/components/lib/Pohon/FormPohon';
+import { FormPohonOpd } from '@/components/lib/Pohon/FormPohonOpd';
 
 interface opd {
     kode_opd: string;
@@ -80,7 +80,7 @@ const PokinOpd = () => {
                 const data = result.data || [];
                 setPokin(data);
             } catch(err) {
-                setError('gagal mendapatkan data, terdapat kesalahan backend/server saat mengambil data pohon kinerja tematik');
+                setError('gagal mendapatkan data, terdapat kesalahan backend/server saat mengambil data pohon kinerja perangkat daerah');
             } finally {
                 setLoading(false);
             }
@@ -175,7 +175,7 @@ const PokinOpd = () => {
                                     </li>
                                 ))}
                                 {formList.map((formId) => (
-                                    <FormPohon
+                                    <FormPohonOpd
                                         level={3}
                                         id={null}
                                         key={formId}
@@ -188,7 +188,7 @@ const PokinOpd = () => {
                             ) : (
                                 <ul>
                                     {formList.map((formId) => (
-                                        <FormPohon
+                                        <FormPohonOpd
                                             level={3}
                                             id={null}
                                             key={formId}
