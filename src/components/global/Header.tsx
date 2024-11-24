@@ -5,6 +5,7 @@ import {FiAperture} from "react-icons/fi"
 import Select from "react-select"
 import { getOpdTahun, getUser } from "../lib/Cookie"
 import { AlertNotification } from "./Alert"
+import { getToken } from "../lib/Cookie"
 
 interface OptionType {
     value: number;
@@ -23,6 +24,7 @@ const Header = () => {
     const [user, setUser] = useState<any>(null);
     const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
+    const token = getToken();
 
     // Fungsi untuk menyimpan nilai ke cookies
     const setCookie = (name: string, value: any) => {
@@ -60,7 +62,7 @@ const Header = () => {
         const response = await fetch(`${API_URL}/opd/findall`,{
           method: 'GET',
           headers: {
-            // Authorization: `${token}`,
+            Authorization: `${token}`,
             'Content-Type': 'application/json',
           },
         });
