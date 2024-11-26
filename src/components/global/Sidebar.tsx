@@ -873,6 +873,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setUsulan(false);
       setRencanaKinerjaKAK(false);
+      setRencanaKinerja(false);
       setRincianBelanja(false);
       setMusrenbang(false);
       setPokokPikiran(false);

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react';
-import { ButtonSky, ButtonRed } from '@/components/global/Button';
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { ButtonSky, ButtonRed, ButtonRedBorder, ButtonSkyBorder } from '@/components/global/Button';
+import { Controller, SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { getOpdTahun } from '../Cookie';
 import { AlertNotification } from '@/components/global/Alert';
 import Select from 'react-select';
@@ -27,7 +27,16 @@ interface FormValue {
     kode_opd: OptionTypeString;
     pelaksana: OptionTypeString[];
     pohon?: OptionType;
+    indikator: indikator[];
 }
+interface indikator {
+    nama_indikator: string;
+    targets: target[];
+}
+type target = {
+    target: string;
+    satuan: string;
+};
 interface form {
     formId: number;
     onSave: [
@@ -83,6 +92,17 @@ export const FormPohonPemda: React.FC<{
             setSelectedOpd(opd);
         }
     },[]);
+
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "indikator",
+    });
+
+    // useEffect(() => {
+    //     if (fields.length === 0) {
+    //         append({ nama_indikator: "", targets: [{ target: "", satuan: "" }] });
+    //     }
+    // }, [fields, append]);
 
     const fetchOpd = async() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -140,7 +160,7 @@ export const FormPohonPemda: React.FC<{
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const pelaksanaIds = Pelaksana?.map((pelaksana) => ({
-            pegawai_id: pelaksana.value, // Ubah `value` menjadi `pegawai_id`
+            pegawai_id: pelaksana.value,
         })) || [];
         const formData = {
             //key : value
@@ -162,6 +182,15 @@ export const FormPohonPemda: React.FC<{
             pelaksana: pelaksanaIds,
             tahun: Tahun?.value?.toString(),
             kode_opd:  (level === 0 || level === 1 || level === 2) ? null : data.kode_opd?.value,
+            ...(data.indikator && {
+                indikator: data.indikator.map((ind) => ({
+                    indikator: ind.nama_indikator,
+                    target: ind.targets.map((t) => ({
+                        target: t.target,
+                        satuan: t.satuan,
+                    })),
+                })),
+            }),
         };
         // console.log(formData);
         try{
@@ -375,6 +404,85 @@ export const FormPohonPemda: React.FC<{
                                 )}
                             />
                         </div>
+                        <label className="uppercase text-base font-bold text-gray-700 my-2">
+                            indikator sasaran :
+                        </label>
+                        {fields.map((field, index) => (
+                            <div key={index} className="flex flex-col my-2 py-2 px-5 border rounded-lg">
+                                <Controller
+                                    name={`indikator.${index}.nama_indikator`}
+                                    control={control}
+                                    defaultValue={field.nama_indikator}
+                                    render={({ field }) => (
+                                        <div className="flex flex-col py-3">
+                                            <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                Nama Indikator {index + 1} :
+                                            </label>
+                                            <input
+                                                {...field}
+                                                className="border px-4 py-2 rounded-lg"
+                                                placeholder={`Masukkan nama indikator ${index + 1}`}
+                                            />
+                                        </div>
+                                    )}
+                                />
+                                {field.targets.map((_, subindex) => (
+                                    <>
+                                    <Controller
+                                        name={`indikator.${index}.targets.${subindex}.target`}
+                                        control={control}
+                                        defaultValue={_.target}
+                                        render={({ field }) => (
+                                            <div className="flex flex-col py-3">
+                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                    Target :
+                                                </label>
+                                                <input
+                                                    {...field}
+                                                    type="text"
+                                                    className="border px-4 py-2 rounded-lg"
+                                                    placeholder="Masukkan target"
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                    <Controller
+                                        name={`indikator.${index}.targets.${subindex}.satuan`}
+                                        control={control}
+                                        defaultValue={_.satuan}
+                                        render={({ field }) => (
+                                            <div className="flex flex-col py-3">
+                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                    Satuan :
+                                                </label>
+                                                <input
+                                                    {...field}
+                                                    className="border px-4 py-2 rounded-lg"
+                                                    placeholder="Masukkan satuan"
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                    </>
+                                ))}
+                                {index >= 0 && (
+                                    <ButtonRedBorder
+                                        type="button"
+                                        onClick={() => remove(index)}
+                                        className="w-[200px] my-3"
+                                    >
+                                        Hapus
+                                    </ButtonRedBorder>
+                                )}
+                            </div>
+                        ))}
+                        <ButtonSkyBorder
+                            className="mb-3 mt-2 w-full"
+                            type="button"
+                            onClick={() => append({ nama_indikator: "", targets: [{ target: "", satuan: "" }] })}
+                        >
+                            Tambah Indikator
+                        </ButtonSkyBorder>
                         <ButtonSky type="submit" className="w-full my-3">
                             Simpan
                         </ButtonSky>
@@ -719,6 +827,11 @@ export const FormEditPohon: React.FC<{
         }
     },[]);
 
+    const { fields, append, remove, replace } = useFieldArray({
+        control,
+        name: "indikator",
+    });
+
     const fetchPelaksana = async() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         setIsLoading(true);
@@ -748,9 +861,9 @@ export const FormEditPohon: React.FC<{
 
     useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
-        const fetchStrategic = async() => {
+        const fetchPokinById = async() => {
             try{
-                const response = await fetch(`${API_URL}/pohon_kinerja_opd/detail/${id}`, {
+                const response = await fetch(`${API_URL}/pohon_kinerja_admin/detail/${id}`, {
                     headers: {
                       Authorization: `${token}`,
                       'Content-Type': 'application/json',
@@ -768,29 +881,27 @@ export const FormEditPohon: React.FC<{
                     nama_pohon: data.nama_pohon || '',
                     keterangan: data.keterangan || '',
                     parent: data.parent || '',
-                    pelaksana: data.pelaksana?.map((item: any) => ({
-                        value: item.pegawai_id,
-                        label: item.nama_pegawai,
-                    })) || [],
+                    indikator: data.indikators?.map((item: indikator) => ({
+                        nama_indikator: item.nama_indikator,
+                        targets: item.targets.map((t: target) => ({
+                            target: t.target,
+                            satuan: t.satuan,
+                        })),
+                    })),
                 });
-                setPelaksana(
-                    data.pelaksana?.map((item: any) => ({
-                        value: item.pegawai_id,
-                        label: item.nama_pegawai,
-                    })) || []
-                );
+                replace(data.indikator.map((item: indikator) => ({
+                    indikator: item.nama_indikator,
+                    targets: item.targets,
+                })));
             } catch(err) {
                 console.error(err, 'gagal mengambil data sesuai id pohon')
             }
         }
-        fetchStrategic();
-    },[id, reset, token]);
+        fetchPokinById();
+    },[id, reset, token, replace]);
     
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
-        const pelaksanaIds = Pelaksana?.map((pelaksana) => ({
-            pegawai_id: pelaksana.value, // Ubah `value` menjadi `pegawai_id`
-        })) || [];
         const formData = {
             //key : value
             nama_pohon : data.nama_pohon,
@@ -803,9 +914,17 @@ export const FormEditPohon: React.FC<{
                             level === 6 ? "OperationalPemda" : "Unknown",
             level_pohon :   level,
             parent: Number(Parent),
-            pelaksana: pelaksanaIds,
             tahun: Tahun?.value?.toString(),
-            kode_opd: SelectedOpd?.value,
+            kode_opd:  (level === 0 || level === 1 || level === 2) ? null : data.kode_opd?.value,
+            ...(data.indikator && {
+                indikator: data.indikator.map((ind) => ({
+                    indikator: ind.nama_indikator,
+                    target: ind.targets.map((t) => ({
+                        target: t.target,
+                        satuan: t.satuan,
+                    })),
+                })),
+            }),
         };
         // console.log(formData);
         try{
@@ -966,6 +1085,85 @@ export const FormEditPohon: React.FC<{
                             )}
                         />
                     </div>
+                    <label className="uppercase text-base font-bold text-gray-700 my-2">
+                        indikator sasaran :
+                    </label>
+                    {fields.map((field, index) => (
+                        <div key={index} className="flex flex-col my-2 py-2 px-5 border rounded-lg">
+                            <Controller
+                                name={`indikator.${index}.nama_indikator`}
+                                control={control}
+                                defaultValue={field.nama_indikator}
+                                render={({ field }) => (
+                                    <div className="flex flex-col py-3">
+                                        <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                            Nama Indikator {index + 1} :
+                                        </label>
+                                        <input
+                                            {...field}
+                                            className="border px-4 py-2 rounded-lg"
+                                            placeholder={`Masukkan nama indikator ${index + 1}`}
+                                        />
+                                    </div>
+                                )}
+                            />
+                            {field.targets.map((_, subindex) => (
+                                <>
+                                <Controller
+                                    name={`indikator.${index}.targets.${subindex}.target`}
+                                    control={control}
+                                    defaultValue={_.target}
+                                    render={({ field }) => (
+                                        <div className="flex flex-col py-3">
+                                            <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                Target :
+                                            </label>
+                                            <input
+                                                {...field}
+                                                type="text"
+                                                className="border px-4 py-2 rounded-lg"
+                                                placeholder="Masukkan target"
+                                            />
+                                        </div>
+                                    )}
+                                />
+                                <Controller
+                                    name={`indikator.${index}.targets.${subindex}.satuan`}
+                                    control={control}
+                                    defaultValue={_.satuan}
+                                    render={({ field }) => (
+                                        <div className="flex flex-col py-3">
+                                            <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                Satuan :
+                                            </label>
+                                            <input
+                                                {...field}
+                                                className="border px-4 py-2 rounded-lg"
+                                                placeholder="Masukkan satuan"
+                                            />
+                                        </div>
+                                    )}
+                                />
+                                </>
+                            ))}
+                            {index >= 0 && (
+                                <ButtonRedBorder
+                                    type="button"
+                                    onClick={() => remove(index)}
+                                    className="w-[200px] my-3"
+                                >
+                                    Hapus
+                                </ButtonRedBorder>
+                            )}
+                        </div>
+                    ))}
+                    <ButtonSkyBorder
+                        className="mb-3 mt-2 w-full"
+                        type="button"
+                        onClick={() => append({ nama_indikator: "", targets: [{ target: "", satuan: "" }] })}
+                    >
+                        Tambah Indikator
+                    </ButtonSkyBorder>
                     <ButtonSky type="submit" className="w-full my-3">
                         Simpan
                     </ButtonSky>
