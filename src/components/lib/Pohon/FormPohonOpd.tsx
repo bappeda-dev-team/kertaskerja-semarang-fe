@@ -7,7 +7,7 @@ import { getOpdTahun } from '../Cookie';
 import { AlertNotification } from '@/components/global/Alert';
 import Select from 'react-select';
 import { PohonOpdEdited } from './PohonOpd';
-import { getToken } from '../Cookie';
+import { getToken, getUser } from '../Cookie';
 
 interface OptionTypeString {
     value: string;
@@ -64,10 +64,15 @@ export const FormPohonOpd: React.FC<{
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [IsAdded, setIsAdded] = useState<boolean>(false);
     const [Deleted, setDeleted] = useState<boolean>(false);
+    const [user, setUser] = useState<any>(null);
     const token = getToken();
     
     useEffect(() => {
+        const fetchUser = getUser();
         const data = getOpdTahun();
+        if(fetchUser){
+            setUser(fetchUser.user);
+        }
         if(data.tahun){
             const tahun = {
                 value: data.tahun.value,
@@ -413,6 +418,7 @@ export const FormEditPohon: React.FC<{
     const [NamaPohon, setNamaPohon] = useState<string>('');
     const [Keterangan, setKeterangan] = useState<string>('');
     const [Parent, setParent] = useState<number | null>(null);
+    const [KodeOpd, setKodeOpd] = useState<number | null>(null);
     const [Tahun, setTahun] = useState<any>(null);
     const [Pelaksana, setPelaksana] = useState<OptionTypeString[]>([]);
     const [PelaksanaOption, setPelaksanaOption] = useState<OptionTypeString[]>([]);
@@ -421,10 +427,15 @@ export const FormEditPohon: React.FC<{
     const [IsEdited, setIsEdited] = useState<boolean>(false);
     const [DataEdit, setDataEdit] = useState<any>(null);
     const [Deleted, setDeleted] = useState<boolean>(false);
+    const [user, setUser] = useState<any>(null);
     const token = getToken();
     
     useEffect(() => {
+        const fetchUser = getUser();
         const data = getOpdTahun();
+        if(fetchUser){
+            setUser(fetchUser.user);
+        }
         if(data.tahun){
             const tahun = {
                 value: data.tahun.value,
@@ -486,6 +497,9 @@ export const FormEditPohon: React.FC<{
                 if(data.parent){
                     setParent(data.parent);
                 }
+                if(data.kode_opd){
+                    setKodeOpd(data.kode_opd);
+                }
                 reset({
                     nama_pohon: data.nama_pohon || '',
                     keterangan: data.keterangan || '',
@@ -524,7 +538,7 @@ export const FormEditPohon: React.FC<{
             parent: Number(Parent),
             pelaksana: pelaksanaIds,
             tahun: Tahun?.value?.toString(),
-            kode_opd: SelectedOpd?.value,
+            kode_opd: KodeOpd,
         };
         // console.log(formData);
         try{
