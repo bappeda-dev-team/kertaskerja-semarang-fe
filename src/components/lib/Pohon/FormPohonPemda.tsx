@@ -798,10 +798,12 @@ export const FormEditPohon: React.FC<{
     } = useForm<FormValue>();
     const [NamaPohon, setNamaPohon] = useState<string>('');
     const [Keterangan, setKeterangan] = useState<string>('');
+    const [KodeOpd, setKodeOpd] = useState<OptionTypeString | null>(null);
     const [Parent, setParent] = useState<number | null>(null);
     const [Tahun, setTahun] = useState<any>(null);
     const [Pelaksana, setPelaksana] = useState<OptionTypeString[]>([]);
     const [PelaksanaOption, setPelaksanaOption] = useState<OptionTypeString[]>([]);
+    const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
     const [SelectedOpd, setSelectedOpd] = useState<any>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [IsEdited, setIsEdited] = useState<boolean>(false);
@@ -831,7 +833,33 @@ export const FormEditPohon: React.FC<{
         control,
         name: "indikator",
     });
-
+    
+    const fetchOpd = async() => {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      setIsLoading(true);
+      try{ 
+        const response = await fetch(`${API_URL}/opd/findall`,{
+          method: 'GET',
+          headers: {
+            Authorization: `${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if(!response.ok){
+          throw new Error('cant fetch data opd');
+        }
+        const data = await response.json();
+        const opd = data.data.map((item: any) => ({
+          value : item.kode_opd,
+          label : item.nama_opd,
+        }));
+        setOpdOption(opd);
+      } catch (err){
+        console.log('gagal mendapatkan data opd');
+      } finally {
+        setIsLoading(false);
+      }
+    };
     const fetchPelaksana = async() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         setIsLoading(true);
@@ -877,6 +905,16 @@ export const FormEditPohon: React.FC<{
                 if(data.parent){
                     setParent(data.parent);
                 }
+                if(data.parent){
+                    setParent(data.parent);
+                }
+                if(data.kode_opd){
+                    const opd = {
+                        value: data.kode_opd,
+                        label: data.nama_opd,
+                    }
+                    setKodeOpd(opd);
+                }
                 reset({
                     nama_pohon: data.nama_pohon || '',
                     keterangan: data.keterangan || '',
@@ -915,7 +953,7 @@ export const FormEditPohon: React.FC<{
             level_pohon :   level,
             parent: Number(Parent),
             tahun: Tahun?.value?.toString(),
-            kode_opd:  (level === 0 || level === 1 || level === 2) ? null : data.kode_opd?.value,
+            kode_opd:  (level === 0 || level === 1 || level === 2 || level === 3) ? null : KodeOpd?.value,
             ...(data.indikator && {
                 indikator: data.indikator.map((ind) => ({
                     indikator: ind.nama_indikator,
@@ -928,8 +966,7 @@ export const FormEditPohon: React.FC<{
         };
         // console.log(formData);
         try{
-            const url = level == 1 ? `/pohon_kinerja_admin/update/${id}` : `/pohon_kinerja_opd/update/${id}`;
-            const response = await fetch(`${API_URL}${url}`, {
+            const response = await fetch(`${API_URL}/pohon_kinerja_admin/update/${id}`, {
                 method: "PUT",
                 headers: {
                   Authorization: `${token}`,
@@ -963,6 +1000,12 @@ export const FormEditPohon: React.FC<{
             <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black rounded-lg">
                 {level == 1 && 
                     <h1>Edit Sub Tematik </h1>
+                } 
+                {level == 2 && 
+                    <h1>Edit Sub Sub Tematik </h1>
+                } 
+                {level == 3 && 
+                    <h1>Edit Super Sub Tematik </h1>
                 } 
                 {level == 4 && 
                     <h1>Edit Strategic </h1>
@@ -1016,6 +1059,49 @@ export const FormEditPohon: React.FC<{
                             )}
                         />
                     </div>
+                    {(level == 4 || level == 5 || level == 6) &&
+                        <div className="flex flex-col py-3">
+                            <label
+                                className="uppercase text-xs font-bold text-gray-700 my-2"
+                                htmlFor="kode_opd"
+                            >
+                                Perangkat Daerah
+                            </label>
+                            <Controller
+                                name="kode_opd"
+                                control={control}
+                                render={({ field }) => (
+                                <>
+                                    <Select
+                                        {...field}
+                                        placeholder="Masukkan Perangkat Daerah"
+                                        value={KodeOpd}
+                                        options={OpdOption}
+                                        isLoading={isLoading}
+                                        isSearchable
+                                        isClearable
+                                        onMenuOpen={() => {
+                                            if (OpdOption.length === 0) {
+                                                fetchOpd();
+                                            }
+                                        }}
+                                        onChange={(option) => {
+                                            field.onChange(option);
+                                            setKodeOpd(option);
+                                        }}
+                                        styles={{
+                                            control: (baseStyles) => ({
+                                            ...baseStyles,
+                                            borderRadius: '8px',
+                                            textAlign: 'start',
+                                            })
+                                        }}
+                                    />
+                                </>
+                                )}
+                            />
+                        </div>
+                    }
                     {pokin === 'opd' && 
                         <div className="flex flex-col py-3">
                             <label

@@ -119,6 +119,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     //DATA MASTER
@@ -152,6 +153,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masterpegawai"){
@@ -184,6 +186,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/levelpohon"){
@@ -216,6 +219,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     //Master Program Kegiatan
@@ -249,6 +253,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masterprogramkegiatan/kegiatan"){
@@ -281,6 +286,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masterprogramkegiatan/program"){
@@ -313,6 +319,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masterprogramkegiatan/subkegiatan"){
@@ -345,6 +352,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masterprogramkegiatan/urusan"){
@@ -377,6 +385,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masterjabatan"){
@@ -409,6 +418,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masterlembaga"){
@@ -440,6 +450,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masteruser"){
@@ -473,6 +484,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/DataMaster/masterrole"){
@@ -505,6 +517,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     //PERENCANAAN KOTA
@@ -538,6 +551,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/tematikkota"){
@@ -570,6 +584,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/subtematik"){
@@ -602,6 +617,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     //PERENCANAAN OPD
@@ -635,6 +651,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
     }
     if(url == "/rencanakinerja"){
@@ -697,6 +714,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPokokPikiran(false);
       setMandatori(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
       setRincianBelanja(true);
     }
@@ -728,6 +746,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRencanaKinerjaKAK(false);
       setRincianBelanja(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
       setPohonCascading(false);
       setLaporan(false);
     }
@@ -760,6 +779,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRencanaKinerjaKAK(false);
       setRincianBelanja(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
     }
     if(url == "/mandatori"){
       setDashboard(false);
@@ -790,6 +810,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRencanaKinerjaKAK(false);
       setRincianBelanja(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
     }
     if(url == "/inisiatif"){
       setDashboard(false);
@@ -820,6 +841,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRencanaKinerjaKAK(false);
       setRincianBelanja(false);
       setManajemenResiko(false);
+      setRencanaKinerja(false);
     }
     if(url == "/manajemenresiko"){
       setDashboard(false);
@@ -842,6 +864,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPerencanaanKota(true);
       setUsulan(false);
       setRencanaKinerjaKAK(false);
+      setRencanaKinerja(false);
       setRincianBelanja(false);
       setMusrenbang(false);
       setPokokPikiran(false);
@@ -1229,7 +1252,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                   </Link>
                 </div>
                 }
-              <Link href="/rencanakinerja">
+              <Link href="/rencanakinerjakak">
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RencanaKinerjaKAK ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                   <TbChecklist className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rencana Kinerja KAK</span>

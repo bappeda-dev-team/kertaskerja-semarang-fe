@@ -51,12 +51,9 @@ export const FormPohonOpd: React.FC<{
       formState: { errors },
       reset
     } = useForm<FormValue>();
-    const [formData, setFormData] = useState({ tema: '', keterangan: '' });
     const [NamaPohon, setNamaPohon] = useState<string>('');
     const [Keterangan, setKeterangan] = useState<string>('');
-    const [KodeOpd, setKodeOpd] = useState<OptionTypeString | null>(null);
     const [Pelaksana, setPelaksana] = useState<OptionTypeString[]>([]);
-    const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
     const [PelaksanaOption, setPelaksanaOption] = useState<OptionTypeString[]>([]);
     const [Tahun, setTahun] = useState<any>(null);
     const [SelectedOpd, setSelectedOpd] = useState<any>(null);
@@ -89,32 +86,6 @@ export const FormPohonOpd: React.FC<{
         }
     },[]);
 
-    const fetchOpd = async() => {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      setIsLoading(true);
-      try{ 
-        const response = await fetch(`${API_URL}/opd/findall`,{
-          method: 'GET',
-          headers: {
-            Authorization: `${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if(!response.ok){
-          throw new Error('cant fetch data opd');
-        }
-        const data = await response.json();
-        const opd = data.data.map((item: any) => ({
-          value : item.kode_opd,
-          label : item.nama_opd,
-        }));
-        setOpdOption(opd);
-      } catch (err){
-        console.log('gagal mendapatkan data opd');
-      } finally {
-        setIsLoading(false);
-      }
-    };
     const fetchPelaksana = async() => {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
       setIsLoading(true);
@@ -166,7 +137,7 @@ export const FormPohonOpd: React.FC<{
             parent: id,
             pelaksana: pelaksanaIds,
             tahun: Tahun?.value?.toString(),
-            kode_opd: data.kode_opd?.value,
+            kode_opd: user?.roles == 'super_admin' ? SelectedOpd?.value : user?.kode_opd,
         };
         // console.log(formData);
         try{
@@ -225,55 +196,6 @@ export const FormPohonOpd: React.FC<{
                         onSubmit={handleSubmit(onSubmit)}
                         className='w-full'
                     >
-                        <div className="flex flex-col py-3">
-                            <label
-                                className="uppercase text-xs font-bold text-gray-700 my-2"
-                                htmlFor="kode_opd"
-                            >
-                                Perangkat Daerah
-                            </label>
-                            <Controller
-                                name="kode_opd"
-                                control={control}
-                                rules={{required : "Perangkat Daerah Harus Terisi"}}
-                                render={({ field }) => (
-                                <>
-                                    <Select
-                                        {...field}
-                                        placeholder="Masukkan Perangkat Daerah"
-                                        value={KodeOpd}
-                                        options={OpdOption}
-                                        isLoading={isLoading}
-                                        isSearchable
-                                        isClearable
-                                        onMenuOpen={() => {
-                                            if (OpdOption.length === 0) {
-                                                fetchOpd();
-                                            }
-                                        }}
-                                        onChange={(option) => {
-                                            field.onChange(option);
-                                            setKodeOpd(option);
-                                        }}
-                                        styles={{
-                                            control: (baseStyles) => ({
-                                            ...baseStyles,
-                                            borderRadius: '8px',
-                                            textAlign: 'start',
-                                            })
-                                        }}
-                                    />
-                                    {errors.kode_opd ?
-                                        <h1 className="text-red-500">
-                                            {errors.kode_opd.message}
-                                        </h1>
-                                    :
-                                        <h1 className="text-slate-300 text-xs">*Perangkat Daerah Harus Terisi</h1>
-                                    }
-                                </>
-                                )}
-                            />
-                        </div>
                         <div className="flex flex-col py-3">
                             <label
                                 className="uppercase text-xs font-bold text-gray-700 my-2"

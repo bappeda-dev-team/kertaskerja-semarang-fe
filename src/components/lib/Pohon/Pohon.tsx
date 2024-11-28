@@ -744,8 +744,6 @@ export const TablePohonEdited = (props: any) => {
     const opd = props.item.kode_opd;
     const jenis = props.item.jenis_pohon;
     const indikator = props.item.indikators;
-    const target = props.item.target;
-    const satuan = props.item.satuan;
     return (
       <table className='w-full'>
         <tbody>

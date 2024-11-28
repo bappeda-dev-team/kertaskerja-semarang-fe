@@ -532,7 +532,7 @@ export const TablePohon = (props: any) => {
 export const TablePohonEdited = (props: any) => {
   const tema = props.item.nama_pohon;
   const keterangan = props.item.keterangan;
-  const opd = props.item.kode_opd;
+  const opd = props.item.nama_opd;
   const jenis = props.item.jenis_pohon;
   const indikator = props.item.indikators;
   const pelaksana = props.item.pelaksana;
