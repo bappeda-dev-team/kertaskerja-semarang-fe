@@ -67,7 +67,7 @@ const Inisiatif: React.FC<id> = ({id}) => {
         if(user?.roles != undefined){
             fetchInisiatif();
         }
-    },[id, user]);
+    },[id, user, token]);
     
     if(Loading){
         return(

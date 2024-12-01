@@ -68,7 +68,7 @@ const Pokir: React.FC<id> = ({id}) => {
         if(user?.roles != undefined){    
             fetchPokir();
         }
-    },[id, user]);
+    },[id, user, token]);
 
     if(Loading){
         return(

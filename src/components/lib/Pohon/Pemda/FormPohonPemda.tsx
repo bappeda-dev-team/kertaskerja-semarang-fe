@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react';
 import { ButtonSky, ButtonRed, ButtonRedBorder, ButtonSkyBorder } from '@/components/global/Button';
 import { Controller, SubmitHandler, useForm, useFieldArray } from "react-hook-form";
-import { getOpdTahun } from '../Cookie';
+import { getOpdTahun } from '../../Cookie';
 import { AlertNotification } from '@/components/global/Alert';
 import Select from 'react-select';
 import { PohonEdited } from './Pohon';
-import { getToken } from '../Cookie';
+import { getToken } from '../../Cookie';
 
 interface OptionTypeString {
     value: string;
@@ -24,6 +24,7 @@ interface FormValue {
     jenis_pohon: string;
     keterangan: string;
     tahun: OptionTypeString;
+    status: string;
     kode_opd: OptionTypeString;
     pelaksana: OptionTypeString[];
     pohon?: OptionType;
@@ -159,19 +160,16 @@ export const FormPohonPemda: React.FC<{
     
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
-        const pelaksanaIds = Pelaksana?.map((pelaksana) => ({
-            pegawai_id: pelaksana.value,
-        })) || [];
         const formData = {
             //key : value
             nama_pohon : data.nama_pohon,
             Keterangan : data.keterangan,
-            jenis_pohon:    level === 0 ? "SubTematik" :
-                            level === 1 ? "SubSubTematik" :
-                            level === 2 ? "SuperSubTematik" :
-                            level === 3 ? "StrategicPemda" :
-                            level === 4 ? "TacticalPemda" :
-                            level === 5 ? "OperationalPemda" : "Unknown",
+            jenis_pohon:    level === 0 ? "Sub Tematik" :
+                            level === 1 ? "Sub Sub Tematik" :
+                            level === 2 ? "Super Sub Tematik" :
+                            level === 3 ? "Strategic Pemda" :
+                            level === 4 ? "Tactical Pemda" :
+                            level === 5 ? "Operational Pemda" : "Unknown",
             level_pohon :   level === 0 ? 1 :
                             level === 1 ? 2 :
                             level === 2 ? 3 :
@@ -179,9 +177,9 @@ export const FormPohonPemda: React.FC<{
                             level === 4 ? 5 :
                             level === 5 ? 6 : "Unknown",
             parent: id,
-            pelaksana: pelaksanaIds,
             tahun: Tahun?.value?.toString(),
             kode_opd:  (level === 0 || level === 1 || level === 2) ? null : data.kode_opd?.value,
+            status: (level === 0 || level === 1 || level === 2) ? '' : 'menunggu_disetujui',
             ...(data.indikator && {
                 indikator: data.indikator.map((ind) => ({
                     indikator: ind.nama_indikator,
@@ -255,13 +253,13 @@ export const FormPohonPemda: React.FC<{
                                 htmlFor="nama_pohon"
                             >
                                 {level == 0 && 
-                                    "SubTematik"
+                                    "Sub Tematik"
                                 } 
                                 {level == 1 && 
-                                    "SubSubTematik"
+                                    "Sub Sub Tematik"
                                 } 
                                 {level == 2 && 
-                                    "SuperSubTematik"
+                                    "Super Sub Tematik"
                                 } 
                                 {level == 3 && 
                                     "Strategic Pemda"
@@ -919,6 +917,10 @@ export const FormEditPohon: React.FC<{
                     nama_pohon: data.nama_pohon || '',
                     keterangan: data.keterangan || '',
                     parent: data.parent || '',
+                    pelaksana: data.pelaksana?.map((item: any) => ({
+                        value: item.pegawai_id,
+                        label: item.nama_pegawai,
+                    })) || [],
                     indikator: data.indikators?.map((item: indikator) => ({
                         nama_indikator: item.nama_indikator,
                         targets: item.targets.map((t: target) => ({
@@ -927,6 +929,12 @@ export const FormEditPohon: React.FC<{
                         })),
                     })),
                 });
+                setPelaksana(
+                    data.pelaksana?.map((item: any) => ({
+                        value: item.pegawai_id,
+                        label: item.nama_pegawai,
+                    })) || []
+                );
                 replace(data.indikator.map((item: indikator) => ({
                     indikator: item.nama_indikator,
                     targets: item.targets,
@@ -940,19 +948,23 @@ export const FormEditPohon: React.FC<{
     
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const pelaksanaIds = Pelaksana?.map((pelaksana) => ({
+            pegawai_id: pelaksana.value,
+        })) || [];
         const formData = {
             //key : value
             nama_pohon : data.nama_pohon,
             Keterangan : data.keterangan,
-            jenis_pohon:    level === 1 ? "SubTematik" :
-                            level === 2 ? "SubSubTematik" :
-                            level === 3 ? "SuperSubTematik" :
-                            level === 4 ? "StrategicPemda" :
-                            level === 5 ? "TacticalPemda" :
-                            level === 6 ? "OperationalPemda" : "Unknown",
+            jenis_pohon:    level === 1 ? "Sub Tematik" :
+                            level === 2 ? "Sub Sub Tematik" :
+                            level === 3 ? "Super Sub Tematik" :
+                            level === 4 ? "Strategic Pemda" :
+                            level === 5 ? "Tactical Pemda" :
+                            level === 6 ? "Operational Pemda" : "Unknown",
             level_pohon :   level,
             parent: Number(Parent),
             tahun: Tahun?.value?.toString(),
+            pelaksana: pelaksanaIds,
             kode_opd:  (level === 0 || level === 1 || level === 2 || level === 3) ? null : KodeOpd?.value,
             ...(data.indikator && {
                 indikator: data.indikator.map((ind) => ({
@@ -1028,7 +1040,13 @@ export const FormEditPohon: React.FC<{
                             htmlFor="nama_pohon"
                         >
                             {level == 1 && 
-                                "SubTematik"
+                                "Sub Tematik"
+                            } 
+                            {level == 2 && 
+                                "Sub Sub Tematik"
+                            } 
+                            {level == 3 && 
+                                "Super Sub Tematik"
                             } 
                             {level == 4 && 
                                 "Strategic"

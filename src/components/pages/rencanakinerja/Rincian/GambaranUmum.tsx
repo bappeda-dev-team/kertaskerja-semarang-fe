@@ -66,7 +66,7 @@ const GambaranUmum: React.FC<id> = ({id}) => {
         if(user?.roles != undefined){    
             fetchGambaran();
         }
-    },[id, user]);
+    },[id, user, token]);
 
     const handleModalNewGambaranUmum = () => {
         if(isOpenNewGambaranUmum){

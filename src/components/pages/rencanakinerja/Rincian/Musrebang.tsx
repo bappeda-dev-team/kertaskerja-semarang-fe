@@ -69,7 +69,7 @@ const Musrebang: React.FC<id> = ({id}) => {
         if(user?.roles != undefined){    
             fetchMusrebang();
         }
-    },[id, user]);
+    },[id, user, token]);
 
     if(Loading){
         return(

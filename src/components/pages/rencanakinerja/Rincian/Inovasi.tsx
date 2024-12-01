@@ -68,7 +68,7 @@ const Inovasi: React.FC<id> = ({id}) => {
         if(user?.roles != undefined){    
             fetchInovasi();
         }
-    },[id, user]);
+    },[id, user, token]);
 
     const handleModalNewInovasi = () => {
         if(isOpenNewInovasi){

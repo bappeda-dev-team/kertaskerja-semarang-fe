@@ -67,7 +67,7 @@ const Mandatori: React.FC<id> = ({id}) => {
         if(user?.roles != undefined){
             fetchMandatori();
         }
-    },[id, user]);
+    },[id, user, token]);
 
     if(Loading){
         return(

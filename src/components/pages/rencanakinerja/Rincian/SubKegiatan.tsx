@@ -69,7 +69,7 @@ const SubKegiatan: React.FC<id> = ({id}) => {
         if(user?.roles != undefined){
             fetchSubKegiatan();
         }
-    },[id, user]);
+    },[id, user, token]);
 
     if(Loading){
         return(

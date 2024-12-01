@@ -1,7 +1,7 @@
 'use client'
 
 import { ButtonSky, ButtonSkyBorder, ButtonRedBorder } from "@/components/global/Button";
-import { ModalDasarHukum } from "../ModalDasarHukum";
+import { ModalDasarHukumAdd, ModalDasarHukumEdit } from "../ModalDasarHukum";
 import { useState, useEffect } from "react";
 import { getToken, getUser } from "@/components/lib/Cookie";
 import { LoadingSync } from "@/components/global/Loading";
@@ -20,6 +20,8 @@ interface dasar_hukum {
 const DasarHukum: React.FC<id> = ({id}) => {
 
     const [isOpenNewDasarHukum, setIsOpenNewDasarHukum] = useState<boolean>(false);
+    const [isOpenEditDasarHukum, setIsOpenEditDasarHukum] = useState<boolean>(false);
+    const [IdEdit, setIdEdit] = useState<string>('');
     const [dasarHukum, setDasarHukum] = useState<dasar_hukum[]>([]);
     const [Loading, setLoading] = useState<boolean | null>(null);
     const [dataNull, setDataNull] = useState<boolean | null>(null);
@@ -68,13 +70,22 @@ const DasarHukum: React.FC<id> = ({id}) => {
         if(user?.roles != undefined){    
             fetchDasarHukum();
         }
-    },[id, user, isOpenNewDasarHukum]);
+    },[token, id, user, isOpenNewDasarHukum, isOpenEditDasarHukum]);
 
     const handleModalNewDasarHukum = () => {
         if(isOpenNewDasarHukum){
             setIsOpenNewDasarHukum(false);
         } else {
             setIsOpenNewDasarHukum(true);
+        }
+    }
+    const handleModalEditDasarHukum = (id: string) => {
+        if(isOpenEditDasarHukum){
+            setIsOpenEditDasarHukum(false);
+            setIdEdit('');
+        } else {
+            setIdEdit(id);
+            setIsOpenEditDasarHukum(true);
         }
     }
 
@@ -117,7 +128,7 @@ const DasarHukum: React.FC<id> = ({id}) => {
             <div className="flex flex-wrap justify-between items-center mt-3 rounded-t-xl border px-5 py-3">
                 <h1 className="font-bold">Dasar Hukum</h1>
                 <ButtonSky onClick={handleModalNewDasarHukum}>Tambah Dasar Hukum</ButtonSky>
-                <ModalDasarHukum 
+                <ModalDasarHukumAdd 
                     onClose={handleModalNewDasarHukum} 
                     isOpen={isOpenNewDasarHukum}
                     id_rekin={id}
@@ -149,7 +160,13 @@ const DasarHukum: React.FC<id> = ({id}) => {
                                         <td className="border px-6 py-3">{data.uraian}</td>
                                         <td className="border px-6 py-3">
                                             <div className="flex flex-col justify-center items-center gap-2">
-                                                <ButtonSkyBorder className="w-full">Edit</ButtonSkyBorder>
+                                                <ButtonSkyBorder className="w-full" onClick={() => handleModalEditDasarHukum(data.id)}>Edit</ButtonSkyBorder>
+                                                <ModalDasarHukumEdit
+                                                    onClose={() => handleModalEditDasarHukum('')} 
+                                                    isOpen={isOpenEditDasarHukum}
+                                                    id_rekin={id}
+                                                    id={IdEdit}
+                                                />
                                                 <ButtonRedBorder
                                                     className="w-full"
                                                     onClick={() => {
