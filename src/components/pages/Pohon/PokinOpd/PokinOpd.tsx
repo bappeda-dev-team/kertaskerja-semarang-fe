@@ -13,10 +13,6 @@ import { getUser, getToken, getOpdTahun } from '@/components/lib/Cookie';
 import Select from 'react-select';
 import { AlertNotification } from '@/components/global/Alert';
 
-interface OptionType {
-    value: number;
-    label: string;
-}
 interface PokinPemda {
     value: number;
     label: string;
@@ -52,9 +48,9 @@ const PokinOpd = () => {
     const [Loading, setLoading] = useState<boolean | null>(null);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
     const [OptionPokinPemda, setOptionPokinPemda] = useState<PokinPemda[]>([]);
-    const [OptionPohonParent, setOptionPohonParent] = useState<OptionType[]>([]);
+    const [OptionPohonParent, setOptionPohonParent] = useState<PokinPemda[]>([]);
     const [PohonPemda, setPohonPemda] = useState<PokinPemda | null>(null);
-    const [PohonParent, setPohonParent] = useState<OptionType | null>(null);
+    const [PohonParent, setPohonParent] = useState<PokinPemda | null>(null);
     const [error, setError] = useState<string>('');
     const token = getToken();
 
@@ -148,6 +144,7 @@ const PokinOpd = () => {
             const parent = data.data.map((item: any) => ({
                 value: item.id,
                 label: `${item.jenis_pohon} - ${item.nama_pohon}`,
+                jenis: item.jenis_pohon,
             }));
             setOptionPohonParent(parent);
         } catch (err) {
@@ -163,6 +160,7 @@ const PokinOpd = () => {
         const formData = {
             id: id,
             parent: PohonParent?.value,
+            jenis_pohon: PohonPemda?.jenis,
         }
         // console.log(formData);
         try{
@@ -179,6 +177,7 @@ const PokinOpd = () => {
             }
             AlertNotification("Berhasil", "Pohon dari pemda di terima", "success", 1000);
             setDeleted((prev) => !prev);
+            setPohonPemda(null);
         } catch(err){
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
             console.error(err);
