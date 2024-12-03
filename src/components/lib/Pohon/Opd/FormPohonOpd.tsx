@@ -62,12 +62,9 @@ export const FormPohonOpd: React.FC<{
     } = useForm<FormValue>();
     const [NamaPohon, setNamaPohon] = useState<string>('');
     const [Keterangan, setKeterangan] = useState<string>('');
-    const [Pelaksana, setPelaksana] = useState<OptionTypeString[]>([]);
-    const [PelaksanaOption, setPelaksanaOption] = useState<OptionTypeString[]>([]);
     const [Tahun, setTahun] = useState<any>(null);
     const [SelectedOpd, setSelectedOpd] = useState<any>(null);
     const [DataAdd, setDataAdd] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [IsAdded, setIsAdded] = useState<boolean>(false);
     const [Deleted, setDeleted] = useState<boolean>(false);
     const [user, setUser] = useState<any>(null);
@@ -95,33 +92,6 @@ export const FormPohonOpd: React.FC<{
         }
     },[]);
 
-    const fetchPelaksana = async() => {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      setIsLoading(true);
-      try{ 
-        const response = await fetch(`${API_URL}/pegawai/findall`,{
-          method: 'GET',
-          headers: {
-            Authorization: `${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if(!response.ok){
-          throw new Error('cant fetch data opd');
-        }
-        const data = await response.json();
-        const opd = data.data.map((item: any) => ({
-          value : item.id,
-          label : item.nama_pegawai,
-        }));
-        setPelaksanaOption(opd);
-      } catch (err){
-        console.log('gagal mendapatkan data opd');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     const { fields, append, remove } = useFieldArray({
         control,
         name: "indikator",
@@ -138,13 +108,8 @@ export const FormPohonOpd: React.FC<{
                             level === 2 ? "Super Sub Tematik" :
                             level === 3 ? "Strategic" :
                             level === 4 ? "Tactical" :
-                            level === 5 ? "Operational" : "Unknown",
-            level_pohon :   level === 0 ? 1 :
-                            level === 1 ? 2 :
-                            level === 2 ? 3 :
-                            level === 3 ? 4 :
-                            level === 4 ? 5 :
-                            level === 5 ? 6 : "Unknown",
+                            level === 5 ? "Operational" : "Operational N",
+            level_pohon : level >= 0 && level <= 20 ? level + 1 : "Unknown",
             parent: id,
             tahun: Tahun?.value?.toString(),
             kode_opd: user?.roles == 'super_admin' ? SelectedOpd?.value : user?.kode_opd,
@@ -191,23 +156,17 @@ export const FormPohonOpd: React.FC<{
             :
             <div className="tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg shadow-slate-500">
                 <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black rounded-lg">
-                    {level == 0 && 
-                        <h1>Tambah SubTematik Baru </h1>
-                    } 
-                    {level == 1 && 
-                        <h1>Tambah SubSubTematik Baru </h1>
-                    } 
-                    {level == 2 && 
-                        <h1>Tambah SuperSubTematik Baru </h1>
-                    } 
-                    {level == 3 && 
+                    { 
+                    level == 3 ?
                         <h1>Tambah Strategic Baru </h1>
-                    } 
-                    {level == 4 && 
+                    : 
+                    level == 4 ?
                         <h1>Tambah Tactical Baru </h1>
-                    } 
-                    {level == 5 && 
+                    : 
+                    level == 5 ?
                         <h1>Tambah Operational Baru </h1>
+                        :
+                        <h1>Tambah Operational N Baru </h1>
                     }
                 </div>
                 <div className="flex justify-center my-3 w-full">
@@ -220,23 +179,25 @@ export const FormPohonOpd: React.FC<{
                                 className="uppercase text-xs font-bold text-gray-700 my-2"
                                 htmlFor="nama_pohon"
                             >
-                                {level == 0 && 
+                                {level == 0 ? 
                                     "Sub Tematik"
-                                } 
-                                {level == 1 && 
+                                : 
+                                level == 1 ? 
                                     "Sub Sub Tematik"
-                                } 
-                                {level == 2 && 
+                                : 
+                                level == 2 ? 
                                     "Super Sub Tematik"
-                                } 
-                                {level == 3 && 
+                                : 
+                                level == 3 ? 
                                     "Strategic"
-                                } 
-                                {level == 4 && 
+                                : 
+                                level == 4 ? 
                                     "Tactical"
-                                } 
-                                {level == 5 && 
+                                : 
+                                level == 5 ? 
                                     "Operational"
+                                    :
+                                    "Operational N"
                                 }
                             </label>
                             <Controller
@@ -398,9 +359,7 @@ export const FormEditPohon: React.FC<{
     const [JenisPohon, setJenisPohon] = useState<string | null>(null);
     const [Tahun, setTahun] = useState<any>(null);
     const [Pelaksana, setPelaksana] = useState<OptionTypeString[]>([]);
-    const [PelaksanaOption, setPelaksanaOption] = useState<OptionTypeString[]>([]);
     const [SelectedOpd, setSelectedOpd] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [IsEdited, setIsEdited] = useState<boolean>(false);
     const [DataEdit, setDataEdit] = useState<any>(null);
     const [Deleted, setDeleted] = useState<boolean>(false);
@@ -433,33 +392,6 @@ export const FormEditPohon: React.FC<{
         control,
         name: "indikator",
     });
-
-    const fetchPelaksana = async() => {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL;
-        setIsLoading(true);
-        try{ 
-          const response = await fetch(`${API_URL}/pegawai/findall`,{
-            method: 'GET',
-            headers: {
-              Authorization: `${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-          if(!response.ok){
-            throw new Error('cant fetch data opd');
-          }
-          const data = await response.json();
-          const opd = data.data.map((item: any) => ({
-            value : item.id,
-            label : item.nama_pegawai,
-          }));
-          setPelaksanaOption(opd);
-        } catch (err){
-          console.log('gagal mendapatkan data opd');
-        } finally {
-          setIsLoading(false);
-        }
-      };
 
     useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -528,7 +460,7 @@ export const FormEditPohon: React.FC<{
             nama_pohon : data.nama_pohon,
             Keterangan : data.keterangan,
             jenis_pohon: JenisPohon,
-            level_pohon :   level,
+            level_pohon: level,
             parent: Number(Parent),
             pelaksana: pelaksanaIds,
             tahun: Tahun?.value?.toString(),
@@ -578,14 +510,16 @@ export const FormEditPohon: React.FC<{
             :
             <div className="tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg shadow-slate-500">
                 <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black rounded-lg">
-                    {level == 4 && 
+                    {level == 4 ? 
                         <h1>Edit Strategic </h1>
-                    } 
-                    {level == 5 && 
+                    :
+                    level == 5 ? 
                         <h1>Edit Tactical </h1>
-                    }
-                    {level == 6 && 
+                    :
+                    level == 6 ? 
                         <h1>Edit Operational </h1>
+                        :
+                        <h1>Edit Operational N</h1>
                     }
                 </div>
                 <div className="flex justify-center my-3 w-full">

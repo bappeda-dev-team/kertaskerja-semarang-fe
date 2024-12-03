@@ -69,8 +69,8 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         ${tema.jenis_pohon === "OperationalPemda" && 'shadow-slate-500'}
                         ${tema.jenis_pohon === "Strategic" && 'shadow-red-500 bg-red-700'}
                         ${tema.jenis_pohon === "Tactical" && 'shadow-blue-500 bg-blue-500'}
-                        ${tema.jenis_pohon === "Operational" && 'shadow-green-500 bg-green-500'}
-                        `}
+                        ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'shadow-green-500 bg-green-500'}
+                    `}
                 >
                     {/* HEADER */}
                     <div
@@ -80,10 +80,10 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${tema.jenis_pohon === "Operational Pemda" && 'border-green-500 text-green-500'}
                             ${tema.jenis_pohon === "Strategic" && 'border-red-500 text-red-700'}
                             ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
-                            ${tema.jenis_pohon === "Operational" && 'border-green-500 text-green-500'}
+                            ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
                         `}
                             >
-                        <h1>{tema.jenis_pohon === 'Strategic Pemda' ? 'Strategic Pemda' : tema.jenis_pohon}</h1>
+                        <h1>{tema.jenis_pohon}</h1>
                     </div>
                     {/* BODY */}
                     <div className="flex justify-center my-3">
@@ -214,7 +214,7 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                     className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg
                         ${tema.jenis_pohon === "Strategic" && 'shadow-red-500 bg-red-700'}
                         ${tema.jenis_pohon === "Tactical" && 'shadow-blue-500 bg-blue-500'}
-                        ${tema.jenis_pohon === "Operational" && 'shadow-green-500 bg-green-500'}
+                        ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'shadow-green-500 bg-green-500'}
                     `}
                 >
                     {/* HEADER */}
@@ -222,7 +222,7 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         className={`flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 rounded-lg bg-white
                             ${tema.jenis_pohon === "Strategic" && 'border-red-500 text-red-700'}
                             ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
-                            ${tema.jenis_pohon === "Operational" && 'border-green-500 text-green-500'}
+                            ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
                         `}
                     >
                         <h1>{tema.jenis_pohon === 'StrategicKota' ? 'StrategicPemda' : tema.jenis_pohon}</h1>
@@ -306,7 +306,7 @@ export const TablePohon = (props: any) => {
                 className={`min-w-[100px] border px-2 py-3 bg-white text-start rounded-tl-lg
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "Strategic Pemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}
@@ -315,12 +315,13 @@ export const TablePohon = (props: any) => {
                 {(jenis === 'Strategic' || jenis === 'Strategic Pemda') && 'Strategic'}
                 {(jenis === 'Tactical' || jenis === 'Tactical Pemda') && 'Tactical'}
                 {(jenis === 'Operational' || jenis === 'Operational Pemda') && 'Operational'}
+                {jenis === 'Operational N' && 'Operational N'}
             </td>
             <td 
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start rounded-tr-lg
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "Strategic Pemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}
@@ -338,7 +339,7 @@ export const TablePohon = (props: any) => {
                                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}
@@ -350,7 +351,7 @@ export const TablePohon = (props: any) => {
                                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}
@@ -365,7 +366,7 @@ export const TablePohon = (props: any) => {
                                     className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                         ${jenis === "Strategic" && "border-red-700"}
                                         ${jenis === "Tactical" && "border-blue-500"}
-                                        ${jenis === "Operational" && "border-green-500"}
+                                        ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                         ${jenis === "Strategic Pemda" && "border-black"}
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
@@ -377,7 +378,7 @@ export const TablePohon = (props: any) => {
                                     className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                         ${jenis === "Strategic" && "border-red-700"}
                                         ${jenis === "Tactical" && "border-blue-500"}
-                                        ${jenis === "Operational" && "border-green-500"}
+                                        ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                         ${jenis === "Strategic Pemda" && "border-black"}
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
@@ -397,7 +398,7 @@ export const TablePohon = (props: any) => {
                                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}
@@ -409,7 +410,7 @@ export const TablePohon = (props: any) => {
                                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}
@@ -424,7 +425,7 @@ export const TablePohon = (props: any) => {
                                     className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                         ${jenis === "Strategic" && "border-red-700"}
                                         ${jenis === "Tactical" && "border-blue-500"}
-                                        ${jenis === "Operational" && "border-green-500"}
+                                        ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                         ${jenis === "Strategic Pemda" && "border-black"}
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
@@ -436,7 +437,7 @@ export const TablePohon = (props: any) => {
                                     className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                         ${jenis === "Strategic" && "border-red-700"}
                                         ${jenis === "Tactical" && "border-blue-500"}
-                                        ${jenis === "Operational" && "border-green-500"}
+                                        ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                         ${jenis === "Strategic Pemda" && "border-black"}
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
@@ -455,7 +456,7 @@ export const TablePohon = (props: any) => {
                             className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                 ${jenis === "Strategic" && "border-red-700"}
                                 ${jenis === "Tactical" && "border-blue-500"}
-                                ${jenis === "Operational" && "border-green-500"}
+                                ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                 ${jenis === "Strategic Pemda" && "border-black"}
                                 ${jenis === "Tactical Pemda" && "border-black"}
                                 ${jenis === "Operational Pemda" && "border-black"}
@@ -467,7 +468,7 @@ export const TablePohon = (props: any) => {
                             className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                 ${jenis === "Strategic" && "border-red-700"}
                                 ${jenis === "Tactical" && "border-blue-500"}
-                                ${jenis === "Operational" && "border-green-500"}
+                                ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                 ${jenis === "Strategic Pemda" && "border-black"}
                                 ${jenis === "Tactical Pemda" && "border-black"}
                                 ${jenis === "Operational Pemda" && "border-black"}
@@ -481,7 +482,7 @@ export const TablePohon = (props: any) => {
                                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -493,7 +494,7 @@ export const TablePohon = (props: any) => {
                                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -510,7 +511,7 @@ export const TablePohon = (props: any) => {
                 className={`min-w-[100px] border px-2 py-1 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "Strategic Pemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -522,7 +523,7 @@ export const TablePohon = (props: any) => {
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "Strategic Pemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -537,7 +538,7 @@ export const TablePohon = (props: any) => {
                 className={`min-w-[100px] border px-2 py-1 bg-white text-start rounded-bl-lg
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "Strategic Pemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -549,7 +550,7 @@ export const TablePohon = (props: any) => {
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start rounded-br-lg
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "Strategic Pemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -576,7 +577,7 @@ export const TablePohonEdited = (props: any) => {
                 className={`min-w-[100px] border px-2 py-3 bg-white text-start rounded-tl-lg
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "StrategicPemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}
@@ -585,12 +586,13 @@ export const TablePohonEdited = (props: any) => {
                 {(jenis === 'Strategic' || jenis === 'Strategic Pemda') && 'Strategic'}
                 {(jenis === 'Tactical' || jenis === 'Tactical Pemda') && 'Tactical'}
                 {(jenis === 'Operational' || jenis === 'Operational Pemda') && 'Operational'}
+                {jenis === 'Operational N' && 'Operational N'}
             </td>
             <td 
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start rounded-tr-lg
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "StrategicPemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}
@@ -608,7 +610,7 @@ export const TablePohonEdited = (props: any) => {
                                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}
@@ -620,7 +622,7 @@ export const TablePohonEdited = (props: any) => {
                                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}
@@ -635,7 +637,7 @@ export const TablePohonEdited = (props: any) => {
                                     className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                         ${jenis === "Strategic" && "border-red-700"}
                                         ${jenis === "Tactical" && "border-blue-500"}
-                                        ${jenis === "Operational" && "border-green-500"}
+                                        ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                         ${jenis === "Strategic Pemda" && "border-black"}
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
@@ -647,7 +649,7 @@ export const TablePohonEdited = (props: any) => {
                                     className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                         ${jenis === "Strategic" && "border-red-700"}
                                         ${jenis === "Tactical" && "border-blue-500"}
-                                        ${jenis === "Operational" && "border-green-500"}
+                                        ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                         ${jenis === "Strategic Pemda" && "border-black"}
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
@@ -667,7 +669,7 @@ export const TablePohonEdited = (props: any) => {
                                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}
@@ -679,7 +681,7 @@ export const TablePohonEdited = (props: any) => {
                                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}
@@ -694,7 +696,7 @@ export const TablePohonEdited = (props: any) => {
                                     className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                         ${jenis === "Strategic" && "border-red-700"}
                                         ${jenis === "Tactical" && "border-blue-500"}
-                                        ${jenis === "Operational" && "border-green-500"}
+                                        ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                         ${jenis === "Strategic Pemda" && "border-black"}
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
@@ -706,7 +708,7 @@ export const TablePohonEdited = (props: any) => {
                                     className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                         ${jenis === "Strategic" && "border-red-700"}
                                         ${jenis === "Tactical" && "border-blue-500"}
-                                        ${jenis === "Operational" && "border-green-500"}
+                                        ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                         ${jenis === "Strategic Pemda" && "border-black"}
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
@@ -725,7 +727,7 @@ export const TablePohonEdited = (props: any) => {
                             className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                 ${jenis === "Strategic" && "border-red-700"}
                                 ${jenis === "Tactical" && "border-blue-500"}
-                                ${jenis === "Operational" && "border-green-500"}
+                                ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                 ${jenis === "Strategic Pemda" && "border-black"}
                                 ${jenis === "Tactical Pemda" && "border-black"}
                                 ${jenis === "Operational Pemda" && "border-black"}
@@ -737,7 +739,7 @@ export const TablePohonEdited = (props: any) => {
                             className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                 ${jenis === "Strategic" && "border-red-700"}
                                 ${jenis === "Tactical" && "border-blue-500"}
-                                ${jenis === "Operational" && "border-green-500"}
+                                ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                 ${jenis === "Strategic Pemda" && "border-black"}
                                 ${jenis === "Tactical Pemda" && "border-black"}
                                 ${jenis === "Operational Pemda" && "border-black"}
@@ -751,7 +753,7 @@ export const TablePohonEdited = (props: any) => {
                                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -763,7 +765,7 @@ export const TablePohonEdited = (props: any) => {
                                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
-                                    ${jenis === "Operational" && "border-green-500"}
+                                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                                     ${jenis === "Strategic Pemda" && "border-black"}
                                     ${jenis === "Tactical Pemda" && "border-black"}
                                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -780,7 +782,7 @@ export const TablePohonEdited = (props: any) => {
                 className={`min-w-[100px] border px-2 py-1 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "StrategicPemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -792,7 +794,7 @@ export const TablePohonEdited = (props: any) => {
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "StrategicPemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -807,7 +809,7 @@ export const TablePohonEdited = (props: any) => {
                 className={`min-w-[100px] border px-2 py-1 bg-white text-start rounded-bl-lg
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "StrategicPemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -819,7 +821,7 @@ export const TablePohonEdited = (props: any) => {
                 className={`min-w-[300px] border px-2 py-3 bg-white text-start rounded-br-lg
                     ${jenis === "Strategic" && "border-red-700"}
                     ${jenis === "Tactical" && "border-blue-500"}
-                    ${jenis === "Operational" && "border-green-500"}
+                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
                     ${jenis === "StrategicPemda" && "border-black"}
                     ${jenis === "Tactical Pemda" && "border-black"}
                     ${jenis === "Operational Pemda" && "border-black"}    
@@ -843,6 +845,12 @@ export const newChildButtonName = (jenis: string): string => {
       return 'Tactical';
     case 'Tactical':
       return 'Opertional';
+    case 'Operational':
+      return 'Opertional N';
+    case 'Operational Pemda':
+      return 'Opertional N';
+    case 'Operational N':
+      return 'Opertional N';
     default:
       return '-'
   }
