@@ -49,6 +49,9 @@ const PokinOpd = () => {
     const [IsLoading, setIsLoading] = useState<boolean>(false);
     const [OptionPokinPemda, setOptionPokinPemda] = useState<PokinPemda[]>([]);
     const [OptionPohonParent, setOptionPohonParent] = useState<PokinPemda[]>([]);
+    const [JumlahPemdaStrategic, setJumlahPemdaStrategic] = useState<PokinPemda[]>([]);
+    const [JumlahPemdaTactical, setJumlahPemdaTactical] = useState<PokinPemda[]>([]);
+    const [JumlahPemdaOperational, setJumlahPemdaOperational] = useState<PokinPemda[]>([]);
     const [PohonPemda, setPohonPemda] = useState<PokinPemda | null>(null);
     const [PohonParent, setPohonParent] = useState<PokinPemda | null>(null);
     const [error, setError] = useState<string>('');
@@ -250,6 +253,43 @@ const PokinOpd = () => {
             }
         }
     },[User, SelectedOpd, Tahun, Deleted, token]);
+
+    useEffect(() => {
+        const fetchPokinPemdaJumlah = async() => {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL;
+            setLoading(true);
+            try{
+                const url = User?.roles == 'super_admin' ? `pohon_kinerja/status/${SelectedOpd?.value}/${Tahun?.value}` : `pohon_kinerja/status/${User?.kode_opd}/${Tahun?.value}`;
+                const response = await fetch(`${API_URL}/${url}`, {
+                    headers: {
+                        Authorization: `${token}`,
+                        'Content-Type': 'application/json',
+                      },
+                });
+                if(!response.ok){
+                    throw new Error('terdapat kesalahan di koneksi backend');
+                }
+                const result = await response.json();
+                const data = result.data || [];
+                if(data){
+                    const Strategic = data.filter((item: any) => item.level_pohon == 4);
+                    setJumlahPemdaStrategic(Strategic);
+                    const Tactical = data.filter((item: any) => item.level_pohon == 5);
+                    setJumlahPemdaTactical(Tactical);
+                    const Operational = data.filter((item: any) => item.level_pohon == 6);
+                    setJumlahPemdaOperational(Operational);
+                }
+            } catch(err) {
+                setError('gagal mendapatkan data, terdapat kesalahan backend/server saat mengambil data pohon kinerja perangkat daerah');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        if(User?.roles != undefined){
+            fetchPokinPemdaJumlah();
+        }
+    },[User, SelectedOpd, Tahun, Deleted, token]);
     
     if(Loading){
         return(
@@ -317,59 +357,50 @@ const PokinOpd = () => {
                 }
             </div>
             <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl">
-                <div className="w-full">
-                    <div className="border-t-2 border-x-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-t-xl ">
-                        <h1 className="text-center font-semibold">
-                            Pohon Dari Pemda
+                <div className="flex flex-wrap gap-2">
+                    <div className="border-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-xl">
+                        <h1 className="font-semibold border-b-2 py-1 text-center">
+                            List Pohon Pemda Pending
                         </h1>
-                    </div>
-                    <div className="border-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-b-xl">
-                        <div className="mb-1">
-                            <label htmlFor="" className='uppercase text-xs font-bold text-gray-700 my-2 ml-1'>
-                                pohon pemda
-                            </label>
-                            <Select
-                                placeholder="Masukkan Perangkat Daerah"
-                                value={PohonPemda}
-                                options={OptionPokinPemda}
-                                isSearchable
-                                isClearable
-                                isLoading={IsLoading}
-                                onMenuOpen={() => {
-                                    if (OptionPokinPemda.length === 0) {
-                                        fetchPohonPemda();
-                                    }
-                                }}
-                                onChange={(option) => {
-                                    setPohonPemda(option);
-                                }}
-                                onMenuClose={() => setOptionPokinPemda([])}
-                                styles={{
-                                    control: (baseStyles) => ({
-                                    ...baseStyles,
-                                    borderRadius: '8px',
-                                    textAlign: 'start',
-                                    })
-                                }}
-                            />
+                        <div className="flex flex-col py-3 justify-between">
+                            <h1 className="font-semibold text-red-500">
+                                Strategic : {JumlahPemdaStrategic?.length || 0}
+                            </h1>
+                            <h1 className="font-semibold text-green-500">
+                                Tactical : {JumlahPemdaTactical?.length || 0}
+                            </h1>
+                            <h1 className="font-semibold text-blue-500">
+                                Operational : {JumlahPemdaOperational?.length || 0}
+                            </h1>
                         </div>
-                        {(PohonPemda?.jenis == 'Tactical Pemda' || PohonPemda?.jenis == 'Operational Pemda') &&
-                            <div className="mb-3">
+                    </div>
+                    <div className="">
+                        <div className="border-t-2 border-x-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-t-xl ">
+                            <h1 className="text-center font-semibold">
+                                Pohon Dari Pemda
+                            </h1>
+                        </div>
+                        <div className="border-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-b-xl">
+                            <div className="mb-1">
                                 <label htmlFor="" className='uppercase text-xs font-bold text-gray-700 my-2 ml-1'>
-                                    {PohonPemda?.jenis == 'Tactical Pemda' ? 'Strategic':'Tactical'}
+                                    pohon pemda
                                 </label>
                                 <Select
                                     placeholder="Masukkan Perangkat Daerah"
-                                    value={PohonParent}
-                                    options={OptionPohonParent}
+                                    value={PohonPemda}
+                                    options={OptionPokinPemda}
                                     isSearchable
                                     isClearable
                                     isLoading={IsLoading}
-                                    onMenuOpen={() => fetchPohonParent()}
-                                    onChange={(option) => {
-                                        setPohonParent(option);
+                                    onMenuOpen={() => {
+                                        if (OptionPokinPemda.length === 0) {
+                                            fetchPohonPemda();
+                                        }
                                     }}
-                                    onMenuClose={() => setOptionPohonParent([])}
+                                    onChange={(option) => {
+                                        setPohonPemda(option);
+                                    }}
+                                    onMenuClose={() => setOptionPokinPemda([])}
                                     styles={{
                                         control: (baseStyles) => ({
                                         ...baseStyles,
@@ -379,34 +410,61 @@ const PokinOpd = () => {
                                     }}
                                 />
                             </div>
-                        }
-                        <div className="flex justify-between my-2">
-                            <ButtonRedBorder 
-                                className='w-full mx-2'
-                                onClick={() => {
-                                    if(PohonPemda?.value == null || undefined){
-                                        AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
-                                    } else {
-                                        tolakPohonPemda(PohonPemda?.value);
-                                    }
-                                }} 
-                            >
-                                <TbCircleLetterXFilled className='mr-1'/>
-                                Tolak
-                            </ButtonRedBorder>
-                            <ButtonSkyBorder
-                                onClick={() => {
-                                    if(PohonPemda?.value == null || undefined){
-                                        AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
-                                    } else {
-                                        terimaPohonPemda(PohonPemda?.value);
-                                    }
-                                }} 
-                                className='w-full mx-2'
-                            >
-                                <TbCircleCheckFilled className='mr-1'/>
-                                Terima
-                            </ButtonSkyBorder>
+                            {(PohonPemda?.jenis == 'Tactical Pemda' || PohonPemda?.jenis == 'Operational Pemda') &&
+                                <div className="mb-3">
+                                    <label htmlFor="" className='uppercase text-xs font-bold text-gray-700 my-2 ml-1'>
+                                        {PohonPemda?.jenis == 'Tactical Pemda' ? 'Strategic':'Tactical'}
+                                    </label>
+                                    <Select
+                                        placeholder="Masukkan Perangkat Daerah"
+                                        value={PohonParent}
+                                        options={OptionPohonParent}
+                                        isSearchable
+                                        isClearable
+                                        isLoading={IsLoading}
+                                        onMenuOpen={() => fetchPohonParent()}
+                                        onChange={(option) => {
+                                            setPohonParent(option);
+                                        }}
+                                        onMenuClose={() => setOptionPohonParent([])}
+                                        styles={{
+                                            control: (baseStyles) => ({
+                                            ...baseStyles,
+                                            borderRadius: '8px',
+                                            textAlign: 'start',
+                                            })
+                                        }}
+                                    />
+                                </div>
+                            }
+                            <div className="flex justify-between my-2">
+                                <ButtonRedBorder 
+                                    className='w-full mx-2'
+                                    onClick={() => {
+                                        if(PohonPemda?.value == null || undefined){
+                                            AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
+                                        } else {
+                                            tolakPohonPemda(PohonPemda?.value);
+                                        }
+                                    }} 
+                                >
+                                    <TbCircleLetterXFilled className='mr-1'/>
+                                    Tolak
+                                </ButtonRedBorder>
+                                <ButtonSkyBorder
+                                    onClick={() => {
+                                        if(PohonPemda?.value == null || undefined){
+                                            AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
+                                        } else {
+                                            terimaPohonPemda(PohonPemda?.value);
+                                        }
+                                    }} 
+                                    className='w-full mx-2'
+                                >
+                                    <TbCircleCheckFilled className='mr-1'/>
+                                    Terima
+                                </ButtonSkyBorder>
+                            </div>
                         </div>
                     </div>
                 </div>

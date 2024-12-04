@@ -1305,7 +1305,7 @@ export const ambilPohonName = (jenis: string): string => {
     case 'Strategic':
       return 'Tactical';
     case 'Tactical':
-      return 'Opertional';
+      return 'Operational';
     case 'Strategic Pemda':
       return 'Tactical';
     case 'Tactical Pemda':
