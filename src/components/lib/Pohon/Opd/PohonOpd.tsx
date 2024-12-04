@@ -110,7 +110,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                                 onClick={() => {
                                     AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
                                             if(result.isConfirmed){
-                                                    hapusPohonOpd(tema.id);
+                                                hapusPohonOpd(tema.id);
                                             }
                                         });
                                     }}

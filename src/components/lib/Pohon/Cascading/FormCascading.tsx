@@ -507,10 +507,6 @@ export const FormEditCascading: React.FC<{
                         label: item.nama_pegawai,
                     })) || []
                 );
-                replace(data.indikator.map((item: indikator) => ({
-                    indikator: item.nama_indikator,
-                    targets: item.targets,
-                })));
             } catch(err) {
                 console.error(err, 'gagal mengambil data sesuai id pohon')
             }

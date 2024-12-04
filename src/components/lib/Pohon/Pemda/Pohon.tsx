@@ -245,7 +245,6 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
 export const PohonEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
 
     const [childPohons, setChildPohons] = useState(tema.childs || []);
-    const [PutPohons, setPutPohons] = useState(tema.childs || []);
     const [formList, setFormList] = useState<number[]>([]); // List of form IDs
     const [PutList, setPutList] = useState<number[]>([]); // List of form IDs
     const [FormStrategic, setFormStrategic] = useState<number[]>([]); // List of form IDs
@@ -338,6 +337,10 @@ export const PohonEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         ${tema.jenis_pohon === "Super Tematik" && 'shadow-slate-500'}
                         ${tema.jenis_pohon === "Strategic Pemda" && 'shadow-slate-500'}
                         ${tema.jenis_pohon === "Tactical Pemda" && 'shadow-slate-500'}
+                        ${tema.jenis_pohon === "Operational Pemda" && 'shadow-slate-500'}
+                        ${tema.jenis_pohon === "Strategic" && 'shadow-red-700 bg-red-700'}
+                        ${tema.jenis_pohon === "Tactical" && 'shadow-blue-500 bg-blue-500'}
+                        ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'shadow-green-500 bg-green-500'}
                     `}
                 >
                     {/* HEADER */}
@@ -350,6 +353,9 @@ export const PohonEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${tema.jenis_pohon === "Strategic Pemda" && 'border-black text-red-700'}
                             ${tema.jenis_pohon === "Tactical Pemda" && 'border-black text-blue-500'}
                             ${tema.jenis_pohon === "Operational Pemda" && 'border-black text-green-500'}
+                            ${tema.jenis_pohon === "Strategic" && 'border-red-700 text-red-700'}
+                            ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
+                            ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
                         `}
                             >
                         <h1>{tema.jenis_pohon}</h1>
@@ -372,6 +378,9 @@ export const PohonEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${tema.jenis_pohon === "Strategic Pemda" && 'border-black text-red-700'}
                             ${tema.jenis_pohon === "Tactical Pemda" && 'border-black text-blue-500'}
                             ${tema.jenis_pohon === "Operational Pemda" && 'border-black text-green-500'}
+                            ${tema.jenis_pohon === "Strategic" && 'border-red-700 text-red-700'}
+                            ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
+                            ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
                         `}
                     >
                         {!['Strategic', 'Tactical', 'Operational', 'Operational N'].includes(tema.jenis_pohon) &&

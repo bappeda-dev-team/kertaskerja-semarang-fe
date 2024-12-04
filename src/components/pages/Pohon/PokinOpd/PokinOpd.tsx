@@ -242,22 +242,6 @@ const PokinOpd = () => {
             } finally {
                 setLoading(false);
             }
-        }
-        if(User?.roles == 'super_admin'){
-            if(SelectedOpd?.value != undefined && Tahun?.value != undefined){
-                fetchPokinOpd(`pohon_kinerja_opd/findall/${SelectedOpd?.value}/${Tahun?.value}`);
-            }
-        } else if(User?.roles != 'super_admin'){
-            if(User?.kode_opd != undefined && Tahun?.value != undefined){
-                fetchPokinOpd(`pohon_kinerja_opd/findall/${User?.kode_opd}/${Tahun?.value}`);
-            }
-        }
-    },[User, SelectedOpd, Tahun, Deleted, token]);
-
-    useEffect(() => {
-        const fetchPokinPemdaJumlah = async() => {
-            const API_URL = process.env.NEXT_PUBLIC_API_URL;
-            setLoading(true);
             try{
                 const url = User?.roles == 'super_admin' ? `pohon_kinerja/status/${SelectedOpd?.value}/${Tahun?.value}` : `pohon_kinerja/status/${User?.kode_opd}/${Tahun?.value}`;
                 const response = await fetch(`${API_URL}/${url}`, {
@@ -286,8 +270,14 @@ const PokinOpd = () => {
                 setLoading(false);
             }
         }
-        if(User?.roles != undefined){
-            fetchPokinPemdaJumlah();
+        if(User?.roles == 'super_admin'){
+            if(SelectedOpd?.value != undefined && Tahun?.value != undefined){
+                fetchPokinOpd(`pohon_kinerja_opd/findall/${SelectedOpd?.value}/${Tahun?.value}`);
+            }
+        } else if(User?.roles != 'super_admin'){
+            if(User?.kode_opd != undefined && Tahun?.value != undefined){
+                fetchPokinOpd(`pohon_kinerja_opd/findall/${User?.kode_opd}/${Tahun?.value}`);
+            }
         }
     },[User, SelectedOpd, Tahun, Deleted, token]);
     
@@ -360,18 +350,64 @@ const PokinOpd = () => {
                 <div className="flex flex-wrap gap-2">
                     <div className="border-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-xl">
                         <h1 className="font-semibold border-b-2 py-1 text-center">
-                            List Pohon Pemda Pending
+                            Pohon Pemda Pending
                         </h1>
-                        <div className="flex flex-col py-3 justify-between">
-                            <h1 className="font-semibold text-red-500">
-                                Strategic : {JumlahPemdaStrategic?.length || 0}
-                            </h1>
-                            <h1 className="font-semibold text-green-500">
-                                Tactical : {JumlahPemdaTactical?.length || 0}
-                            </h1>
-                            <h1 className="font-semibold text-blue-500">
-                                Operational : {JumlahPemdaOperational?.length || 0}
-                            </h1>
+                        <div className="flex flex-col py-2 mt-1 justify-between">
+                            <table>
+                                <tbody>
+                                    <tr className="flex items-center">
+                                        <td className="border-l border-t px-2 py-1 bg-white text-start rounded-tl-lg min-w-[150px]">
+                                            <h1 className="font-semibold text-red-500">
+                                                Strategic
+                                            </h1>
+                                        </td>
+                                        <td className="border-t py-1">
+                                            <h1 className="font-semibold">
+                                                :
+                                            </h1>
+                                        </td>
+                                        <td className='border-r border-t px-2 py-1 bg-white text-center rounded-tr-lg w-full'>
+                                            <h1 className="font-semibold text-red-500">
+                                                {JumlahPemdaStrategic?.length || 0}
+                                            </h1>
+                                        </td>
+                                    </tr>
+                                    <tr className="flex items-center">
+                                        <td className="border-l  px-2 py-1 bg-white text-start min-w-[150px]">
+                                            <h1 className="font-semibold text-green-500">
+                                                Tactical
+                                            </h1>
+                                        </td>
+                                        <td className=" py-1">
+                                            <h1 className="font-semibold">
+                                                :
+                                            </h1>
+                                        </td>
+                                        <td className='border-r  px-2 py-1 bg-white text-center w-full'>
+                                            <h1 className="font-semibold text-green-500">
+                                                {JumlahPemdaTactical?.length || 0}
+                                            </h1>
+                                        </td>
+                                    </tr>
+                                    <tr className="flex items-center">
+                                        <td className="border-l border-b px-2 py-1 bg-white text-start rounded-bl-lg min-w-[150px]">
+                                            <h1 className="font-semibold text-blue-500">
+                                                Operational
+                                            </h1>
+                                        </td>
+                                        <td className="border-b py-1">
+                                            <h1 className="font-semibold">
+                                                :
+                                            </h1>
+                                        </td>
+                                        <td className='border-r border-b px-2 py-1 bg-white text-center rounded-br-lg w-full'>
+                                            <h1 className="font-semibold text-blue-500">
+                                                {JumlahPemdaOperational?.length || 0}
+                                            </h1>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div className="">
