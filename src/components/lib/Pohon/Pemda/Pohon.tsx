@@ -60,7 +60,7 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     const hapusPohonOpd = async(id: any) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         try{
-            const response = await fetch(`${API_URL}/pohon_kinerja_opd/delete/${id}`, {
+            const response = await fetch(`${API_URL}/pohon_kinerja_admin/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                   Authorization: `${token}`,
@@ -117,12 +117,12 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${tema.jenis_pohon === "Strategic" && 'border-red-500 text-red-700'}
                             ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
                             ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
-                            ${tema.jenis_pohon === "Strategic Pemda" && 'border-red-700 text-red-700'}
-                            ${tema.jenis_pohon === "Tactical Pemda" && 'border-blue-500 text-blue-500'}
-                            ${tema.jenis_pohon === "Operational Pemda" && 'border-green-500 text-green-500'}
+                            ${tema.jenis_pohon === "Strategic Pemda" && 'border-red-700 text-white bg-gradient-to-r from-[#CA3636] from-40% to-[#BD04A1]'}
+                            ${tema.jenis_pohon === "Tactical Pemda" && 'border-blue-500 text-white bg-gradient-to-r from-[#3673CA] from-40% to-[#08D2FB]'}
+                            ${tema.jenis_pohon === "Operational Pemda" && 'border-green-500 text-white bg-gradient-to-r from-[#007982] from-40% to-[#2DCB06]'}
                             `}
                             >
-                        <h1>{tema.jenis_pohon}</h1>
+                        <h1>{tema.jenis_pohon} ID: {tema.id} parent: {tema.parent}</h1>
                     </div>
                     {/* BODY */}
                     <div className="flex justify-center my-3">
@@ -172,30 +172,32 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         tema.jenis_pohon !== 'Operational N'
                     ) &&
                         <div className="flex justify-evenly my-3 py-3">
-                            {/* TOMBOL ADD KHUSUS STRATEGIC KOTA  */}
-                            {(tema.level_pohon === 0 || tema.level_pohon === 1 || tema.level_pohon === 2 || tema.level_pohon === 3) &&
-                                <ButtonRedBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                                    onClick={newStrategic}
-                                >
-                                    <TbCirclePlus className='mr-1' />
-                                    Strategic
-                                </ButtonRedBorder>
-                            }
-                            {/* AMBIL POHON MULAI DARI STRATEGIC DARI OPD */}
-                            <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                                onClick={newPutChild}
-                            >
-                                <TbArrowGuide className='mr-1' />
-                                {"(Ambil)"} {ambilPohonName(tema.jenis_pohon)}
-                            </ButtonGreenBorder>
                             {/* TOMBOL ADD POHON SESUAI URUTAN AKARNYA */}
                             {tema.level_pohon !== 3 &&
-                                <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
+                                <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 rounded-lg
+                                        ${(tema.jenis_pohon === 'Strategic' || tema.jenis_pohon === 'Strategic Pemda') && 'border-[#3b82f6] hover:bg-[#3b82f6] text-[#3b82f6] hover:text-white'}    
+                                    `}
                                     onClick={newChild}
                                 >
                                     <TbCirclePlus className='mr-1' />
                                     {tambahPohonName(tema.jenis_pohon)}
                                 </ButtonGreenBorder>
+                            }
+                            {/* AMBIL POHON MULAI DARI STRATEGIC DARI OPD */}
+                            <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
+                                onClick={newPutChild}
+                                >
+                                <TbArrowGuide className='mr-1' />
+                                {"(Ambil)"} {ambilPohonName(tema.jenis_pohon)}
+                            </ButtonGreenBorder>
+                            {/* TOMBOL ADD KHUSUS STRATEGIC KOTA  */}
+                            {(tema.level_pohon === 0 || tema.level_pohon === 1 || tema.level_pohon === 2 || tema.level_pohon === 3) &&
+                                <ButtonRedBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 rounded-lg`}
+                                    onClick={newStrategic}
+                                >
+                                    <TbCirclePlus className='mr-1' />
+                                    Strategic
+                                </ButtonRedBorder>
                             }
                         </div>
                     }
@@ -350,9 +352,9 @@ export const PohonEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${tema.jenis_pohon === "Sub Tematik" && 'border-black'}
                             ${tema.jenis_pohon === "Sub Sub Tematik" && 'border-black'}
                             ${tema.jenis_pohon === "Super Sub Tematik" && 'border-black'}
-                            ${tema.jenis_pohon === "Strategic Pemda" && 'border-black text-red-700'}
-                            ${tema.jenis_pohon === "Tactical Pemda" && 'border-black text-blue-500'}
-                            ${tema.jenis_pohon === "Operational Pemda" && 'border-black text-green-500'}
+                            ${tema.jenis_pohon === "Strategic Pemda" && 'border-red-700 text-white bg-gradient-to-r from-[#CA3636] from-40% to-[#BD04A1]'}
+                            ${tema.jenis_pohon === "Tactical Pemda" && 'border-blue-500 text-white bg-gradient-to-r from-[#3673CA] from-40% to-[#08D2FB]'}
+                            ${tema.jenis_pohon === "Operational Pemda" && 'border-green-500 text-white bg-gradient-to-r from-[#007982] from-40% to-[#2DCB06]'}
                             ${tema.jenis_pohon === "Strategic" && 'border-red-700 text-red-700'}
                             ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
                             ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
@@ -415,18 +417,11 @@ export const PohonEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         tema.jenis_pohon !== 'Operational N'
                     ) &&
                         <div className="flex justify-evenly my-3 py-3">
-                            {/* TOMBOL ADD KHUSUS STRATEGIC KOTA  */}
-                            {(tema.level_pohon === 0 || tema.level_pohon === 1 || tema.level_pohon === 2 || tema.level_pohon === 3) &&
-                                <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                                    onClick={newStrategic}
-                                >
-                                    <TbCirclePlus className='mr-1' />
-                                    Strategic
-                                </ButtonGreenBorder>
-                            }
                             {/* TOMBOL ADD POHON SESUAI URUTAN AKARNYA */}
                             {tema.level_pohon !== 3 &&
-                                <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
+                                <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 rounded-lg
+                                        ${(tema.jenis_pohon === 'Strategic' || tema.jenis_pohon === 'Strategic Pemda') && 'border-[#3b82f6] hover:bg-[#3b82f6] text-[#3b82f6] hover:text-white'}
+                                    `}
                                     onClick={newChild}
                                 >
                                     <TbCirclePlus className='mr-1' />
@@ -440,6 +435,15 @@ export const PohonEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                                 <TbArrowGuide className='mr-1' />
                                 {"(Ambil)"} {ambilPohonName(tema.jenis_pohon)}
                             </ButtonGreenBorder>
+                            {/* TOMBOL ADD KHUSUS STRATEGIC KOTA  */}
+                            {(tema.level_pohon === 0 || tema.level_pohon === 1 || tema.level_pohon === 2 || tema.level_pohon === 3) &&
+                                <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 rounded-lg`}
+                                    onClick={newStrategic}
+                                >
+                                    <TbCirclePlus className='mr-1' />
+                                    Strategic
+                                </ButtonGreenBorder>
+                            }
                         </div>
                     }
                 </div>
@@ -572,7 +576,7 @@ export const TablePohon = (props: any) => {
                                 {data.nama_indikator ? data.nama_indikator : "-"}
                             </td>
                         </tr>
-                        {data.targets.map((data: any, index: number) => (
+                        {data.targets.map((data: any) => (
                             <tr key={data.id_target}>
                                 <td 
                                     className={`min-w-[100px] border px-2 py-3 bg-white text-start
@@ -859,24 +863,24 @@ export const TablePohon = (props: any) => {
                         ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}    
                     `}
                 >
-                    {status == 'menunggu_disetujui' &&
+                    {status === 'menunggu_disetujui' ? (
                         <div className="flex items-center">
                             {status || "-"}
                             <TbHourglass />
                         </div>
-                    }
-                    {status == 'disetujui' &&
+                    ) : status === 'disetujui' ? (
                         <div className="flex items-center text-green-500">
                             {status || "-"}
                             <TbCheck />
                         </div>
-                    }
-                    {status == 'ditolak' &&
+                    ) : status === 'ditolak' ? (
                         <div className="flex items-center text-red-500">
                             {status || "-"}
                             <TbCircleLetterXFilled />
                         </div>
-                    }
+                    ) : (
+                        <span>{status || "-"}</span>
+                    )}
                 </td>
             </tr>
         }
@@ -890,7 +894,7 @@ export const TablePohonEdited = (props: any) => {
   const opd = props.item.nama_opd;
   const jenis = props.item.jenis_pohon;
   const indikator = props.item.indikators;
-  const status = props.item.indikators;
+  const status = props.item.status;
   return (
     <table className='w-full'>
       <tbody>
@@ -966,7 +970,7 @@ export const TablePohonEdited = (props: any) => {
                                 {data.nama_indikator ? data.nama_indikator : "-"}
                             </td>
                         </tr>
-                        {data.targets.map((data: any, index: number) => (
+                        {data.targets.map((data: any) => (
                             <tr key={data.id_target}>
                                 <td 
                                     className={`min-w-[100px] border px-2 py-3 bg-white text-start
@@ -1027,9 +1031,9 @@ export const TablePohonEdited = (props: any) => {
                             <td 
                                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Tematik" && "border-black"}
-                                        ${jenis === "Sub Tematik" && "border-black"}
-                                        ${jenis === "Sub Sub Tematik" && "border-black"}
-                                        ${jenis === "Super Sub Tematik" && "border-black"}
+                                    ${jenis === "Sub Tematik" && "border-black"}
+                                    ${jenis === "Sub Sub Tematik" && "border-black"}
+                                    ${jenis === "Super Sub Tematik" && "border-black"}
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
                                     ${jenis === "Operational" && "border-green-500"}
@@ -1085,9 +1089,9 @@ export const TablePohonEdited = (props: any) => {
                         <td 
                             className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                 ${jenis === "Tematik" && "border-black"}
-                                        ${jenis === "Sub Tematik" && "border-black"}
-                                        ${jenis === "Sub Sub Tematik" && "border-black"}
-                                        ${jenis === "Super Sub Tematik" && "border-black"}
+                                ${jenis === "Sub Tematik" && "border-black"}
+                                ${jenis === "Sub Sub Tematik" && "border-black"}
+                                ${jenis === "Super Sub Tematik" && "border-black"}
                                 ${jenis === "Strategic" && "border-red-700"}
                                 ${jenis === "Tactical" && "border-blue-500"}
                                 ${jenis === "Operational" && "border-green-500"}
@@ -1101,9 +1105,9 @@ export const TablePohonEdited = (props: any) => {
                         <td 
                             className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                 ${jenis === "Tematik" && "border-black"}
-                                        ${jenis === "Sub Tematik" && "border-black"}
-                                        ${jenis === "Sub Sub Tematik" && "border-black"}
-                                        ${jenis === "Super Sub Tematik" && "border-black"}
+                                ${jenis === "Sub Tematik" && "border-black"}
+                                ${jenis === "Sub Sub Tematik" && "border-black"}
+                                ${jenis === "Super Sub Tematik" && "border-black"}
                                 ${jenis === "Strategic" && "border-red-700"}
                                 ${jenis === "Tactical" && "border-blue-500"}
                                 ${jenis === "Operational" && "border-green-500"}
@@ -1119,9 +1123,9 @@ export const TablePohonEdited = (props: any) => {
                             <td 
                                 className={`min-w-[100px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Tematik" && "border-black"}
-                                        ${jenis === "Sub Tematik" && "border-black"}
-                                        ${jenis === "Sub Sub Tematik" && "border-black"}
-                                        ${jenis === "Super Sub Tematik" && "border-black"}
+                                    ${jenis === "Sub Tematik" && "border-black"}
+                                    ${jenis === "Sub Sub Tematik" && "border-black"}
+                                    ${jenis === "Super Sub Tematik" && "border-black"}
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
                                     ${jenis === "Operational" && "border-green-500"}
@@ -1135,9 +1139,9 @@ export const TablePohonEdited = (props: any) => {
                             <td 
                                 className={`min-w-[300px] border px-2 py-3 bg-white text-start
                                     ${jenis === "Tematik" && "border-black"}
-                                        ${jenis === "Sub Tematik" && "border-black"}
-                                        ${jenis === "Sub Sub Tematik" && "border-black"}
-                                        ${jenis === "Super Sub Tematik" && "border-black"}
+                                    ${jenis === "Sub Tematik" && "border-black"}
+                                    ${jenis === "Sub Sub Tematik" && "border-black"}
+                                    ${jenis === "Super Sub Tematik" && "border-black"}
                                     ${jenis === "Strategic" && "border-red-700"}
                                     ${jenis === "Tactical" && "border-blue-500"}
                                     ${jenis === "Operational" && "border-green-500"}
@@ -1253,24 +1257,24 @@ export const TablePohonEdited = (props: any) => {
                         ${jenis === "Operational" && "border-green-500"}    
                     `}
                 >
-                    {status == 'menunggu_disetujui' &&
+                    {status === 'menunggu_disetujui' ? (
                         <div className="flex items-center">
                             {status || "-"}
                             <TbHourglass />
                         </div>
-                    }
-                    {status == 'disetujui' &&
+                    ) : status === 'disetujui' ? (
                         <div className="flex items-center text-green-500">
                             {status || "-"}
                             <TbCheck />
                         </div>
-                    }
-                    {status == 'ditolak' &&
+                    ) : status === 'ditolak' ? (
                         <div className="flex items-center text-red-500">
                             {status || "-"}
                             <TbCircleLetterXFilled />
                         </div>
-                    }
+                    ) : (
+                        <span>{status || "-"}</span>
+                    )}
                 </td>
             </tr>
         }

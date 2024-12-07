@@ -391,8 +391,7 @@ export const FormEditCascading: React.FC<{
       formState: { errors },
       reset
     } = useForm<FormValue>();
-    const [NamaPohon, setNamaPohon] = useState<string>('');
-    const [Keterangan, setKeterangan] = useState<string>('');
+    const [Status, setStatus] = useState<string>('');
     const [Parent, setParent] = useState<number | null>(null);
     const [KodeOpd, setKodeOpd] = useState<number | null>(null);
     const [JenisPohon, setJenisPohon] = useState<string | null>(null);
@@ -485,6 +484,9 @@ export const FormEditCascading: React.FC<{
                 if(data.jenis_pohon){
                     setJenisPohon(data.jenis_pohon);
                 }
+                if(data.status){
+                    setStatus(data.status);
+                }
                 reset({
                     nama_pohon: data.nama_pohon || '',
                     keterangan: data.keterangan || '',
@@ -529,6 +531,7 @@ export const FormEditCascading: React.FC<{
             pelaksana: pelaksanaIds,
             tahun: Tahun?.value?.toString(),
             kode_opd: KodeOpd,
+            status: Status,
             ...(data.indikator && {
                 indikator: data.indikator.map((ind) => ({
                     indikator: ind.nama_indikator,
@@ -541,7 +544,7 @@ export const FormEditCascading: React.FC<{
         };
         // console.log(formData);
         try{
-            const url = `/pohon_kinerja_opd/update/${id}`;
+            const url = `/pohon_kinerja_admin/update/${id}`;
             const response = await fetch(`${API_URL}${url}`, {
                 method: "PUT",
                 headers: {
