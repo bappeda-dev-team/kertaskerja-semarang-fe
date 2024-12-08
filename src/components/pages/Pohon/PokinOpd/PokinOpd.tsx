@@ -1,9 +1,8 @@
 'use client'
 
 import '@/components/pages/Pohon/treeflex.css'
-import { Controller } from "react-hook-form";
 import { useState, useEffect } from 'react';
-import { TbCircleCheckFilled, TbCircleLetterXFilled, TbCirclePlus } from 'react-icons/tb';
+import { TbPencil, TbCircleCheckFilled, TbCircleLetterXFilled, TbCirclePlus } from 'react-icons/tb';
 import { ButtonGreenBorder, ButtonSkyBorder, ButtonRedBorder } from '@/components/global/Button';
 import { LoadingBeat } from '@/components/global/Loading';
 import { OpdTahunNull, TahunNull } from '@/components/global/OpdTahunNull';
@@ -205,7 +204,6 @@ const PokinOpd = () => {
             console.error(err);
         }
     }
-
     const terimaPohonCross = async(id: number) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formData = {
@@ -744,15 +742,27 @@ const PokinOpd = () => {
                                                 <td className="min-w-[300px] border px-2 py-3 border-black text-start">{Pokin?.kode_opd}</td>
                                             </tr>
                                             <tr>
+                                                <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tujuan OPD</td>
+                                                <td className="min-w-[300px] border px-2 py-3 border-black text-start">-</td>
+                                            </tr>
+                                            <tr>
                                                 <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tahun</td>
                                                 <td className="min-w-[300px] border px-2 py-3 border-black text-start">{Pokin?.tahun}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
+                                <div 
+                                    className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white border-black`}
+                                >
+                                    <ButtonSkyBorder>
+                                        <TbPencil className="mr-1"/>
+                                        Tujuan OPD
+                                    </ButtonSkyBorder>
+                                </div>
                                 {/* button */}
                                 {(User?.roles == 'admin_opd'|| User?.roles == 'super_admin') &&
-                                    <div className="flex justify-center border my-3 py-3 border-black">
+                                    <div className="flex justify-center my-1 py-2">
                                         <ButtonGreenBorder className='border-[#ef4444] hover:bg-[#ef4444] text-[#ef4444] hover:text-white' onClick={newChild}>
                                             <TbCirclePlus />
                                             Strategic
