@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { TbLayersLinked, TbCheck, TbCircleLetterXFilled, TbCirclePlus, TbHourglass, TbPencil, TbTrash } from 'react-icons/tb';
 import { ButtonSkyBorder, ButtonRedBorder, ButtonGreenBorder } from '@/components/global/Button';
 import { AlertNotification, AlertQuestion } from '@/components/global/Alert';
-import {FormPohonOpd, FormEditPohon} from './FormPohonOpd';
+import {FormPohonOpd, FormEditPohon, FormCrosscutingOpd} from './FormPohonOpd';
 import { getToken } from '../../Cookie';
 import { ModalAddCrosscutting } from '@/components/pages/Pohon/ModalCrosscutting';
 
@@ -15,6 +15,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
 
     const [childPohons, setChildPohons] = useState(tema.childs || []);
     const [formList, setFormList] = useState<number[]>([]); // List of form IDs
+    const [CrossList, setCrossList] = useState<number[]>([]); // List of form IDs
     const [edit, setEdit] = useState<boolean>(false);
     const [Cross, setCross] = useState<boolean>(false);
     const [Edited, setEdited] = useState<any | null>(null);
@@ -24,7 +25,10 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     const newChild = () => {
         setFormList([...formList, Date.now()]); // Using unique IDs
     };
-    const cross = () => {
+    const newCross = () => {
+        setCrossList([...CrossList, Date.now()]); // Using unique IDs
+    };
+    const handleCross = () => {
         setCross((prev) => !prev);
     }
     const handleEditSuccess = (data: any) => {
@@ -107,15 +111,15 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                                 ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
                             `}
                         >
-                            <ButtonSkyBorder onClick={() => cross()}>
-                                <TbLayersLinked className="mr-1"/>
-                                CrossCuting
-                            </ButtonSkyBorder>
-                            <ModalAddCrosscutting isOpen={Cross} onClose={cross} />
                             <ButtonSkyBorder onClick={() => setEdit(true)}>
                                 <TbPencil className="mr-1"/>
                                 Edit
                             </ButtonSkyBorder>
+                            <ButtonGreenBorder onClick={handleCross}>
+                                <TbLayersLinked className="mr-1"/>
+                                CrossCuting
+                            </ButtonGreenBorder>
+                            <ModalAddCrosscutting isOpen={Cross} onClose={handleCross}/>
                             <ButtonRedBorder
                             onClick={() => {
                                 AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
@@ -141,12 +145,15 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             <TbCirclePlus className='mr-1' />
                             {newChildButtonName(tema.jenis_pohon)}
                         </ButtonGreenBorder>
-                        {/* <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                            onClick={newChild}
+                        <ButtonSkyBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 rounded-lg
+                            ${(tema.jenis_pohon === 'Strategic' || tema.jenis_pohon === 'Strategic Pemda') && 'border-[#3b82f6] hover:bg-[#3b82f6] text-[#3b82f6] hover:text-white'}
+                            ${(tema.jenis_pohon === 'Tactical' || tema.jenis_pohon === 'Tactical Pemda') && 'border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white'}
+                        `}
+                            onClick={newCross}
                             >
                             <TbCirclePlus className='mr-1' />
-                            Pelaksana
-                        </ButtonGreenBorder> */}
+                            {newCrosscutingButtonName(tema.jenis_pohon)}
+                        </ButtonSkyBorder>
                     </div>
                 </div>
             </>
@@ -165,6 +172,15 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         onCancel={() => setFormList(formList.filter((id) => id !== formId))}
                     />
                 ))}
+                {CrossList.map((formId) => (
+                    <FormCrosscutingOpd
+                        level={tema.level_pohon}
+                        id={tema.id}
+                        key={formId}
+                        formId={formId}
+                        onCancel={() => setCrossList(CrossList.filter((id) => id !== formId))}
+                    />
+                ))}
             </ul>
         </li>
     )
@@ -173,7 +189,6 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
 
     const [formList, setFormList] = useState<number[]>([]); // List of form IDs
     const [edit, setEdit] = useState<boolean>(false);
-    const [Cross, setCross] = useState<boolean>(false);
     const [Edited, setEdited] = useState<any | null>(null);
     const token = getToken();
     
@@ -181,9 +196,6 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     const newChild = () => {
         setFormList([...formList, Date.now()]); // Using unique IDs
     };
-    const cross = () => {
-        setCross((prev) => !prev);
-    }
     const handleEditSuccess = (data: any) => {
       setEdited(data);
       setEdit(false);
@@ -257,11 +269,6 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         <div 
                             className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white border-black`}
                         >
-                            <ButtonSkyBorder onClick={() => cross()}>
-                                <TbLayersLinked className="mr-1"/>
-                                CrossCuting
-                            </ButtonSkyBorder>
-                            <ModalAddCrosscutting isOpen={Cross} onClose={cross} />
                             <ButtonSkyBorder onClick={() => setEdit(true)}>
                                 <TbPencil className="mr-1"/>
                                 Edit
@@ -927,6 +934,26 @@ export const newChildButtonName = (jenis: string): string => {
       return 'Opertional N';
     case 'Operational N':
       return 'Opertional N';
+    default:
+      return '-'
+  }
+}
+export const newCrosscutingButtonName = (jenis: string): string => {
+  switch (jenis) {
+    case 'Strategic Pemda':
+      return '(Crosscuting) Tactical';
+    case 'Tactical Pemda':
+      return '(Crosscuting) Operational';
+    case 'Strategic':
+      return '(Crosscuting) Tactical';
+    case 'Tactical':
+      return '(Crosscuting) Opertional';
+    case 'Operational':
+      return '(Crosscuting) Opertional N';
+    case 'Operational Pemda':
+      return '(Crosscuting) Opertional N';
+    case 'Operational N':
+      return '(Crosscuting) Opertional N';
     default:
       return '-'
   }

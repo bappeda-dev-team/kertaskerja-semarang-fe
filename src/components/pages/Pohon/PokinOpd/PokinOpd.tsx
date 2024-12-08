@@ -206,6 +206,62 @@ const PokinOpd = () => {
         }
     }
 
+    const terimaPohonCross = async(id: number) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const formData = {
+            id: id,
+            parent: PohonParent ? PohonParent?.value : 0,
+            jenis_pohon: PohonPemda?.jenis,
+        }
+        // console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/pohon_kinerja_admin/setujui_crosscutting/${id}`, {
+                method: "POST",
+                headers: {
+                  Authorization: `${token}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            if(!response.ok){
+                alert("cant fetch data")
+            }
+            AlertNotification("Berhasil", "Pohon dari pemda di terima", "success", 1000);
+            setDeleted((prev) => !prev);
+            setPohonPemda(null);
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
+            console.error(err);
+        }
+    }
+    const tolakPohonCross = async(id: number) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const formData = {
+            id: id,
+        }
+        // console.log(formData);
+        try{
+            const response = await fetch(`${API_URL}/pohon_kinerja_admin/tolak_crosscutting/${id}`, {
+                method: "PUT",
+                headers: {
+                  Authorization: `${token}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            if(!response.ok){
+                alert("cant fetch data")
+            }
+            AlertNotification("Berhasil", "Data pohon berhasil di tolak", "success", 1000);
+            // setTimeout(() => {
+            //     window.location.reload();
+            // }, 1000);
+        } catch(err){
+            AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
+            console.error(err);
+        }
+    }
+
     // Adds a new form entry
     const newChild = () => {
         setFormList([...formList, Date.now()]); // Using unique IDs
@@ -644,7 +700,7 @@ const PokinOpd = () => {
                                             if(PohonPemda?.value == null || undefined){
                                                 AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
                                             } else {
-                                                tolakPohonPemda(PohonPemda?.value);
+                                                tolakPohonCross(PohonPemda?.value);
                                             }
                                         }} 
                                     >
@@ -656,7 +712,7 @@ const PokinOpd = () => {
                                             if(PohonPemda?.value == null || undefined){
                                                 AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
                                             } else {
-                                                terimaPohonPemda(PohonPemda?.value);
+                                                terimaPohonCross(PohonPemda?.value);
                                             }
                                         }} 
                                         className='w-full mx-2'
