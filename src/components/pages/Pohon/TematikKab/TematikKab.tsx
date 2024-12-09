@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import Select from 'react-select'
 import PohonTematik from './PohonTematik';
 import { TahunNull } from '@/components/global/OpdTahunNull';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface OptionType {
     value: number;
@@ -14,8 +14,7 @@ interface OptionType {
 
 const TematikKab = () => {
     const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams()
+    const searchParams = useSearchParams();
     const [Tahun, setTahun] = useState<any>(null);
     const [TematikOption, setTematikOption] = useState<OptionType[]>([]);
     const [Tematik, setTematik] = useState<OptionType | null>(null);
@@ -42,8 +41,15 @@ const TematikKab = () => {
     }, []);
 
     useEffect(() => {
-        // fetchTematik();
-    }, [pathname]);
+        // Ambil parameter dari URL saat komponen dimuat
+        const temaFromUrl = searchParams.get('tema');
+        const idFromUrl = searchParams.get('id');
+
+        if (temaFromUrl && idFromUrl) {
+            // Set Tematik berdasarkan parameter URL jika ada
+            setTematik({ label: temaFromUrl, value: Number(idFromUrl) });
+        }
+    }, [searchParams]);
 
     const fetchTematik = async () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -77,9 +83,14 @@ const TematikKab = () => {
     }
 
     const handleSetTematik = (tema: any) => {
+        if (!tema) {
+            setTematik(null); // Jika tema dihapus, reset Tematik
+            router.push(`/pohonkinerjakota`);
+            return;
+        }
         setTematik(tema);
-        router.push(`/pohonkinerjakota?tema=${tema.label}&id=${tema.value}`)
-    }
+        router.push(`/pohonkinerjakota?tema=${tema.label}&id=${tema.value}`);
+    };
 
     return (
         <>
@@ -102,7 +113,8 @@ const TematikKab = () => {
                         options={TematikOption}
                         isLoading={IsLoading}
                         onChange={(option) => handleSetTematik(option)}
-                        value={searchParams.get('tema') !== undefined ? { label: searchParams.get('tema'), value: searchParams.get('id') } : Tematik}
+                        value={searchParams.get('tema') !== undefined ? { label: "Pilih Tematik", value: "" } : Tematik}
+                        // value={searchParams.get('tema') !== undefined ? { label: searchParams.get('tema'), value: searchParams.get('id') } : Tematik}
                         onMenuOpen={() => {
                             if (TematikOption.length == 0) {
                                 fetchTematik();
@@ -121,6 +133,11 @@ const TematikKab = () => {
                 <h1 className="font-bold">{Tematik ? Tematik?.label : "Pilih Tema"}</h1>
             </div>
             {Tematik &&
+                // <PohonTematik 
+                //     id={searchParams.get('tema') !== undefined 
+                //         ? Number(searchParams.get('id')) 
+                //         : Tematik?.value || 0} 
+                // />
                 <PohonTematik id={Tematik?.value} />
             }
         </>

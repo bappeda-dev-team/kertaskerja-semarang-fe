@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { TbLayersLinked, TbCheck, TbCircleLetterXFilled, TbCirclePlus, TbHourglass, TbPencil, TbTrash } from 'react-icons/tb';
-import { ButtonSkyBorder, ButtonRedBorder, ButtonGreenBorder } from '@/components/global/Button';
+import { TbLayersLinked, TbCheck, TbCircleLetterXFilled, TbCirclePlus, TbHourglass, TbPencil, TbTrash, TbEye } from 'react-icons/tb';
+import { ButtonSkyBorder, ButtonRedBorder, ButtonGreenBorder, ButtonBlackBorder } from '@/components/global/Button';
 import { AlertNotification, AlertQuestion } from '@/components/global/Alert';
 import { FormPohonOpd, FormEditPohon, FormCrosscutingOpd } from './FormPohonOpd';
 import { getToken } from '../../Cookie';
@@ -17,6 +17,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
     const [formList, setFormList] = useState<number[]>([]); // List of form IDs
     const [CrossList, setCrossList] = useState<number[]>([]); // List of form IDs
     const [edit, setEdit] = useState<boolean>(false);
+    const [Show, setShow] = useState<boolean>(true);
     const [Cross, setCross] = useState<boolean>(false);
     const [Edited, setEdited] = useState<any | null>(null);
     const token = getToken();
@@ -35,6 +36,9 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
         setEdited(data);
         setEdit(false);
     };
+    const handleShow = () => {
+        setShow((prev) => !prev);
+    }
 
     const hapusPohonOpd = async (id: any) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -78,7 +82,8 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         ${tema.jenis_pohon === "OperationalPemda" && 'shadow-slate-500'}
                         ${tema.jenis_pohon === "Strategic" && 'shadow-red-500 bg-red-700'}
                         ${tema.jenis_pohon === "Tactical" && 'shadow-blue-500 bg-blue-500'}
-                        ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'shadow-green-500 bg-green-500'}
+                        ${tema.jenis_pohon === "Operational"  && 'shadow-green-500 bg-green-500'}
+                        ${tema.jenis_pohon === "Operational N" && 'shadow-slate-500 bg-white'}
                     `}
                     >
                         {/* HEADER */}
@@ -92,7 +97,11 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
                         `}
                         >
-                            <h1>{tema.jenis_pohon} ID: {tema.id} Parent: {tema.parent}</h1>
+                            {tema.jenis_pohon === 'Operational N' ?
+                                <h1>Operational {tema.level_pohon - 6}</h1>
+                                :
+                                <h1>{tema.jenis_pohon}</h1>
+                            }
                         </div>
                         {/* BODY */}
                         <div className="flex justify-center my-3">
@@ -106,10 +115,11 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         {!['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
                             <div
                                 className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white
-                                ${tema.jenis_pohon === "Strategic Pemda" && 'border-black'}
-                                ${tema.jenis_pohon === "Tactical Pemda" && 'border-black'}
-                                ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
-                            `}
+                                    ${tema.jenis_pohon === "Strategic Pemda" && 'border-black'}
+                                    ${tema.jenis_pohon === "Tactical Pemda" && 'border-black'}
+                                    ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
+                                    ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
+                                `}
                             >
                                 <ButtonSkyBorder onClick={() => setEdit(true)}>
                                     <TbPencil className="mr-1" />
@@ -136,29 +146,25 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         }
                         {/* footer */}
                         <div className="flex justify-evenly my-3 py-3">
-                            <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 rounded-lg
-                            ${(tema.jenis_pohon === 'Strategic' || tema.jenis_pohon === 'Strategic Pemda') && 'border-[#3b82f6] hover:bg-[#3b82f6] text-[#3b82f6] hover:text-white'}
-                            ${(tema.jenis_pohon === 'Tactical' || tema.jenis_pohon === 'Tactical Pemda') && 'border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white'}
-                        `}
-                                onClick={newChild}
+                            <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                onClick={handleShow}
                             >
-                                <TbCirclePlus className='mr-1' />
-                                {newChildButtonName(tema.jenis_pohon)}
-                            </ButtonGreenBorder>
-                            <ButtonSkyBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 rounded-lg
-                            ${(tema.jenis_pohon === 'Strategic' || tema.jenis_pohon === 'Strategic Pemda') && 'border-[#3b82f6] hover:bg-[#3b82f6] text-[#3b82f6] hover:text-white'}
-                            ${(tema.jenis_pohon === 'Tactical' || tema.jenis_pohon === 'Tactical Pemda') && 'border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white'}
-                        `}
-                                onClick={newCross}
-                            >
-                                <TbCirclePlus className='mr-1' />
-                                {newCrosscutingButtonName(tema.jenis_pohon)}
-                            </ButtonSkyBorder>
+                                <TbEye className='mr-1' />
+                                {Show ? 'Sembunyikan' : 'Tampilkan'}
+                            </ButtonBlackBorder>
+                            {Show &&
+                                <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                    onClick={newChild}
+                                >
+                                    <TbCirclePlus className='mr-1' />
+                                    {newChildButtonName(tema.jenis_pohon)}
+                                </ButtonGreenBorder>
+                            }
                         </div>
                     </div>
                 </>
             }
-            <ul>
+            <ul style={{ display: Show ? '' : 'none' }}>
                 {childPohons.map((dahan: any, index: any) => (
                     <PohonOpd tema={dahan} key={index} deleteTrigger={deleteTrigger} />
                 ))}
@@ -189,6 +195,7 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
 
     const [formList, setFormList] = useState<number[]>([]); // List of form IDs
     const [edit, setEdit] = useState<boolean>(false);
+    const [Show, setShow] = useState<boolean>(true);
     const [Edited, setEdited] = useState<any | null>(null);
     const token = getToken();
 
@@ -200,6 +207,9 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
         setEdited(data);
         setEdit(false);
     };
+    const handleShow = () => {
+        setShow((prev) => !prev);
+    }
 
     const hapusPohonOpd = async (id: any) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -243,7 +253,8 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg
                         ${tema.jenis_pohon === "Strategic" && 'shadow-red-500 bg-red-700'}
                         ${tema.jenis_pohon === "Tactical" && 'shadow-blue-500 bg-blue-500'}
-                        ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'shadow-green-500 bg-green-500'}
+                        ${tema.jenis_pohon === "Operational"&& 'shadow-green-500 bg-green-500'}
+                        ${tema.jenis_pohon === "Operational N" && 'shadow-green-500 bg-white'}
                     `}
                     >
                         {/* HEADER */}
@@ -254,7 +265,11 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
                         `}
                         >
-                            <h1>{tema.jenis_pohon === 'StrategicKota' ? 'StrategicPemda' : tema.jenis_pohon}</h1>
+                            {tema.jenis_pohon === 'Operational N' ?
+                                <h1>Operational {tema.level_pohon - 6}</h1>
+                                :
+                                <h1>{tema.jenis_pohon}</h1>
+                            }
                         </div>
                         {/* BODY */}
                         <div className="flex justify-center my-3">
@@ -267,7 +282,12 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         {/* BUTTON ACTION INSIDE BOX */}
                         {!['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
                             <div
-                                className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white border-black`}
+                                className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white
+                                    ${tema.jenis_pohon === "Strategic Pemda" && 'border-black'}
+                                    ${tema.jenis_pohon === "Tactical Pemda" && 'border-black'}
+                                    ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
+                                    ${tema.jenis_pohon === "Operational N" && 'border-green-500'}    
+                                `}
                             >
                                 <ButtonSkyBorder onClick={() => setEdit(true)}>
                                     <TbPencil className="mr-1" />
@@ -289,21 +309,23 @@ export const PohonOpdEdited: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                         }
                         {/* footer */}
                         <div className="flex justify-evenly my-3 py-3">
-                            <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                                onClick={newChild}
+                            <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                onClick={handleShow}
                             >
-                                <TbCirclePlus className='mr-1' />
-                                {newChildButtonName(tema.jenis_pohon)}
-                            </ButtonGreenBorder>
-                            {/* <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r border-2 border-[#00A607] hover:bg-[#00A607] text-[#00A607] hover:text-white rounded-lg`}
-                            onClick={newChild}
-                            >
-                            <TbCirclePlus className='mr-1' />
-                            Pelaksana
-                        </ButtonGreenBorder> */}
+                                <TbEye className='mr-1' />
+                                {Show ? 'Sembunyikan' : 'Tampilkan'}
+                            </ButtonBlackBorder>
+                            {Show &&
+                                <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                    onClick={newChild}
+                                >
+                                    <TbCirclePlus className='mr-1' />
+                                    {newChildButtonName(tema.jenis_pohon)}
+                                </ButtonGreenBorder>
+                            }
                         </div>
                     </div>
-                    <ul>
+                    <ul style={{ display: Show ? 'block' : 'none' }}>
                         {formList.map((formId) => (
                             <FormPohonOpd
                                 level={tema.level_pohon}
@@ -334,13 +356,13 @@ export const TablePohon = (props: any) => {
                 <tr>
                     <td
                         className={`min-w-[100px] border px-2 py-3 bg-white text-start rounded-tl-lg
-                    ${jenis === "Strategic" && "border-red-700"}
-                    ${jenis === "Tactical" && "border-blue-500"}
-                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
-                    ${jenis === "Strategic Pemda" && "border-black"}
-                    ${jenis === "Tactical Pemda" && "border-black"}
-                    ${jenis === "Operational Pemda" && "border-black"}
-                `}
+                            ${jenis === "Strategic" && "border-red-700"}
+                            ${jenis === "Tactical" && "border-blue-500"}
+                            ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
+                            ${jenis === "Strategic Pemda" && "border-black"}
+                            ${jenis === "Tactical Pemda" && "border-black"}
+                            ${jenis === "Operational Pemda" && "border-black"}
+                        `}
                     >
                         {(jenis === 'Strategic' || jenis === 'Strategic Pemda') && 'Strategic'}
                         {(jenis === 'Tactical' || jenis === 'Tactical Pemda') && 'Tactical'}
@@ -349,13 +371,13 @@ export const TablePohon = (props: any) => {
                     </td>
                     <td
                         className={`min-w-[300px] border px-2 py-3 bg-white text-start rounded-tr-lg
-                    ${jenis === "Strategic" && "border-red-700"}
-                    ${jenis === "Tactical" && "border-blue-500"}
-                    ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
-                    ${jenis === "Strategic Pemda" && "border-black"}
-                    ${jenis === "Tactical Pemda" && "border-black"}
-                    ${jenis === "Operational Pemda" && "border-black"}
-                `}
+                            ${jenis === "Strategic" && "border-red-700"}
+                            ${jenis === "Tactical" && "border-blue-500"}
+                            ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
+                            ${jenis === "Strategic Pemda" && "border-black"}
+                            ${jenis === "Tactical Pemda" && "border-black"}
+                            ${jenis === "Operational Pemda" && "border-black"}
+                        `}
                     >
                         {tema ? tema : "-"}
                     </td>

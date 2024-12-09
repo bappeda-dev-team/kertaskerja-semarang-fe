@@ -559,7 +559,7 @@ const PokinOpd = () => {
                         </div>
                     </div>
                     {/* OPD */}
-                    <div className="flex flex-wrap gap-2">
+                    {/* <div className="flex flex-wrap gap-2">
                         <div className="border-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-xl">
                             <h1 className="font-semibold border-b-2 py-1 text-center">
                                 Pohon Cross Cutting
@@ -721,7 +721,7 @@ const PokinOpd = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="tf-tree text-center mt-3">
                     <ul>
