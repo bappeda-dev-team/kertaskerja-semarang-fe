@@ -1,10 +1,15 @@
 import TematikKab from "@/components/pages/Pohon/TematikKab/TematikKab";
 import { FiHome } from "react-icons/fi";
 import React, {Suspense} from "react";
+import { LoadingClip } from "@/components/global/Loading";
 
 const pohonkinerjakota = () => {
     return(
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense 
+            fallback={
+                <LoadingClip />
+            }
+        >
             <div className="flex flex-wrap items-center">
                 <a href="/" className="mr-1"><FiHome /></a>
                 <p className="mr-1">/ Perencanaan Kabupaten</p>

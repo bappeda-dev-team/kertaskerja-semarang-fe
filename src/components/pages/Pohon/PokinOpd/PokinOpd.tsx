@@ -25,17 +25,26 @@ interface pokin {
     kode_opd: string;
     nama_opd: string;
     tahun: string;
+    tujuan_opd: tujuan[];
     childs: childs[]
+}
+interface tujuan {
+    id: number;
+    tujuan: string;
 }
 interface childs {
     id: number;
     parent: number;
     strategi: string;
-    taget: string;
+    target: string;
     satuan: string;
     keterangan: string;
     indikators: string;
     childs: childs[];
+}
+interface TujuanOpd {
+    id_tujuan_opd: number;
+    tujuan: string;
 }
 
 const PokinOpd = () => {
@@ -47,11 +56,13 @@ const PokinOpd = () => {
     const [Loading, setLoading] = useState<boolean | null>(null);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
     const [OptionPokinPemda, setOptionPokinPemda] = useState<PokinPemda[]>([]);
+    const [OptionPokinCross, setOptionPokinCross] = useState<PokinPemda[]>([]);
     const [OptionPohonParent, setOptionPohonParent] = useState<PokinPemda[]>([]);
     const [JumlahPemdaStrategic, setJumlahPemdaStrategic] = useState<PokinPemda[]>([]);
     const [JumlahPemdaTactical, setJumlahPemdaTactical] = useState<PokinPemda[]>([]);
     const [JumlahPemdaOperational, setJumlahPemdaOperational] = useState<PokinPemda[]>([]);
     const [PohonPemda, setPohonPemda] = useState<PokinPemda | null>(null);
+    const [PohonCross, setPohonCross] = useState<PokinPemda | null>(null);
     const [PohonParent, setPohonParent] = useState<PokinPemda | null>(null);
     const [error, setError] = useState<string>('');
     const token = getToken();
@@ -103,6 +114,34 @@ const PokinOpd = () => {
                 jenis: item.jenis_pohon,
             }));
             setOptionPokinPemda(pokinPemda);
+        } catch (err) {
+            console.log('gagal mendapatkan data pohon dari opd', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    const fetchPohonCross = async () => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        setIsLoading(true);
+        try {
+            const url = User?.roles == 'super_admin' ? `pohon_kinerja_admin/crosscutting/${SelectedOpd?.value}/${Tahun?.value}` : `pohon_kinerja_admin/crosscutting/${User?.kode_opd}/${Tahun?.value}`;
+            const response = await fetch(`${API_URL}/${url}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                throw new Error('cant fetch data opd');
+            }
+            const data = await response.json();
+            const pokinCross = data.data.map((item: any) => ({
+                value: item.id,
+                label: `${item.jenis_pohon} - ${item.nama_pohon}`,
+                jenis: item.jenis_pohon,
+            }));
+            setOptionPokinCross(pokinCross);
         } catch (err) {
             console.log('gagal mendapatkan data pohon dari opd', err);
         } finally {
@@ -172,6 +211,7 @@ const PokinOpd = () => {
             AlertNotification("Berhasil", "Pohon dari pemda di terima", "success", 1000);
             setDeleted((prev) => !prev);
             setPohonPemda(null);
+            setPohonParent(null);
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
             console.error(err);
@@ -204,16 +244,15 @@ const PokinOpd = () => {
             console.error(err);
         }
     }
-    const terimaPohonCross = async (id: number) => {
+    const terimaPohonCross = async (id: number, parent: number) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formData = {
-            id: id,
-            parent: PohonParent ? PohonParent?.value : 0,
-            jenis_pohon: PohonPemda?.jenis,
+            nip_pegawai: User?.nip,
+            approve: true,
         }
         // console.log(formData);
         try {
-            const response = await fetch(`${API_URL}/pohon_kinerja_admin/setujui_crosscutting/${id}`, {
+            const response = await fetch(`${API_URL}/crosscutting/${id}/${parent}/permission`, {
                 method: "POST",
                 headers: {
                     Authorization: `${token}`,
@@ -226,7 +265,8 @@ const PokinOpd = () => {
             }
             AlertNotification("Berhasil", "Pohon dari pemda di terima", "success", 1000);
             setDeleted((prev) => !prev);
-            setPohonPemda(null);
+            setPohonCross(null);
+            setPohonParent(null);
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
             console.error(err);
@@ -235,12 +275,13 @@ const PokinOpd = () => {
     const tolakPohonCross = async (id: number) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formData = {
-            id: id,
+            nip_pegawai: User?.nip,
+            approve: false,
         }
         // console.log(formData);
         try {
-            const response = await fetch(`${API_URL}/pohon_kinerja_admin/tolak_crosscutting/${id}`, {
-                method: "PUT",
+            const response = await fetch(`${API_URL}/crosscutting/${id}/permission`, {
+                method: "POST",
                 headers: {
                     Authorization: `${token}`,
                     'Content-Type': 'application/json',
@@ -251,6 +292,9 @@ const PokinOpd = () => {
                 alert("cant fetch data")
             }
             AlertNotification("Berhasil", "Data pohon berhasil di tolak", "success", 1000);
+            setDeleted((prev) => !prev);
+            setPohonCross(null);
+            setPohonParent(null);
             // setTimeout(() => {
             //     window.location.reload();
             // }, 1000);
@@ -269,6 +313,7 @@ const PokinOpd = () => {
         const fetchPokinOpd = async (url: string) => {
             const API_URL = process.env.NEXT_PUBLIC_API_URL;
             setLoading(true);
+            //fetch pokin opd
             try {
                 const response = await fetch(`${API_URL}/${url}`, {
                     headers: {
@@ -288,6 +333,7 @@ const PokinOpd = () => {
             } finally {
                 setLoading(false);
             }
+            //fetch 
             try {
                 const url = User?.roles == 'super_admin' ? `pohon_kinerja/status/${SelectedOpd?.value}/${Tahun?.value}` : `pohon_kinerja/status/${User?.kode_opd}/${Tahun?.value}`;
                 const response = await fetch(`${API_URL}/${url}`, {
@@ -484,7 +530,6 @@ const PokinOpd = () => {
                                         onChange={(option) => {
                                             setPohonPemda(option);
                                         }}
-                                        onMenuClose={() => setOptionPokinPemda([])}
                                         styles={{
                                             control: (baseStyles) => ({
                                                 ...baseStyles,
@@ -558,11 +603,11 @@ const PokinOpd = () => {
                             </div>
                         </div>
                     </div>
-                    {/* OPD */}
-                    {/* <div className="flex flex-wrap gap-2">
+                    {/* CROSS OPD */}
+                    <div className="flex flex-wrap gap-2">
                         <div className="border-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-xl">
-                            <h1 className="font-semibold border-b-2 py-1 text-center">
-                                Pohon Cross Cutting
+                            {/* <h1 className="font-semibold border-b-2 py-1 text-center">
+                                Crosscutting Pending
                             </h1>
                             <div className="flex flex-col py-2 mt-1 justify-between">
                                 <table>
@@ -620,7 +665,7 @@ const PokinOpd = () => {
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="">
                             <div className="border-t-2 border-x-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-t-xl ">
@@ -634,19 +679,19 @@ const PokinOpd = () => {
                                         pohon OPD
                                     </label>
                                     <Select
-                                        placeholder="Masukkan Perangkat Daerah"
-                                        value={PohonPemda}
-                                        options={OptionPokinPemda}
+                                        placeholder="Masukkan pohon crosscuting dari opd lain"
+                                        value={PohonCross}
+                                        options={OptionPokinCross}
                                         isSearchable
                                         isClearable
                                         isLoading={IsLoading}
                                         onMenuOpen={() => {
-                                            if (OptionPokinPemda.length === 0) {
-                                                fetchPohonPemda();
+                                            if (OptionPokinCross.length === 0) {
+                                                fetchPohonCross();
                                             }
                                         }}
                                         onChange={(option) => {
-                                            setPohonPemda(option);
+                                            setPohonCross(option);
                                         }}
                                         onMenuClose={() => setOptionPokinPemda([])}
                                         styles={{
@@ -658,10 +703,10 @@ const PokinOpd = () => {
                                         }}
                                     />
                                 </div>
-                                {(PohonPemda?.jenis == 'Tactical Pemda' || PohonPemda?.jenis == 'Operational Pemda') &&
+                                {(PohonCross?.jenis == 'Tactical Crosscutting' || PohonCross?.jenis == 'Operational Crosscutting') &&
                                     <div className="mb-3">
                                         <label htmlFor="" className='uppercase text-xs font-bold text-gray-700 my-2 ml-1'>
-                                            {PohonPemda?.jenis == 'Tactical Pemda' ? 'Strategic' : 'Tactical'}
+                                            {PohonPemda?.jenis == 'Tactical Crosscutting' ? 'Strategic' : 'Tactical'}
                                         </label>
                                         <Select
                                             placeholder="parent untuk pohon yang diterima"
@@ -671,7 +716,7 @@ const PokinOpd = () => {
                                             isClearable
                                             isLoading={IsLoading}
                                             onMenuOpen={() => {
-                                                if (PohonPemda?.jenis == 'Tactical Pemda') {
+                                                if (PohonCross?.jenis == 'Tactical Crosscutting') {
                                                     fetchPohonParent(4);
                                                 } else {
                                                     fetchPohonParent(5);
@@ -696,7 +741,7 @@ const PokinOpd = () => {
                                         className='w-full mx-2'
                                         onClick={() => {
                                             if (PohonPemda?.value == null || undefined) {
-                                                AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
+                                                AlertNotification("Pilih", "Pilih Pohon Crosscutting terlebih dahulu", "warning", 1000);
                                             } else {
                                                 tolakPohonCross(PohonPemda?.value);
                                             }
@@ -707,10 +752,12 @@ const PokinOpd = () => {
                                     </ButtonRedBorder>
                                     <ButtonSkyBorder
                                         onClick={() => {
-                                            if (PohonPemda?.value == null || undefined) {
+                                            if (PohonCross?.value == null || undefined) {
+                                                AlertNotification("Pilih", "Pilih Pohon Crosscutting terlebih dahulu", "warning", 1000);
+                                            } else if (PohonParent?.value == null || undefined) {
                                                 AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
                                             } else {
-                                                terimaPohonCross(PohonPemda?.value);
+                                                terimaPohonCross(PohonCross?.value, PohonParent?.value);
                                             }
                                         }}
                                         className='w-full mx-2'
@@ -721,7 +768,7 @@ const PokinOpd = () => {
                                 </div>
                             </div>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
                 <div className="tf-tree text-center mt-3">
                     <ul>
@@ -741,10 +788,27 @@ const PokinOpd = () => {
                                                 <td className="min-w-[100px] border px-2 py-3 border-black text-start">Kode OPD</td>
                                                 <td className="min-w-[300px] border px-2 py-3 border-black text-start">{Pokin?.kode_opd}</td>
                                             </tr>
-                                            <tr>
-                                                <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tujuan OPD</td>
-                                                <td className="min-w-[300px] border px-2 py-3 border-black text-start">-</td>
-                                            </tr>
+                                            {Pokin?.tujuan_opd ? 
+                                                Pokin?.tujuan_opd.map((item: any) => (
+                                                    <>
+                                                        <tr key={item.id}>
+                                                            <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tujuan OPD</td>
+                                                            <td className="min-w-[300px] border px-2 py-3 border-black text-start">{item.tujuan}</td>
+                                                        </tr>
+                                                        {item.indikator.map((i: any) => (
+                                                            <tr key={item.id}>
+                                                                <td className="min-w-[100px] border px-2 py-3 border-black text-start">Indikator</td>
+                                                                <td className="min-w-[300px] border px-2 py-3 border-black text-start">{i.indikator}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </>
+                                                ))
+                                            :
+                                                <tr>
+                                                    <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tujuan OPD</td>
+                                                    <td className="min-w-[300px] border px-2 py-3 border-black text-start">-</td>
+                                                </tr>
+                                            }
                                             <tr>
                                                 <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tahun</td>
                                                 <td className="min-w-[300px] border px-2 py-3 border-black text-start">{Pokin?.tahun}</td>
