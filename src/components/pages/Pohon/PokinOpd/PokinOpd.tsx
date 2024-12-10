@@ -819,8 +819,8 @@ const PokinOpd = () => {
                                 <div
                                     className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white border-black`}
                                 >
-                                    <ButtonSkyBorder>
-                                        <TbPencil className="mr-1" />
+                                    <ButtonSkyBorder halaman_url='/tujuanopd'>
+                                        <TbPencil className="mr-1"/>
                                         Tujuan OPD
                                     </ButtonSkyBorder>
                                 </div>

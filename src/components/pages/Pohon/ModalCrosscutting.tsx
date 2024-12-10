@@ -163,7 +163,11 @@ export const ModalAddCrosscutting: React.FC<modal> = ({isOpen, onClose, id}) => 
             //key : value
             nama_pohon : data.nama_pohon,
             Keterangan : data.keterangan,
-            jenis_pohon: `${JenisPohon} Crosscutting`,
+            jenis_pohon: 
+                JenisPohon === "Strategic" ? "Tactical Crosscutting" :
+                JenisPohon === "Tactical" ? "Operational Crosscutting" :
+                JenisPohon === "Operational" ? "Operational Crosscutting" :
+                "",
             level_pohon: data.level_pohon === 4 ? 5 :
                          data.level_pohon === 5 ? 6 :
                          data.level_pohon === 6 ? 7 :
@@ -190,6 +194,7 @@ export const ModalAddCrosscutting: React.FC<modal> = ({isOpen, onClose, id}) => 
                 const response = await fetch(`${API_URL}/crosscutting_opd/create/${id}`, {
                     method: "POST",
                     headers: {
+                        Authorization: `${token}`,
                         "Content-Type" : "application/json",
                     },
                     body: JSON.stringify(formData),
