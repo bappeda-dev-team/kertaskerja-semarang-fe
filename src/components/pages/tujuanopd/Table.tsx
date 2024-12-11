@@ -77,7 +77,7 @@ const Table = () => {
                 });
                 const result = await response.json();
                 const data = result.data;
-                if(data == null){
+                if(data.length == 0){
                     setDataNull(true);
                     setTujuan([]);
                 } else if(result.code == 500){

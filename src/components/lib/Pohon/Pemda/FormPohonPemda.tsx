@@ -8,6 +8,7 @@ import { AlertNotification } from '@/components/global/Alert';
 import Select from 'react-select';
 import { PohonEdited } from './Pohon';
 import { getToken } from '../../Cookie';
+import { LoadingButtonClip } from '@/components/global/Loading';
 
 interface OptionTypeString {
     value: string;
@@ -74,6 +75,7 @@ export const FormPohonPemda: React.FC<{
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [IsAdded, setIsAdded] = useState<boolean>(false);
     const [Deleted, setDeleted] = useState<boolean>(false);
+    const [Proses, setProses] = useState<boolean>(false);
     const token = getToken();
     
     useEffect(() => {
@@ -192,6 +194,7 @@ export const FormPohonPemda: React.FC<{
         };
         // console.log(formData);
         try{
+            setProses(true);
             const url = '/pohon_kinerja_admin/create';
             const response = await fetch(`${API_URL}${url}`, {
                 method: "POST",
@@ -213,6 +216,8 @@ export const FormPohonPemda: React.FC<{
         } catch(err){
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
             console.error(err);
+        } finally {
+            setProses(false);
         }
     };
 
@@ -481,8 +486,15 @@ export const FormPohonPemda: React.FC<{
                         >
                             Tambah Indikator
                         </ButtonSkyBorder>
-                        <ButtonSky type="submit" className="w-full my-3">
-                            Simpan
+                        <ButtonSky type="submit" className="w-full my-3" disabled={Proses}>
+                            {Proses ? 
+                                <span className="flex">
+                                    <LoadingButtonClip />
+                                    Menyimpan...
+                                </span> 
+                            :
+                                "Simpan"
+                            }
                         </ButtonSky>
                         <ButtonRed className="w-full my-3" onClick={onCancel}>
                             Batal
@@ -517,6 +529,7 @@ export const FormAmbilPohon: React.FC<{
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [IsAdded, setIsAdded] = useState<boolean>(false);
     const [DataAdd, setDataAdd] = useState<any>(null);
+    const [Proses, setProses] = useState<boolean>(false);
     const [Deleted, setDeleted] = useState<boolean>(false);
     const token = getToken();
     
@@ -619,6 +632,7 @@ export const FormAmbilPohon: React.FC<{
         };
         // console.log(formData);
         try{
+            setProses(true);
             const response = await fetch(`${API_URL}/pohon_kinerja_admin/clone_strategic/create`, {
                 method: "POST",
                 headers: {
@@ -639,6 +653,8 @@ export const FormAmbilPohon: React.FC<{
         } catch(err){
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
             console.error(err);
+        } finally {
+            setProses(false);
         }
     };
 
@@ -765,8 +781,15 @@ export const FormAmbilPohon: React.FC<{
                                 )}
                             />
                         </div>
-                        <ButtonSky type="submit" className="w-full my-3">
-                            Simpan
+                        <ButtonSky type="submit" className="w-full my-3" disabled={Proses}>
+                            {Proses ? 
+                                <span className="flex">
+                                    <LoadingButtonClip />
+                                    Menyimpan...
+                                </span> 
+                            :
+                                "Simpan"
+                            }
                         </ButtonSky>
                         <ButtonRed className="w-full my-3" onClick={onCancel}>
                             Batal
@@ -808,6 +831,7 @@ export const FormEditPohon: React.FC<{
     const [IsEdited, setIsEdited] = useState<boolean>(false);
     const [DataEdit, setDataEdit] = useState<any>(null);
     const [Deleted, setDeleted] = useState<boolean>(false);
+    const [Proses, setProses] = useState<boolean>(false);
     const token = getToken();
     
     useEffect(() => {
@@ -980,6 +1004,7 @@ export const FormEditPohon: React.FC<{
         };
         // console.log(formData);
         try{
+            setProses(true);
             const response = await fetch(`${API_URL}/pohon_kinerja_admin/update/${id}`, {
                 method: "PUT",
                 headers: {
@@ -1002,6 +1027,8 @@ export const FormEditPohon: React.FC<{
         } catch(err){
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
             console.error(err);
+        } finally {
+            setProses(false);
         }
     };
 
@@ -1270,8 +1297,15 @@ export const FormEditPohon: React.FC<{
                     >
                         Tambah Indikator
                     </ButtonSkyBorder>
-                    <ButtonSky type="submit" className="w-full my-3">
-                        Simpan
+                    <ButtonSky type="submit" className="w-full my-3" disabled={Proses}>
+                        {Proses ? 
+                                <span className="flex">
+                                    <LoadingButtonClip />
+                                    Menyimpan...
+                                </span> 
+                            :
+                                "Simpan"
+                            }
                     </ButtonSky>
                     <ButtonRed className="w-full my-3" onClick={onCancel}>
                         Batal

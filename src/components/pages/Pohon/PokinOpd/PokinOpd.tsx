@@ -11,6 +11,7 @@ import { FormPohonOpd } from '@/components/lib/Pohon/Opd/FormPohonOpd';
 import { getUser, getToken, getOpdTahun } from '@/components/lib/Cookie';
 import Select from 'react-select';
 import { AlertNotification } from '@/components/global/Alert';
+import { LoadingButtonClip } from '@/components/global/Loading';
 
 interface PokinPemda {
     value: number;
@@ -55,15 +56,25 @@ const PokinOpd = () => {
     const [Pokin, setPokin] = useState<pokin | null>(null);
     const [Loading, setLoading] = useState<boolean | null>(null);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
+    
+    
+    //pohon pemda
     const [OptionPokinPemda, setOptionPokinPemda] = useState<PokinPemda[]>([]);
-    const [OptionPokinCross, setOptionPokinCross] = useState<PokinPemda[]>([]);
-    const [OptionPohonParent, setOptionPohonParent] = useState<PokinPemda[]>([]);
+    const [PohonPemda, setPohonPemda] = useState<PokinPemda | null>(null);
+    const [ProsesPemda, setProsesPemda] = useState<boolean>(false);
+    //rekapitulasi jumlah pohon dari pemda
     const [JumlahPemdaStrategic, setJumlahPemdaStrategic] = useState<PokinPemda[]>([]);
     const [JumlahPemdaTactical, setJumlahPemdaTactical] = useState<PokinPemda[]>([]);
     const [JumlahPemdaOperational, setJumlahPemdaOperational] = useState<PokinPemda[]>([]);
-    const [PohonPemda, setPohonPemda] = useState<PokinPemda | null>(null);
+    
+    //pohon cross opd lain
+    const [OptionPokinCross, setOptionPokinCross] = useState<PokinPemda[]>([]);
     const [PohonCross, setPohonCross] = useState<PokinPemda | null>(null);
+    const [ProsesCross, setProsesCross] = useState<boolean>(false);
+
     const [PohonParent, setPohonParent] = useState<PokinPemda | null>(null);
+    const [OptionPohonParent, setOptionPohonParent] = useState<PokinPemda[]>([]);
+
     const [error, setError] = useState<string>('');
     const token = getToken();
 
@@ -197,6 +208,7 @@ const PokinOpd = () => {
         }
         // console.log(formData);
         try {
+            setProsesPemda(true);
             const response = await fetch(`${API_URL}/pohon_kinerja_admin/clone_pokin_pemda/create`, {
                 method: "POST",
                 headers: {
@@ -215,6 +227,8 @@ const PokinOpd = () => {
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
             console.error(err);
+        } finally{
+            setProsesPemda(false);
         }
     }
     const tolakPohonPemda = async (id: number) => {
@@ -224,6 +238,7 @@ const PokinOpd = () => {
         }
         // console.log(formData);
         try {
+            setProsesPemda(true);
             const response = await fetch(`${API_URL}/pohon_kinerja_admin/tolak_pokin/${id}`, {
                 method: "PUT",
                 headers: {
@@ -242,6 +257,8 @@ const PokinOpd = () => {
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
             console.error(err);
+        } finally {
+            setProsesPemda(false);
         }
     }
     const terimaPohonCross = async (id: number, parent: number) => {
@@ -252,6 +269,7 @@ const PokinOpd = () => {
         }
         // console.log(formData);
         try {
+            setProsesCross(true);
             const response = await fetch(`${API_URL}/crosscutting/${id}/${parent}/permission`, {
                 method: "POST",
                 headers: {
@@ -270,6 +288,8 @@ const PokinOpd = () => {
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
             console.error(err);
+        } finally {
+            setProsesCross(false);
         }
     }
     const tolakPohonCross = async (id: number) => {
@@ -280,6 +300,7 @@ const PokinOpd = () => {
         }
         // console.log(formData);
         try {
+            setProsesCross(true);
             const response = await fetch(`${API_URL}/crosscutting/${id}/permission`, {
                 method: "POST",
                 headers: {
@@ -301,6 +322,8 @@ const PokinOpd = () => {
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
             console.error(err);
+        } finally {
+            setProsesCross(false);
         }
     }
 
@@ -575,6 +598,7 @@ const PokinOpd = () => {
                                 <div className="flex justify-between my-2">
                                     <ButtonRedBorder
                                         className='w-full mx-2'
+                                        disabled={ProsesPemda}
                                         onClick={() => {
                                             if (PohonPemda?.value == null || undefined) {
                                                 AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
@@ -583,8 +607,17 @@ const PokinOpd = () => {
                                             }
                                         }}
                                     >
-                                        <TbCircleLetterXFilled className='mr-1' />
-                                        Tolak
+                                        {ProsesPemda ? 
+                                            <span className="flex">
+                                                <LoadingButtonClip />
+                                                Menolak...
+                                            </span> 
+                                        :
+                                            <span className="flex items-center">
+                                                <TbCircleLetterXFilled className='mr-1' />
+                                                Tolak
+                                            </span> 
+                                        }
                                     </ButtonRedBorder>
                                     <ButtonSkyBorder
                                         onClick={() => {
@@ -595,9 +628,19 @@ const PokinOpd = () => {
                                             }
                                         }}
                                         className='w-full mx-2'
+                                        disabled={ProsesPemda}
                                     >
-                                        <TbCircleCheckFilled className='mr-1' />
-                                        Terima
+                                        {ProsesPemda ? 
+                                            <span className="flex">
+                                                <LoadingButtonClip />
+                                                Menerima...
+                                            </span> 
+                                        :
+                                            <span className="flex items-center">
+                                                <TbCircleCheckFilled className='mr-1' />
+                                                Terima
+                                            </span> 
+                                        }
                                     </ButtonSkyBorder>
                                 </div>
                             </div>
@@ -739,6 +782,7 @@ const PokinOpd = () => {
                                 <div className="flex justify-between my-2">
                                     <ButtonRedBorder
                                         className='w-full mx-2'
+                                        disabled={ProsesCross}
                                         onClick={() => {
                                             if (PohonPemda?.value == null || undefined) {
                                                 AlertNotification("Pilih", "Pilih Pohon Crosscutting terlebih dahulu", "warning", 1000);
@@ -747,8 +791,17 @@ const PokinOpd = () => {
                                             }
                                         }}
                                     >
-                                        <TbCircleLetterXFilled className='mr-1' />
-                                        Tolak
+                                        {ProsesCross ? 
+                                            <span className="flex">
+                                                <LoadingButtonClip />
+                                                Menolak...
+                                            </span> 
+                                        :
+                                            <span className="flex items-center">
+                                                <TbCircleLetterXFilled className='mr-1' />
+                                                Tolak
+                                            </span> 
+                                        }
                                     </ButtonRedBorder>
                                     <ButtonSkyBorder
                                         onClick={() => {
@@ -760,10 +813,20 @@ const PokinOpd = () => {
                                                 terimaPohonCross(PohonCross?.value, PohonParent?.value);
                                             }
                                         }}
+                                        disabled={ProsesCross}
                                         className='w-full mx-2'
                                     >
-                                        <TbCircleCheckFilled className='mr-1' />
-                                        Terima
+                                        {ProsesCross ? 
+                                            <span className="flex">
+                                                <LoadingButtonClip />
+                                                Menerima...
+                                            </span> 
+                                        :
+                                            <span className="flex items-center">
+                                                <TbCircleCheckFilled className='mr-1' />
+                                                Terima
+                                            </span> 
+                                        }
                                     </ButtonSkyBorder>
                                 </div>
                             </div>
