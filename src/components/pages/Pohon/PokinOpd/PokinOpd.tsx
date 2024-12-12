@@ -649,7 +649,7 @@ const PokinOpd = () => {
                     {/* CROSS OPD */}
                     <div className="flex flex-wrap gap-2">
                         <div className="border-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-xl">
-                            {/* <h1 className="font-semibold border-b-2 py-1 text-center">
+                            <h1 className="font-semibold border-b-2 py-1 text-center">
                                 Crosscutting Pending
                             </h1>
                             <div className="flex flex-col py-2 mt-1 justify-between">
@@ -657,8 +657,8 @@ const PokinOpd = () => {
                                     <tbody>
                                         <tr className="flex items-center">
                                             <td className="border-l border-t px-2 py-1 bg-white text-start rounded-tl-lg min-w-[150px]">
-                                                <h1 className="font-semibold text-red-500">
-                                                    Strategic
+                                                <h1 className="font-semibold">
+                                                    Diterima
                                                 </h1>
                                             </td>
                                             <td className="border-t py-1">
@@ -667,32 +667,32 @@ const PokinOpd = () => {
                                                 </h1>
                                             </td>
                                             <td className='border-r border-t px-2 py-1 bg-white text-center rounded-tr-lg w-full'>
-                                                <h1 className="font-semibold text-red-500">
-                                                    {JumlahPemdaStrategic?.length || 0}
+                                                <h1 className="font-semibold">
+                                                    0
                                                 </h1>
                                             </td>
                                         </tr>
                                         <tr className="flex items-center">
-                                            <td className="border-l  px-2 py-1 bg-white text-start min-w-[150px]">
-                                                <h1 className="font-semibold text-green-500">
-                                                    Tactical
+                                            <td className="border-l px-2 py-1 bg-white text-start min-w-[150px]">
+                                                <h1 className="font-semibold">
+                                                    Ditolak 
                                                 </h1>
                                             </td>
-                                            <td className=" py-1">
+                                            <td className="py-1">
                                                 <h1 className="font-semibold">
                                                     :
                                                 </h1>
                                             </td>
-                                            <td className='border-r  px-2 py-1 bg-white text-center w-full'>
-                                                <h1 className="font-semibold text-green-500">
-                                                    {JumlahPemdaTactical?.length || 0}
+                                            <td className='border-r px-2 py-1 bg-white text-center w-full'>
+                                                <h1 className="font-semibold">
+                                                    0
                                                 </h1>
                                             </td>
                                         </tr>
                                         <tr className="flex items-center">
                                             <td className="border-l border-b px-2 py-1 bg-white text-start rounded-bl-lg min-w-[150px]">
-                                                <h1 className="font-semibold text-blue-500">
-                                                    Operational
+                                                <h1 className="font-semibold">
+                                                    Pending
                                                 </h1>
                                             </td>
                                             <td className="border-b py-1">
@@ -701,14 +701,14 @@ const PokinOpd = () => {
                                                 </h1>
                                             </td>
                                             <td className='border-r border-b px-2 py-1 bg-white text-center rounded-br-lg w-full'>
-                                                <h1 className="font-semibold text-blue-500">
-                                                    {JumlahPemdaOperational?.length || 0}
+                                                <h1 className="font-semibold">
+                                                    0
                                                 </h1>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div> */}
+                            </div>
                         </div>
                         <div className="">
                             <div className="border-t-2 border-x-2 max-w-[400px] min-w-[300px] px-3 py-2 rounded-t-xl ">
@@ -855,8 +855,8 @@ const PokinOpd = () => {
                                                 Pokin?.tujuan_opd.map((item: any) => (
                                                     <>
                                                         <tr key={item.id}>
-                                                            <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tujuan OPD</td>
-                                                            <td className="min-w-[300px] border px-2 py-3 border-black text-start">{item.tujuan}</td>
+                                                            <td className="min-w-[100px] border px-2 py-3 border-black text-start bg-gray-100">Tujuan OPD</td>
+                                                            <td className="min-w-[300px] border px-2 py-3 border-black text-start bg-gray-100">{item.tujuan}</td>
                                                         </tr>
                                                         {item.indikator ? 
                                                             <>

@@ -250,7 +250,17 @@ export const FormPohonOpd: React.FC<{
                             />
                         </div>
                         <label className="uppercase text-base font-bold text-gray-700 my-2">
-                            indikator sasaran :
+                            {level == 4 ? 
+                                <h1>Indikator Tactical :</h1>
+                            :
+                            level == 5 ? 
+                                <h1>Indikator Operational :</h1>
+                            :
+                            level >= 5 ? 
+                                <h1>Indikator Operational N :</h1>
+                            :
+                                <h1>Indikator Strategic :</h1>
+                            }
                         </label>
                         {fields.map((field, index) => (
                             <div key={index} className="flex flex-col my-2 py-2 px-5 border rounded-lg">
@@ -616,7 +626,17 @@ export const FormEditPohon: React.FC<{
                             />
                         </div>
                         <label className="uppercase text-base font-bold text-gray-700 my-2">
-                            indikator sasaran :
+                            {level == 4 ? 
+                                <h1>Indikator Strategic :</h1>
+                            :
+                            level == 5 ? 
+                                <h1>Indikator Tactical :</h1>
+                            :
+                            level == 6 ? 
+                                <h1>Indikator Operational :</h1>
+                            :
+                                <h1>Indikator Operational N :</h1>
+                            }
                         </label>
                         {fields.map((field, index) => (
                             <div key={index} className="flex flex-col my-2 py-2 px-5 border rounded-lg">

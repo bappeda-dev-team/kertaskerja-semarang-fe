@@ -408,7 +408,27 @@ export const FormPohonPemda: React.FC<{
                             />
                         </div>
                         <label className="uppercase text-base font-bold text-gray-700 my-2">
-                            indikator sasaran :
+                            {
+                            level == 0 ? 
+                                <h1>Indikator Sub Tematik :</h1>
+                            :
+                            level == 1 ? 
+                                <h1>Indikator Sub Sub Tematik :</h1>
+                            :
+                            level == 2 ? 
+                                <h1>Indikator Super Sub Tematik :</h1>
+                            :
+                            level == 3 ? 
+                                <h1>Indikator Strategic :</h1>
+                            :
+                            level == 4 ? 
+                                <h1>Indikator Tactical :</h1>
+                            :
+                            level == 5 ? 
+                                <h1>Indikator Operational :</h1>
+                            :
+                                <h1>Indikator</h1>
+                            }
                         </label>
                         {fields.map((field, index) => (
                             <div key={index} className="flex flex-col my-2 py-2 px-5 border rounded-lg">
@@ -980,7 +1000,8 @@ export const FormEditPohon: React.FC<{
             //key : value
             nama_pohon : data.nama_pohon,
             Keterangan : data.keterangan,
-            jenis_pohon:    level === 1 ? "Sub Tematik" :
+            jenis_pohon:    level === 0 ? "Tematik" :
+                            level === 1 ? "Sub Tematik" :
                             level === 2 ? "Sub Sub Tematik" :
                             level === 3 ? "Super Sub Tematik" :
                             level === 4 ? "Strategic Pemda" :
@@ -1039,6 +1060,9 @@ export const FormEditPohon: React.FC<{
         :
         <div className="tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg shadow-slate-500">
             <div className="flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black rounded-lg">
+                {level == 0 && 
+                    <h1>Edit Tematik </h1>
+                } 
                 {level == 1 && 
                     <h1>Edit Sub Tematik </h1>
                 } 
@@ -1068,6 +1092,9 @@ export const FormEditPohon: React.FC<{
                             className="uppercase text-xs font-bold text-gray-700 my-2"
                             htmlFor="nama_pohon"
                         >
+                            {level == 0 && 
+                                "Tematik"
+                            } 
                             {level == 1 && 
                                 "Sub Tematik"
                             } 
@@ -1219,7 +1246,33 @@ export const FormEditPohon: React.FC<{
                         />
                     </div>
                     <label className="uppercase text-base font-bold text-gray-700 my-2">
-                        indikator sasaran :
+                        {
+                            level == 0 ? 
+                                <h1>Indikator Tematik :</h1>
+                            :
+                            level == 1 ? 
+                                <h1>Indikator Sub Tematik :</h1>
+                            :
+                            level == 2 ? 
+                                <h1>Indikator Sub Sub Tematik :</h1>
+                            :
+                            level == 3 ? 
+                                <h1>Indikator Super Sub Tematik :</h1>
+                            :
+                            level == 4 ? 
+                                <h1>Indikator Strategic :</h1>
+                            :
+                            level == 5 ? 
+                                <h1>Indikator Tactical :</h1>
+                            :
+                            level == 6 ? 
+                                <h1>Indikator Operational :</h1>
+                            :
+                            level >= 6 ? 
+                                <h1>Indikator Operational N :</h1>
+                            :
+                                <h1>Indikator</h1>
+                        }
                     </label>
                     {fields.map((field, index) => (
                         <div key={index} className="flex flex-col my-2 py-2 px-5 border rounded-lg">
