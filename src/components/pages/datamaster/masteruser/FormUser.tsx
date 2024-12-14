@@ -3,8 +3,8 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import Select from 'react-select';
-import { ButtonGreen, ButtonRedBorder, ButtonSkyBorder, ButtonRed } from "@/components/global/Button";
-import { LoadingClip } from "@/components/global/Loading";
+import { ButtonGreen, ButtonRed } from "@/components/global/Button";
+import { LoadingClip, LoadingButtonClip } from "@/components/global/Loading";
 import { AlertNotification } from "@/components/global/Alert";
 import { useRouter, useParams } from "next/navigation";
 import { TbEye, TbEyeClosed } from "react-icons/tb";
@@ -14,12 +14,16 @@ interface OptionType {
     value: number;
     label: string;
 }
+interface OptionTypeString {
+    value: string;
+    label: string;
+}
 interface OptionTypeBoolean {
     value: boolean;
     label: string;
 }
 interface FormValue {
-    nip: string;
+    nip: OptionTypeString;
     email: string;
     password: string;
     is_active: OptionTypeBoolean;
@@ -33,13 +37,17 @@ export const FormUser = () => {
       handleSubmit,
       formState: { errors },
     } = useForm<FormValue>();
-    const [Nip, setNip] = useState<string>('');
+    const [Nip, setNip] = useState<OptionTypeString | null>(null);
     const [Email, setEmail] = useState<string>('');
     const [Password, setPassword] = useState<string>('');
     const [Aktif, setAktif] = useState<OptionTypeBoolean | null>(null);
     const [Roles, setRoles] = useState<OptionType[]>([]);
+    const [Opd, setOpd] = useState<OptionTypeString | null>(null);
+    const [PegawaiOption, setPegawaiOption] = useState<OptionTypeString[]>([]);
+    const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
     const [RolesOption, setRolesOption] = useState<OptionType[]>([]);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
+    const [Proses, setProses] = useState<boolean>(false);
     const router = useRouter();
     const token = getToken();
     const [showPassword, setShowPassword] = useState(false);
@@ -70,6 +78,60 @@ export const FormUser = () => {
         setIsLoading(false);
       }
     };
+    const fetchOpd = async() => {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      setIsLoading(true);
+      try{ 
+        const response = await fetch(`${API_URL}/opd/findall`,{
+          method: 'GET',
+          headers: {
+            Authorization: `${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if(!response.ok){
+          throw new Error('cant fetch data opd');
+        }
+        const data = await response.json();
+        const opd = data.data.map((item: any) => ({
+          value : item.kode_opd,
+          label : item.nama_opd,
+        }));
+        setOpdOption(opd);
+      } catch (err){
+        console.log('gagal mendapatkan data opd');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    const fetchPegawai = async(kode_opd: string) => {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL;
+      setIsLoading(true);
+      try{ 
+        const response = await fetch(`${API_URL}/pegawai/findall?kode_opd=${kode_opd}`,{
+          method: 'GET',
+          headers: {
+            Authorization: `${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if(!response.ok){
+          throw new Error('cant fetch data opd');
+        }
+        console.log(kode_opd);
+        const data = await response.json();
+        const pegawai = data.data.map((item: any) => ({
+          value : item.nip,
+          label : item.nama_pegawai,
+        }));
+        setPegawaiOption(pegawai);
+      } catch (err){
+        console.log('gagal mendapatkan data pegawai');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     const activeOptions = [
       { label: "Aktif", value: true },
       { label: "Tidak Aktif", value: false },
@@ -90,6 +152,7 @@ export const FormUser = () => {
         };
         // console.log(formData);
         try{
+            setProses(true);
             const response = await fetch(`${API_URL}/user/create`, {
                 method: "POST",
                 headers: {
@@ -106,6 +169,8 @@ export const FormUser = () => {
             }
         } catch(err){
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        } finally {
+            setProses(false);
         }
     };
 
@@ -120,36 +185,76 @@ export const FormUser = () => {
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
+                    >
+                        Perangkat Daerah
+                    </label>
+                        <Select
+                            placeholder="Pilih OPD"
+                            value={Opd}
+                            options={OpdOption}
+                            isLoading={IsLoading}
+                            isSearchable
+                            isClearable
+                            onMenuOpen={() => {
+                                if (OpdOption.length === 0) {
+                                    fetchOpd();
+                                }
+                            }}
+                            onMenuClose={() => setOpdOption([])}
+                            onChange={(option) => {
+                                setOpd(option);
+                            }}
+                            styles={{
+                                control: (baseStyles) => ({
+                                ...baseStyles,
+                                borderRadius: '8px',
+                                textAlign: 'start',
+                                })
+                            }}
+                        />
+                </div>
+                <div className="flex flex-col py-3">
+                    <label
+                        className="uppercase text-xs font-bold text-gray-700 my-2"
                         htmlFor="nip"
                     >
-                        NIP :
+                        Pegawai
                     </label>
                     <Controller
                         name="nip"
                         control={control}
-                        rules={{ required: "NIP harus terisi" }}
                         render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="nip"
-                                    type="text"
-                                    placeholder="masukkan NIP"
-                                    value={field.value || Nip}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setNip(e.target.value);
-                                    }}
-                                />
-                                {errors.nip ?
-                                    <h1 className="text-red-500">
-                                    {errors.nip.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*NIP Harus Terisi</h1>
-                                }
-                            </>
+                        <>
+                            <Select
+                                {...field}
+                                placeholder={!Opd ? 'Pilih OPD terlebih dahulu' : 'Pilih Pegawai'}
+                                value={Nip}
+                                options={PegawaiOption}
+                                isLoading={IsLoading}
+                                isSearchable
+                                isClearable
+                                isDisabled={!Opd}
+                                onMenuOpen={() => {
+                                    if (Opd?.value) {
+                                        fetchPegawai(Opd?.value);
+                                    }
+                                }}
+                                onMenuClose={() => {
+                                    setPegawaiOption([]);
+                                }}
+                                onChange={(option) => {
+                                    field.onChange(option);
+                                    setNip(option);
+                                }}
+                                styles={{
+                                    control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    borderRadius: '8px',
+                                    textAlign: 'start',
+                                    })
+                                }}
+                            />
+                        </>
                         )}
                     />
                 </div>
@@ -321,7 +426,14 @@ export const FormUser = () => {
                     type="submit"
                     className="my-4"
                 >
-                    Simpan
+                    {Proses ? 
+                        <span className="flex">
+                            <LoadingButtonClip />
+                            Menyimpan...
+                        </span> 
+                    :
+                        "Simpan"
+                    }
                 </ButtonGreen>
                 <ButtonRed type="button" halaman_url="/DataMaster/masteruser">
                     Kembali
@@ -339,12 +451,13 @@ export const FormEditUser = () => {
       reset,
       formState: { errors },
     } = useForm<FormValue>();
-    const [Nip, setNip] = useState<string>('');
+    const [Nip, setNip] = useState<OptionTypeString | null>(null);
     const [Email, setEmail] = useState<string>('');
     const [Aktif, setAktif] = useState<OptionTypeBoolean | null>(null);
     const [Roles, setRoles] = useState<OptionType[]>([]);
     const [RolesOption, setRolesOption] = useState<OptionType[]>([]);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
+    const [Proses, setProses] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean | null>(null);
     const [idNull, setIdNull] = useState<boolean | null>(null);
@@ -378,6 +491,7 @@ export const FormEditUser = () => {
         setIsLoading(false);
       }
     };
+
     const activeOptions = [
       { label: "Aktif", value: true },
       { label: "Tidak Aktif", value: false },
@@ -407,6 +521,13 @@ export const FormEditUser = () => {
                         label: item.role,
                     })) || [],
                 });
+                if(data.nip){
+                    const nip = {
+                        value: data.nip,
+                        label: data.nip,
+                    }
+                    setNip(nip);
+                }
                 setRoles(
                     data.role?.map((item: any) => ({
                         value: item.id,
@@ -432,11 +553,12 @@ export const FormEditUser = () => {
           //key : value
           nip : data.nip,
           email : data.email,
-          is_active: data.is_active?.value,
+          is_active: data.is_active?.value || Aktif?.value,
           role: RolesIds,
       };
-        //console.log(formData);
+        // console.log(formData);
         try{
+            setProses(true);
             const response = await fetch(`${API_URL}/user/update/${id}`, {
                 method: "PUT",
                 headers: {
@@ -453,6 +575,8 @@ export const FormEditUser = () => {
             }
         } catch(err){
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        } finally {
+            setProses(false);
         }
     };
 
@@ -487,42 +611,48 @@ export const FormEditUser = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col mx-5 py-5"
             >
-                <div className="flex flex-col py-3">
+                <h1 className="border border-slate-200 bg-slate-200 rounded-lg p-3">NIP User ini : {Nip?.value}</h1>
+                {/* <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
                         htmlFor="nip"
                     >
-                        NIP :
+                        Pegawai
                     </label>
                     <Controller
                         name="nip"
                         control={control}
-                        rules={{ required: "NIP harus terisi" }}
                         render={({ field }) => (
-                            <>
-                                <input
-                                    {...field}
-                                    className="border px-4 py-2 rounded-lg"
-                                    id="nip"
-                                    type="text"
-                                    placeholder="masukkan NIP"
-                                    value={field.value || Nip}
-                                    onChange={(e) => {
-                                        field.onChange(e);
-                                        setNip(e.target.value);
-                                    }}
-                                />
-                                {errors.nip ?
-                                    <h1 className="text-red-500">
-                                    {errors.nip.message}
-                                    </h1>
-                                    :
-                                    <h1 className="text-slate-300 text-xs">*NIP Harus Terisi</h1>
-                                }
-                            </>
+                        <>
+                            <Select
+                                {...field}
+                                placeholder="Pilih pegawai"
+                                value={Nip}
+                                options={PegawaiOption}
+                                isLoading={IsLoading}
+                                isSearchable
+                                isClearable
+                                onMenuOpen={() => {
+                                    if (RolesOption.length === 0) {
+                                        fetchPegawai();
+                                    }
+                                }}
+                                onChange={(option) => {
+                                    field.onChange(option);
+                                    setNip(option);
+                                }}
+                                styles={{
+                                    control: (baseStyles) => ({
+                                    ...baseStyles,
+                                    borderRadius: '8px',
+                                    textAlign: 'start',
+                                    })
+                                }}
+                            />
+                        </>
                         )}
                     />
-                </div>
+                </div> */}
                 <div className="flex flex-col py-3">
                     <label
                         className="uppercase text-xs font-bold text-gray-700 my-2"
@@ -646,7 +776,14 @@ export const FormEditUser = () => {
                     type="submit"
                     className="my-4"
                 >
-                    Simpan
+                    {Proses ? 
+                        <span className="flex">
+                            <LoadingButtonClip />
+                            Menyimpan...
+                        </span> 
+                    :
+                        "Simpan"
+                    }
                 </ButtonGreen>
                 <ButtonRed type="button" halaman_url="/DataMaster/masteruser">
                     Kembali
