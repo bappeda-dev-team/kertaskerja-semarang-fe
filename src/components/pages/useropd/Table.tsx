@@ -85,7 +85,7 @@ const Table = () => {
                 fetchUrusan(`user/findall?kode_opd=${user?.kode_opd}`);
             }
         }
-    }, [token, user]);
+    }, [token, user, SelectedOpd]);
 
     const hapusUrusan = async(id: any) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
