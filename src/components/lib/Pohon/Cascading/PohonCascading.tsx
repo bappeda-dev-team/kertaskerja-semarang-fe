@@ -93,8 +93,12 @@ export const PohonCascading: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             ${tema.jenis_pohon === "Tactical" && 'border-blue-500 text-blue-500'}
                             ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
                         `}
-                            >
-                        <h1>{tema.jenis_pohon}</h1>
+                    >
+                        {tema.jenis_pohon === 'Operational N' ?
+                            <h1>Operational {tema.level_pohon - 6}  </h1>
+                            :
+                            <h1>{tema.jenis_pohon} </h1>
+                        }
                     </div>
                     {/* BODY */}
                     <div className="flex justify-center my-3">
@@ -249,7 +253,11 @@ export const PohonCascadingEdited: React.FC<pohon> = ({ tema, deleteTrigger }) =
                             ${tema.jenis_pohon === "Operational Pemda" && 'border-green-500 text-white bg-gradient-to-r from-[#007982] from-40% to-[#2DCB06]'}
                         `}
                     >
-                        <h1>{tema.jenis_pohon}</h1>
+                        {tema.jenis_pohon === 'Operational N' ?
+                            <h1>Operational {tema.level_pohon - 6}  </h1>
+                            :
+                            <h1>{tema.jenis_pohon} </h1>
+                        }
                     </div>
                     {/* BODY */}
                     <div className="flex justify-center my-3">

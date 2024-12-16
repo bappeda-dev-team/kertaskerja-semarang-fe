@@ -107,7 +107,7 @@ export default function ZoomableDivWithHandToolToggle() {
           }}
         >
           <div
-            className="flex flex-wrap gap-2 p-5 border-b-2 border-x-2 rounded-b-xl"
+            className="flex flex-wrap gap-2 p-5 border-b-2 border-x-2 rounded-b-xl select-none"
             style={{
               transform: `scale(${zoom / 100})`,
               transformOrigin: "center",
