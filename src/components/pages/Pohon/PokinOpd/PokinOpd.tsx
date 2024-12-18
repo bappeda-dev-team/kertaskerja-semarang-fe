@@ -2,8 +2,8 @@
 
 import '@/components/pages/Pohon/treeflex.css'
 import { useState, useEffect, useRef } from 'react';
-import { TbPencil, TbCircleCheckFilled, TbCircleLetterXFilled, TbCirclePlus, TbHandStop, TbPointer } from 'react-icons/tb';
-import { ButtonGreenBorder, ButtonSkyBorder, ButtonRedBorder } from '@/components/global/Button';
+import { TbPencil, TbCircleCheckFilled, TbCircleLetterXFilled, TbCirclePlus, TbHandStop, TbPointer, TbSettings } from 'react-icons/tb';
+import { ButtonGreenBorder, ButtonSkyBorder, ButtonRedBorder, ButtonBlackBorder } from '@/components/global/Button';
 import { LoadingBeat, LoadingButtonClip } from '@/components/global/Loading';
 import { OpdTahunNull, TahunNull } from '@/components/global/OpdTahunNull';
 import { PohonOpd } from '@/components/lib/Pohon/Opd/PohonOpd';
@@ -283,6 +283,7 @@ const PokinOpd = () => {
                 alert("cant fetch data")
             }
             AlertNotification("Berhasil", "Data pohon berhasil di tolak", "success", 1000);
+            setDeleted((prev) => !prev);
             // setTimeout(() => {
             //     window.location.reload();
             // }, 1000);
@@ -498,7 +499,7 @@ const PokinOpd = () => {
                         :
                         <h1 className="font-bold">Pohon Cascading {Pokin?.nama_opd}</h1>
                 }
-                <ButtonGreenBorder onClick={() => setKendali((prev) => !prev)}>{Kendali ? "Sembunyikan" : "Tampilkan"}</ButtonGreenBorder>
+                <ButtonBlackBorder onClick={() => setKendali((prev) => !prev)}>{Kendali ? <span className='flex gap-1 items-center'><TbSettings />Sembunyikan</span> : <span className='flex gap-1 items-center'><TbSettings/>Tampilkan</span> }</ButtonBlackBorder>
             </div>
             <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl relative w-full h-[calc(100vh-50px)] max-h-screen overflow-auto">
                 <div className={`flex flex-wrap justify-between gap-2 transition-all duration-300 ease-in-out ${Kendali ? "max-h-screen opacity-100" : "max-h-0 opacity-0 pointer-events-none"}`}>
