@@ -190,6 +190,7 @@ const PokinOpd = () => {
                 const pokinCross = data.data.map((item: any) => ({
                     value: item.id,
                     label: item.nama_pohon,
+                    // label: item.keterangan,
                 }));
                 setOptionPokinCross(pokinCross);
                 setCrossPending(pokinCross.length);
