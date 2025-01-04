@@ -164,16 +164,10 @@ export const ModalAddCrosscutting: React.FC<modal> = ({isOpen, onClose, id}) => 
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
-        const jenisPohon = `${JenisPohon} Crosscutting`
         const formData = {
             //key : value
-            nama_pohon : data.nama_pohon,
             Keterangan : data.keterangan,
-            jenis_pohon: jenisPohon,
-            level_pohon: LevelPohon,
-            parent: Number(Parent),
             kode_opd: KodeOpd?.value,
-            status: 'crosscutting_menunggu',
             tahun: Tahun?.value?.toString(),
         };
         if(KodeOpd?.value == null || undefined){
@@ -190,7 +184,7 @@ export const ModalAddCrosscutting: React.FC<modal> = ({isOpen, onClose, id}) => 
                     body: JSON.stringify(formData),
                 });
                 if(response.ok){
-                    AlertNotification("Berhasil", "Berhasil menambahkan strategic", "success", 1000);
+                    AlertNotification("Berhasil", "Berhasil menambahkan crosscutting", "success", 1000);
                     onClose();
                 } else {
                     AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
