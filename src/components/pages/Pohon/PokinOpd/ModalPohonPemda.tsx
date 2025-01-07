@@ -349,7 +349,7 @@ export const ModalPohonPemda: React.FC<modal> = ({isOpen, onClose, onSuccess}) =
                                     >
                                         {PohonPemda?.indikators ? 
                                             PohonPemda?.indikators.map((i: any) => (
-                                                <p>{i.nama_indikator}</p>
+                                                <p key={i.id_indikator}>{i.nama_indikator}</p>
                                             ))
                                         :
                                             "-"
@@ -586,8 +586,8 @@ export const ModalPohonCrosscutting: React.FC<modal> = ({isOpen, onClose, onSucc
             :
                 "",
         }
-        console.log(formData);
-        console.log("Baru", id);
+        // console.log(formData);
+        // console.log("Baru", id);
         try {
             setProses(true);
             const response = await fetch(`${API_URL}/crosscutting/${id}/permission`, {
