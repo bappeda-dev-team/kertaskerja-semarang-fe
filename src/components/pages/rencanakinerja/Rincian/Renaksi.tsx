@@ -1,10 +1,11 @@
 'use client'
 
-import { ButtonSky, ButtonSkyBorder, ButtonGreen, ButtonRedBorder } from "@/components/global/Button";
+import { ButtonSky, ButtonSkyBorder, ButtonRedBorder } from "@/components/global/Button";
+import { TbPencil, TbTrash } from "react-icons/tb";
 import { ModalRenaksi } from "../ModalRenaksi";
 import { useState } from "react";
 
-const Rekin = () => {
+const Renaksi = () => {
 
     const [isOpenNewRenaksi, setIsOpenNewRenaksi] = useState<boolean>(false);
 
@@ -33,7 +34,7 @@ const Rekin = () => {
                             <tr>
                                 <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[50px]">No</td>
                                 <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Tahapan kerja</td>
-                                <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</td>
+                                <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px] text-center">Aksi</td>
                                 <td colSpan={3} className="border-r border-b px-6 py-3 min-w-[20px]">1</td>
                                 <td colSpan={3} className="border-r border-b px-6 py-3 min-w-[20px]">2</td>
                                 <td colSpan={3} className="border-r border-b px-6 py-3 min-w-[20px]">3</td>
@@ -65,14 +66,20 @@ const Rekin = () => {
                                 <td colSpan={3} className="border-r border-b px-6 py-3 min-w-[20px] max-h-[20px] text-center">T</td>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="text-sm">
                             <tr>
                                 <td className="border-r border-b px-6 py-4">1</td>
                                 <td className="border-r border-b px-6 py-4">Rapat Koordinasi</td>
                                 <td className="border-r border-b px-6 py-4">
                                     <div className="flex flex-col justify-center items-center gap-2">
-                                        <ButtonSkyBorder>Edit</ButtonSkyBorder>
-                                        <ButtonRedBorder>Hapus</ButtonRedBorder>
+                                       <ButtonSkyBorder className="w-full flex items-center gap-1">
+                                          <TbPencil />
+                                          Edit
+                                       </ButtonSkyBorder>
+                                       <ButtonRedBorder className="w-full flex items-center gap-1">
+                                          <TbTrash />
+                                          Hapus
+                                       </ButtonRedBorder>
                                     </div>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
@@ -207,4 +214,4 @@ const Rekin = () => {
     )
 }
 
-export default Rekin;
+export default Renaksi;

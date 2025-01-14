@@ -2,12 +2,9 @@
 
 import { FiHome } from 'react-icons/fi';
 import Musrebang from '@/components/pages/rencanakinerja/Rincian/Musrebang';
-import Pokir from '@/components/pages/rencanakinerja/Rincian/Pokir';
-import Mandatori from '@/components/pages/rencanakinerja/Rincian/Mandatori';
-import Inisiatif from '@/components/pages/rencanakinerja/Rincian/Inisiatif';
 import SubKegiatan from '@/components/pages/rencanakinerja/Rincian/SubKegiatan';
 import Sakip from '@/components/pages/rencanakinerja/Rincian/Sakip';
-import Rekin from '@/components/pages/rencanakinerja/Rincian/Rekin';
+import Renaksi from '@/components/pages/rencanakinerja/Rincian/Renaksi';
 import DasarHukum from '@/components/pages/rencanakinerja/Rincian/DasarHukum';
 import GambaranUmum from '@/components/pages/rencanakinerja/Rincian/GambaranUmum';
 import Inovasi from '@/components/pages/rencanakinerja/Rincian/Inovasi';
@@ -38,7 +35,7 @@ const RincianRencanaKinerja = () => {
                 <Musrebang id={id_rekin}/>
                 <SubKegiatan id={id_rekin}/>
                 <Sakip id={id_rekin}/>
-                <Rekin/>
+                <Renaksi/>
                 <DasarHukum id={id_rekin}/>
                 <GambaranUmum id={id_rekin}/>
                 <Inovasi id={id_rekin}/>

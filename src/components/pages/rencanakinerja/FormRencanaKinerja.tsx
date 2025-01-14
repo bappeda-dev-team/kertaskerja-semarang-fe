@@ -27,6 +27,7 @@ interface FormValue {
     indikator: indikator[];
 }
 interface indikator {
+    id_indikator?: string;
     nama_indikator: string;
     targets: target[];
 }
@@ -515,6 +516,7 @@ export const FormEditRencanaKinerja = () => {
                             label: data.status_rencana_kinerja,
                         },
                         indikator: data.indikator?.map((item: indikator) => ({
+                            id_indikator: item.id_indikator,
                             nama_indikator: item.nama_indikator,
                             targets: item.targets.map((t: target) => ({
                                 target: t.target,
@@ -525,6 +527,7 @@ export const FormEditRencanaKinerja = () => {
     
                     // Replace the fields to avoid duplication
                     replace(data.indikator.map((item: indikator) => ({
+                        id_indikator: item.id_indikator,
                         nama_indikator: item.nama_indikator,
                         targets: item.targets,
                     })));
@@ -547,6 +550,7 @@ export const FormEditRencanaKinerja = () => {
             kode_opd : User?.kode_opd,
             pegawai_id : User?.nip,
             indikator: data.indikator.map((ind) => ({
+                id_indikator: ind.id_indikator,
               nama_indikator: ind.nama_indikator,
               target: ind.targets.map((t) => ({
                 target: t.target,

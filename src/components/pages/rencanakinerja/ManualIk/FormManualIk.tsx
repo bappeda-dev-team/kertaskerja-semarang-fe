@@ -23,7 +23,7 @@ interface FormValue {
     formula: string;
     jenis_indikator: OptionTypeString;
     unit_penanggung_jawab: string;
-    unit_penyedia_jasa: string;
+    unit_penyedia_data: string;
     sumber_data: string;
     jangka_waktu_awal: string;
     jangka_waktu_akhir: string;
@@ -42,6 +42,9 @@ const FormManualIk = () => {
 
     const [Perspektif, setPerspektif] = useState<OptionTypeString | null>(null);
     const [Rekin, setRekin] = useState<string>("");
+    const [NamaIndikator, setNamaIndikator] = useState<string>("");
+    const [Target, setTarget] = useState<string>("");
+    const [Satuan, setSatuan] = useState<string>("");
     const [TujuanRekin, setTujuanRekin] = useState<string>("");
     const [Definisi, setDefinisi] = useState<string>("");
     const [KeyActivity, setKeyActivity] = useState<string>("");
@@ -76,9 +79,21 @@ const FormManualIk = () => {
                 }
                 const hasil = await response.json();
                 // console.log(data);
-                if(hasil.data != null){
-                    const detail = hasil?.data?.[0];
+                if(hasil.data.id != 0){
+                    const detail = hasil.data; 
                     setDataNew(false);
+                    if(detail.rencana_kinerja){
+                        setRekin(detail.rencana_kinerja.Nama_rencana_kinerja);
+                        if (detail.rencana_kinerja.indikator.length > 0) {
+                            const indikator = detail.rencana_kinerja.indikator[0]; // Ambil elemen pertama dari array indikator
+                            const targetData = indikator.targets.length > 0 ? indikator.targets[0] : null; // Ambil elemen pertama dari array targets
+                            
+                            // Set state dengan data yang diambil
+                            setNamaIndikator(indikator.nama_indikator);
+                            setTarget(targetData?.target || ""); // Default ke string kosong jika targetData null
+                            setSatuan(targetData?.satuan || ""); // Default ke string kosong jika targetData null
+                        }
+                    }
                     if(detail.perspektif){
                         const data_perspektif = {
                             value: detail.perspektif,
@@ -120,9 +135,9 @@ const FormManualIk = () => {
                         setUnitPenanggunaJawab(detail.unit_penanggung_jawab);
                         reset({unit_penanggung_jawab : detail.unit_penanggung_jawab});
                     }
-                    if(detail.unit_penyedia_jasa){
-                        setUnitPenyediaData(detail.unit_penyedia_jasa);
-                        reset({unit_penyedia_jasa : detail.unit_penyedia_jasa});
+                    if(detail.unit_penyedia_data){
+                        setUnitPenyediaData(detail.unit_penyedia_data);
+                        reset({unit_penyedia_data : detail.unit_penyedia_data});
                     }
                     if(detail.sumber_data){
                         setSumberData(detail.sumber_data);
@@ -172,7 +187,7 @@ const FormManualIk = () => {
                 spatial: checkSpatial,
             },
             unit_penanggung_jawab : UnitPenanggunaJawab,
-            unit_penyedia_jasa : UnitPenyediaData,
+            unit_penyedia_data : UnitPenyediaData,
             sumber_data : SumberData,
             jangka_waktu_awal : JangkaWaktuAwal,
             jangka_waktu_akhir : JangkaWaktuAkhir,
@@ -301,7 +316,7 @@ const FormManualIk = () => {
                     <div className="flex w-full">
                         <div className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Rencana Hasil Kinerja</div>
                         <div className="px-5 py-5 border-b border-x border-black w-full bg-white">
-                            <div className="border px-4 py-2 rounded-lg w-full">Rencana Kinerja Otomatis</div>
+                            <div className="border px-4 py-2 rounded-lg w-full">{Rekin}</div>
                         </div>
                     </div>
                     {/* TUJUAN RENCANA HASIL KINERJA */}
@@ -331,9 +346,9 @@ const FormManualIk = () => {
                         <div className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Indikator Kinerja</div>
                         <div className="px-5 py-5 border-b border-x border-black flex flex-col w-full gap-2 bg-white">
                             <label htmlFor="target" className="text-gray-500 text-xs ml-1">Indikator</label>
-                                <div className="border px-4 py-2 rounded-lg w-full">Otomatis</div>
-                            <label htmlFor="target" className="text-gray-500 text-xs ml-1 mt-2">target / satuan</label>
-                                <div className="border px-4 py-2 rounded-lg w-full">Otomatis</div>
+                                <div className="border px-4 py-2 rounded-lg w-full">{NamaIndikator}</div>
+                            <label htmlFor="target" className="text-gray-500 text-xs ml-1 mt-2">Target / Satuan</label>
+                                <div className="border px-4 py-2 rounded-lg w-full">{Target} / {Satuan}</div>
                         </div>
                     </div>
                     {/* DESKRIPSI INDIKATOR KINERJA INDIVIDU */}
@@ -515,10 +530,10 @@ const FormManualIk = () => {
                     </div>
                     {/* UNIT PENYEDIA DATA */}
                     <div className="flex w-full">
-                        <label htmlFor='unit_penyedia_jasa' className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Unit Penyedia Data</label>
+                        <label htmlFor='unit_penyedia_data' className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Unit Penyedia Data</label>
                         <div className="px-5 py-5 border-b border-x border-black flex flex-col w-full gap-2 bg-white">
                             <Controller
-                                name='unit_penyedia_jasa'
+                                name='unit_penyedia_data'
                                 control={control}
                                 render={({field}) => (
                                     <input

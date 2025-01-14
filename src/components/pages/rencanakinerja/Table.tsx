@@ -238,13 +238,13 @@ export const TablePerencanaan = () => {
                                     <TbPencil className="mr-1"/>
                                     Edit Rekin
                                 </ButtonSkyBorder>
-                                {/* <ButtonGreenBorder 
+                                <ButtonGreenBorder 
                                     className="w-full"
                                     halaman_url={`/rencanakinerja/${data.id_rencana_kinerja}`}
                                 >
                                     <TbPencilDown className="mr-1"/>
                                     Rincian
-                                </ButtonGreenBorder> */}
+                                </ButtonGreenBorder>
                                 <ButtonRedBorder className="w-full"
                                     onClick={() => {
                                         AlertQuestion("Hapus?", "Hapus Jabatan yang dipilih?", "question", "Hapus", "Batal").then((result) => {
