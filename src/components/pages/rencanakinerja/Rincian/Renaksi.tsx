@@ -3,6 +3,7 @@
 import { ButtonSky, ButtonSkyBorder, ButtonRedBorder } from "@/components/global/Button";
 import { TbPencil, TbTrash } from "react-icons/tb";
 import { ModalRenaksi } from "../ModalRenaksi";
+import { ModalTahapan } from "../ModalTahapan";
 import { useState } from "react";
 
 const Renaksi = () => {
@@ -25,7 +26,8 @@ const Renaksi = () => {
                     <h1 className="font-bold">Rencana Aksi</h1>
                     <div className="flex flex-wrap">
                         <ButtonSky className="m-1" onClick={() => handleModalNewRenaksi()}>Tambah Tahapan</ButtonSky>
-                        <ModalRenaksi isOpen={isOpenNewRenaksi} onClose={handleModalNewRenaksi}/>
+                        {/* <ModalRenaksi isOpen={isOpenNewRenaksi} onClose={handleModalNewRenaksi}/> */}
+                        <ModalTahapan isOpen={isOpenNewRenaksi} onClose={handleModalNewRenaksi}/>
                     </div>
                 </div>
                 <div className="overflow-auto mt-3 rounded-t-xl border">
@@ -83,64 +85,64 @@ const Renaksi = () => {
                                     </div>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         10
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
-                                   <div className="p-1 rounded-full hover:border hover:border-black hover:bg-black hover:text-white cursor-pointer">
+                                   <button className="py-1 px-2 rounded-full hover:bg-gray-300 hover:text-white cursor-pointer">
                                         +
-                                   </div>
+                                   </button>
                                 </td>
                                 <td colSpan={3} className="border-r border-b px-6 py-4">
                                    -

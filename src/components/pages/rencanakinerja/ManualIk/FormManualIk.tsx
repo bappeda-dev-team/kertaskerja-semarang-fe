@@ -243,7 +243,9 @@ const FormManualIk = () => {
 
     if(Loading){
         return(
-            <LoadingSync />
+            <div className="p-5">
+                <LoadingSync />
+            </div>
         )
     }
     return(
@@ -268,10 +270,14 @@ const FormManualIk = () => {
                                             setPerspektif(option);
                                         }}
                                         styles={{
-                                            control: (baseStyles) => ({
+                                            control: (baseStyles, state) => ({
                                                 ...baseStyles,
                                                 borderRadius: '8px',
-                                            })
+                                                borderColor: 'black', // Warna default border menjadi merah
+                                                '&:hover': {
+                                                borderColor: '#3673CA', // Warna border tetap merah saat hover
+                                                },
+                                            }),
                                         }}
                                     />
                                 )}
@@ -316,7 +322,7 @@ const FormManualIk = () => {
                     <div className="flex w-full">
                         <div className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Rencana Hasil Kinerja</div>
                         <div className="px-5 py-5 border-b border-x border-black w-full bg-white">
-                            <div className="border px-4 py-2 rounded-lg w-full">{Rekin}</div>
+                            <div className="border px-4 py-2 rounded-lg w-full border-black">{Rekin ? Rekin : "Otomatis setelah mengisi Manual IK"}</div>
                         </div>
                     </div>
                     {/* TUJUAN RENCANA HASIL KINERJA */}
@@ -329,7 +335,7 @@ const FormManualIk = () => {
                                 render={({field}) => (
                                     <textarea
                                         {...field}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         value={TujuanRekin}
                                         onChange={(event) => {
                                             field.onChange(event);
@@ -346,9 +352,9 @@ const FormManualIk = () => {
                         <div className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Indikator Kinerja</div>
                         <div className="px-5 py-5 border-b border-x border-black flex flex-col w-full gap-2 bg-white">
                             <label htmlFor="target" className="text-gray-500 text-xs ml-1">Indikator</label>
-                                <div className="border px-4 py-2 rounded-lg w-full">{NamaIndikator}</div>
+                                <div className="border border-black px-4 py-2 rounded-lg w-full">{NamaIndikator ? NamaIndikator : "Otomatis Setelah mengisi Manual IK"}</div>
                             <label htmlFor="target" className="text-gray-500 text-xs ml-1 mt-2">Target / Satuan</label>
-                                <div className="border px-4 py-2 rounded-lg w-full">{Target} / {Satuan}</div>
+                                <div className="border border-black px-4 py-2 rounded-lg w-full">{Target} / {Satuan}</div>
                         </div>
                     </div>
                     {/* DESKRIPSI INDIKATOR KINERJA INDIVIDU */}
@@ -368,7 +374,7 @@ const FormManualIk = () => {
                                             setDefinisi(e.target.value);
                                         }}
                                         value={Definisi}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         placeholder="Menjelaskan penjelasan dari indikator kinerja. Bisa dijelaskan dengan detail atau perintah yang ingin diturunkan kebawahan"
                                     />
                             )}
@@ -386,7 +392,7 @@ const FormManualIk = () => {
                                             setKeyActivity(e.target.value);
                                         }}
                                         value={KeyActivity}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         placeholder="Hal yang paling menentukan dalam pencapaian rencana hasil kerja"
                                     />
                                 )}
@@ -404,7 +410,7 @@ const FormManualIk = () => {
                                             setFormula(e.target.value);
                                         }}
                                         value={Formula}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         placeholder="Menjelaskan bagaimana cara perhitungan target indikator"
                                     />
                                 )}
@@ -415,7 +421,7 @@ const FormManualIk = () => {
                     <div className="flex w-full">
                         <div className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Satuan Pengukuran</div>
                         <div className="px-5 py-5 border-b border-x border-black flex flex-col w-full gap-2 bg-white">
-                            <div className="border px-4 py-2 rounded-lg w-full">Otomatis</div>
+                            <div className="border border-black px-4 py-2 rounded-lg w-full">Otomatis</div>
                         </div>
                     </div>
                     {/* JENIS INDIKATOR KINERJA */}
@@ -436,10 +442,14 @@ const FormManualIk = () => {
                                         }}
                                         options={optionJenisIndikatorKinerja}
                                         styles={{
-                                            control: (baseStyles) => ({
+                                            control: (baseStyles, state) => ({
                                                 ...baseStyles,
                                                 borderRadius: '8px',
-                                            })
+                                                borderColor: 'black', // Warna default border menjadi merah
+                                                '&:hover': {
+                                                borderColor: '#3673CA', // Warna border tetap merah saat hover
+                                                },
+                                            }),
                                         }}
                                     />
                                 )}
@@ -448,62 +458,65 @@ const FormManualIk = () => {
                     </div>
                     {/* OUTPUT DATA */}
                     <div className="flex w-full">
-                        <div className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Output Data</div>
-                        <div className="px-5 py-5 border-b border-x border-black flex flex-wrap w-full gap-5 bg-white">
-                            <div className="flex gap-2 items-center">
-                                {checkKinerja ? 
-                                    <button
-                                        type="button"
-                                        onClick={handleCheckKinerja}
-                                        className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                    >
-                                        <TbCheck />
-                                    </button>
-                                :
-                                    <button
-                                        type="button"
-                                        onClick={handleCheckKinerja}
-                                        className="w-[20px] h-[20px] border border-black rounded-full"
-                                    ></button>
-                                }
-                                <p onClick={handleCheckKinerja} className={`cursor-pointer ${checkKinerja && 'text-emerald-500'}`}>Kinerja</p>
+                        <label className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Output Data</label>
+                        <div className="px-5 py-5 border-b border-x border-black flex flex-col flex-wrap w-full gap-2 bg-white">
+                            <div className="flex gap-5 w-full">
+                                <div className="flex gap-2 items-center">
+                                    {checkKinerja ? 
+                                        <button
+                                            type="button"
+                                            onClick={handleCheckKinerja}
+                                            className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                        >
+                                            <TbCheck />
+                                        </button>
+                                    :
+                                        <button
+                                            type="button"
+                                            onClick={handleCheckKinerja}
+                                            className="w-[20px] h-[20px] border border-black rounded-full"
+                                        ></button>
+                                    }
+                                    <p onClick={handleCheckKinerja} className={`cursor-pointer ${checkKinerja && 'text-emerald-500'}`}>Kinerja</p>
+                                </div>
+                                <div className="flex gap-2 items-center">
+                                    {checkPenduduk ? 
+                                        <button
+                                            type="button"
+                                            onClick={handleCheckPenduduk}
+                                            className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                        >
+                                            <TbCheck />
+                                        </button>
+                                    :
+                                        <button
+                                            type="button"
+                                            onClick={handleCheckPenduduk}
+                                            className="w-[20px] h-[20px] border border-black rounded-full"
+                                        ></button>
+                                    }
+                                    <p onClick={handleCheckPenduduk} className={`cursor-pointer ${checkPenduduk && 'text-emerald-500'}`}>Penduduk</p>
+                                </div>
+                                <div className="flex gap-2 items-center">
+                                    {checkSpatial ? 
+                                        <button
+                                            type="button"
+                                            onClick={handleCheckSpatial}
+                                            className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                        >
+                                            <TbCheck />
+                                        </button>
+                                    :
+                                        <button
+                                            type="button"
+                                            onClick={handleCheckSpatial}
+                                            className="w-[20px] h-[20px] border border-black rounded-full"
+                                        ></button>
+                                    }
+                                    <p onClick={handleCheckSpatial} className={`cursor-pointer ${checkSpatial && 'text-emerald-500'}`}>Spatial</p>
+                                </div>
                             </div>
-                            <div className="flex gap-2 items-center">
-                                {checkPenduduk ? 
-                                    <button
-                                        type="button"
-                                        onClick={handleCheckPenduduk}
-                                        className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                    >
-                                        <TbCheck />
-                                    </button>
-                                :
-                                    <button
-                                        type="button"
-                                        onClick={handleCheckPenduduk}
-                                        className="w-[20px] h-[20px] border border-black rounded-full"
-                                    ></button>
-                                }
-                                <p onClick={handleCheckPenduduk} className={`cursor-pointer ${checkPenduduk && 'text-emerald-500'}`}>Penduduk</p>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                {checkSpatial ? 
-                                    <button
-                                        type="button"
-                                        onClick={handleCheckSpatial}
-                                        className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                    >
-                                        <TbCheck />
-                                    </button>
-                                :
-                                    <button
-                                        type="button"
-                                        onClick={handleCheckSpatial}
-                                        className="w-[20px] h-[20px] border border-black rounded-full"
-                                    ></button>
-                                }
-                                <p onClick={handleCheckSpatial} className={`cursor-pointer ${checkSpatial && 'text-emerald-500'}`}>Spatial</p>
-                            </div>
+                            <label className="text-sm text-gray-300 italic">*bisa pilih lebih dari satu</label>
                         </div>
                     </div>
                     {/* UNIT PENANGGUNG JAWAB */}
@@ -521,7 +534,7 @@ const FormManualIk = () => {
                                             field.onChange(e.target.value);
                                             setUnitPenanggunaJawab(e.target.value);
                                         }}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         placeholder="masukkan unit penanggung jawab"
                                     />
                                 )}
@@ -543,7 +556,7 @@ const FormManualIk = () => {
                                             field.onChange(e.target.value);
                                             setUnitPenyediaData(e.target.value);
                                         }}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         placeholder="Instansi yang memproduksi datanya"
                                     />
                                 )}
@@ -565,7 +578,7 @@ const FormManualIk = () => {
                                             field.onChange(e.target.value);
                                             setSumberData(e.target.value);
                                         }}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         placeholder="Dari dokumen apa sumber data di ambil"
                                     />
                                 )}
@@ -587,7 +600,7 @@ const FormManualIk = () => {
                                             field.onChange(e.target.value);
                                             setJangkaWaktuAwal(e.target.value);
                                         }}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         placeholder="Dari"
                                     />
                                 )}
@@ -603,7 +616,7 @@ const FormManualIk = () => {
                                             field.onChange(e.target.value);
                                             setJangkaWaktuAkhir(e.target.value);
                                         }}
-                                        className="border px-4 py-2 rounded-lg w-full"
+                                        className="border border-black px-4 py-2 rounded-lg w-full"
                                         placeholder="Sampai"
                                     />
                                 )}
@@ -628,10 +641,14 @@ const FormManualIk = () => {
                                             setPeriodePelaporan(option)
                                         }}
                                         styles={{
-                                            control: (baseStyles) => ({
+                                            control: (baseStyles, state) => ({
                                                 ...baseStyles,
                                                 borderRadius: '8px',
-                                            })
+                                                borderColor: 'black', // Warna default border menjadi merah
+                                                '&:hover': {
+                                                borderColor: '#3673CA', // Warna border tetap merah saat hover
+                                                },
+                                            }),
                                         }}
                                     />
                                 )}
@@ -642,7 +659,7 @@ const FormManualIk = () => {
                     <div className="flex w-full">
                         <div className="px-5 py-5 border-b border-l border-black w-[200px] bg-white">Budget</div>
                         <div className="px-5 py-5 border-b border-x border-black flex flex-col w-full gap-2 bg-white">
-                            <div className="border px-4 py-2 rounded-lg w-full">Otomatis setelah menyusun Anggaran</div>
+                            <div className="border border-black px-4 py-2 rounded-lg w-full">Otomatis setelah menyusun Anggaran</div>
                         </div>
                     </div>
 
