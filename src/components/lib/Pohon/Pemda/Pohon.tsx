@@ -95,6 +95,7 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                     EditBerhasil={handleEditSuccess}
                 />
             :
+            //
             <>
                 <div 
                     className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg
