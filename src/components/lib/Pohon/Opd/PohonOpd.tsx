@@ -220,7 +220,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger }) => {
                             {tema.jenis_pohon === 'Operational N' ?
                                 <h1>Operational {tema.level_pohon - 6}  </h1>
                                 :
-                                <h1>{tema.jenis_pohon} {tema.id}</h1>
+                                <h1>{tema.jenis_pohon}</h1>
                             }
                         </div>
                         {/* BODY */}
