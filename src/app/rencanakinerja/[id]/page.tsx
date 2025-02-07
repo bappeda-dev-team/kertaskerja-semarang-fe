@@ -1,7 +1,7 @@
 'use client'
 
 import { FiHome } from 'react-icons/fi';
-import Musrebang from '@/components/pages/rencanakinerja/Rincian/Musrebang';
+import Musrebang from '@/components/pages/rencanakinerja/Rincian/Usulan';
 import SubKegiatan from '@/components/pages/rencanakinerja/Rincian/SubKegiatan';
 import Sakip from '@/components/pages/rencanakinerja/Rincian/Sakip';
 import Renaksi from '@/components/pages/rencanakinerja/Rincian/Renaksi';
