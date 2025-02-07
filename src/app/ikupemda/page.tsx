@@ -1,7 +1,9 @@
+import Maintenance from "@/components/global/Maintenance";
+
 const IkuPemda = () => {
     return(
         <>
-            IKU Pemda
+            <Maintenance />
         </>
     )
 }

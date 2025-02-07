@@ -2395,7 +2395,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
               {/* SUBS MENU RENSTRA */}
               <div className={`transition-all duration-300 ease-in-out ${Renstra ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
                   <Link href="/tujuanopd">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanMusrenbang ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TujuanOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                       <TbMapPin className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tujuan OPD</span>
                     </li>
@@ -2413,7 +2413,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                     </li>
                   </Link>
                 </div>
-              <Link href="/useropd">
+              <Link href="#">
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PermasalahanOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                   <TbMessageReport className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Permasalahan</span>
