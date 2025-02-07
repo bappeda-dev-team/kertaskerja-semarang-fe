@@ -57,7 +57,7 @@ const Usulan: React.FC<id> = ({id}) => {
                 const hasil = result.rencana_kinerja;
                 if(hasil){
                     const data = hasil.find((item: any) => item.usulan);
-                    console.log(data.usulan);if(data == null){
+                    if(data == null){
                         setDataNull(true);
                         setUsulan([]);
                     } else {
