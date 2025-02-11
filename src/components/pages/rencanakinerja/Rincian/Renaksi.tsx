@@ -28,6 +28,10 @@ interface Pelaksanaan {
    bulan: number;
    bobot: number;
 }
+interface TotalPerBulan {
+   bulan: number;
+   total_bobot: number;
+}
 
 const Renaksi: React.FC<id> = ({ id }) => {
 
@@ -35,6 +39,9 @@ const Renaksi: React.FC<id> = ({ id }) => {
    const token = getToken();
 
    const [Renaksi, setRenaksi] = useState<RencanaAksi[]>([]);
+   const [TotalPerBulan, setTotalPerBulan] = useState<TotalPerBulan[]>([]);
+   const [TotalAll, setTotalAll] = useState<number>(0);
+   const [TotalWaktu, setTotalWaktu] = useState<number>(0);
 
    const [Loading, setLoading] = useState<boolean>(false);
    const [fetchTrigger, setFetchTrigger] = useState<boolean>(false);
@@ -43,7 +50,7 @@ const Renaksi: React.FC<id> = ({ id }) => {
    const [isOpenNewRenaksi, setIsOpenNewRenaksi] = useState<boolean>(false);
    const [isOpenEditRenaksi, setIsOpenEditRenaksi] = useState<boolean>(false);
    const [IdRenaksi, setIdRenaksi] = useState<string>('');
-   
+
    const [isOpenNewTahapan, setIsOpenNewTahapan] = useState<boolean>(false);
    const [isOpenEditTahapan, setIsOpenEditTahapan] = useState<boolean>(false);
    const [IdPelaksanaan, setIdPelaksanaan] = useState<string>('');
@@ -77,11 +84,17 @@ const Renaksi: React.FC<id> = ({ id }) => {
                   setRenaksi([]);
                } else {
                   setDataNull(false);
-                  setRenaksi(data.rencana_aksis);
+                  setRenaksi(data.rencana_aksis.rencana_aksi);
+                  setTotalPerBulan(data.rencana_aksis.total_per_bulan);
+                  setTotalAll(data.rencana_aksis.total_keseluruhan);
+                  setTotalWaktu(data.rencana_aksis.waktu_dibutuhkan);
                }
             } else {
                setDataNull(true);
                setRenaksi([]);
+               setTotalPerBulan([]);
+               setTotalAll(0);
+               setTotalWaktu(0);
             }
          } catch (err) {
             console.log(err)
@@ -139,23 +152,23 @@ const Renaksi: React.FC<id> = ({ id }) => {
       }
    }
 
-   const hapusRenaksi = async(id: any) => {
+   const hapusRenaksi = async (id: any) => {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
-      try{
+      try {
          const response = await fetch(`${API_URL}/rencana_aksi/delete/rencanaaksi/${id}`, {
-               method: "DELETE",
-               headers: {
+            method: "DELETE",
+            headers: {
                Authorization: `${token}`,
                'Content-Type': 'application/json',
-               },
+            },
          })
-         if(!response.ok){
-               alert("cant fetch data")
+         if (!response.ok) {
+            alert("cant fetch data")
          }
          setRenaksi(Renaksi.filter((data) => (data.id !== id)))
          AlertNotification("Berhasil", "Tahapan Rencana Aksi Berhasil Dihapus", "success", 1000);
          setFetchTrigger((prev) => !prev);
-      } catch(err){
+      } catch (err) {
          AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
       }
    };
@@ -226,7 +239,7 @@ const Renaksi: React.FC<id> = ({ id }) => {
                      {DataNull ? (
                         <tr>
                            <td className="px-6 py-3" colSpan={5}>
-                                 Data Kosong / Belum Ditambahkan
+                              Data Kosong / Belum Ditambahkan
                            </td>
                         </tr>
                      ) : (
@@ -240,14 +253,14 @@ const Renaksi: React.FC<id> = ({ id }) => {
                                        <TbPencil />
                                        Edit
                                     </ButtonSkyBorder>
-                                    <ButtonRedBorder 
+                                    <ButtonRedBorder
                                        className="w-full flex items-center gap-1"
                                        onClick={() => {
-                                             AlertQuestion("Hapus?", "Hapus Tahapan yang dipilih?", "question", "Hapus", "Batal").then((result) => {
-                                                if(result.isConfirmed){
-                                                   hapusRenaksi(data.id);
-                                                }
-                                             });
+                                          AlertQuestion("Hapus?", "Hapus Tahapan yang dipilih?", "question", "Hapus", "Batal").then((result) => {
+                                             if (result.isConfirmed) {
+                                                hapusRenaksi(data.id);
+                                             }
+                                          });
                                        }}
                                     >
                                        <TbTrash />
@@ -258,10 +271,10 @@ const Renaksi: React.FC<id> = ({ id }) => {
                               {/* BOBOT PELAKSANAAN */}
                               {data.pelaksanaan.map((p: Pelaksanaan, index: number) => (
                                  <td colSpan={3} key={p.id && p.id.trim() !== "" ? p.id : index} className="border-r border-b px-6 py-4">
-                                    <button 
+                                    <button
                                        className="py-1 px-2 rounded-full hover:bg-emerald-300 hover:text-white cursor-pointer"
                                        onClick={() => {
-                                          if(p.bobot === 0 || p.bobot === null){
+                                          if (p.bobot === 0 || p.bobot === null) {
                                              handleModalNewTahapan(data.nama_rencana_aksi, p.bulan, data.id);
                                           } else {
                                              handleModalEditTahapan(p.id, data.nama_rencana_aksi, p.bulan, data.id);
@@ -283,71 +296,40 @@ const Renaksi: React.FC<id> = ({ id }) => {
                            </tr>
                         ))
                      )}
-                        {/* TOTAL BULAN */}
-                        <tr className="bg-emerald-500 text-white">
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              Total
+                     {/* TOTAL BULAN */}
+                     <tr className="bg-emerald-500 text-white">
+                        <td colSpan={3} className="border-r border-y px-6 py-1">
+                           Total
+                        </td>
+                        {TotalPerBulan.map((total: TotalPerBulan) => (
+                           <td key={total.bulan} colSpan={3} className="border-r border-y px-6 py-1">
+                              {total.total_bobot}
                            </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td colSpan={3} className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                           <td className="border-r border-y px-6 py-1">
-                              -
-                           </td>
-                        </tr>
+                        ))}
+                        <td className="border-r border-y px-6 py-1 text-center">
+                           {TotalAll}
+                        </td>
+                     </tr>
                   </tbody>
                </table>
                {/* MODAL RENAKSI TAMBAH DATA */}
-               <ModalRenaksi 
+               <ModalRenaksi
                   metode="baru"
-                  rekin_id={id} 
-                  isOpen={isOpenNewRenaksi} 
-                  onClose={handleModalNewRenaksi} 
+                  rekin_id={id}
+                  isOpen={isOpenNewRenaksi}
+                  onClose={handleModalNewRenaksi}
                   onSuccess={() => setFetchTrigger((prev) => !prev)}
                />
                {/* MODAL RENAKSI EDIT DATA */}
-               <ModalRenaksi 
-                  metode="lama" 
-                  id={IdRenaksi} 
-                  isOpen={isOpenEditRenaksi} 
-                  onClose={() => handleModalEditRenaksi('')} 
+               <ModalRenaksi
+                  metode="lama"
+                  id={IdRenaksi}
+                  isOpen={isOpenEditRenaksi}
+                  onClose={() => handleModalEditRenaksi('')}
                   onSuccess={() => setFetchTrigger((prev) => !prev)}
                />
                {/* MODAL TAHAPAN TAMBAH DATA */}
-               <ModalTahapan 
+               <ModalTahapan
                   metode="baru"
                   renaksi_id={IdRenaksi}
                   nama_renaksi={NamaRenaksi}
@@ -357,7 +339,7 @@ const Renaksi: React.FC<id> = ({ id }) => {
                   onSuccess={() => setFetchTrigger((prev) => !prev)}
                />
                {/* MODAL TAHAPAN EDIT DATA */}
-               <ModalTahapan 
+               <ModalTahapan
                   metode="lama"
                   renaksi_id={IdRenaksi}
                   id={IdPelaksanaan}
@@ -368,7 +350,7 @@ const Renaksi: React.FC<id> = ({ id }) => {
                   onSuccess={() => setFetchTrigger((prev) => !prev)}
                />
             </div>
-            {/* <h1 className="my-2">waktu yang dibutuhkan : 4 Bulan</h1> */}
+            <h1 className="my-2">waktu yang dibutuhkan : {TotalWaktu} Bulan</h1>
          </div>
       </>
    )
