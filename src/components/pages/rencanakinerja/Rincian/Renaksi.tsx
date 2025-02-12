@@ -302,7 +302,7 @@ const Renaksi: React.FC<id> = ({ id }) => {
                            Total
                         </td>
                         {TotalPerBulan.map((total: TotalPerBulan) => (
-                           <td key={total.bulan} colSpan={3} className="border-r border-y px-6 py-1">
+                           <td key={total.bulan} colSpan={3} className="border-r border-y px-6 py-1 text-center">
                               {total.total_bobot}
                            </td>
                         ))}
@@ -335,6 +335,7 @@ const Renaksi: React.FC<id> = ({ id }) => {
                   nama_renaksi={NamaRenaksi}
                   isOpen={isOpenNewTahapan}
                   bulan={Bulan}
+                  total_bobot={TotalAll}
                   onClose={() => handleModalNewTahapan('', null, '')}
                   onSuccess={() => setFetchTrigger((prev) => !prev)}
                />
@@ -346,6 +347,7 @@ const Renaksi: React.FC<id> = ({ id }) => {
                   nama_renaksi={NamaRenaksi}
                   isOpen={isOpenEditTahapan}
                   bulan={Bulan}
+                  total_bobot={TotalAll}
                   onClose={() => handleModalEditTahapan('', '', null, '')}
                   onSuccess={() => setFetchTrigger((prev) => !prev)}
                />

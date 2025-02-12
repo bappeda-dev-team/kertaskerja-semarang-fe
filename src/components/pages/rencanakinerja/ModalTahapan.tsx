@@ -6,7 +6,7 @@ import { ButtonSky, ButtonRed, ButtonRedBorder } from '@/components/global/Butto
 import { LoadingButtonClip } from "@/components/global/Loading";
 import { AlertNotification } from "@/components/global/Alert";
 import { getToken } from "@/components/lib/Cookie";
-import { TbTrash, TbCopyCheckFilled, TbXboxX } from "react-icons/tb";
+import { TbTrash, TbCopyCheckFilled, TbXboxX, TbAlertTriangle } from "react-icons/tb";
 
 interface FormValue {
     id?: string;
@@ -21,12 +21,13 @@ interface modal {
     id?: string;
     bulan: number | null;
     nama_renaksi: string;
+    total_bobot?: number;
     metode: 'lama' | 'baru';
     onSuccess: () => void;
 }
 
 
-export const ModalTahapan: React.FC<modal> = ({ isOpen, onClose, renaksi_id, id, nama_renaksi, bulan, metode, onSuccess }) => {
+export const ModalTahapan: React.FC<modal> = ({ isOpen, onClose, renaksi_id, id, total_bobot, nama_renaksi, bulan, metode, onSuccess }) => {
 
     const {
         control,
@@ -93,35 +94,39 @@ export const ModalTahapan: React.FC<modal> = ({ isOpen, onClose, renaksi_id, id,
         };
         // metode === 'baru' && console.log("baru :", formDataNew);
         // metode === 'lama' && console.log("lama :", formDataEdit);
-        try {
-            let url = "";
-            if (metode === "lama") {
-                url = `pelaksanaan_rencana_aksi/update/${renaksi_id}`;
-            } else if (metode === "baru") {
-                url = `pelaksanaan_rencana_aksi/create/${renaksi_id}`;
-            } else {
-                url = '';
+        if(Bobot > bobot_tersedia && metode == 'baru'){
+            AlertNotification("bobot melebihi yang tersedia", "", "error", 1000);
+        } else {
+            try {
+                let url = "";
+                if (metode === "lama") {
+                    url = `pelaksanaan_rencana_aksi/update/${renaksi_id}`;
+                } else if (metode === "baru") {
+                    url = `pelaksanaan_rencana_aksi/create/${renaksi_id}`;
+                } else {
+                    url = '';
+                }
+                setProses(true);
+                const response = await fetch(`${API_URL}/${url}`, {
+                    method: metode === 'lama' ? "PUT" : "POST",
+                    headers: {
+                        Authorization: `${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(getBody()),
+                });
+                if (response.ok) {
+                    AlertNotification("Berhasil", `Berhasil ${metode === 'baru' ? "Menambahkan" : "Mengubah"} Bobot Tahapan`, "success", 1000);
+                    onClose();
+                    onSuccess();
+                } else {
+                    AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+                }
+            } catch (err) {
+                AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+            } finally {
+                setProses(false);
             }
-            setProses(true);
-            const response = await fetch(`${API_URL}/${url}`, {
-                method: metode === 'lama' ? "PUT" : "POST",
-                headers: {
-                    Authorization: `${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(getBody()),
-            });
-            if (response.ok) {
-                AlertNotification("Berhasil", `Berhasil ${metode === 'baru' ? "Menambahkan" : "Mengubah"} Bobot Tahapan`, "success", 1000);
-                onClose();
-                onSuccess();
-            } else {
-                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
-            }
-        } catch (err) {
-            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
-        } finally {
-            setProses(false);
         }
     };
 
@@ -129,6 +134,7 @@ export const ModalTahapan: React.FC<modal> = ({ isOpen, onClose, renaksi_id, id,
         onClose();
         setBobot(0);
     }
+    const bobot_tersedia = 100 - (total_bobot ?? 0);
 
     const hapusBobot = async (id: any) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -181,7 +187,15 @@ export const ModalTahapan: React.FC<modal> = ({ isOpen, onClose, renaksi_id, id,
                                 <tr className="rounded-lg border my-1">
                                     <td className="py-2 px-2">Bobot Tersedia</td>
                                     <td className="py-2 px-2">:</td>
-                                    <td className="py-2 px-2">{BobotTersedia}</td>
+                                    <td className="py-2 px-2 flex gap-2 items-center">
+                                        {bobot_tersedia}
+                                        {(metode == 'baru' && Bobot > bobot_tersedia) &&
+                                            <p className="text-white p-1 uppercase rounded-xl bg-red-500 flex items-center gap-1">
+                                                <TbAlertTriangle />
+                                                bobot melebihi yang tersedia
+                                            </p>
+                                        }
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
