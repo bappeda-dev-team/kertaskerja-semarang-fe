@@ -4,17 +4,18 @@ import { useEffect, useState } from 'react';
 import { getOpdTahun, getUser } from '@/components/lib/Cookie';
 import { TablePerencanaan } from '@/components/pages/rencanakinerja/Table';
 import { FiHome } from 'react-icons/fi';
-import { ButtonSky } from "@/components/global/Button";
+import { ButtonSkyBorder } from "@/components/global/Button";
 import { TbCirclePlus } from "react-icons/tb";
 import { AlertNotification } from '@/components/global/Alert';
 import {useRouter} from 'next/navigation';
 import { TahunNull } from '@/components/global/OpdTahunNull';
-import Maintenance from '@/components/global/Maintenance';
+import { LoadingButtonClip } from '@/components/global/Loading';
 
 const RencanaKinerja = () => {
 
     const [Tahun, setTahun] = useState<any>(null);
     const [User, setUser] = useState<any>(null);
+    const [Loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
 
     useEffect(() => {
@@ -38,6 +39,7 @@ const RencanaKinerja = () => {
         if(Tahun?.value == undefined){
             AlertNotification("Pilih Tahun", "Pilih tahun di header terlebih dahulu", "warning", 1000);
         } else {
+            setLoading(true);
             router.push('/rencanakinerja/tambah');
         }
     }
@@ -62,13 +64,18 @@ const RencanaKinerja = () => {
                 <div className="flex items-center justify-between border-b px-5 py-5">
                     <div className="flex flex-col">
                         <h1 className="font-bold text-2xl uppercase">rencana kinerja {Tahun?.label}</h1>
-                        <ButtonSky 
+                        <ButtonSkyBorder 
                             className="flex items-center justify-center"
                             onClick={TambahRencanaKinerja}
+                            disabled={Loading}
                         >
-                            <TbCirclePlus className="mr-1"/>
+                            {Loading ? 
+                                <LoadingButtonClip className="mr-1"/>
+                            :
+                                <TbCirclePlus className="mr-1"/>
+                            }
                             Rencana kinerja baru
-                        </ButtonSky>
+                        </ButtonSkyBorder>
                     </div>
                     {/* {(User?.roles == 'eselon_1' || User?.roles == 'eselon_2' || User?.roles == 'eselon_3' || User?.roles == 'eselon_4') && */}
                     <div className="flex flex-col items-end">

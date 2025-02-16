@@ -18,7 +18,7 @@ interface sakip {
     tahun: string;
     status_rencana_kinerja: string;
     catatan: string;
-    operasioanl_daerah: opd;
+    operasional_daerah: opd;
     pegawai_id: string;
     nama_pegawai: string;
     indikator: indikator[];
@@ -132,7 +132,7 @@ const Sakip: React.FC<id> = ({id}) => {
                             <>
                                 <tr>
                                     <td className="px-2 py-2 border">OPD </td>
-                                    <td className="px-2 py-2 border">{Sakip?.operasioanl_daerah?.nama_opd || "-"}</td>
+                                    <td className="px-2 py-2 border">{Sakip?.operasional_daerah?.nama_opd || "-"}</td>
                                 </tr>
                                 <tr>
                                     <td className="px-2 py-2 border">ASN </td>

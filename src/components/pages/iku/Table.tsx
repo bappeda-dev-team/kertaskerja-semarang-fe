@@ -22,9 +22,17 @@ interface Target {
     satuan: string;
 }
 
+interface Periode_Header {
+    id: number;
+    tahun_awal: string;
+    tahun_akhir: string;
+    tahun_list: string[];
+}
+
 const Table = () => {
 
     const [IKU, setIKU] = useState<IKU[]>([]);
+    const [Periode, setPeriode] = useState<Periode_Header | null>(null);
 
     const [Error, setError] = useState<boolean | null>(null);
     const [DataNull, setDataNull] = useState<boolean | null>(null);
@@ -71,8 +79,24 @@ const Table = () => {
                 setLoading(false);
             }
         }
+        const fetchPeriode = async () => {
+            try {
+                const response = await fetch(`${API_URL}/periode/tahun/${Tahun?.value}`, {
+                    headers: {
+                        Authorization: `${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const result = await response.json();
+                const hasil = result.data;
+                setPeriode(hasil);
+            } catch (err) {
+                console.error("error fetch periode", err);
+            }
+        };
         if (Tahun?.value != undefined) {
             fetchIkuPemda();
+            fetchPeriode();
         }
     }, [token, Tahun]);
 
@@ -98,10 +122,19 @@ const Table = () => {
                 <table className="w-full">
                     <thead>
                         <tr className="bg-emerald-500 text-white">
-                            <th className="border-r border-b py-3 text-center">No</th>
-                            <th className="border-r border-b px-6 py-3 min-w-[300px]">Indikator Utama</th>
-                            <th className="border-l border-b px-6 py-3 min-w-[100px]">Target</th>
-                            <th className="border-l border-b px-6 py-3 min-w-[100px]">Satuan</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 text-center">No</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Indikator Utama</th>
+                            {Periode?.tahun_list.map((item: any) => (
+                                <th key={item} colSpan={2} className="border-l border-b px-6 py-3 min-w-[100px]">{item}</th>
+                            ))}
+                        </tr>
+                        <tr className="bg-emerald-500 text-white">
+                            {Periode?.tahun_list.map((item: any) => (
+                                <React.Fragment key={item}>
+                                    <th className="border-l border-b px-6 py-3 min-w-[50px]">Target</th>
+                                    <th className="border-l border-b px-6 py-3 min-w-[50px]">Satuan</th>
+                                </React.Fragment>
+                            ))}
                         </tr>
                     </thead>
                     <tbody>
@@ -113,8 +146,8 @@ const Table = () => {
                             </tr>
                         ) : (
                             IKU.map((item, index) => (
-                                <tr key={item.indikator_id|| index}>
-                                    <td className="border-x border-b border-emerald-500 py-4 text-center">
+                                <tr key={item.indikator_id || index}>
+                                    <td className="border-x border-b border-emerald-500 py-4 px-3 text-center">
                                         {index + 1}
                                     </td>
                                     <td className="border-r border-b border-emerald-500 px-6 py-4">

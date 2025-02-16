@@ -64,6 +64,7 @@ const Table = () => {
     const [PeriodeNotFound, setPeriodeNotFound] = useState<boolean | null>(null);
     const [Error, setError] = useState<boolean | null>(null);
     const [DataNull, setDataNull] = useState<boolean | null>(null);
+    const [Loading, setLoading] = useState<boolean | null>(null);
 
     const [isOpenNewTujuan, setIsOpenNewTujuan] = useState<boolean>(false);
     const [isOpenEditTujuan, setIsOpenEditTujuan] = useState<boolean>(false);
@@ -71,7 +72,6 @@ const Table = () => {
     const [IdPeriode, setIdPeriode] = useState<number>(0);
     const [IdTema, setIdTema] = useState<number>(0);
 
-    const [Loading, setLoading] = useState<boolean | null>(null);
     const [FetchTrigger, setFetchTrigger] = useState<boolean>(false);
     const [Tahun, setTahun] = useState<any>(null);
     const [User, setUser] = useState<any>(null);
@@ -203,10 +203,11 @@ const Table = () => {
                 <h1 className="text-red-500 font-bold mx-5 py-5">Periksa koneksi internet atau database server</h1>
             </div>
         )
-    } else if (PeriodeNotFound) {
+    } else if (PeriodeNotFound && Tahun?.value != undefined) {
         return (
-            <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="text-yellow-600 font-bold mx-5 py-5">Tahun {Tahun?.value} tidak tersedia di data periode / periode dengan tahun {Tahun?.value} belum di buat</h1>
+            <div className="flex flex-col gap-3 border p-5 rounded-xl shadow-xl">
+                <h1 className="text-yellow-500 font-base mx-5">Tahun {Tahun?.value} tidak tersedia di data periode / periode dengan tahun {Tahun?.value} belum di buat</h1>
+                <h1 className="text-yellow-500 font-bold mx-5">Tambahkan periode dengan tahun {Tahun?.value} di halaman Master Periode (Super Admin)</h1>
             </div>
         )
     } else if (Tahun?.value == undefined) {
@@ -303,7 +304,7 @@ const Table = () => {
                                                     {item.tujuan_pemda.tujuan_pemda || "-"}
                                                 </td>
                                                 :
-                                                <td className="border-r border-b border-emerald-500 px-6 py-4 bg-red-500 text-center text-white" colSpan={30}>
+                                                <td className="border-r border-b border-emerald-500 px-6 py-4 bg-red-500 text-white" colSpan={30}>
                                                     Tujuan Pemda belum di buat
                                                 </td>
                                             }

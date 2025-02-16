@@ -17,7 +17,22 @@ interface FormValue {
     subtema_id: OptionType;
     tujuan_pemda_id: OptionType;
     sasaran_pemda: string;
+    periode_id: number;
+    indikator: indikator[];
 }
+
+interface indikator {
+    id_indikator?: string;
+    indikator: string;
+    rumus_perhitungan: string;
+    sumber_data: string;
+    target: target[];
+}
+type target = {
+    target: string;
+    satuan: string;
+    tahun?: string;
+};
 
 interface modal {
     isOpen: boolean;
@@ -25,34 +40,52 @@ interface modal {
     metode: 'lama' | 'baru';
     id?: number;
     tahun: number;
+    periode: number;
     jenis_pohon: string;
     subtema_id: number;
     nama_pohon: string;
     onSuccess: () => void;
 }
 
+interface Periode {
+    id: number;
+    tahun_awal: string;
+    tahun_akhir: string;
+    tahun_list: string[];
+}
 
-export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun, subtema_id, nama_pohon, jenis_pohon, metode, onSuccess }) => {
+export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun, periode, subtema_id, nama_pohon, jenis_pohon, metode, onSuccess }) => {
 
     const {
         control,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<FormValue>();
 
     const token = getToken();
 
     const [SasaranPemda, setSasaranPemda] = useState<string>('');
-    const [JenisPohon, setJenisPohon] = useState<string>('');
+    const [Periode, setPeriode] = useState<Periode | null>(null);
     const [TujuanPemda, setTujuanPemda] = useState<OptionType | null>(null);
     const [OptionTujuanPemda, setOptionTujuanPemda] = useState<OptionType[]>([]);
 
     const [Proses, setProses] = useState<boolean>(false);
     const [Loading, setLoading] = useState<boolean>(false);
 
+    const { fields, append, remove, replace } = useFieldArray({
+        control,
+        name: "indikator",
+    });
+
+    const handleTambahIndikator = () => {
+        const defaultTarget = Array(5).fill({ target: '', satuan: '' }); // Buat array 5 target kosong
+        append({ indikator: '', rumus_perhitungan: '', sumber_data: '', target: defaultTarget });
+    };
+
     useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
-        const fetchSasaranPemda = async () => {
+        const fetchDetailasaranPemda = async () => {
             try {
                 const response = await fetch(`${API_URL}/sasaran_pemda/detail/${id}`, {
                     headers: {
@@ -62,27 +95,62 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
                 });
                 const result = await response.json();
                 const hasil = result.data;
-                if(hasil.sasaran_pemda){
+                if (hasil.sasaran_pemda) {
                     setSasaranPemda(hasil.sasaran_pemda);
                 }
-                if(hasil.tujuan_pemda){
+                if (hasil.tujuan_pemda) {
                     const tujuanpemda = {
                         value: hasil.tujuan_pemda_id,
                         label: hasil.tujuan_pemda,
                     }
                     setTujuanPemda(tujuanpemda);
                 }
-                if(hasil.jenis_pohon){
-                    setJenisPohon(hasil.jenis_pohon);
-                }
+                // Mapping data ke form dengan struktur yang sesuai
+                const indikatorData = hasil.indikator?.map((item: any) => ({
+                    id: item.id, // Sesuai dengan struktur API
+                    indikator: item.indikator,
+                    rumus_perhitungan: item.rumus_perhitungan,
+                    sumber_data: item.sumber_data,
+                    target: item.target.map((t: any) => ({
+                        target: t.target,
+                        satuan: t.satuan,
+                    })),
+                })) || [];
+
+                reset({ indikator: indikatorData });
+
+                // Mengisi array field di react-hook-form
+                replace(indikatorData);
             } catch (err) {
                 console.log(err);
             }
         };
-        if (isOpen && metode === 'lama') {
-            fetchSasaranPemda();
+        const sasaranPemdaBaru = () => {
+            reset({ indikator: [] });
         }
-    }, [id, token, isOpen, metode]);
+        const fetchPeriode = async () => {
+            try {
+                const response = await fetch(`${API_URL}/periode/tahun/${tahun}`, {
+                    headers: {
+                        Authorization: `${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const result = await response.json();
+                const hasil = result.data;
+                setPeriode(hasil);
+            } catch (err) {
+                console.error("error fetch periode", err);
+            }
+        };
+        if (isOpen && metode === 'lama') {
+            fetchDetailasaranPemda();
+            fetchPeriode();
+        } else if (isOpen && metode === 'baru') {
+            sasaranPemdaBaru();
+            fetchPeriode();
+        }
+    }, [id, token, isOpen, metode, tahun, replace, reset]);
 
     const fetchOptionTujuanPemda = async () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -118,15 +186,37 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
         const formDataNew = {
             //key : value
             subtema_id: subtema_id,
+            periode_id: periode,
             tujuan_pemda_id: TujuanPemda?.value,
             sasaran_pemda: SasaranPemda,
+            indikator: data.indikator.map((ind) => ({
+                indikator: ind.indikator,
+                rumus_perhitungan: ind.rumus_perhitungan,
+                sumber_data: ind.sumber_data,
+                target: ind.target.map((t, index) => ({
+                    target: t.target,
+                    satuan: t.satuan,
+                    tahun: Periode?.tahun_list[index],
+                })),
+            })),
         };
         const formDataEdit = {
             //key : value
             id: id,
             subtema_id: subtema_id,
+            periode_id: periode,
             tujuan_pemda_id: TujuanPemda?.value,
             sasaran_pemda: SasaranPemda,
+            indikator: data.indikator.map((ind) => ({
+                indikator: ind.indikator,
+                rumus_perhitungan: ind.rumus_perhitungan,
+                sumber_data: ind.sumber_data,
+                target: ind.target.map((t, index) => ({
+                    target: t.target,
+                    satuan: t.satuan,
+                    tahun: Periode?.tahun_list[index],
+                })),
+            })),
         };
         const getBody = () => {
             if (metode === "lama") return formDataEdit;
@@ -135,8 +225,10 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
         };
         // metode === 'baru' && console.log("baru :", formDataNew);
         // metode === 'lama' && console.log("lama :", formDataEdit);
-        if(TujuanPemda?.value == null || TujuanPemda?.value == undefined){
-            AlertNotification("", "pilih tujuan pemda", "warning", 2000);
+        if (TujuanPemda?.value == null || TujuanPemda?.value == undefined) {
+            AlertNotification("", "pilih Tujuan Pemda", "warning", 2000);
+        } else if(SasaranPemda === ''){
+            AlertNotification("", "Sasaran Pemda wajib Terisi", "warning", 2000);
         } else {
             try {
                 let url = "";
@@ -160,6 +252,7 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
                     AlertNotification("Berhasil", `Berhasil ${metode === 'baru' ? "Menambahkan" : "Mengubah"} Sasaran Pemda`, "success", 1000);
                     onClose();
                     onSuccess();
+                    reset();
                 } else {
                     AlertNotification("Gagal", "terdapat kesalahan pada backend / database server dengan response !ok", "error", 2000);
                 }
@@ -175,6 +268,7 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
         onClose();
         setSasaranPemda('');
         setTujuanPemda(null);
+        reset();
     }
 
     if (!isOpen) {
@@ -264,6 +358,130 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
                                 )}
                             />
                         </div>
+                        <label className="uppercase text-base font-bold text-gray-700 my-2">
+                            indikator Tujuan Pemda :
+                        </label>
+                        {fields.map((field, index) => (
+                            <React.Fragment key={index}>
+                                <div className="flex flex-col bg-gray-300 my-2 py-2 px-2 rounded-lg">
+                                    <Controller
+                                        name={`indikator.${index}.indikator`}
+                                        control={control}
+                                        defaultValue={field.indikator}
+                                        render={({ field }) => (
+                                            <div className="flex flex-col py-3">
+                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                    Nama Indikator {index + 1} :
+                                                </label>
+                                                <input
+                                                    {...field}
+                                                    className="border px-4 py-2 rounded-lg"
+                                                    placeholder={`Masukkan nama indikator ${index + 1}`}
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+                                <div key={index} className="flex flex-col border border-gray-200 my-2 py-2 px-2 rounded-lg">
+                                    <Controller
+                                        name={`indikator.${index}.rumus_perhitungan`}
+                                        control={control}
+                                        defaultValue={field.rumus_perhitungan}
+                                        render={({ field }) => (
+                                            <div className="flex flex-col py-3">
+                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                    Rumus Perhitungan :
+                                                </label>
+                                                <input
+                                                    {...field}
+                                                    className="border px-4 py-2 rounded-lg"
+                                                    placeholder={`Masukkan Rumus Perhitungan`}
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+                                <div key={index} className="flex flex-col border border-gray-200 my-2 py-2 px-2 rounded-lg">
+                                    <Controller
+                                        name={`indikator.${index}.sumber_data`}
+                                        control={control}
+                                        defaultValue={field.sumber_data}
+                                        render={({ field }) => (
+                                            <div className="flex flex-col py-3">
+                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                    Sumber Data :
+                                                </label>
+                                                <input
+                                                    {...field}
+                                                    className="border px-4 py-2 rounded-lg"
+                                                    placeholder={`Masukkan Sumber Data`}
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                </div>
+                                <div className="flex flex-wrap justify-between gap-1">
+                                    {field.target.map((_, subindex) => (
+                                        <div key={`${index}-${subindex}`} className="flex flex-col py-1 px-3 border border-gray-200 rounded-lg">
+                                            <label className="text-base text-center text-gray-700">
+                                                <p>{Periode?.tahun_list[subindex]}</p>
+                                            </label>
+                                            <Controller
+                                                name={`indikator.${index}.target.${subindex}.target`}
+                                                control={control}
+                                                defaultValue={_.target}
+                                                render={({ field }) => (
+                                                    <div className="flex flex-col py-3">
+                                                        <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                            Target :
+                                                        </label>
+                                                        <input
+                                                            {...field}
+                                                            type="text"
+                                                            className="border px-4 py-2 rounded-lg"
+                                                            placeholder="Masukkan target"
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                            <Controller
+                                                name={`indikator.${index}.target.${subindex}.satuan`}
+                                                control={control}
+                                                defaultValue={_.satuan}
+                                                render={({ field }) => (
+                                                    <div className="flex flex-col py-3">
+                                                        <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                            Satuan :
+                                                        </label>
+                                                        <input
+                                                            {...field}
+                                                            className="border px-4 py-2 rounded-lg"
+                                                            placeholder="Masukkan satuan"
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                                {index >= 0 && (
+                                    <ButtonRedBorder
+                                        type="button"
+                                        onClick={() => remove(index)}
+                                        className="w-[200px] mt-3"
+                                    >
+                                        Hapus
+                                    </ButtonRedBorder>
+                                )}
+                            </React.Fragment>
+                        ))}
+                        <ButtonSkyBorder
+                            className="mb-3 mt-3"
+                            type="button"
+                            onClick={handleTambahIndikator}
+                        >
+                            Tambah Indikator
+                        </ButtonSkyBorder>
                         <ButtonSky className="w-full mt-3" type="submit">
                             {Proses ?
                                 <span className="flex">

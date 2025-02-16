@@ -352,7 +352,10 @@ const Renaksi: React.FC<id> = ({ id }) => {
                   onSuccess={() => setFetchTrigger((prev) => !prev)}
                />
             </div>
-            <h1 className="my-2">waktu yang dibutuhkan : {TotalWaktu} Bulan</h1>
+            <div className="flex flex-wrap gap-1">
+               <h1 className="my-2">waktu yang dibutuhkan : </h1>
+               <h1 className="my-2 font-bold text-emerald-500">{TotalWaktu} Bulan</h1>
+            </div>
          </div>
       </>
    )
