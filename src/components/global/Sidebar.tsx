@@ -30,6 +30,7 @@ import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
 import "@/app/globals.css";
 import { logout, getUser } from '../lib/Cookie';
+import IkuOpd from '@/app/ikuopd/page';
 
 interface SidebarProps {
   isOpen: boolean | null;
@@ -1456,6 +1457,140 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setInovasi(false);
       setRencanaKinerjaKAK(false);
     }
+    if(url == "/sasaranopd"){
+      // SLIDE MENU
+      // super_admin
+      setDataMaster(false);
+      setMasterProgramKegiatan(false);
+      setPerencanaanKota(false);
+      setRPJMD(false);
+      // admin_opd
+      setPerencanaanOPD(true);
+      setMasterUsulanOpd(false);
+      setRenstra(true);
+      // asn
+      setPerencanaan(false);
+      setUsulanLaporan(false);
+      setLaporan(false);
+      setLaporanUsulan(false);
+
+      // HALAMAN
+      setDashboard(false);
+      // data master
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterPeriode(false);
+      setLevelPohon(false);
+      setMasterJabatan(false);
+      setMasterUsulanPemda(false);
+      // masterprogramkegiatan
+      setMasterUrusan(false);
+      setMasterBidangUrusan(false);
+      setMasterProgram(false);
+      setMasterKegiatan(false);
+      setMasterSubKegiatan(false);
+      setMasterLembaga(false);
+      setMasterUser(false);
+      setMasterRole(false);
+      // perencanaan pemda
+      setTematikKota(false);
+      setKotaPohonKinerjaKota(false);
+      // RPJMD
+      setTujuanPemda(false);
+      setSasaranPemda(false);
+      setIKU(false);
+      // perencanaan opd
+      setPohonKinerjaOpd(false);
+      setPohonCascadingOpd(false);
+      setUserOpd(false);
+      //Renstra
+      setTujuanOpd(false);
+      setSasaranOpd(true);
+      setIKUOpd(false);
+      setPermasalahanOpd(false);
+      setMasterUsulanOpd(false);
+      //perencanaan asn
+      setRencanaKinerja(false);
+      setPohonCascading(false);
+      setRincianBelanja(false);
+      setPerencanaanManajemenResiko(false);
+      //laporan
+      setLaporanMusrenbang(false);
+      setLaporanPokokPikiran(false);
+      setLaporanMandatori(false);
+      setLaporanInisiatif(false);
+      setSPIP(false);
+      setManajemenResiko(false);
+      setInovasi(false);
+      setRencanaKinerjaKAK(false);
+    }
+    if(url == "/ikuopd"){
+      // SLIDE MENU
+      // super_admin
+      setDataMaster(false);
+      setMasterProgramKegiatan(false);
+      setPerencanaanKota(false);
+      setRPJMD(false);
+      // admin_opd
+      setPerencanaanOPD(true);
+      setMasterUsulanOpd(false);
+      setRenstra(true);
+      // asn
+      setPerencanaan(false);
+      setUsulanLaporan(false);
+      setLaporan(false);
+      setLaporanUsulan(false);
+
+      // HALAMAN
+      setDashboard(false);
+      // data master
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterPeriode(false);
+      setLevelPohon(false);
+      setMasterJabatan(false);
+      setMasterUsulanPemda(false);
+      // masterprogramkegiatan
+      setMasterUrusan(false);
+      setMasterBidangUrusan(false);
+      setMasterProgram(false);
+      setMasterKegiatan(false);
+      setMasterSubKegiatan(false);
+      setMasterLembaga(false);
+      setMasterUser(false);
+      setMasterRole(false);
+      // perencanaan pemda
+      setTematikKota(false);
+      setKotaPohonKinerjaKota(false);
+      // RPJMD
+      setTujuanPemda(false);
+      setSasaranPemda(false);
+      setIKU(false);
+      // perencanaan opd
+      setPohonKinerjaOpd(false);
+      setPohonCascadingOpd(false);
+      setUserOpd(false);
+      //Renstra
+      setTujuanOpd(false);
+      setSasaranOpd(false);
+      setIKUOpd(true);
+      setPermasalahanOpd(false);
+      setMasterUsulanOpd(false);
+      //perencanaan asn
+      setRencanaKinerja(false);
+      setPohonCascading(false);
+      setRincianBelanja(false);
+      setPerencanaanManajemenResiko(false);
+      //laporan
+      setLaporanMusrenbang(false);
+      setLaporanPokokPikiran(false);
+      setLaporanMandatori(false);
+      setLaporanInisiatif(false);
+      setSPIP(false);
+      setManajemenResiko(false);
+      setInovasi(false);
+      setRencanaKinerjaKAK(false);
+    }
     if(url == "/MasterUsulan/mastermusrenbang"){
       setDashboard(false);
       setDataMaster(false);
@@ -2509,14 +2644,14 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tujuan OPD</span>
                     </li>
                   </Link>
-                  <Link href="#">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanPokir ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <Link href="/sasaranopd">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${SasaranOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                       <TbTarget className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Sasaran OPD</span>
                     </li>
                   </Link>
-                  <Link href="#">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanMandatori ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <Link href="/ikuopd">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${IKUOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                       <TbChartBar className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>IKU OPD</span>
                     </li>
