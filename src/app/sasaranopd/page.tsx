@@ -4,6 +4,7 @@ import { FiHome } from "react-icons/fi";
 import Table from "@/components/pages/sasaranopd/Table";
 import { getOpdTahun, getToken } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
+import Maintenance from "@/components/global/Maintenance";
 
 interface Periode {
     id: number;
@@ -12,7 +13,7 @@ interface Periode {
     tahun_list: string[];
 }
 
-const Sasarab = () => {
+const SasaranOpd = () => {
 
     const [Tahun, setTahun] = useState<any>(null);
     const token = getToken();
@@ -53,7 +54,7 @@ const Sasarab = () => {
 
     return (
         <>
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
                 <a href="/" className="mr-1"><FiHome /></a>
                 <p className="mr-1">/ Perencanaan OPD</p>
                 <p className="mr-1">/ Sasaran OPD</p>
@@ -67,9 +68,10 @@ const Sasarab = () => {
                     </div>
                 </div>
                 <Table />
-            </div>
+            </div> */}
+            <Maintenance />
         </>
     )
 }
 
-export default Sasarab;
+export default SasaranOpd;

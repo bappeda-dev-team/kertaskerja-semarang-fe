@@ -4,13 +4,20 @@ import React, { useState, useEffect } from "react";
 import { Controller, SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { ButtonSky, ButtonRed, ButtonSkyBorder, ButtonRedBorder } from '@/components/global/Button';
 import { getToken } from "@/components/lib/Cookie";
+import Select from 'react-select';
 import { LoadingButtonClip } from "@/components/global/Loading";
 import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 
+interface OptionTypeString {
+    value: string;
+    label: string;
+}
+
 interface FormValue {
     id: number;
-    tujuan_pemda: string;
-    tema_id: number;
+    kode_opd: string;
+    kode_bidang_urusan: string;
+    tujuan: string;
     periode_id: number;
     indikator: indikator[];
 }
@@ -32,9 +39,9 @@ interface modal {
     onClose: () => void;
     metode: 'lama' | 'baru';
     id?: number; // id tujuan pemda
-    tema_id?: number; //id tematik
     periode: number; // id periode
     tahun?: number; // tahun value header
+    kode_opd?: string;
     onSuccess: () => void;
 }
 
@@ -46,7 +53,7 @@ interface Periode {
 }
 
 
-export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, periode, metode, tahun, onSuccess }) => {
+export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd, periode, metode, tahun, onSuccess }) => {
 
     const {
         control,
@@ -57,9 +64,12 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
 
     const token = getToken();
 
-    const [TujuanPemda, setTujuanPemda] = useState<string>('');
+    const [TujuanOpd, setTujuanOpd] = useState<string>('');
     const [NamaPohon, setNamaPohon] = useState<string>('');
+    const [BidangUrusan, setBidangUrusan] = useState<OptionTypeString | null>(null);
+    const [OptionBidangUrusan, setOptionBidangUrusan] = useState<OptionTypeString[]>([]);
 
+    const [IsLoading, setIsLoading] = useState<boolean>(false);
     const [Proses, setProses] = useState<boolean>(false);
     const [Periode, setPeriode] = useState<Periode | null>(null);
 
@@ -75,10 +85,9 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
 
     useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
         const fetchDetailTujuan = async () => {
             try {
-                const response = await fetch(`${API_URL}/tujuan_pemda/detail/${id}`, {
+                const response = await fetch(`${API_URL}/tujuan_opd/detail/${id}`, {
                     headers: {
                         Authorization: `${token}`,
                         'Content-Type': 'application/json',
@@ -87,45 +96,15 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
                 const result = await response.json();
                 const hasil = result.data;
 
-                if (hasil.tujuan_pemda) {
-                    setTujuanPemda(hasil.tujuan_pemda);
+                if (hasil.tujuan) {
+                    setTujuanOpd(hasil.tujuan);
                 }
-                if (hasil.nama_tema) {
-                    setNamaPohon(hasil.nama_tema);
-                }
-
-                // Mapping data ke form dengan struktur yang sesuai
-                const indikatorData = hasil.indikator?.map((item: any) => ({
-                    id: item.id, // Sesuai dengan struktur API
-                    indikator: item.indikator,
-                    rumus_perhitungan: item.rumus_perhitungan,
-                    sumber_data: item.sumber_data,
-                    target: item.target.map((t: any) => ({
-                        target: t.target,
-                        satuan: t.satuan,
-                    })),
-                })) || [];
-
-                reset({ indikator: indikatorData });
-
-                // Mengisi array field di react-hook-form
-                replace(indikatorData);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        const fetchPokinBaru = async () => {
-            try {
-                const response = await fetch(`${API_URL}/pohon_kinerja/pokin_with_periode/${tema_id}`, {
-                    headers: {
-                        Authorization: `${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const result = await response.json();
-                const hasil = result.data;
-                if (hasil.nama_pohon) {
-                    setNamaPohon(hasil.nama_pohon);
+                if (hasil.kode_bidang_urusan) {
+                    const bd = {
+                        value: hasil.kode_bidang_urusan,
+                        label: hasil.nama_bidang_urusan || "-",
+                    }
+                    setBidangUrusan(bd);
                 }
 
                 // Mapping data ke form dengan struktur yang sesuai
@@ -167,18 +146,42 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
             fetchDetailTujuan();
             fetchPeriode();
         } else if (metode === "baru" && isOpen) {
-            fetchPokinBaru();
             fetchPeriode();
         }
-    }, [id, token, isOpen, metode, reset, replace, tahun, tema_id]);
+    }, [id, token, isOpen, metode, reset, replace, tahun]);
+
+    const fetchOptionBidangUrusan = async() => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        try{
+            setIsLoading(true);
+            const response = await fetch(`${API_URL}/bidang_urusan/findall/${kode_opd}`, {
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            const result = await response.json();
+            const data = result.data;
+            const hasil = data.map((item: any) => ({
+                value: item.kode_bidang_urusan,
+                label: item.nama_bidang_urusan,
+            }));
+            setOptionBidangUrusan(hasil);
+        } catch (err) {
+            console.error(err, "gagal fetch option bidang urusan");
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formDataNew = {
             //key : value
-            tema_id: tema_id,
+            kode_bidang_urusan: BidangUrusan?.value,
             periode_id: periode,
-            tujuan_pemda: TujuanPemda,
+            kode_opd: kode_opd,
+            tujuan: TujuanOpd,
             indikator: data.indikator.map((ind) => ({
                 indikator: ind.indikator,
                 rumus_perhitungan: ind.rumus_perhitungan,
@@ -193,8 +196,10 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
         const formDataEdit = {
             //key : value
             id: id,
+            kode_opd: kode_opd,
+            kode_bidang_urusan: BidangUrusan?.value,
+            tujuan: TujuanOpd,
             periode_id: periode,
-            tujuan_pemda: TujuanPemda,
             indikator: data.indikator.map((ind) => ({
                 indikator: ind.indikator,
                 rumus_perhitungan: ind.rumus_perhitungan,
@@ -216,9 +221,9 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
         try {
             let url = "";
             if (metode === "lama") {
-                url = `tujuan_pemda/update/${id}`;
+                url = `tujuan_opd/update/${id}`;
             } else if (metode === "baru") {
-                url = `tujuan_pemda/create`;
+                url = `tujuan_opd/create`;
             } else {
                 url = '';
             }
@@ -231,13 +236,17 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
                 },
                 body: JSON.stringify(getBody()),
             });
-            if (response.ok) {
+            const result = await response.json();
+            if (result.code === 201 || result.code === 200) {
                 AlertNotification("Berhasil", `Berhasil ${metode === 'baru' ? "Menambahkan" : "Mengubah"} Tujuan Pemda`, "success", 1000);
                 onClose();
                 onSuccess();
                 reset();
+            } else if(result.code === 500) {
+                AlertNotification("Gagal", `${result.data}`, "error", 2000);
             } else {
                 AlertNotification("Gagal", "terdapat kesalahan pada backend / database server dengan response !ok", "error", 2000);
+                console.error(result);
             }
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
@@ -248,7 +257,9 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
 
     const handleClose = () => {
         onClose();
-        setTujuanPemda('');
+        setTujuanOpd('');
+        setBidangUrusan(null);
+        reset();
     }
 
     if (!isOpen) {
@@ -260,7 +271,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
                 <div className="fixed inset-0 bg-black opacity-30" onClick={handleClose}></div>
                 <div className={`bg-white rounded-lg p-8 z-10 w-5/6 max-h-[80%] overflow-auto`}>
                     <div className="w-max-[500px] py-2 border-b">
-                        <h1 className="text-xl uppercase text-center">{metode === 'baru' ? "Tambah" : "Edit"} Tujuan Pemda</h1>
+                        <h1 className="text-xl uppercase text-center">{metode === 'baru' ? "Tambah" : "Edit"} Tujuan OPD</h1>
                     </div>
                     <form
                         onSubmit={handleSubmit(onSubmit)}
@@ -269,32 +280,63 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
                         <div className="flex flex-col py-3">
                             <label
                                 className="uppercase text-xs font-bold text-gray-700 my-2"
-                                htmlFor="tujuan_pemda"
+                                htmlFor="tujuan"
                             >
-                                Tema:
-                            </label>
-                            <div className="border px-4 py-2 rounded-lg">{NamaPohon}</div>
-                        </div>
-                        <div className="flex flex-col py-3">
-                            <label
-                                className="uppercase text-xs font-bold text-gray-700 my-2"
-                                htmlFor="tujuan_pemda"
-                            >
-                                Tujuan Pemda:
+                                Tujuan OPD:
                             </label>
                             <Controller
-                                name="tujuan_pemda"
+                                name="tujuan"
                                 control={control}
                                 render={({ field }) => (
                                     <textarea
                                         {...field}
                                         className="border px-4 py-2 rounded-lg"
-                                        id="tujuan_pemda"
+                                        id="tujuan"
                                         placeholder="masukkan Tujuan Pemda"
-                                        value={TujuanPemda}
+                                        value={TujuanOpd}
                                         onChange={(e) => {
                                             field.onChange(e);
-                                            setTujuanPemda(e.target.value);
+                                            setTujuanOpd(e.target.value);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="flex flex-col py-3">
+                            <label
+                                className="uppercase text-xs font-bold text-gray-700 my-2"
+                                htmlFor="kode_bidang_urusan"
+                            >
+                                Bidang Urusan:
+                            </label>
+                            <Controller
+                                name="kode_bidang_urusan"
+                                control={control}
+                                render={({ field }) => (
+                                    <Select
+                                        {...field}
+                                        id="kode_bidang_urusan"
+                                        placeholder="Pilih Bidang Urusan"
+                                        value={BidangUrusan}
+                                        options={OptionBidangUrusan}
+                                        isLoading={IsLoading}
+                                        onMenuOpen={() => {
+                                            fetchOptionBidangUrusan();
+                                        }}
+                                        onMenuClose={() => setOptionBidangUrusan([])}
+                                        onChange={(option) => {
+                                            field.onChange(option);
+                                            setBidangUrusan(option);
+                                        }}
+                                        styles={{
+                                            control: (baseStyles, state) => ({
+                                                ...baseStyles,
+                                                borderRadius: '8px',
+                                                borderColor: 'black', // Warna default border menjadi merah
+                                                '&:hover': {
+                                                borderColor: '#3673CA', // Warna border tetap merah saat hover
+                                                },
+                                            }),
                                         }}
                                     />
                                 )}
@@ -305,7 +347,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, tema_id, 
                         </label>
                         {fields.map((field, index) => (
                             <React.Fragment key={index}>
-                                <div className="flex flex-col bg-gray-300 my-2 py-2 px-2 rounded-lg">
+                                <div className="flex flex-col my-2 py-2 rounded-lg">
                                     <Controller
                                         name={`indikator.${index}.indikator`}
                                         control={control}

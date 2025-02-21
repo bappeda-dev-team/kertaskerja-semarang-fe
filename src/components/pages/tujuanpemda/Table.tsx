@@ -7,7 +7,7 @@ import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 import { getOpdTahun } from "@/components/lib/Cookie";
 import { TahunNull } from "@/components/global/OpdTahunNull";
 import { getToken, getUser } from "@/components/lib/Cookie";
-import { TbPencil, TbTrash, TbCirclePlus } from "react-icons/tb";
+import { TbPencil, TbTrash, TbCirclePlus, TbArrowBadgeDownFilled } from "react-icons/tb";
 import { ModalTujuanPemda } from "./ModalTujuanPemda";
 
 interface Periode {
@@ -30,11 +30,14 @@ interface Indikator {
     target: Target[];
 }
 
+interface Periode {
+    tahun_awal: string;
+    tahun_akhir: string;
+}
+
 interface TujuanPemda {
     id: number;
     tujuan_pemda: string;
-    tema_id: number;
-    nama_tema: string;
     periode: Periode;
     indikator: Indikator[];
 }
@@ -46,7 +49,7 @@ interface tujuan {
     level_pohon: number;
     keterangan: string;
     tahun_pokin: string;
-    tujuan_pemda: TujuanPemda;
+    tujuan_pemda: TujuanPemda[];
 }
 
 interface Periode_Header {
@@ -133,7 +136,7 @@ const Table = () => {
                 const result = await response.json();
                 const hasil = result.data;
                 setPeriode(hasil);
-                if(hasil.id){
+                if (hasil.id) {
                     setIdPeriode(hasil.id);
                 }
             } catch (err) {
@@ -221,9 +224,9 @@ const Table = () => {
                     <thead>
                         <tr className="bg-emerald-500 text-white">
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[50px] text-center">No</th>
-                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Tema</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Tujuan Pemda</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Rumus Perhitungan</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Sumber Data</th>
@@ -248,83 +251,96 @@ const Table = () => {
                                 </td>
                             </tr>
                             :
-                            Tujuan.map((item: tujuan, index: number) => {
-                                // Cek apakah item.tujuan_pemda ada
-                                const hasTujuanPemda = !!item.tujuan_pemda;
-                                const indikatorLength = hasTujuanPemda ? item.tujuan_pemda.indikator.length : 0;
+                            Tujuan.map((data: tujuan, index: number) => {
+                                // Cek apakah data.tujuan_pemda ada
+                                const hasTujuanPemda = data.tujuan_pemda.length != 0;
+                                const TotalRow = data.tujuan_pemda.reduce((total, item) => total + (item.indikator == null ? 1 : item.indikator.length), 0) + data.tujuan_pemda.length + 1;
 
                                 return (
-                                    <React.Fragment key={item.tujuan_pemda?.id || index}>
+                                    <React.Fragment key={index}>
                                         {/* Baris Utama */}
                                         <tr>
-                                            <td className="border-x border-b border-emerald-500 px-6 py-4 text-center" rowSpan={indikatorLength + 1}>
+                                            <td className="border-x border-b border-emerald-500 px-6 py-4 text-center" rowSpan={data.tujuan_pemda.length === 0 ? 2 : TotalRow}>
                                                 {index + 1}
                                             </td>
-                                            <td className="border-r border-b border-emerald-500 px-6 py-4" rowSpan={indikatorLength + 1}>
-                                                <div className="flex flex-col justify-center items-center gap-2">
-                                                    {hasTujuanPemda ?
-                                                        <>
-                                                            <ButtonGreen 
-                                                                className="flex items-center gap-1 w-full"
-                                                                onClick={() => handleModalEditTujuan(item.tujuan_pemda.id, item.pokin_id)}
+                                            <td className="border-r border-b border-emerald-500 px-6 py-4" rowSpan={data.tujuan_pemda.length === 0 ? 2 : TotalRow}>
+                                                <div className="flex flex-col gap-2">
+                                                    {data.nama_tematik || "-"}
+                                                    <div className="flex items center gap-1 border-t border-emerald-500 pt-3">
+                                                        <div className="flex flex-col justify-between  gap-2 h-full w-full">
+                                                            <button
+                                                                className="flex justify-between gap-1 rounded-full p-1 bg-sky-500 text-white border border-sky-500 hover:bg-white hover:text-sky-500 hover:border hover:border-sky-500"
+                                                                onClick={() => handleModalNewTujuan(data.pokin_id)}
                                                             >
-                                                                <TbPencil />
-                                                                Edit
-                                                            </ButtonGreen>
-                                                            <ButtonRed
-                                                                className="flex items-center gap-1 w-full"
-                                                                onClick={() => {
-                                                                    AlertQuestion("Hapus?", "Hapus Tujuan Pemda yang dipilih?", "question", "Hapus", "Batal").then((result) => {
-                                                                        if (result.isConfirmed) {
-                                                                            hapusTujuanPemda(item.tujuan_pemda?.id);
-                                                                        }
-                                                                    });
-                                                                }}
-                                                            >
-                                                                <TbTrash />
-                                                                Hapus
-                                                            </ButtonRed>
-                                                        </>
-                                                        :
-                                                        <ButtonSky
-                                                            className="flex items-center gap-1 w-full"
-                                                            onClick={() => handleModalNewTujuan(item.pokin_id)}
-                                                        >
-                                                            <TbCirclePlus />
-                                                            Tambah
-                                                        </ButtonSky>
-                                                    }
+                                                                <div className="flex gap-1">
+                                                                    <TbCirclePlus />
+                                                                    <p className="text-xs">Tambah Tujuan Baru</p>
+                                                                </div>
+                                                                <TbArrowBadgeDownFilled className="-rotate-90" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </td>
-                                            <td className="border-r border-b border-emerald-500 px-6 py-4" rowSpan={indikatorLength + 1}>
-                                                {item.nama_tematik || "-"}
-                                            </td>
-                                            {hasTujuanPemda ?
-                                                <td className="border-r border-b border-emerald-500 px-6 py-4" rowSpan={indikatorLength + 1}>
-                                                    {item.tujuan_pemda.tujuan_pemda || "-"}
-                                                </td>
-                                                :
-                                                <td className="border-r border-b border-emerald-500 px-6 py-4 bg-red-500 text-white" colSpan={30}>
-                                                    Tujuan Pemda belum di buat
-                                                </td>
-                                            }
                                         </tr>
-
-                                        {/* Baris Indikator (hanya jika item.tujuan_pemda ada) */}
-                                        {hasTujuanPemda &&
-                                            item.tujuan_pemda.indikator.map((i: Indikator, indikatorIndex: number) => (
-                                                <tr key={i.id || indikatorIndex}>
-                                                    <td className="border-r border-b border-emerald-500 px-6 py-4">{i.indikator || "-"}</td>
-                                                    <td className="border-r border-b border-emerald-500 px-6 py-4">{i.rumus_perhitungan || "-"}</td>
-                                                    <td className="border-r border-b border-emerald-500 px-6 py-4">{i.sumber_data || "-"}</td>
-                                                    {i?.target.map((t: Target) => (
-                                                        <React.Fragment key={t.id}>
-                                                            <td className="border-r border-b border-emerald-500 px-6 py-4 text-center">{t.target || "-"}</td>
-                                                            <td className="border-r border-b border-emerald-500 px-6 py-4 text-center">{t.satuan || "-"}</td>
+                                        {hasTujuanPemda ?
+                                            data.tujuan_pemda.map((item: TujuanPemda) => (
+                                                <React.Fragment key={item.id}>
+                                                    <tr>
+                                                        <td className="border-x border-b border-emerald-500 px-6 py-6 h-[150px]" rowSpan={item.indikator !== null ? item.indikator.length + 1 : 2}>
+                                                            {item.tujuan_pemda || "-"}
+                                                        </td>
+                                                        <td className="border-x border-b border-emerald-500 px-6 py-6" rowSpan={item.indikator !== null ? item.indikator.length + 1 : 2}>
+                                                            <div className="flex flex-col justify-center items-center gap-2">
+                                                                <ButtonGreen
+                                                                    className="flex items-center gap-1 w-full"
+                                                                    onClick={() => handleModalEditTujuan(item.id, data.pokin_id)}
+                                                                >
+                                                                    <TbPencil />
+                                                                    Edit
+                                                                </ButtonGreen>
+                                                                <ButtonRed className="flex items-center gap-1 w-full" onClick={() => {
+                                                                    AlertQuestion("Hapus?", "Hapus Tujuan Pemda yang dipilih?", "question", "Hapus", "Batal").then((result) => {
+                                                                        if (result.isConfirmed) {
+                                                                            hapusTujuanPemda(item.id);
+                                                                        }
+                                                                    });
+                                                                }}>
+                                                                    <TbTrash />
+                                                                    Hapus
+                                                                </ButtonRed>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {/* INDIKATOR */}
+                                                    {item.indikator === null ? (
+                                                        <React.Fragment>
+                                                            <tr>
+                                                                <td colSpan={30} className="border-x border-b border-emerald-500 px-6 py-6 bg-yellow-500 text-white">indikator tujuan pemda belum di tambahkan</td>
+                                                            </tr>
                                                         </React.Fragment>
-                                                    ))}
-                                                </tr>
-                                            ))}
+                                                    ) : (
+                                                        item.indikator.map((i: Indikator) => (
+                                                            <tr key={i.id}>
+                                                                <td className="border-x border-b border-emerald-500 px-6 py-6">{i.indikator || "-"}</td>
+                                                                <td className="border-x border-b border-emerald-500 px-6 py-6">{i.rumus_perhitungan || "-"}</td>
+                                                                <td className="border-x border-b border-emerald-500 px-6 py-6">{i.sumber_data || "-"}</td>
+                                                                {i.target.map((t: Target) => (
+                                                                    <React.Fragment key={t.id}>
+                                                                        <td className="border-x border-b border-emerald-500 px-6 py-6 text-center">{t.target || "-"}</td>
+                                                                        <td className="border-x border-b border-emerald-500 px-6 py-6 text-center">{t.satuan || "-"}</td>
+                                                                    </React.Fragment>
+                                                                ))}
+                                                            </tr>
+                                                        ))
+                                                    )}
+                                                </React.Fragment>
+                                            ))
+                                            :
+                                            <td className="border-r border-b border-emerald-500 px-6 py-4 bg-red-400 text-white" colSpan={30}>
+                                                Tujuan Pemda belum di buat
+                                            </td>
+                                        }
                                     </React.Fragment>
                                 );
                             })
@@ -337,19 +353,19 @@ const Table = () => {
                     tema_id={IdTema}
                     tahun={Tahun?.value}
                     periode={IdPeriode}
-                    isOpen={isOpenNewTujuan} 
-                    onClose={() => handleModalNewTujuan(0)} 
+                    isOpen={isOpenNewTujuan}
+                    onClose={() => handleModalNewTujuan(0)}
                     onSuccess={() => setFetchTrigger((prev) => !prev)}
                 />
                 {/* MODAL EDIT TUJUAN */}
                 <ModalTujuanPemda
-                    metode="lama" 
+                    metode="lama"
                     id={IdTujuan}
                     tema_id={IdTema}
                     tahun={Tahun?.value}
                     periode={IdPeriode}
-                    isOpen={isOpenEditTujuan} 
-                    onClose={() => handleModalEditTujuan(0, 0)} 
+                    isOpen={isOpenEditTujuan}
+                    onClose={() => handleModalEditTujuan(0, 0)}
                     onSuccess={() => setFetchTrigger((prev) => !prev)}
                 />
             </div>

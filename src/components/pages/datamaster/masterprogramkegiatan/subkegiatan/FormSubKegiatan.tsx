@@ -477,7 +477,7 @@ export const FormEditSubKegiatan = () => {
             }
         }
         fetchIdSubKegiatan();
-    }, [id, reset, token, reset, replace]);
+    }, [id, token, reset, replace]);
 
     const fetchOpd = async () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;

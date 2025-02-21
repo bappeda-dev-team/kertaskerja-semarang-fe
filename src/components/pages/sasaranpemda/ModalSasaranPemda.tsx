@@ -156,7 +156,7 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         setLoading(true);
         try {
-            const response = await fetch(`${API_URL}/tujuan_pemda/findall_with_pokin/${tahun}`, {
+            const response = await fetch(`${API_URL}/tujuan_pemda/findall/${tahun}`, {
                 headers: {
                     Authorization: `${token}`,
                     'Content-Type': 'application/json',
@@ -170,8 +170,8 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
             const data = hasil
                 .filter((item: any) => item.tujuan_pemda) // Filter item yang memiliki tujuan_pemda
                 .map((item: any) => ({
-                    value: item.tujuan_pemda.id,
-                    label: item.tujuan_pemda.tujuan_pemda,
+                    value: item.id,
+                    label: item.tujuan_pemda,
                 }));
             setOptionTujuanPemda(data);
         } catch (err) {
@@ -248,13 +248,18 @@ export const ModalSasaranPemda: React.FC<modal> = ({ isOpen, onClose, id, tahun,
                     },
                     body: JSON.stringify(getBody()),
                 });
-                if (response.ok) {
+                const result = await response.json();
+                if (result.code === 200 || result.code === 201) {
                     AlertNotification("Berhasil", `Berhasil ${metode === 'baru' ? "Menambahkan" : "Mengubah"} Sasaran Pemda`, "success", 1000);
                     onClose();
                     onSuccess();
                     reset();
+                } else if(result.code === 500){
+                    // AlertNotification("Gagal", "Tujuan Pemda yang dipilih sudah digunakan untuk sasaran pemda lain", "error", 3000);
+                    AlertNotification("Gagal", `${result.data}`, "error", 3000);
+                    // console.log(result.data);
                 } else {
-                    AlertNotification("Gagal", "terdapat kesalahan pada backend / database server dengan response !ok", "error", 2000);
+                    AlertNotification("Gagal", "terdapat kesalahan pada backend / database server dengan response !ok", "error", 50000, true);
                 }
             } catch (err) {
                 AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);

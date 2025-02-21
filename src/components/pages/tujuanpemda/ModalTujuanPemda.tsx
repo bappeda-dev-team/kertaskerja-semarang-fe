@@ -90,8 +90,8 @@ export const ModalTujuanPemda: React.FC<modal> = ({ isOpen, onClose, id, tema_id
                 if (hasil.tujuan_pemda) {
                     setTujuanPemda(hasil.tujuan_pemda);
                 }
-                if (hasil.nama_tema) {
-                    setNamaPohon(hasil.nama_tema);
+                if (hasil.nama_tematik) {
+                    setNamaPohon(hasil.nama_tematik);
                 }
 
                 // Mapping data ke form dengan struktur yang sesuai

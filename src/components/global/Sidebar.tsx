@@ -1054,7 +1054,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRencanaKinerjaKAK(false);
     }
     //PERENCANAAN KOTA
-    if(url == "/pohonkinerjakota"){
+    if(url == "/pohonkinerjapemda"){
       // SLIDE MENU
       // super_admin
       setDataMaster(false);
@@ -2559,7 +2559,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tematik Pemda</span>
                 </li>
               </Link>
-              <Link href="/pohonkinerjakota">
+              <Link href="/pohonkinerjapemda">
                 <li className={`flex items-center text-sm gap-x-2 cursor-pointer p-2 rounded-xl ${KotaPohonKinerjaKota ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
                   <TbBinaryTree className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pohon Kinerja Pemda</span>
