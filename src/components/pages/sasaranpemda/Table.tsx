@@ -59,11 +59,17 @@ interface Periode_Header {
     tahun_list: string[];
 }
 
-const Table = () => {
+interface table {
+    id_periode: number
+    tahun_awal: string;
+    tahun_akhir: string;
+    jenis: string;
+    tahun_list: string[];
+}
+
+const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tahun_list}) => {
 
     const [Data, setData] = useState<Sasaran[]>([]);
-    const [Periode, setPeriode] = useState<Periode_Header | null>(null);
-    const [IdPeriode, setIdPeriode] = useState<number>(0);
 
     const [User, setUser] = useState<any>(null);
     const [SelectedOpd, setSelectedOpd] = useState<any>(null);
@@ -112,7 +118,7 @@ const Table = () => {
         const fetchSasaran = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${API_URL}/sasaran_pemda/findall/${Tahun?.value}`, {
+                const response = await fetch(`${API_URL}/sasaran_pemda/findall/tahun_awal/${tahun_awal}/tahun_akhir/${tahun_akhir}/jenis_periode/${jenis}`, {
                     headers: {
                         Authorization: `${token}`,
                         'Content-Type': 'application/json',
@@ -134,35 +140,10 @@ const Table = () => {
                 setLoading(false);
             }
         }
-        const fetchPeriode = async () => {
-            try {
-                const response = await fetch(`${API_URL}/periode/tahun/${Tahun?.value}`, {
-                    headers: {
-                        Authorization: `${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const result = await response.json();
-                const hasil = result.data;
-                if (hasil == null) {
-                    setPeriodeNotFound(true);
-                    setPeriode(null);
-                } else {
-                    setPeriodeNotFound(false);
-                    setPeriode(hasil);
-                    if (hasil.id) {
-                        setIdPeriode(hasil.id);
-                    }
-                }
-            } catch (err) {
-                console.error("error fetch periode", err);
-            }
-        };
         if (User?.roles !== undefined && Tahun?.value != undefined) {
             fetchSasaran();
-            fetchPeriode();
         }
-    }, [token, User, Tahun, SelectedOpd, FetchTrigger]);
+    }, [token, User, Tahun, SelectedOpd, FetchTrigger, tahun_awal, tahun_akhir, jenis]);
 
     const handleShow = (id: number) => {
         setShow((prev) => ({
@@ -276,12 +257,12 @@ const Table = () => {
                                                 <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</td>
                                                 <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Rumus Perhitungan</td>
                                                 <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Sumber Data</td>
-                                                {Periode?.tahun_list.map((item: any) => (
+                                                {tahun_list.map((item: any) => (
                                                     <th key={item} colSpan={2} className="border-l border-b px-6 py-3 min-w-[100px]">{item}</th>
                                                 ))}
                                             </tr>
                                             <tr className="bg-emerald-500 text-white">
-                                                {Periode?.tahun_list.map((item: any) => (
+                                                {tahun_list.map((item: any) => (
                                                     <React.Fragment key={item}>
                                                         <th className="border-l border-b px-6 py-3 min-w-[50px]">Target</th>
                                                         <th className="border-l border-b px-6 py-3 min-w-[50px]">Satuan</th>
@@ -404,9 +385,11 @@ const Table = () => {
                                         metode="baru"
                                         subtema_id={IdSubTema}
                                         nama_pohon={NamaPohon}
-                                        periode={IdPeriode}
+                                        periode={id_periode}
+                                        jenis_periode={jenis}
                                         jenis_pohon={JenisPohon}
                                         tahun={Tahun?.value}
+                                        tahun_list={tahun_list}
                                         isOpen={isOpenNewSasaran}
                                         onClose={() => handleModalNewSasaran(0, '', '')}
                                         onSuccess={() => setFetchTrigger((prev) => !prev)}
@@ -416,10 +399,12 @@ const Table = () => {
                                         metode="lama"
                                         id={IdSasaran}
                                         nama_pohon={NamaPohon}
-                                        periode={IdPeriode}
+                                        periode={id_periode}
+                                        jenis_periode={jenis}
                                         jenis_pohon={JenisPohon}
                                         subtema_id={IdSubTema}
                                         tahun={Tahun?.value}
+                                        tahun_list={tahun_list}
                                         isOpen={isOpenEditSasaran}
                                         onClose={() => handleModalEditSasaran(0, 0, '', '')}
                                         onSuccess={() => setFetchTrigger((prev) => !prev)}

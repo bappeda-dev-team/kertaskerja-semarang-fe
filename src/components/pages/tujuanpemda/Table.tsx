@@ -39,6 +39,8 @@ interface TujuanPemda {
     id: number;
     tujuan_pemda: string;
     periode: Periode;
+    visi: string;
+    misi: string;
     indikator: Indikator[];
 }
 
@@ -52,17 +54,17 @@ interface tujuan {
     tujuan_pemda: TujuanPemda[];
 }
 
-interface Periode_Header {
-    id: number;
+interface table {
+    id_periode: number
     tahun_awal: string;
     tahun_akhir: string;
+    jenis: string;
     tahun_list: string[];
 }
 
-const Table = () => {
+const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tahun_list}) => {
 
     const [Tujuan, setTujuan] = useState<tujuan[]>([]);
-    const [Periode, setPeriode] = useState<Periode_Header | null>(null);
 
     const [PeriodeNotFound, setPeriodeNotFound] = useState<boolean | null>(null);
     const [Error, setError] = useState<boolean | null>(null);
@@ -72,7 +74,6 @@ const Table = () => {
     const [isOpenNewTujuan, setIsOpenNewTujuan] = useState<boolean>(false);
     const [isOpenEditTujuan, setIsOpenEditTujuan] = useState<boolean>(false);
     const [IdTujuan, setIdTujuan] = useState<number>(0);
-    const [IdPeriode, setIdPeriode] = useState<number>(0);
     const [IdTema, setIdTema] = useState<number>(0);
 
     const [FetchTrigger, setFetchTrigger] = useState<boolean>(false);
@@ -100,7 +101,7 @@ const Table = () => {
         const fetchTujuanPemda = async () => {
             setLoading(true)
             try {
-                const response = await fetch(`${API_URL}/tujuan_pemda/findall_with_pokin/${Tahun?.value}`, {
+                const response = await fetch(`${API_URL}/tujuan_pemda/findall_with_pokin/${tahun_awal}/${tahun_akhir}/${jenis}`, {
                     headers: {
                         Authorization: `${token}`,
                         'Content-Type': 'application/json',
@@ -108,7 +109,7 @@ const Table = () => {
                 });
                 const result = await response.json();
                 const data = result.data;
-                if (data == null) {
+                if (data.length == 0) {
                     setDataNull(true);
                     setTujuan([]);
                 } else if (result.code == 500) {
@@ -125,31 +126,10 @@ const Table = () => {
                 setLoading(false);
             }
         }
-        const fetchPeriode = async () => {
-            try {
-                const response = await fetch(`${API_URL}/periode/tahun/${Tahun?.value}`, {
-                    headers: {
-                        Authorization: `${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const result = await response.json();
-                const hasil = result.data;
-                setPeriode(hasil);
-                if (hasil.id) {
-                    setIdPeriode(hasil.id);
-                }
-            } catch (err) {
-                console.error("error fetch periode", err);
-            }
-        };
-        if (Tahun?.value !== null && Tahun?.value !== undefined) {
-            fetchPeriode();
-        }
         if (User?.roles !== undefined) {
             fetchTujuanPemda();
         }
-    }, [token, User, Tahun, FetchTrigger]);
+    }, [token, User, FetchTrigger, tahun_awal, tahun_akhir, jenis]);
 
     const hapusTujuanPemda = async (id: number) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -226,16 +206,17 @@ const Table = () => {
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[50px] text-center">No</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Tema</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Tujuan Pemda</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Visi / Misi</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Rumus Perhitungan</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Sumber Data</th>
-                            {Periode?.tahun_list.map((item: any) => (
+                            {tahun_list.map((item: any) => (
                                 <th key={item} colSpan={2} className="border-l border-b px-6 py-3 min-w-[100px]">{item}</th>
                             ))}
                         </tr>
                         <tr className="bg-emerald-500 text-white">
-                            {Periode?.tahun_list.map((item: any) => (
+                            {tahun_list.map((item: any) => (
                                 <React.Fragment key={item}>
                                     <th className="border-l border-b px-6 py-3 min-w-[50px]">Target</th>
                                     <th className="border-l border-b px-6 py-3 min-w-[50px]">Satuan</th>
@@ -289,6 +270,9 @@ const Table = () => {
                                                     <tr>
                                                         <td className="border-x border-b border-emerald-500 px-6 py-6 h-[150px]" rowSpan={item.indikator !== null ? item.indikator.length + 1 : 2}>
                                                             {item.tujuan_pemda || "-"}
+                                                        </td>
+                                                        <td className="border-x border-b border-emerald-500 px-6 py-6 h-[150px]" rowSpan={item.indikator !== null ? item.indikator.length + 1 : 2}>
+                                                            {item.visi || "-"} / {item.misi || "-"}
                                                         </td>
                                                         <td className="border-x border-b border-emerald-500 px-6 py-6" rowSpan={item.indikator !== null ? item.indikator.length + 1 : 2}>
                                                             <div className="flex flex-col justify-center items-center gap-2">
@@ -352,7 +336,9 @@ const Table = () => {
                     metode="baru"
                     tema_id={IdTema}
                     tahun={Tahun?.value}
-                    periode={IdPeriode}
+                    tahun_list={tahun_list}
+                    periode={id_periode}
+                    jenis_periode={jenis}
                     isOpen={isOpenNewTujuan}
                     onClose={() => handleModalNewTujuan(0)}
                     onSuccess={() => setFetchTrigger((prev) => !prev)}
@@ -363,7 +349,9 @@ const Table = () => {
                     id={IdTujuan}
                     tema_id={IdTema}
                     tahun={Tahun?.value}
-                    periode={IdPeriode}
+                    tahun_list={tahun_list}
+                    periode={id_periode}
+                    jenis_periode={jenis}
                     isOpen={isOpenEditTujuan}
                     onClose={() => handleModalEditTujuan(0, 0)}
                     onSuccess={() => setFetchTrigger((prev) => !prev)}

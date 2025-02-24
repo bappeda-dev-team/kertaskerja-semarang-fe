@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { LoadingSync, LoadingButtonClip } from "@/components/global/Loading";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { TbPencil } from "react-icons/tb";
 
 interface id {
     id: string;
@@ -117,7 +118,10 @@ const Sakip: React.FC<id> = ({id}) => {
         <div className="mt-3 rounded-t-xl border px-5 py-3">
                 <div className="flex justify-between">
                     <h1 className="font-bold">Sasaran Kinerja</h1>
-                    <ButtonSky halaman_url={`/rencanakinerja/${id}/edit`}>Edit Sasaran</ButtonSky>
+                    <ButtonSky halaman_url={`/rencanakinerja/${id}/edit`}>
+                        <TbPencil className="mr-1"/>
+                        Edit Sasaran
+                    </ButtonSky>
                 </div>
                 <div className="mx-2 my-3">
                     <table className="w-full">

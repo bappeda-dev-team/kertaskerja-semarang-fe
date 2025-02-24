@@ -60,10 +60,17 @@ interface Periode_Header {
     tahun_list: string[];
 }
 
-const Table = () => {
+interface table {
+    id_periode: number;
+    tahun_awal: string;
+    tahun_akhir: string;
+    jenis: string;
+    tahun_list: string[];
+}
+
+const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tahun_list}) => {
 
     const [Tujuan, setTujuan] = useState<tujuan[]>([]);
-    const [Periode, setPeriode] = useState<Periode_Header | null>(null);
 
     const [PeriodeNotFound, setPeriodeNotFound] = useState<boolean | null>(null);
     const [Error, setError] = useState<boolean | null>(null);
@@ -73,7 +80,6 @@ const Table = () => {
     const [isOpenNewTujuan, setIsOpenNewTujuan] = useState<boolean>(false);
     const [isOpenEditTujuan, setIsOpenEditTujuan] = useState<boolean>(false);
     const [IdTujuan, setIdTujuan] = useState<number>(0);
-    const [IdPeriode, setIdPeriode] = useState<number>(0);
     const [IdTema, setIdTema] = useState<number>(0);
 
     const [FetchTrigger, setFetchTrigger] = useState<boolean>(false);
@@ -139,27 +145,6 @@ const Table = () => {
             } finally {
                 setLoading(false);
             }
-        }
-        const fetchPeriode = async () => {
-            try {
-                const response = await fetch(`${API_URL}/periode/tahun/${Tahun?.value}`, {
-                    headers: {
-                        Authorization: `${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const result = await response.json();
-                const hasil = result.data;
-                setPeriode(hasil);
-                if (hasil.id) {
-                    setIdPeriode(hasil.id);
-                }
-            } catch (err) {
-                console.error("error fetch periode", err);
-            }
-        };
-        if (Tahun?.value !== null && Tahun?.value !== undefined) {
-            fetchPeriode();
         }
         if (User?.roles !== undefined) {
             fetchTujuanOpd();
@@ -229,13 +214,8 @@ const Table = () => {
     }
 
     return (
-        <div className="mt-3 rounded-xl shadow-lg border">
-            <div className="flex items-center justify-between border-b px-5 py-5">
-                <div className="flex flex-wrap items-end">
-                    <h1 className="uppercase font-bold">Tujuan OPD</h1>
-                    <h1 className="uppercase font-bold ml-1">{Tahun ? Tahun?.label : ""}</h1>
-                    <h1 className="uppercase font-bold ml-1">(Periode {Periode?.tahun_awal} - {Periode?.tahun_akhir})</h1>
-                </div>
+        <div>
+            <div className="flex items-center justify-between px-5 py-2">
                 <ButtonSky onClick={() => handleModalNewTujuan()}>
                     <TbCirclePlus className="mr-1" />
                     Tambah Tujuan OPD
@@ -252,12 +232,12 @@ const Table = () => {
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Rumus Perhitungan</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Sumber Data</th>
-                            {Periode?.tahun_list.map((item: any) => (
+                            {tahun_list.map((item: any) => (
                                 <th key={item} colSpan={2} className="border-l border-b px-6 py-3 min-w-[100px]">{item}</th>
                             ))}
                         </tr>
                         <tr className="bg-emerald-500 text-white">
-                            {Periode?.tahun_list.map((item: any) => (
+                            {tahun_list.map((item: any) => (
                                 <React.Fragment key={item}>
                                     <th className="border-l border-b px-6 py-3 min-w-[50px]">Target</th>
                                     <th className="border-l border-b px-6 py-3 min-w-[50px]">Satuan</th>
@@ -355,7 +335,8 @@ const Table = () => {
                     metode="baru"
                     kode_opd={User?.roles == 'super_admin' ? SelectedOpd?.value : User?.kode_opd}
                     tahun={Tahun?.value}
-                    periode={IdPeriode}
+                    tahun_list={tahun_list}
+                    periode={id_periode}
                     isOpen={isOpenNewTujuan}
                     onClose={() => handleModalNewTujuan()}
                     onSuccess={() => setFetchTrigger((prev) => !prev)}
@@ -366,7 +347,8 @@ const Table = () => {
                     kode_opd={User?.roles == 'super_admin' ? SelectedOpd?.value : User?.kode_opd}
                     id={IdTujuan}
                     tahun={Tahun?.value}
-                    periode={IdPeriode}
+                    tahun_list={tahun_list}
+                    periode={id_periode}
                     isOpen={isOpenEditTujuan}
                     onClose={() => handleModalEditTujuan(0)}
                     onSuccess={() => setFetchTrigger((prev) => !prev)}

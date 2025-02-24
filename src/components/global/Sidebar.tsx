@@ -23,7 +23,10 @@ import {
   TbChartBar,
   TbCalendarShare,
   TbMessageReport,
-  TbCalendar
+  TbCalendar,
+  TbTargetArrow,
+  TbHexagonLetterV,
+  TbHexagonLetterM
 } from "react-icons/tb";
 import Image from 'next/image';
 import { usePathname, useParams } from 'next/navigation';
@@ -67,6 +70,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
     const [SubTematik, setSubTematik] = useState<boolean | null>(null);
     const [KotaPohonKinerjaKota, setKotaPohonKinerjaKota] = useState<boolean | null>(null);
     const [RPJMD, setRPJMD] = useState<boolean | null>(null);
+      const [Visi, setVisi] = useState<boolean | null>(null);
+      const [Misi, setMisi] = useState<boolean | null>(null);
       const [TujuanPemda, setTujuanPemda] = useState<boolean | null>(null);
       const [SasaranPemda, setSasaranPemda] = useState<boolean | null>(null);
       const [IKU, setIKU] = useState<boolean | null>(null);
@@ -152,6 +157,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -220,6 +227,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -287,6 +296,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -354,6 +365,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -421,6 +434,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -489,6 +504,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -556,6 +573,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -623,6 +642,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -690,6 +711,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -757,6 +780,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -824,6 +849,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -891,6 +918,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -958,6 +987,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1025,6 +1056,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1093,6 +1126,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(true);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1160,6 +1195,146 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(true);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
+      setTujuanPemda(false);
+      setSasaranPemda(false);
+      setIKU(false);
+      // perencanaan opd
+      setPohonKinerjaOpd(false);
+      setPohonCascadingOpd(false);
+      setUserOpd(false);
+      //Renstra
+      setTujuanOpd(false);
+      setSasaranOpd(false);
+      setIKUOpd(false);
+      setPermasalahanOpd(false);
+      setMasterUsulanOpd(false);
+      //perencanaan asn
+      setRencanaKinerja(false);
+      setPohonCascading(false);
+      setRincianBelanja(false);
+      setPerencanaanManajemenResiko(false);
+      //laporan
+      setLaporanMusrenbang(false);
+      setLaporanPokokPikiran(false);
+      setLaporanMandatori(false);
+      setLaporanInisiatif(false);
+      setSPIP(false);
+      setManajemenResiko(false);
+      setInovasi(false);
+      setRencanaKinerjaKAK(false);
+    }
+    if(url == "/visi"){
+      // SLIDE MENU
+      // super_admin
+      setDataMaster(false);
+      setMasterProgramKegiatan(false);
+      setPerencanaanKota(true);
+      setRPJMD(true);
+      // admin_opd
+      setPerencanaanOPD(false);
+      setMasterUsulanOpd(false);
+      setRenstra(false);
+      // asn
+      setPerencanaan(false);
+      setUsulanLaporan(false);
+      setLaporan(false);
+      setLaporanUsulan(false);
+
+      // HALAMAN
+      setDashboard(false);
+      // data master
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterPeriode(false);
+      setLevelPohon(false);
+      setMasterJabatan(false);
+      setMasterUsulanPemda(false);
+      // masterprogramkegiatan
+      setMasterUrusan(false);
+      setMasterBidangUrusan(false);
+      setMasterProgram(false);
+      setMasterKegiatan(false);
+      setMasterSubKegiatan(false);
+      setMasterLembaga(false);
+      setMasterUser(false);
+      setMasterRole(false);
+      // perencanaan pemda
+      setTematikKota(false);
+      setKotaPohonKinerjaKota(false);
+      // RPJMD
+      setVisi(true);
+      setMisi(false);
+      setTujuanPemda(false);
+      setSasaranPemda(false);
+      setIKU(false);
+      // perencanaan opd
+      setPohonKinerjaOpd(false);
+      setPohonCascadingOpd(false);
+      setUserOpd(false);
+      //Renstra
+      setTujuanOpd(false);
+      setSasaranOpd(false);
+      setIKUOpd(false);
+      setPermasalahanOpd(false);
+      setMasterUsulanOpd(false);
+      //perencanaan asn
+      setRencanaKinerja(false);
+      setPohonCascading(false);
+      setRincianBelanja(false);
+      setPerencanaanManajemenResiko(false);
+      //laporan
+      setLaporanMusrenbang(false);
+      setLaporanPokokPikiran(false);
+      setLaporanMandatori(false);
+      setLaporanInisiatif(false);
+      setSPIP(false);
+      setManajemenResiko(false);
+      setInovasi(false);
+      setRencanaKinerjaKAK(false);
+    }
+    if(url == "/misi"){
+      // SLIDE MENU
+      // super_admin
+      setDataMaster(false);
+      setMasterProgramKegiatan(false);
+      setPerencanaanKota(true);
+      setRPJMD(true);
+      // admin_opd
+      setPerencanaanOPD(false);
+      setMasterUsulanOpd(false);
+      setRenstra(false);
+      // asn
+      setPerencanaan(false);
+      setUsulanLaporan(false);
+      setLaporan(false);
+      setLaporanUsulan(false);
+
+      // HALAMAN
+      setDashboard(false);
+      // data master
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterPeriode(false);
+      setLevelPohon(false);
+      setMasterJabatan(false);
+      setMasterUsulanPemda(false);
+      // masterprogramkegiatan
+      setMasterUrusan(false);
+      setMasterBidangUrusan(false);
+      setMasterProgram(false);
+      setMasterKegiatan(false);
+      setMasterSubKegiatan(false);
+      setMasterLembaga(false);
+      setMasterUser(false);
+      setMasterRole(false);
+      // perencanaan pemda
+      setTematikKota(false);
+      setKotaPohonKinerjaKota(false);
+      // RPJMD
+      setVisi(false);
+      setMisi(true);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1227,6 +1402,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(true);
       setSasaranPemda(false);
       setIKU(false);
@@ -1294,6 +1471,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(true);
       setIKU(false);
@@ -1361,6 +1540,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(true);
@@ -1429,6 +1610,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1496,6 +1679,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1563,6 +1748,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1798,6 +1985,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1865,6 +2054,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -1932,6 +2123,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -2005,6 +2198,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -2072,6 +2267,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -2348,6 +2545,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setTematikKota(false);
       setKotaPohonKinerjaKota(false);
       // RPJMD
+      setVisi(false);
+      setMisi(false);
       setTujuanPemda(false);
       setSasaranPemda(false);
       setIKU(false);
@@ -2433,7 +2632,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
         <ul className="pt-6">
           {/* LABEL DASHBOARD */}
           <Link href="/">
-            <li className={`flex items-center font-medium gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ${Dashboard ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+            <li className={`flex items-center font-medium gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ${Dashboard ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
               <TbHome className="text-xl" />
               <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Dashboard</span>
             </li>
@@ -2441,7 +2640,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
           {/* LABEL DATA MASTER */}
           {User?.roles == 'super_admin' && 
             <li 
-              className={`flex items-center font-medium gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700 transition-all duration-300 ease-in-out`}
+              className={`flex items-center font-medium gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-slate-500 transition-all duration-300 ease-in-out`}
               onClick={() => setDataMaster(DataMaster ? false : true)}
             >
               <TbDatabaseCog className="text-xl" />
@@ -2452,55 +2651,55 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
           {User?.roles == 'super_admin' &&
             <div className={`transition-all duration-300 ease-in-out ${DataMaster ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
               <Link href="/DataMaster/masterlembaga">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterLembaga ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterLembaga ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbBuildingEstate className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Lembaga</span>
                 </li>
               </Link>
               <Link href="/DataMaster/masteropd">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterOPD ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterOPD ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbBuilding className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master OPD</span>
                 </li>
               </Link>
               <Link href="/DataMaster/masterrole">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterRole ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterRole ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbHexagonLetterR className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Role</span>
                 </li>
               </Link>
               <Link href="/DataMaster/masterpegawai">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterPegawai ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterPegawai ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbUsers className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Pegawai</span>
                 </li>
               </Link>
               <Link href="/DataMaster/masterperiode">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterPeriode ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterPeriode ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbCalendar className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Periode</span>
                 </li>
               </Link>
               <Link href="/DataMaster/masteruser">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterUser ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterUser ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbUser className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master User</span>
                 </li>
               </Link>
               <Link href="/DataMaster/masterjabatan">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterJabatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterJabatan ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbBadges className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Jabatan</span>
                 </li>
               </Link>
               <Link href="/DataMaster/masterusulan">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${LevelPohon ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${LevelPohon ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbApps className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Master Usulan</span>
                 </li>
               </Link>
               <li 
-                className={`flex gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out hover:bg-gray-700`}
+                className={`flex gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out hover:bg-slate-500`}
                 onClick={() => setMasterProgramKegiatan(MasterProgramKegiatan ? false : true)}
               >
                 <TbFile3D className="text-xl mt-1" />
@@ -2509,31 +2708,31 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                 {/* DATA MASTER PROGRAM KEGIATAN */}
                 <div className={`transition-all duration-300 ease-in-out ${MasterProgramKegiatan ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
                   <Link href="/DataMaster/masterprogramkegiatan/urusan">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterUrusan ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileChart className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Urusan</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/bidangurusan">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterBidangUrusan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterBidangUrusan ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileDelta className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Bidang Urusan</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/program">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterProgram ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterProgram ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileDots className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Program</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/kegiatan">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterKegiatan ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileCode className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Kegiatan</span>
                     </li>
                   </Link>
                   <Link href="/DataMaster/masterprogramkegiatan/subkegiatan">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterSubKegiatan ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl transition-all duration-300 ease-in-out ${MasterSubKegiatan ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileCode2 className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Sub Kegiatan</span>
                     </li>
@@ -2545,7 +2744,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
           {User?.roles == 'super_admin'&& 
           <>
             <li 
-              className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700 transition-all duration-300 ease-in-out`}
+              className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-slate-500 transition-all duration-300 ease-in-out`}
               onClick={() => setPerencanaanKota(PerencanaanKota ? false : true)}
               >
               <TbBuildingFortress className="text-xl" />
@@ -2554,20 +2753,20 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
             {/* SUB MENU PERENCANAAN PEMDA */}
             <div className={`transition-all duration-300 ease-in-out ${PerencanaanKota ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
               <Link href="/tematikkota">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TematikKota ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TematikKota ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbArrowUpFromArc className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tematik Pemda</span>
                 </li>
               </Link>
               <Link href="/pohonkinerjapemda">
-                <li className={`flex items-center text-sm gap-x-2 cursor-pointer p-2 rounded-xl ${KotaPohonKinerjaKota ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center text-sm gap-x-2 cursor-pointer p-2 rounded-xl ${KotaPohonKinerjaKota ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbBinaryTree className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pohon Kinerja Pemda</span>
                 </li>
               </Link>
               {/* LABEL RPJMD */}
               <li 
-                className={`flex items-center font-medium gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700 transition-all duration-300 ease-in-out`}
+                className={`flex items-center font-medium gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-slate-500 transition-all duration-300 ease-in-out`}
                 onClick={() => setRPJMD(RPJMD ? false : true)}
               >
                 <TbCalendarShare className="text-xl" />
@@ -2575,20 +2774,32 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
               </li>
               {/* SUB MENU RPJMD */}
               <div className={`transition-all duration-300 ease-in-out ${RPJMD ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+                <Link href="/visi">
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Visi ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                    <TbHexagonLetterV className="text-xl" />
+                    <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Visi</span>
+                  </li>
+                </Link>
+                <Link href="/misi">
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Misi ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                    <TbHexagonLetterM className="text-xl" />
+                    <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Misi</span>
+                  </li>
+                </Link>
                 <Link href="/tujuanpemda">
-                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TujuanPemda ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TujuanPemda ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                     <TbMapPin className="text-xl" />
                     <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tujuan Pemda</span>
                   </li>
                 </Link>
                 <Link href="/sasaranpemda">
-                  <li className={`flex items-center text-sm gap-x-2 cursor-pointer p-2 rounded-xl ${SasaranPemda ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <li className={`flex items-center text-sm gap-x-2 cursor-pointer p-2 rounded-xl ${SasaranPemda ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                     <TbTarget className="text-xl" />
                     <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Sasaran Pemda</span>
                   </li>
                 </Link>
                 <Link href="/ikupemda">
-                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${IKU ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${IKU ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                     <TbChartBar className="text-xl" />
                     <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>IKU</span>
                   </li>
@@ -2600,7 +2811,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
           {/* LABEL PERENCANAAN OPD */}
           {(User?.roles == 'super_admin' || User?.roles == 'admin_opd') && 
             <li 
-              className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700 transition-all duration-300 ease-in-out`}
+              className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-slate-500 transition-all duration-300 ease-in-out`}
               onClick={() => setPerencanaanOPD(PerencanaanOPD ? false : true)}
             >
               <TbBuildingCommunity className="text-xl" />
@@ -2611,26 +2822,26 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
             {(User?.roles == 'super_admin' || User?.roles == 'admin_opd') && 
             <div className={`transition-all duration-300 ease-in-out ${PerencanaanOPD ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
               <Link href="/pohonkinerjaopd">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${pohonKinerjaOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${pohonKinerjaOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbBinaryTree className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pohon Kinerja OPD</span>
                 </li>
               </Link>
               <Link href="/pohoncascadingopd">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PohonCascadingOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PohonCascadingOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbBinaryTree2 className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pohon Cascading</span>
                 </li>
               </Link>
               <Link href="/useropd">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${UserOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${UserOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbUser className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>User OPD</span>
                 </li>
               </Link>
               {/* LABEL RENSTRA */}
               <li 
-                className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700 transition-all duration-300 ease-in-out`}
+                className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-slate-500 transition-all duration-300 ease-in-out`}
                 onClick={() => setRenstra(Renstra ? false : true)}
               >
                 <TbBuildingCommunity className="text-xl" />
@@ -2639,33 +2850,33 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
               {/* SUBS MENU RENSTRA */}
               <div className={`transition-all duration-300 ease-in-out ${Renstra ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
                   <Link href="/tujuanopd">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TujuanOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TujuanOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbMapPin className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tujuan OPD</span>
                     </li>
                   </Link>
                   <Link href="/sasaranopd">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${SasaranOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${SasaranOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbTarget className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Sasaran OPD</span>
                     </li>
                   </Link>
                   <Link href="/ikuopd">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${IKUOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${IKUOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbChartBar className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>IKU OPD</span>
                     </li>
                   </Link>
                 </div>
               <Link href="#">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PermasalahanOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PermasalahanOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbMessageReport className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Permasalahan</span>
                 </li>
               </Link>
               {/* LABEL MASTER USULAN OPD */}
               {/* <li 
-                className="flex items-center gap-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded-xl transition-all duration-300 ease-in-out"
+                className="flex items-center gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl transition-all duration-300 ease-in-out"
                 onClick={() => setMasterUsulan(MasterUsulan ? false : true)}
               >
                 <TbApps className="text-xl" />
@@ -2674,25 +2885,25 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                 {/* SUBS MENU MASTER USULAN */}
                 <div className={`transition-all duration-300 ease-in-out ${MasterUsulanOpd ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
                   <Link href="/MasterUsulan/mastermusrenbang">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanMusrenbang ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanMusrenbang ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBook2 className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Musrenbang</span>
                     </li>
                   </Link>
                   <Link href="/MasterUsulan/masterpokokpikiran">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanPokir ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanPokir ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBulb className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pokok Pikiran</span>
                     </li>
                   </Link>
                   <Link href="/MasterUsulan/mastermandatori">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanMandatori ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanMandatori ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileAlert className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Mandatori</span>
                     </li>
                   </Link>
                   <Link href="/MasterUsulan/masterinisiatif">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanInisiatif ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${MasterUsulanInisiatif ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbTooltip className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Inisiatif Bupati</span>
                     </li>
@@ -2703,7 +2914,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
           {/* LABEL PERENCANAAN ASN */}
           {(User?.roles == 'eselon_1' || User?.roles == 'eselon_2' || User?.roles == 'eselon_3' || User?.roles == 'eselon_4' || User?.roles == 'level_1' || User?.roles == 'level_2' || User?.roles == 'level_3' || User?.roles == 'level_4') &&
             <li 
-              className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-gray-700 transition-all duration-300 ease-in-out`}
+              className={`flex font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-slate-500 transition-all duration-300 ease-in-out`}
               onClick={() => setPerencanaan(Perencanaan ? false : true)}
             >
               <TbBuildingFortress className="text-xl" />
@@ -2715,7 +2926,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
               {/* LABEL USULAN ASN */}
               {User?.roles == 'level_3' &&
                 <li 
-                  className="flex items-center gap-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded-xl transition-all duration-300 ease-in-out"
+                  className="flex items-center gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl transition-all duration-300 ease-in-out"
                   onClick={() => setUsulanLaporan(UsulanLaporan ? false : true)}
                 >
                   <TbApps className="text-xl" />
@@ -2725,51 +2936,51 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                 {/* subs menu USULAN ASN */}
                 <div className={`transition-all duration-300 ease-in-out ${UsulanLaporan ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
                   <Link href="/musrenbang">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Musrenbang ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Musrenbang ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBook2 className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Musrenbang</span>
                     </li>
                   </Link>
                   <Link href="/pokokpikiran">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PokokPikiran ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PokokPikiran ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBulb className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pokok Pikiran</span>
                     </li>
                   </Link>
                   <Link href="/mandatori">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Mandatori ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Mandatori ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileAlert className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Mandatori</span>
                     </li>
                   </Link>
                   <Link href="/inisiatif">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Inisiatif ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Inisiatif ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbTooltip className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Inisiatif Bupati</span>
                     </li>
                   </Link>
                 </div>
               <Link href="/pohonkinerjaopd">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${pohonKinerjaOpd ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${pohonKinerjaOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbBinaryTree className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pohon Kinerja</span>
                 </li>
               </Link>
               <Link href="/pohoncascading">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PohonCascading ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PohonCascading ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbBinaryTree2 className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pohon Cascading</span>
                 </li>
               </Link>
               <Link href="/rencanakinerja">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RencanaKinerja ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RencanaKinerja ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbChecklist className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rencana Kinerja</span>
                 </li>
               </Link>
               {User?.roles == 'level_3' &&
                 <Link href="/rincianbelanja">
-                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RincianBelanja ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RincianBelanja ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                     <TbShoppingCartDollar className="text-xl" />
                     <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rincian Belanja</span>
                   </li>
@@ -2777,7 +2988,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
               }
               {(User?.roles == 'level_2' || User?.roles == 'level_3') &&
                 <Link href="/manajemenresiko">
-                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PerencanaanManajemenResiko ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PerencanaanManajemenResiko ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                     <TbRefreshAlert className="text-xl" />
                     <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Manajemen Resiko</span>
                   </li>
@@ -2787,7 +2998,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
           {/* LABEL LAPORAN */}
           <li 
             onClick={() => setLaporan(Laporan ? false : true)}
-            className="flex font-medium items-center gap-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded-xl transition-all duration-300 ease-in-out"
+            className="flex font-medium items-center gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl transition-all duration-300 ease-in-out"
           >
             <TbBook className="text-xl" />
             <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Laporan</span>
@@ -2796,7 +3007,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
             <div className={`transition-all duration-300 ease-in-out ${Laporan ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
               {/* LABEL LAPORAN USULAN */}
               <li 
-                className="flex items-center gap-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded-xl transition-all duration-300 ease-in-out"
+                className="flex items-center gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl transition-all duration-300 ease-in-out"
                 onClick={() => setLaporanUsulan(LaporanUsulan ? false : true)}
               >
                 <TbApps className="text-xl" />
@@ -2805,57 +3016,57 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                 {/* subs menu LAPORAN USULAN */}
                 <div className={`transition-all duration-300 ease-in-out ${LaporanUsulan ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
                   <Link href="/laporanmusrenbang">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanMusrenbang ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanMusrenbang ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBook2 className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Musrenbang</span>
                     </li>
                   </Link>
                   <Link href="/laporanpokokpikiran">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanPokokPikiran ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanPokokPikiran ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBulb className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pokok Pikiran</span>
                     </li>
                   </Link>
                   <Link href="/laporanmandatori">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanMandatori ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanMandatori ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileAlert className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Mandatori</span>
                     </li>
                   </Link>
                   <Link href="/laporaninisiatif">
-                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanInisiatif ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanInisiatif ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbTooltip className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Inisiatif Bupati</span>
                     </li>
                   </Link>
                 </div>
               <Link href="/rencanakinerjakak">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RencanaKinerjaKAK ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RencanaKinerjaKAK ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbChecklist className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rencana Kinerja KAK</span>
                 </li>
               </Link>
               <Link href="/rincianbelanja">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RincianBelanja ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RincianBelanja ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbShoppingCartDollar className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rincian Belanja</span>
                 </li>
               </Link>
               <Link href="/manajemenresiko">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${ManajemenResiko ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${ManajemenResiko ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbRefreshAlert className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Manajemen Resiko</span>
                 </li>
               </Link>
               <Link href="#">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Inovasi ? "bg-white text-gray-800" : "hover:bg-gray-700"}`}>
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Inovasi ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbRefreshAlert className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Inovasi</span>
                 </li>
               </Link>
             </div>
           {/* LOGOUT */}
-          <li className="flex font-medium items-center gap-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded-xl" onClick={() => logout()}>
+          <li className="flex font-medium items-center gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl" onClick={() => logout()}>
             <TbLogout className="text-xl text-red-500" />
             <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Logout</span>
           </li>

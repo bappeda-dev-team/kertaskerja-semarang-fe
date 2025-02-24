@@ -41,6 +41,7 @@ interface modal {
     id?: number; // id tujuan pemda
     periode: number; // id periode
     tahun?: number; // tahun value header
+    tahun_list: string[];
     kode_opd?: string;
     onSuccess: () => void;
 }
@@ -53,7 +54,7 @@ interface Periode {
 }
 
 
-export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd, periode, metode, tahun, onSuccess }) => {
+export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd, periode, metode, tahun, tahun_list, onSuccess }) => {
 
     const {
         control,
@@ -71,7 +72,6 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
 
     const [IsLoading, setIsLoading] = useState<boolean>(false);
     const [Proses, setProses] = useState<boolean>(false);
-    const [Periode, setPeriode] = useState<Periode | null>(null);
 
     const { fields, append, remove, replace } = useFieldArray({
         control,
@@ -127,26 +127,8 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                 console.log(err);
             }
         };
-        const fetchPeriode = async () => {
-            try {
-                const response = await fetch(`${API_URL}/periode/tahun/${tahun}`, {
-                    headers: {
-                        Authorization: `${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const result = await response.json();
-                const hasil = result.data;
-                setPeriode(hasil);
-            } catch (err) {
-                console.error("error fetch periode", err);
-            }
-        };
         if (metode === 'lama' && isOpen) {
             fetchDetailTujuan();
-            fetchPeriode();
-        } else if (metode === "baru" && isOpen) {
-            fetchPeriode();
         }
     }, [id, token, isOpen, metode, reset, replace, tahun]);
 
@@ -189,7 +171,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                 target: ind.target.map((t, index) => ({
                     target: t.target,
                     satuan: t.satuan,
-                    tahun: Periode?.tahun_list[index],
+                    tahun: tahun_list[index],
                 })),
             })),
         };
@@ -207,7 +189,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                 target: ind.target.map((t, index) => ({
                     target: t.target,
                     satuan: t.satuan,
-                    tahun: Periode?.tahun_list[index],
+                    tahun: tahun_list[index],
                 })),
             })),
         };
@@ -408,7 +390,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                                     {field.target.map((_, subindex) => (
                                         <div key={`${index}-${subindex}`} className="flex flex-col py-1 px-3 border border-gray-200 rounded-lg">
                                             <label className="text-base text-center text-gray-700">
-                                                <p>{Periode?.tahun_list[subindex]}</p>
+                                                <p>{tahun_list[subindex]}</p>
                                             </label>
                                             <Controller
                                                 name={`indikator.${index}.target.${subindex}.target`}
