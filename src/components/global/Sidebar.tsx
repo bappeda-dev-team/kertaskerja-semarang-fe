@@ -3015,32 +3015,32 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
               </li>
                 {/* subs menu LAPORAN USULAN */}
                 <div className={`transition-all duration-300 ease-in-out ${LaporanUsulan ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
-                  <Link href="/laporanmusrenbang">
+                  <Link href="#">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanMusrenbang ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBook2 className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Musrenbang</span>
                     </li>
                   </Link>
-                  <Link href="/laporanpokokpikiran">
+                  <Link href="#">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanPokokPikiran ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBulb className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Pokok Pikiran</span>
                     </li>
                   </Link>
-                  <Link href="/laporanmandatori">
+                  <Link href="#">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanMandatori ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbFileAlert className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Mandatori</span>
                     </li>
                   </Link>
-                  <Link href="/laporaninisiatif">
+                  <Link href="#">
                     <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanInisiatif ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbTooltip className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Inisiatif Bupati</span>
                     </li>
                   </Link>
                 </div>
-              <Link href="/rencanakinerjakak">
+              <Link href="#">
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RencanaKinerjaKAK ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbChecklist className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rencana Kinerja KAK</span>

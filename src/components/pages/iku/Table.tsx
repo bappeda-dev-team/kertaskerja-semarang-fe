@@ -1,13 +1,10 @@
 'use client'
 
-import { ButtonRed, ButtonGreen, ButtonSky } from "@/components/global/Button";
 import React, { useEffect, useState } from "react";
 import { LoadingClip } from "@/components/global/Loading";
-import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 import { getOpdTahun } from "@/components/lib/Cookie";
 import { TahunNull } from "@/components/global/OpdTahunNull";
-import { getToken, getUser } from "@/components/lib/Cookie";
-import { TbPencil, TbTrash, TbCirclePlus } from "react-icons/tb";
+import { getToken} from "@/components/lib/Cookie";
 
 interface IKU {
     indikator_id: string;
@@ -22,17 +19,17 @@ interface Target {
     satuan: string;
 }
 
-interface Periode_Header {
-    id: number;
+interface table {
+    id_periode: number;
     tahun_awal: string;
     tahun_akhir: string;
+    jenis: string;
     tahun_list: string[];
 }
 
-const Table = () => {
+const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tahun_list}) => {
 
     const [IKU, setIKU] = useState<IKU[]>([]);
-    const [Periode, setPeriode] = useState<Periode_Header | null>(null);
 
     const [Error, setError] = useState<boolean | null>(null);
     const [DataNull, setDataNull] = useState<boolean | null>(null);
@@ -57,7 +54,7 @@ const Table = () => {
         const fetchIkuPemda = async () => {
             setLoading(true)
             try {
-                const response = await fetch(`${API_URL}/indikator_utama/findall/${Tahun?.value}`, {
+                const response = await fetch(`${API_URL}/indikator_utama/periode/${tahun_awal}/${tahun_akhir}/${jenis}`, {
                     headers: {
                         Authorization: `${token}`,
                         'Content-Type': 'application/json',
@@ -79,26 +76,10 @@ const Table = () => {
                 setLoading(false);
             }
         }
-        const fetchPeriode = async () => {
-            try {
-                const response = await fetch(`${API_URL}/periode/tahun/${Tahun?.value}`, {
-                    headers: {
-                        Authorization: `${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const result = await response.json();
-                const hasil = result.data;
-                setPeriode(hasil);
-            } catch (err) {
-                console.error("error fetch periode", err);
-            }
-        };
         if (Tahun?.value != undefined) {
             fetchIkuPemda();
-            fetchPeriode();
         }
-    }, [token, Tahun]);
+    }, [token, Tahun, tahun_awal, tahun_akhir, jenis]);
 
     if (Loading) {
         return (
@@ -124,12 +105,12 @@ const Table = () => {
                         <tr className="bg-emerald-500 text-white">
                             <th rowSpan={2} className="border-r border-b px-6 py-3 text-center">No</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Indikator Utama</th>
-                            {Periode?.tahun_list.map((item: any) => (
+                            {tahun_list.map((item: any) => (
                                 <th key={item} colSpan={2} className="border-l border-b px-6 py-3 min-w-[100px]">{item}</th>
                             ))}
                         </tr>
                         <tr className="bg-emerald-500 text-white">
-                            {Periode?.tahun_list.map((item: any) => (
+                            {tahun_list.map((item: any) => (
                                 <React.Fragment key={item}>
                                     <th className="border-l border-b px-6 py-3 min-w-[50px]">Target</th>
                                     <th className="border-l border-b px-6 py-3 min-w-[50px]">Satuan</th>
