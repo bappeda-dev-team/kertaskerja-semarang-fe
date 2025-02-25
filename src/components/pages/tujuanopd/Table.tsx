@@ -114,9 +114,9 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         let url = '';
         if (User?.roles == 'super_admin') {
-            url = `tujuan_opd/findall/${SelectedOpd?.value}/${Tahun?.value}`
+            url = `tujuan_opd/findall/${SelectedOpd?.value}/tahunawal/${tahun_awal}/tahunakhir/${tahun_akhir}/jenisperiode/${jenis}`
         } else {
-            url = `tujuan_opd/findall/${User?.kode_opd}/${Tahun?.value}`
+            url = `tujuan_opd/findall/${User?.kode_opd}/tahunawal/${tahun_awal}/tahunakhir/${tahun_akhir}/jenisperiode/${jenis}`
         }
         const fetchTujuanOpd = async () => {
             setLoading(true)
@@ -149,7 +149,7 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
         if (User?.roles !== undefined) {
             fetchTujuanOpd();
         }
-    }, [token, User, Tahun, FetchTrigger, SelectedOpd]);
+    }, [token, User, Tahun, FetchTrigger, SelectedOpd, tahun_awal, tahun_akhir, jenis]);
 
     const hapusTujuanOpd = async (id: number) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;

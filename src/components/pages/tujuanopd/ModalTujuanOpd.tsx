@@ -18,7 +18,7 @@ interface FormValue {
     kode_opd: string;
     kode_bidang_urusan: string;
     tujuan: string;
-    periode_id: number;
+    periode_id: Periode;
     indikator: indikator[];
 }
 interface indikator {
@@ -34,27 +34,29 @@ type target = {
     tahun?: string;
 };
 
+interface Periode {
+    value: number;
+    label: string;
+    tahun_awal: string;
+    tahun_akhir: string;
+    jenis_periode: string;
+    tahun_list: string[];
+}
+
 interface modal {
     isOpen: boolean;
     onClose: () => void;
     metode: 'lama' | 'baru';
     id?: number; // id tujuan pemda
-    periode: number; // id periode
+    periode?: number; // id periode
     tahun?: number; // tahun value header
-    tahun_list: string[];
+    tahun_list?: string[];
     kode_opd?: string;
+    special?: boolean;
     onSuccess: () => void;
 }
 
-interface Periode {
-    id: number;
-    tahun_awal: string;
-    tahun_akhir: string;
-    tahun_list: string[];
-}
-
-
-export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd, periode, metode, tahun, tahun_list, onSuccess }) => {
+export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd, periode, metode, tahun, tahun_list, special, onSuccess }) => {
 
     const {
         control,
@@ -66,7 +68,8 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
     const token = getToken();
 
     const [TujuanOpd, setTujuanOpd] = useState<string>('');
-    const [NamaPohon, setNamaPohon] = useState<string>('');
+    const [Periode, setPeriode] = useState<Periode | null>(null);
+    const [PeriodeOption, setPeriodeOption] = useState<Periode[]>([]);
     const [BidangUrusan, setBidangUrusan] = useState<OptionTypeString | null>(null);
     const [OptionBidangUrusan, setOptionBidangUrusan] = useState<OptionTypeString[]>([]);
 
@@ -79,7 +82,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
     });
 
     const handleTambahIndikator = () => {
-        const defaultTarget = Array(5).fill({ target: '', satuan: '' }); // Buat array 5 target kosong
+        const defaultTarget = Array(special === true ? Periode?.tahun_list.length : (tahun_list && tahun_list.length)).fill({ target: '', satuan: '' }); // Buat array (jumlahnya sesuai dengan tahun_list length) dengan target kosong
         append({ indikator: '', rumus_perhitungan: '', sumber_data: '', target: defaultTarget });
     };
 
@@ -130,6 +133,11 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
         if (metode === 'lama' && isOpen) {
             fetchDetailTujuan();
         }
+        if(special === true && Periode){   
+            console.log("Periode length", Periode?.tahun_list);
+        } else {
+            console.log("tahun list length",tahun_list);
+        }
     }, [id, token, isOpen, metode, reset, replace, tahun]);
 
     const fetchOptionBidangUrusan = async() => {
@@ -155,13 +163,40 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
             setIsLoading(false);
         }
     }
+    const fetchOptionPeriode = async() => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        try{
+            setIsLoading(true);
+            const response = await fetch(`${API_URL}/periode/findall`, {
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            const result = await response.json();
+            const data = result.data;
+            const hasil = data.map((item: any) => ({
+                value: item.id,
+                label: `${item.tahun_awal} - ${item.tahun_akhir} (${item.jenis_periode})`,
+                tahun_awal: item.tahun_awal,
+                tahun_akhir: item.tahun_akhir,
+                jenis_periode: item.jenis_periode,
+                tahun_list: item.tahun_list,
+            }));
+            setPeriodeOption(hasil);
+        } catch (err) {
+            console.error(err, "gagal fetch option bidang urusan");
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formDataNew = {
             //key : value
             kode_bidang_urusan: BidangUrusan?.value,
-            periode_id: periode,
+            periode_id: special === true ? Periode?.value : periode,
             kode_opd: kode_opd,
             tujuan: TujuanOpd,
             indikator: data.indikator.map((ind) => ({
@@ -171,7 +206,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                 target: ind.target.map((t, index) => ({
                     target: t.target,
                     satuan: t.satuan,
-                    tahun: tahun_list[index],
+                    tahun: special === true ? Periode?.tahun_list[index] : (tahun_list && tahun_list[index]),
                 })),
             })),
         };
@@ -189,7 +224,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                 target: ind.target.map((t, index) => ({
                     target: t.target,
                     satuan: t.satuan,
-                    tahun: tahun_list[index],
+                    tahun: tahun_list && tahun_list[index],
                 })),
             })),
         };
@@ -198,49 +233,50 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
             if (metode === "baru") return formDataNew;
             return {}; // Default jika metode tidak sesuai
         };
-        // metode === 'baru' && console.log("baru :", formDataNew);
-        // metode === 'lama' && console.log("lama :", formDataEdit);
-        try {
-            let url = "";
-            if (metode === "lama") {
-                url = `tujuan_opd/update/${id}`;
-            } else if (metode === "baru") {
-                url = `tujuan_opd/create`;
-            } else {
-                url = '';
-            }
-            setProses(true);
-            const response = await fetch(`${API_URL}/${url}`, {
-                method: metode === 'lama' ? "PUT" : "POST",
-                headers: {
-                    Authorization: `${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(getBody()),
-            });
-            const result = await response.json();
-            if (result.code === 201 || result.code === 200) {
-                AlertNotification("Berhasil", `Berhasil ${metode === 'baru' ? "Menambahkan" : "Mengubah"} Tujuan Pemda`, "success", 1000);
-                onClose();
-                onSuccess();
-                reset();
-            } else if(result.code === 500) {
-                AlertNotification("Gagal", `${result.data}`, "error", 2000);
-            } else {
-                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server dengan response !ok", "error", 2000);
-                console.error(result);
-            }
-        } catch (err) {
-            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
-        } finally {
-            setProses(false);
-        }
+        metode === 'baru' && console.log("baru :", formDataNew);
+        metode === 'lama' && console.log("lama :", formDataEdit);
+        // try {
+        //     let url = "";
+        //     if (metode === "lama") {
+        //         url = `tujuan_opd/update/${id}`;
+        //     } else if (metode === "baru") {
+        //         url = `tujuan_opd/create`;
+        //     } else {
+        //         url = '';
+        //     }
+        //     setProses(true);
+        //     const response = await fetch(`${API_URL}/${url}`, {
+        //         method: metode === 'lama' ? "PUT" : "POST",
+        //         headers: {
+        //             Authorization: `${token}`,
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(getBody()),
+        //     });
+        //     const result = await response.json();
+        //     if (result.code === 201 || result.code === 200) {
+        //         AlertNotification("Berhasil", `Berhasil ${metode === 'baru' ? "Menambahkan" : "Mengubah"} Tujuan Pemda`, "success", 1000);
+        //         onClose();
+        //         onSuccess();
+        //         reset();
+        //     } else if(result.code === 500) {
+        //         AlertNotification("Gagal", `${result.data}`, "error", 2000);
+        //     } else {
+        //         AlertNotification("Gagal", "terdapat kesalahan pada backend / database server dengan response !ok", "error", 2000);
+        //         console.error(result);
+        //     }
+        // } catch (err) {
+        //     AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        // } finally {
+        //     setProses(false);
+        // }
     };
 
     const handleClose = () => {
         onClose();
         setTujuanOpd('');
         setBidangUrusan(null);
+        setPeriode(null);
         reset();
     }
 
@@ -324,6 +360,49 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                                 )}
                             />
                         </div>
+                        {special === true &&
+                            <div className="flex flex-col py-3">
+                                <label
+                                    className="uppercase text-xs font-bold text-gray-700 my-2"
+                                    htmlFor="periode_id"
+                                >
+                                    Periode:
+                                </label>
+                                <Controller
+                                    name="periode_id"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Select
+                                            {...field}
+                                            id="periode_id"
+                                            placeholder="Pilih Periode"
+                                            value={Periode}
+                                            options={PeriodeOption}
+                                            isLoading={IsLoading}
+                                            isClearable
+                                            onMenuOpen={() => {
+                                                fetchOptionPeriode();
+                                            }}
+                                            onMenuClose={() => setPeriodeOption([])}
+                                            onChange={(option) => {
+                                                field.onChange(option);
+                                                setPeriode(option);
+                                            }}
+                                            styles={{
+                                                control: (baseStyles, state) => ({
+                                                    ...baseStyles,
+                                                    borderRadius: '8px',
+                                                    borderColor: 'black', // Warna default border menjadi merah
+                                                    '&:hover': {
+                                                    borderColor: '#3673CA', // Warna border tetap merah saat hover
+                                                    },
+                                                }),
+                                            }}
+                                        />
+                                    )}
+                                />
+                            </div>
+                        }
                         <label className="uppercase text-base font-bold text-gray-700 my-2">
                             indikator Tujuan Pemda :
                         </label>
@@ -386,11 +465,11 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                                         )}
                                     />
                                 </div>
-                                <div className="flex flex-wrap justify-between gap-1">
+                                <div className="flex flex-wrap justify-between gap-1 target&satuan">
                                     {field.target.map((_, subindex) => (
                                         <div key={`${index}-${subindex}`} className="flex flex-col py-1 px-3 border border-gray-200 rounded-lg">
                                             <label className="text-base text-center text-gray-700">
-                                                <p>{tahun_list[subindex]}</p>
+                                                <p>{special === true ? Periode?.tahun_list[subindex] : (tahun_list && tahun_list[subindex])}</p>
                                             </label>
                                             <Controller
                                                 name={`indikator.${index}.target.${subindex}.target`}
@@ -436,7 +515,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
                                         onClick={() => remove(index)}
                                         className="w-[200px] mt-3"
                                     >
-                                        Hapus
+                                        Hapus Indikator
                                     </ButtonRedBorder>
                                 )}
                             </React.Fragment>

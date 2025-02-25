@@ -84,7 +84,7 @@ const TujuanOpd = () => {
                 </div>
                 {Periode ?
                     <Table
-                        id_periode={Periode?.id}
+                        id_periode={Periode?.value}
                         tahun_awal={Periode?.tahun_awal ? Periode?.tahun_awal : ""}
                         tahun_akhir={Periode?.tahun_akhir ? Periode?.tahun_akhir : ""}
                         jenis={Periode?.jenis_periode ? Periode?.jenis_periode : ""}

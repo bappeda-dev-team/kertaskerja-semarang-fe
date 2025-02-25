@@ -4,10 +4,10 @@ import { ButtonSky, ButtonRedBorder } from "@/components/global/Button";
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import Select from 'react-select';
 import React, { useState, useEffect } from "react";
-import { LoadingSync } from "@/components/global/Loading";
+import { LoadingSync, LoadingButtonClip } from "@/components/global/Loading";
 import { getToken, getUser } from "@/components/lib/Cookie";
 import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
-import { TbTrash } from "react-icons/tb";
+import { TbCirclePlus, TbTrash } from "react-icons/tb";
 
 interface id {
     id: string;
@@ -48,7 +48,9 @@ const SubKegiatan: React.FC<id> = ({ id }) => {
     const [subKegiatan, setSubKegiatan] = useState<subkegiatan[]>([]);
     const [InputSubKegiatan, setInputSubKegiatan] = useState<OptionTypeString | null>(null);
     const [OptionSubKegiatan, setOptionSubKegiatan] = useState<OptionTypeString[]>([]);
+
     const [Loading, setLoading] = useState<boolean>(false);
+    const [Proses, setProses] = useState<boolean>(false);
     const [Deleted, setDeleted] = useState<boolean>(false);
     const [dataNull, setDataNull] = useState<boolean | null>(null);
     const [user, setUser] = useState<any>(null);
@@ -132,6 +134,7 @@ const SubKegiatan: React.FC<id> = ({ id }) => {
         }
         // console.log(formData);
         try {
+            setProses(true);
             const response = await fetch(`${API_URL}/sub_kegiatan/create_rekin/${id}`, {
                 method: "POST",
                 headers: {
@@ -149,12 +152,15 @@ const SubKegiatan: React.FC<id> = ({ id }) => {
         } catch (err) {
             console.log(err);
             AlertNotification("Gagal", "cek koneksi internet / database server", "success", 2000);
+        } finally {
+            setProses(false);
         }
     }
 
     const hapusSubKegiatan = async (id: any) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         try {
+            setProses(true);
             const response = await fetch(`${API_URL}/sub_kegiatan/delete_subkegiatan_terpilih/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -170,6 +176,8 @@ const SubKegiatan: React.FC<id> = ({ id }) => {
             setDeleted((prev) => !prev);
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
+        } finally {
+            setProses(false);
         }
     };
 
@@ -223,7 +231,19 @@ const SubKegiatan: React.FC<id> = ({ id }) => {
                             )}
                         />
                     </div>
-                    <ButtonSky type="submit" className="w-full mt-2">Tambahkan</ButtonSky>
+                    <ButtonSky type="submit" className="w-full mt-2" disabled={Proses}>
+                        {Proses ?
+                            <span className="flex">
+                                <LoadingButtonClip />
+                                Menambahkan...
+                            </span>
+                            :
+                            <span className="flex items-center">
+                                <TbCirclePlus className='mr-1' />
+                                Tambahkan
+                            </span>
+                        }
+                    </ButtonSky>
                 </form>
                 <div className="overflow-auto mt-3 rounded-t-xl border">
                     <table className="w-full">
@@ -248,6 +268,7 @@ const SubKegiatan: React.FC<id> = ({ id }) => {
                                             <td colSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">
                                                 <ButtonRedBorder
                                                     className="w-full"
+                                                    disabled={Proses}
                                                     onClick={() => {
                                                         AlertQuestion("Hapus?", "Hapus Sub Kegiatan yang dipilih?", "question", "Hapus", "Batal").then((result) => {
                                                             if (result.isConfirmed) {
@@ -256,8 +277,17 @@ const SubKegiatan: React.FC<id> = ({ id }) => {
                                                         });
                                                     }}
                                                 >
-                                                    <TbTrash className="mr-2" />
-                                                    Hapus
+                                                    {Proses ? 
+                                                        <span className="flex">
+                                                            <LoadingButtonClip />
+                                                            Menghapus...
+                                                        </span>
+                                                    :
+                                                        <span className="flex items-center">
+                                                            <TbTrash className="mr-2" />
+                                                            Hapus
+                                                        </span>
+                                                    }
                                                 </ButtonRedBorder>
                                             </td>
                                         </tr>
