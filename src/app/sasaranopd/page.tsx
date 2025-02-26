@@ -101,7 +101,7 @@ const SasaranOpd = () => {
                         }}
                     />
                 </div>
-                {/* {Periode ?
+                {Periode ?
                     <Table
                         id_periode={Periode?.value}
                         tahun_awal={Periode?.tahun_awal ? Periode?.tahun_awal : ""}
@@ -113,10 +113,10 @@ const SasaranOpd = () => {
                     <div className="m-5">
                         <h1>Pilih Periode terlebih dahulu</h1>
                     </div>
-                } */}
-                <div className="mx-3 mb-3">
+                }
+                {/* <div className="mx-3 mb-3">
                     <Maintenance />
-                </div>
+                </div> */}
             </div>
         </>
     )

@@ -2,6 +2,7 @@
 
 import { FiHome } from "react-icons/fi";
 import Table from "@/components/pages/iku/Table";
+import Maintenance from "@/components/global/Maintenance";
 import { getOpdTahun } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
 
@@ -34,7 +35,8 @@ const IkuOpd = () => {
                         <h1 className="uppercase font-bold ml-1">{Tahun ? Tahun?.label : ""}</h1>
                     </div>
                 </div>
-                <Table />
+                {/* <Table /> */}
+                <Maintenance />
             </div>
         </>
     )

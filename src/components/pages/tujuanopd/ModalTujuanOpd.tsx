@@ -133,12 +133,7 @@ export const ModalTujuanOpd: React.FC<modal> = ({ isOpen, onClose, id, kode_opd,
         if (metode === 'lama' && isOpen) {
             fetchDetailTujuan();
         }
-        if(special === true && Periode){   
-            console.log("Periode length", Periode?.tahun_list);
-        } else {
-            console.log("tahun list length",tahun_list);
-        }
-    }, [id, token, isOpen, metode, reset, replace, tahun]);
+    }, [id, token, isOpen, metode, reset, replace, tahun, tahun_list, special]);
 
     const fetchOptionBidangUrusan = async() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
