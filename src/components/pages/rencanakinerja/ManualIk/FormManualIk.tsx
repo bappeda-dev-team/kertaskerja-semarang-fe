@@ -202,7 +202,7 @@ const FormManualIk = () => {
             }
         }
         fetchManual();
-    }, [token, id, reset, Success, Tahun]);
+    }, [token, id, reset, Success, Tahun, User]);
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
