@@ -1,7 +1,7 @@
 'use client'
 
 import { FiHome } from "react-icons/fi";
-import Table from "@/components/pages/iku/Table";
+import TablePemda from "@/components/pages/iku/TablePemda";
 import { getOpdTahun, getToken } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
 import Select from 'react-select';
@@ -102,7 +102,7 @@ const IkuPemda = () => {
                     />
                 </div>
                 {Periode ?
-                    <Table
+                    <TablePemda
                         id_periode={Periode?.value}
                         tahun_awal={Periode?.tahun_awal ? Periode?.tahun_awal : ""}
                         tahun_akhir={Periode?.tahun_akhir ? Periode?.tahun_akhir : ""}
