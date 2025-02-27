@@ -66,10 +66,16 @@ export const TablePerencanaan = () => {
 
     useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        let url = '';
+        if (user?.roles == 'level_1') {
+            url = `rencana_kinerja_sasaran_opd/pegawai_level1/${user?.nip}/tahun/${Tahun?.value}`
+        } else {
+            url = `get_rencana_kinerja/pegawai/${user?.nip}?tahun=${Tahun?.value}`
+        }
         const fetchRekin = async () => {
             setLoading(true)
             try {
-                const response = await fetch(`${API_URL}/get_rencana_kinerja/pegawai/${user?.nip}?tahun=${Tahun?.value}`, {
+                const response = await fetch(`${API_URL}/${url}`, {
                     headers: {
                         Authorization: `${token}`,
                         'Content-Type': 'application/json',
@@ -136,7 +142,9 @@ export const TablePerencanaan = () => {
                         <th className="border-r border-b px-6 py-3 min-w-[200px]">target / Satuan</th>
                         <th className="border-r border-b px-6 py-3 min-w-[100px]">Status</th>
                         <th className="border-r border-b px-6 py-3 min-w-[300px]">Catatan</th>
-                        <th className="border-l border-b px-6 py-3 min-w-[200px]">Aksi</th>
+                        {user?.roles != 'level_1' &&
+                            <th className="border-l border-b px-6 py-3 min-w-[200px]">Aksi</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -232,35 +240,37 @@ export const TablePerencanaan = () => {
                                 <button className="w-full rounded-lg bg-green-600 py-1 font-semibold">MANRISK SIAP DIVERIFIKASI</button>
                             </div>
                         </td> */}
-                                <td className="border-r border-b px-6 py-4">
-                                    <div className="flex flex-col justify-center items-center gap-2">
-                                        <ButtonSkyBorder className="w-full" halaman_url={`/rencanakinerja/${data.id_rencana_kinerja}/edit`}>
-                                            <TbPencil className="mr-1" />
-                                            Edit Rekin
-                                        </ButtonSkyBorder>
-                                        {user?.roles == 'level_3' &&
-                                            <ButtonGreenBorder
-                                                className="w-full"
-                                                halaman_url={`/rencanakinerja/${data.id_rencana_kinerja}`}
+                                {user?.roles != 'level_1' &&
+                                    <td className="border-r border-b px-6 py-4">
+                                        <div className="flex flex-col justify-center items-center gap-2">
+                                            <ButtonSkyBorder className="w-full" halaman_url={`/rencanakinerja/${data.id_rencana_kinerja}/edit`}>
+                                                <TbPencil className="mr-1" />
+                                                Edit Rekin
+                                            </ButtonSkyBorder>
+                                            {user?.roles == 'level_3' &&
+                                                <ButtonGreenBorder
+                                                    className="w-full"
+                                                    halaman_url={`/rencanakinerja/${data.id_rencana_kinerja}`}
+                                                >
+                                                    <TbPencilDown className="mr-1" />
+                                                    Rincian
+                                                </ButtonGreenBorder>
+                                            }
+                                            <ButtonRedBorder className="w-full"
+                                                onClick={() => {
+                                                    AlertQuestion("Hapus?", "Hapus Jabatan yang dipilih?", "question", "Hapus", "Batal").then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            hapusRekin(data.id_rencana_kinerja);
+                                                        }
+                                                    });
+                                                }}
                                             >
-                                                <TbPencilDown className="mr-1" />
-                                                Rincian
-                                            </ButtonGreenBorder>
-                                        }
-                                        <ButtonRedBorder className="w-full"
-                                            onClick={() => {
-                                                AlertQuestion("Hapus?", "Hapus Jabatan yang dipilih?", "question", "Hapus", "Batal").then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        hapusRekin(data.id_rencana_kinerja);
-                                                    }
-                                                });
-                                            }}
-                                        >
-                                            <TbTrash className="mr-1" />
-                                            Hapus
-                                        </ButtonRedBorder>
-                                    </div>
-                                </td>
+                                                <TbTrash className="mr-1" />
+                                                Hapus
+                                            </ButtonRedBorder>
+                                        </div>
+                                    </td>
+                                }
                             </tr>
                         ))
                     }

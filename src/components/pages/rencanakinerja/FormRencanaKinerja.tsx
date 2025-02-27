@@ -605,6 +605,7 @@ export const FormEditRencanaKinerja = () => {
                         }
                         setPokin(detail);
                     }
+                    
                     reset({
                         id_pohon: {
                             value: data.id_pohon,
@@ -625,13 +626,14 @@ export const FormEditRencanaKinerja = () => {
                             })),
                         })),
                     });
-
-                    // Replace the fields to avoid duplication
-                    replace(data.indikator.map((item: indikator) => ({
-                        id_indikator: item.id_indikator,
-                        nama_indikator: item.nama_indikator,
-                        targets: item.targets,
-                    })));
+                    if(data.indikator){
+                        // Replace the fields to avoid duplication
+                        replace(data.indikator.map((item: indikator) => ({
+                            id_indikator: item.id_indikator,
+                            nama_indikator: item.nama_indikator,
+                            targets: item.targets,
+                        })));
+                    }
                 }
             } catch (err) {
                 console.error(err);
@@ -678,14 +680,17 @@ export const FormEditRencanaKinerja = () => {
             tahun: String(Tahun?.value),
             kode_opd: User?.kode_opd,
             pegawai_id: User?.nip,
-            indikator: data.indikator.map((ind) => ({
-                id_indikator: ind.id_indikator,
-                nama_indikator: ind.nama_indikator,
-                target: ind.targets.map((t) => ({
-                    target: t.target,
-                    satuan: t.satuan,
-                })),
-            })),
+            indikator: data.indikator ? 
+                data.indikator.map((ind) => ({
+                    id_indikator: ind.id_indikator,
+                    nama_indikator: ind.nama_indikator,
+                    target: ind.targets.map((t) => ({
+                        target: t.target,
+                        satuan: t.satuan,
+                    })),
+                })) 
+                : 
+                []
         };
         // console.log(formData);
         try {
@@ -698,7 +703,8 @@ export const FormEditRencanaKinerja = () => {
                 },
                 body: JSON.stringify(formData),
             });
-            if (response.ok) {
+            const hasil = await response.json();
+            if (hasil.code === 200) {
                 AlertNotification("Berhasil", "Data rencana kinerja berhasil diperbarui", "success", 1000);
                 router.push("/rencanakinerja");
             } else {

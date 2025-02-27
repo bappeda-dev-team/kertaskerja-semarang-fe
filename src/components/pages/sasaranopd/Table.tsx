@@ -152,11 +152,11 @@ const Table: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jenis, ta
         }
     }, [token, User, FetchTrigger, tahun_awal, tahun_akhir, jenis, SelectedOpd]);
 
-    const hapusSasaranPemda = async (id: string) => {
+    const hapusSasaranOpd = async (id: string) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         // console.log(id);
         try {
-            const response = await fetch(`${API_URL}/tujuan_pemda/delete/${id}`, {
+            const response = await fetch(`${API_URL}/rencana_kinerja/delete/${id}`, {
                 method: "DELETE",
                 headers: {
                     Authorization: `${token}`,
@@ -238,7 +238,7 @@ const Table: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jenis, ta
                         <tr className="bg-emerald-500 text-white">
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[50px] text-center">No</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Strategic OPD</th>
-                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Pelaksana</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Pemilik</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Sasaran OPD</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</th>
@@ -305,7 +305,7 @@ const Table: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jenis, ta
                                                     <p className="text-red-500">Pelaksana Belum Di Pilih</p>
                                                     :
                                                     data.pelaksana.map((p: Pelaksana) => (
-                                                        <p key={p.id}>{p.nama_pegawai} ({p.nip})</p>
+                                                        <p key={p.id}>{p.nama_pegawai}</p>
                                                     ))
                                                 }
                                             </td>
@@ -332,7 +332,7 @@ const Table: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jenis, ta
                                                                 <ButtonRed className="flex items-center gap-1 w-full" onClick={() => {
                                                                     AlertQuestion("Hapus?", "Hapus Sasaran Pemda yang dipilih?", "question", "Hapus", "Batal").then((result) => {
                                                                         if (result.isConfirmed) {
-                                                                            hapusSasaranPemda(item.id);
+                                                                            hapusSasaranOpd(item.id);
                                                                         }
                                                                     });
                                                                 }}>
