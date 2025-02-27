@@ -247,7 +247,7 @@ const Table = () => {
                                             {/* Baris Utama */}
                                             <tr>
                                                 <td className="border border-emerald-500 px-4 py-4 text-center">{index + 1}</td>
-                                                <td className="border-x border-b border-emerald-500 px-6 py-4" colSpan={30}>Visi : {data.visi || "-"}</td>
+                                                <td className="border-x border-b border-emerald-500 px-6 py-4 font-bold" colSpan={30}>Visi : {data.visi || "-"}</td>
                                             </tr>
                                             {data.misi_pemda.map((item: MisiPemda) => (
                                                 <React.Fragment key={item.id}>

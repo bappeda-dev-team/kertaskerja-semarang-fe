@@ -219,15 +219,17 @@ export const ModalMisi: React.FC<modal> = ({ isOpen, onClose, id, metode, tahun,
                 body: JSON.stringify(getBody()),
             });
             const hasil = await response.json();
-            if (hasil.code === 200) {
+            if (hasil.code === 200 || hasil.code === 201) {
                 AlertNotification("Berhasil", `Berhasil ${metode === 'baru' ? "Menambahkan" : "Mengubah"} Misi`, "success", 1000);
                 onClose();
                 onSuccess();
                 reset();
             } else if (hasil.code === 400) {
                 AlertNotification("Gagal", `${hasil.data}`, "error", 2000);
+                console.log(hasil);
             } else {
                 AlertNotification("Gagal", "terdapat kesalahan pada backend / database server dengan response !ok", "error", 2000);
+                console.log(hasil);
             }
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);

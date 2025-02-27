@@ -5,6 +5,7 @@ import TableOpd from "@/components/pages/iku/TableOpd";
 import { getOpdTahun, getToken } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
 import Select from 'react-select';
+import { OpdTahunNull } from "@/components/global/OpdTahunNull";
 
 interface Periode {
     value: number;
@@ -72,6 +73,16 @@ const IkuOpd = () => {
             setLoading(false);
         }
     };
+
+    if (SelectedOpd?.value == undefined || Tahun?.value == undefined) {
+        return (
+            <>
+                <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl">
+                    <OpdTahunNull />
+                </div>
+            </>
+        )
+    }
 
     return (
         <>

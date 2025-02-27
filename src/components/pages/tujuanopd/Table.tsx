@@ -4,7 +4,7 @@ import { ButtonRed, ButtonGreen, ButtonSky } from "@/components/global/Button";
 import React, { useEffect, useState } from "react";
 import { LoadingClip } from "@/components/global/Loading";
 import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
-import { TahunNull } from "@/components/global/OpdTahunNull";
+import { TahunNull, OpdTahunNull } from "@/components/global/OpdTahunNull";
 import { getToken, getUser, getOpdTahun } from "@/components/lib/Cookie";
 import { TbPencil, TbTrash, TbCirclePlus } from "react-icons/tb";
 import { ModalTujuanOpd } from "./ModalTujuanOpd";
@@ -68,7 +68,7 @@ interface table {
     tahun_list: string[];
 }
 
-const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tahun_list}) => {
+const Table: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jenis, tahun_list }) => {
 
     const [Tujuan, setTujuan] = useState<tujuan[]>([]);
 
@@ -212,6 +212,15 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
     } else if (Tahun?.value == undefined) {
         return <TahunNull />
     }
+    if (SelectedOpd?.value == undefined || Tahun?.value == undefined) {
+        return (
+            <>
+                <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl">
+                    <OpdTahunNull />
+                </div>
+            </>
+        )
+    }
 
     return (
         <div>
@@ -257,7 +266,7 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
 
                                 const TotalRow = data.tujuan_opd.reduce((total, item) => total + (item.indikator.length === 0 ? 1 : item.indikator.length), 0) + data.tujuan_opd.length + 1;
 
-                                return(
+                                return (
                                     // URUSAN DAN BIDANG URUSAN
                                     <React.Fragment key={index}>
                                         <tr>
@@ -280,7 +289,7 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
                                                     </td>
                                                     <td className="border-x border-b border-emerald-500 px-6 py-6" rowSpan={item.indikator.length !== 0 ? item.indikator.length + 1 : 2}>
                                                         <div className="flex flex-col justify-center items-center gap-2">
-                                                            <ButtonGreen 
+                                                            <ButtonGreen
                                                                 className="flex items-center gap-1 w-full"
                                                                 onClick={() => handleModalEditTujuan(item.id_tujuan_opd)}
                                                             >
@@ -340,7 +349,7 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
                     isOpen={isOpenNewTujuan}
                     onClose={() => handleModalNewTujuan()}
                     onSuccess={() => setFetchTrigger((prev) => !prev)}
-                    />
+                />
                 {/* MODAL EDIT TUJUAN */}
                 <ModalTujuanOpd
                     metode="lama"
