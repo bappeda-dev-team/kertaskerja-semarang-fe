@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { TbEye, TbArrowGuide, TbCheck, TbCircleLetterXFilled, TbCirclePlus, TbHourglass, TbPencil, TbTrash, TbBookmarkPlus, TbZoom } from 'react-icons/tb';
+import React, { useState } from 'react';
+import { TbEye, TbArrowGuide, TbCheck, TbX, TbCircleLetterXFilled, TbCirclePlus, TbHourglass, TbPencil, TbTrash, TbBookmarkPlus, TbZoom } from 'react-icons/tb';
 import { ButtonGreen, ButtonSkyBorder, ButtonRedBorder, ButtonGreenBorder, ButtonBlackBorder } from '@/components/global/Button';
 import { AlertNotification, AlertQuestion } from '@/components/global/Alert';
 import { FormPohonPemda, FormAmbilPohon, FormEditPohon } from './FormPohonPemda';
@@ -100,8 +100,12 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger, user }) => {
         }
     };
 
-    const AktifasiTematik = async (id_pohon: number) => {
+    const AktifasiTematik = async (id_pohon: number, aktif: boolean) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const formData = {
+            is_active: aktif === false ? true : false,
+        }
+        // console.log(formData);
         try {
             setLoadingReview(true);
             const response = await fetch(`${API_URL}/pokin/activation_tematik/${id_pohon}`, {
@@ -109,20 +113,21 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger, user }) => {
                 headers: {
                     Authorization: `${token}`,
                     'Content-Type': 'application/json',
-                }
+                },
+                body: JSON.stringify(formData),
             });
             const hasil = await response.json();
             const data = hasil.data;
             if (hasil.code === 200) {
-                setReview(data);
-                console.log(data);
+                AlertNotification(`${data}`, "", "success", 1000);
+                deleteTrigger();
             } else {
-                console.log('tidak ada review di pohon ini');
-                setReview([]);
+                AlertNotification("Gagal", "", "error", 1000);
+                console.log(`${hasil}`);
             }
         } catch (err) {
-            console.log(`tidak ada review di pohon dengan id : ${id_pohon}`);
-            setReview([]);
+            AlertNotification("Gagal", "", "error", 1000);
+            console.log(`error, ${err}`);
         } finally {
             setLoadingReview(false);
         }
@@ -209,7 +214,6 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger, user }) => {
                     EditBerhasil={handleEditSuccess}
                 />
                 :
-                //
                 <>
                     <div
                         className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg
@@ -241,30 +245,11 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger, user }) => {
                             ${tema.jenis_pohon === "Operational Pemda" && 'border-green-500 text-white bg-gradient-to-r from-[#139052] from-40% to-[#2DCB06]'}
                             `}
                         >
-                            {/* <h1>{tema.jenis_pohon}</h1> */}
-                            <div className="flex flex-wrap flex-col items-center justify-center gap-2">
-                                <h1 className={`${tema.is_active === false && 'text-red-500'}`}>{tema.jenis_pohon}</h1>
-                                {/* {tema.is_active === false && */}
-                                    <button 
-                                        className={`border px-3 py-1 rounded-lg w-full flex jutify-center items-center gap-1
-                                            ${tema.is_active === false ? 
-                                                'border-green-500 text-green-500 hover:bg-green-500 hover:text-white'
-                                                :
-                                                'border-red-500 text-red-500 hover:bg-red-500 hover:text-white'
-                                            }    
-                                        `}
-                                        onClick={() => {
-                                            AlertQuestion(`${tema.is_active === true ? 'NON AKTIFKAN' : 'AKTIFKAN'}`, `${tema.is_active === false ? 'Aktifkan tematik?' : 'non aktifkan tematik'}`, "question", `${tema.is_active ===  false ? 'Aktifkan' : 'Non Aktifkan'}`, "Batal").then((result) => {
-                                                if (result.isConfirmed) {
-                                                    
-                                                }
-                                            });
-                                        }}
-                                    >
-                                        <TbCheck />
-                                        {tema.is_actife === false ? 'Aktifkan' : 'Non Aktifkan'}
-                                    </button>
-                                {/* } */}
+                            <div className="flex flex-wrap items-center justify-center gap-1">
+                                <h1>{tema.jenis_pohon}</h1>
+                                {tema.is_active === false &&
+                                    <button className="px-2 bg-red-600 text-white rounded-xl cursor-default">NON-AKTIF</button>
+                                }
                             </div>
                             </div>
                         {/* BODY */}
@@ -460,10 +445,33 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger, user }) => {
                             `}
                             >
                                 {!['Strategic', 'Tactical', 'Operational', 'Operational N'].includes(tema.jenis_pohon) &&
-                                    <ButtonSkyBorder onClick={() => setEdit(true)}>
-                                        <TbPencil className="mr-1" />
-                                        Edit
-                                    </ButtonSkyBorder>
+                                    <React.Fragment>
+                                        <ButtonSkyBorder onClick={() => setEdit(true)}>
+                                            <TbPencil className="mr-1" />
+                                            Edit
+                                        </ButtonSkyBorder>
+                                        {tema.jenis_pohon === 'Tematik' &&
+                                            <button 
+                                                className={`border px-3 py-1 rounded-lg flex jutify-center items-center gap-1
+                                                    ${tema.is_active === false ? 
+                                                        'border-green-500 text-green-500 hover:bg-green-500 hover:text-white'
+                                                        :
+                                                        'border-red-500 text-red-500 hover:bg-red-500 hover:text-white'
+                                                    }    
+                                                `}
+                                                onClick={() => {
+                                                    AlertQuestion(`${tema.is_active === true ? 'NON AKTIFKAN' : 'AKTIFKAN'}`, `${tema.is_active === false ? 'Aktifkan tematik?' : 'non aktifkan tematik'}`, "question", `${tema.is_active ===  false ? 'Aktifkan' : 'Non Aktifkan'}`, "Batal").then((result) => {
+                                                        if (result.isConfirmed) {
+                                                            AktifasiTematik(tema.id, tema.is_active);
+                                                        }
+                                                    });
+                                                }}
+                                            >
+                                                {tema.is_active === false ? <TbCheck /> : <TbX />}
+                                                {tema.is_active === false ? 'Aktifkan tematik' : 'Non Aktifkan tematik'}
+                                            </button>
+                                        }
+                                    </React.Fragment>
                                 }
                                 {tema.jenis_pohon !== 'Tematik' &&
                                     <ButtonRedBorder
