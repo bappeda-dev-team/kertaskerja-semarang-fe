@@ -100,6 +100,33 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger, user }) => {
         }
     };
 
+    const AktifasiTematik = async (id_pohon: number) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        try {
+            setLoadingReview(true);
+            const response = await fetch(`${API_URL}/pokin/activation_tematik/${id_pohon}`, {
+                method: "POST",
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+            const hasil = await response.json();
+            const data = hasil.data;
+            if (hasil.code === 200) {
+                setReview(data);
+                console.log(data);
+            } else {
+                console.log('tidak ada review di pohon ini');
+                setReview([]);
+            }
+        } catch (err) {
+            console.log(`tidak ada review di pohon dengan id : ${id_pohon}`);
+            setReview([]);
+        } finally {
+            setLoadingReview(false);
+        }
+    }
     const fetchReview = async (id_pohon: number) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         try {
@@ -214,14 +241,31 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger, user }) => {
                             ${tema.jenis_pohon === "Operational Pemda" && 'border-green-500 text-white bg-gradient-to-r from-[#139052] from-40% to-[#2DCB06]'}
                             `}
                         >
-                                <h1>{tema.jenis_pohon}</h1>
-                            {/* <div className="flex flex-wrap flex-col items-center justify-center gap-2">
-                                <h1 className={`text-red-500`}>{tema.jenis_pohon} (NON-AKTIF)</h1>
-                                <ButtonGreen className="w-full flex jutify-center items-center gap-1">
-                                    <TbCheck />
-                                    Aktifkan
-                                </ButtonGreen>
-                            </div> */}
+                            {/* <h1>{tema.jenis_pohon}</h1> */}
+                            <div className="flex flex-wrap flex-col items-center justify-center gap-2">
+                                <h1 className={`${tema.is_active === false && 'text-red-500'}`}>{tema.jenis_pohon}</h1>
+                                {/* {tema.is_active === false && */}
+                                    <button 
+                                        className={`border px-3 py-1 rounded-lg w-full flex jutify-center items-center gap-1
+                                            ${tema.is_active === false ? 
+                                                'border-green-500 text-green-500 hover:bg-green-500 hover:text-white'
+                                                :
+                                                'border-red-500 text-red-500 hover:bg-red-500 hover:text-white'
+                                            }    
+                                        `}
+                                        onClick={() => {
+                                            AlertQuestion(`${tema.is_active === true ? 'NON AKTIFKAN' : 'AKTIFKAN'}`, `${tema.is_active === false ? 'Aktifkan tematik?' : 'non aktifkan tematik'}`, "question", `${tema.is_active ===  false ? 'Aktifkan' : 'Non Aktifkan'}`, "Batal").then((result) => {
+                                                if (result.isConfirmed) {
+                                                    
+                                                }
+                                            });
+                                        }}
+                                    >
+                                        <TbCheck />
+                                        {tema.is_actife === false ? 'Aktifkan' : 'Non Aktifkan'}
+                                    </button>
+                                {/* } */}
+                            </div>
                             </div>
                         {/* BODY */}
                         <div className="flex justify-center my-3">
