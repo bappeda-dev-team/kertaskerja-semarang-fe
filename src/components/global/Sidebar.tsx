@@ -26,14 +26,15 @@ import {
   TbCalendar,
   TbTargetArrow,
   TbHexagonLetterV,
-  TbHexagonLetterM
+  TbHexagonLetterM,
+  TbClipboardText,
+  TbZoomExclamation
 } from "react-icons/tb";
 import Image from 'next/image';
 import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
 import "@/app/globals.css";
 import { logout, getUser } from '../lib/Cookie';
-import IkuOpd from '@/app/ikuopd/page';
 
 interface SidebarProps {
   isOpen: boolean | null;
@@ -105,6 +106,9 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       const [LaporanMandatori, setLaporanMandatori] = useState<boolean | null>(null);
       const [LaporanInisiatif, setLaporanInisiatif] = useState<boolean | null>(null);
     const [SPIP, setSPIP] = useState<boolean | null>(null);
+    const [Review, setReview] = useState<boolean | null>(null);
+      const [ReviewPemda, setReviewPemda] = useState<boolean | null>(null);
+      const [ReviewOpd, setReviewOpd] = useState<boolean | null>(null);
     const [ManajemenResiko, setManajemenResiko] = useState<boolean | null>(null);
     const [Inovasi, setInovasi] = useState<boolean | null>(null);
     const [RencanaKinerjaKAK, setRencanaKinerjaKAK] = useState<boolean | null>(null);
@@ -134,6 +138,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(true);
@@ -178,6 +183,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -204,6 +211,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -248,6 +256,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -273,6 +283,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -317,6 +328,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -342,6 +355,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -386,6 +400,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -411,6 +427,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -455,6 +472,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -481,6 +500,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -525,6 +545,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -550,6 +572,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -594,6 +617,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -619,6 +644,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -663,6 +689,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -688,6 +716,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -732,6 +761,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -757,6 +788,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -801,6 +833,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -826,6 +860,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -870,6 +905,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -895,6 +932,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -939,6 +977,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -964,6 +1004,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1008,6 +1049,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1033,6 +1076,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1077,6 +1121,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1103,6 +1149,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1147,6 +1194,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1172,6 +1221,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1216,6 +1266,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1241,6 +1293,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1285,6 +1338,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1310,6 +1365,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1354,6 +1410,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1379,6 +1437,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1423,6 +1482,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1448,6 +1509,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1492,6 +1554,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1517,6 +1581,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1561,6 +1626,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1587,6 +1654,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1631,6 +1699,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1656,6 +1726,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1700,6 +1771,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1725,6 +1798,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -1769,6 +1843,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -1962,6 +2038,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -2006,6 +2083,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -2031,6 +2110,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -2075,6 +2155,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -2100,6 +2182,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -2144,6 +2227,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -2175,6 +2260,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -2219,6 +2305,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -2242,8 +2330,9 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       // asn
       setPerencanaan(true);
       setUsulanLaporan(false);
-      setLaporan(false);
+      setLaporan(true);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -2288,6 +2377,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPerencanaanManajemenResiko(false);
       setRincianBelanja(true);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -2506,6 +2597,150 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setPohonCascading(false);
       setPohonCascadingOpd(false);
     }
+    if(url == "/reviewpemda"){
+      // SLIDE MENU
+      // super_admin
+      setDataMaster(false);
+      setMasterProgramKegiatan(false);
+      setPerencanaanKota(false);
+      setRPJMD(false);
+      // admin_opd
+      setPerencanaanOPD(false);
+      setMasterUsulanOpd(false);
+      setRenstra(false);
+      // asn
+      setPerencanaan(false);
+      setUsulanLaporan(false);
+      setLaporan(true);
+      setLaporanUsulan(false);
+      setReview(true);
+
+      // HALAMAN
+      setDashboard(false);
+      // data master
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterPeriode(false);
+      setLevelPohon(false);
+      setMasterJabatan(false);
+      setMasterUsulanPemda(false);
+      // masterprogramkegiatan
+      setMasterUrusan(false);
+      setMasterBidangUrusan(false);
+      setMasterProgram(false);
+      setMasterKegiatan(false);
+      setMasterSubKegiatan(false);
+      setMasterLembaga(false);
+      setMasterUser(false);
+      setMasterRole(false);
+      // perencanaan pemda
+      setTematikKota(false);
+      setKotaPohonKinerjaKota(false);
+      // RPJMD
+      setVisi(false);
+      setMisi(false);
+      setTujuanPemda(false);
+      setSasaranPemda(false);
+      setIKU(false);
+      // perencanaan opd
+      setPohonKinerjaOpd(false);
+      setPohonCascadingOpd(false);
+      setUserOpd(false);
+      //Renstra
+      setTujuanOpd(false);
+      setSasaranOpd(false);
+      setIKUOpd(false);
+      setPermasalahanOpd(false);
+      setMasterUsulanOpd(false);
+      //perencanaan asn
+      setRencanaKinerja(false);
+      setPohonCascading(false);
+      setRincianBelanja(false);
+      setPerencanaanManajemenResiko(false);
+      //laporan
+      setReviewPemda(true);
+      setReviewOpd(false);
+      setLaporanMusrenbang(false);
+      setLaporanPokokPikiran(false);
+      setLaporanMandatori(false);
+      setLaporanInisiatif(false);
+      setSPIP(false);
+      setManajemenResiko(false);
+      setInovasi(false);
+      setRencanaKinerjaKAK(false);
+    }
+    if(url == "/reviewopd"){
+      // SLIDE MENU
+      // super_admin
+      setDataMaster(false);
+      setMasterProgramKegiatan(false);
+      setPerencanaanKota(false);
+      setRPJMD(false);
+      // admin_opd
+      setPerencanaanOPD(false);
+      setMasterUsulanOpd(false);
+      setRenstra(false);
+      // asn
+      setPerencanaan(false);
+      setUsulanLaporan(false);
+      setLaporan(true);
+      setLaporanUsulan(false);
+      setReview(true);
+
+      // HALAMAN
+      setDashboard(false);
+      // data master
+      setMasterOPD(false);
+      setMasterPegawai(false);
+      setMasterPeriode(false);
+      setLevelPohon(false);
+      setMasterJabatan(false);
+      setMasterUsulanPemda(false);
+      // masterprogramkegiatan
+      setMasterUrusan(false);
+      setMasterBidangUrusan(false);
+      setMasterProgram(false);
+      setMasterKegiatan(false);
+      setMasterSubKegiatan(false);
+      setMasterLembaga(false);
+      setMasterUser(false);
+      setMasterRole(false);
+      // perencanaan pemda
+      setTematikKota(false);
+      setKotaPohonKinerjaKota(false);
+      // RPJMD
+      setVisi(false);
+      setMisi(false);
+      setTujuanPemda(false);
+      setSasaranPemda(false);
+      setIKU(false);
+      // perencanaan opd
+      setPohonKinerjaOpd(false);
+      setPohonCascadingOpd(false);
+      setUserOpd(false);
+      //Renstra
+      setTujuanOpd(false);
+      setSasaranOpd(false);
+      setIKUOpd(false);
+      setPermasalahanOpd(false);
+      setMasterUsulanOpd(false);
+      //perencanaan asn
+      setRencanaKinerja(false);
+      setPohonCascading(false);
+      setRincianBelanja(false);
+      setPerencanaanManajemenResiko(false);
+      //laporan
+      setReviewPemda(false);
+      setReviewOpd(true);
+      setLaporanMusrenbang(false);
+      setLaporanPokokPikiran(false);
+      setLaporanMandatori(false);
+      setLaporanInisiatif(false);
+      setSPIP(false);
+      setManajemenResiko(false);
+      setInovasi(false);
+      setRencanaKinerjaKAK(false);
+    }
     if(url == "/pohoncascading"){
       // SLIDE MENU
       // super_admin
@@ -2522,6 +2757,7 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setUsulanLaporan(false);
       setLaporan(false);
       setLaporanUsulan(false);
+      setReview(false);
 
       // HALAMAN
       setDashboard(false);
@@ -2566,6 +2802,8 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
       setRincianBelanja(false);
       setPerencanaanManajemenResiko(false);
       //laporan
+      setReviewPemda(false);
+      setReviewOpd(false);
       setLaporanMusrenbang(false);
       setLaporanPokokPikiran(false);
       setLaporanMandatori(false);
@@ -3060,8 +3298,31 @@ export const Sidebar = ({isZoomed, isOpen, toggleSidebar}: SidebarProps) => {
                     </li>
                   </Link>
                 </div>
+              {/* LABEL LAPORAN REVIEW */}
+              <li 
+                className="flex items-center text-sm gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl transition-all duration-300 ease-in-out"
+                onClick={() => setReview(Review ? false : true)}
+              >
+                <TbClipboardText className="text-xl" />
+                <span className={`${!isOpen && 'hidden'} origin-left`}>Review Pohon Kinerja</span>
+              </li>
+                {/* subs menu LAPORAN REVIEW */}
+                <div className={`transition-all duration-300 ease-in-out ${Review ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+                  <Link href="/reviewpemda">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${ReviewPemda ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                      <TbZoomExclamation className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Review Pemda</span>
+                    </li>
+                  </Link>
+                  <Link href="/reviewopd">
+                    <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${ReviewOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                      <TbZoomExclamation className="text-xl" />
+                      <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Review OPD</span>
+                    </li>
+                  </Link>
+                </div>
               <Link href="#">
-                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${RencanaKinerjaKAK ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                <li className={`flex items-center gap-x-2 text-sm cursor-pointer p-2 rounded-xl ${RencanaKinerjaKAK ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbChecklist className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rencana Kinerja KAK</span>
                 </li>
