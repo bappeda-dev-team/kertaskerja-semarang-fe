@@ -1,7 +1,7 @@
 'use client'
 
 import { FiHome } from "react-icons/fi";
-import Table from "@/components/pages/sasaranopd/Table";
+import TablePemda from "@/components/pages/review/TablePemda";
 import { getOpdTahun } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
 import Maintenance from "@/components/global/Maintenance";
@@ -35,7 +35,12 @@ const ReviewPemda = () => {
                     </div>
                 </div>
                 <div className="mx-3 mb-3">
-                    <Maintenance />
+                    {/* <Maintenance /> */}
+                    <TablePemda 
+                        tahun_akhir="2024"
+                        tahun_awal="2020"
+                        jenis="RPJMD"
+                    />
                 </div>
             </div>
         </>
