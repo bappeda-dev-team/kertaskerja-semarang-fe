@@ -6,70 +6,36 @@ import { LoadingClip } from "@/components/global/Loading";
 import { getOpdTahun } from "@/components/lib/Cookie";
 import { TahunNull } from "@/components/global/OpdTahunNull";
 import { getToken, getUser } from "@/components/lib/Cookie";
-import { TbArrowBadgeDownFilled, TbSearch } from "react-icons/tb";
+import { TbArrowBadgeDownFilled } from "react-icons/tb";
 
-
-interface Target {
-    id: string;
-    target: string;
-    satuan: string;
-    tahun: string;
+interface data {
+    id_tematik: number;
+    nama_pohon: string;
+    level_pohon: string;
+    review: review[];
 }
 
-interface Indikator {
-    id: string;
-    indikator: string;
-    rumus_perhitungan: string;
-    sumber_data: string;
-    target: Target[];
-}
-
-interface Periode {
-    tahun_awal: string;
-    tahun_akhir: string;
-}
-
-interface SasaranPemda {
-    id_sasaran_pemda: number;
-    sasaran_pemda: string;
-    periode: Periode;
-    indikator: Indikator[];
-}
-
-interface SubTematik {
-    subtematik_id: number;
-    nama_subtematik: string;
-    jenis_pohon: string;
+interface review {
+    id_pohon: number;
+    parent: number;
+    nama_pohon: string;
     level_pohon: number;
-    sasaran_pemda: SasaranPemda[];
-}
-
-interface Sasaran {
-    tematik_id: number;
-    nama_tematik: string;
-    subtematik: SubTematik[];
-}
-
-interface Periode_Header {
-    id: number;
-    tahun_awal: string;
-    tahun_akhir: string;
-    tahun_list: string[];
+    jenis_pohon: string;
+    review: string;
+    keterangan: string;
+    created_by: string;
+    created_at: string;
+    updated_at: string;
 }
 
 interface table {
-    tahun_awal: string;
-    tahun_akhir: string;
-    jenis: string;
+    tahun: string;
 }
 
-const TablePemda: React.FC<table> = ({ tahun_awal, tahun_akhir, jenis }) => {
+const TablePemda: React.FC<table> = ({ tahun }) => {
 
-    const [Data, setData] = useState<Sasaran[]>([]);
+    const [Data, setData] = useState<data[]>([]);
 
-    const [User, setUser] = useState<any>(null);
-    const [SelectedOpd, setSelectedOpd] = useState<any>(null);
-    const [Tahun, setTahun] = useState<any>(null);
     const token = getToken();
 
     const [IsError, setIsError] = useState<boolean | null>(null);
@@ -79,33 +45,11 @@ const TablePemda: React.FC<table> = ({ tahun_awal, tahun_akhir, jenis }) => {
     const [Show, setShow] = useState<{ [key: string]: boolean }>({});
 
     useEffect(() => {
-        const data = getOpdTahun();
-        const fetchUser = getUser();
-        if (fetchUser) {
-            setUser(fetchUser.user);
-        }
-        if (data.tahun) {
-            const tahun = {
-                value: data.tahun.value,
-                label: data.tahun.label,
-            }
-            setTahun(tahun);
-        }
-        if (data.opd) {
-            const opd = {
-                value: data.opd.value,
-                label: data.opd.label,
-            }
-            setSelectedOpd(opd);
-        }
-    }, []);
-
-    useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const fetchSasaran = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${API_URL}/sasaran_pemda/findall/tahun_awal/${tahun_awal}/tahun_akhir/${tahun_akhir}/jenis_periode/${jenis}`, {
+                const response = await fetch(`${API_URL}/review_pokin/tematik/${tahun}`, {
                     headers: {
                         Authorization: `${token}`,
                         'Content-Type': 'application/json',
@@ -113,7 +57,7 @@ const TablePemda: React.FC<table> = ({ tahun_awal, tahun_akhir, jenis }) => {
                 });
                 const result = await response.json();
                 const data = result.data;
-                console.log(data);
+                // console.log(data);
                 if (data == null) {
                     setDataNull(true);
                     setData([]);
@@ -128,10 +72,10 @@ const TablePemda: React.FC<table> = ({ tahun_awal, tahun_akhir, jenis }) => {
                 setLoading(false);
             }
         }
-        if (User?.roles !== undefined && Tahun?.value != undefined) {
+        if (tahun != undefined) {
             fetchSasaran();
         }
-    }, [token, User, Tahun, SelectedOpd, tahun_awal, tahun_akhir, jenis]);
+    }, [token, tahun]);
 
     const handleShow = (id: number) => {
         setShow((prev) => ({
@@ -151,7 +95,7 @@ const TablePemda: React.FC<table> = ({ tahun_awal, tahun_akhir, jenis }) => {
                 <h1 className="text-red-500 font-bold mx-5 py-5">Periksa koneksi internet atau database server</h1>
             </div>
         )
-    } else if (Tahun?.value == undefined) {
+    } else if (tahun == undefined) {
         return <TahunNull />
     }
 
@@ -162,16 +106,16 @@ const TablePemda: React.FC<table> = ({ tahun_awal, tahun_akhir, jenis }) => {
                     Data Kosong / Belum Ditambahkan
                 </div>
                 :
-                Data.map((data: Sasaran) => {
-                    const isShown = Show[data.tematik_id] || false;
+                Data.map((data: data) => {
+                    const isShown = Show[data.id_tematik] || false;
 
                     return (
-                        <div className="flex flex-col m-2" key={data.tematik_id}>
+                        <div className="flex flex-col m-2" key={data.id_tematik}>
                             <div
                                 className={`flex justify-between border items-center p-5 rounded-xl text-emerald-500 cursor-pointer border-emerald-500 hover:bg-emerald-500 hover:text-white ${isShown ? "bg-emerald-500 text-white" : ""}`}
-                                onClick={() => handleShow(data.tematik_id)}
+                                onClick={() => handleShow(data.id_tematik)}
                             >
-                                <h1 className="font-semibold">Tematik - {data.nama_tematik}</h1>
+                                <h1 className="font-semibold">Tematik - {data.nama_pohon}</h1>
                                 <div className="flex items-center">
                                     <TbArrowBadgeDownFilled className={`transition-all duration-200 ease-in-out text-3xl ${isShown ? "" : "-rotate-90"}`} />
                                 </div>
@@ -189,64 +133,61 @@ const TablePemda: React.FC<table> = ({ tahun_awal, tahun_akhir, jenis }) => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {data.subtematik.length == 0 ?
+                                            {data.review == null ?
                                                 <tr>
                                                     <td className="px-6 py-3" colSpan={30}>
-                                                        Data Kosong / Belum Ditambahkan
+                                                        Tidak Ada review
                                                     </td>
                                                 </tr>
                                                 :
-                                                data.subtematik.map((item: SubTematik, index: number) => {
-                                                    // Cek apakah item.tujuan_pemda ada
-                                                    const hasSasaran = item.sasaran_pemda.length != 0;
-                                                    // const hasSasaranPemda = item.sasaranpemda != "";
-                                                    const [sasaranLength, indikatorLength] = hasSasaran
-                                                        ? [
-                                                            item.sasaran_pemda.length + 1,
-                                                            item.sasaran_pemda.reduce((total, sasaran) => total + (sasaran.indikator.length === 0 ? 1 : sasaran.indikator.length), 0),
-                                                        ]
-                                                        : [1, 1];
+                                                data.review.map((item: review, index: number) => {
                                                     return (
-                                                        <React.Fragment key={item.subtematik_id}>
+                                                        <React.Fragment key={index}>
                                                             {/* NO & POHON */}
                                                             <tr>
-                                                                <td className="border border-emerald-500 px-4 py-4 text-center" rowSpan={sasaranLength + (indikatorLength === 0 ? 1 : indikatorLength)}>
+                                                                <td className="border border-emerald-500 px-4 py-4 text-center">
                                                                     {index + 1}
                                                                 </td>
-                                                                <td className="border border-emerald-500 px-6 py-4" rowSpan={sasaranLength + (indikatorLength === 0 ? 1 : indikatorLength)}>
-                                                                    <p>{item.nama_subtematik}</p>
+                                                                <td className="border border-emerald-500 px-6 py-4">
+                                                                    <p>{item.nama_pohon || "-"}</p>
                                                                     <p className="uppercase text-emerald-500 text-xs">{item.jenis_pohon}</p>
                                                                 </td>
-                                                            </tr>
-                                                            {/* SASARAN */}
-                                                            {hasSasaran ?
-                                                                item.sasaran_pemda.map((s: SasaranPemda) => (
-                                                                    <React.Fragment key={s.id_sasaran_pemda}>
-                                                                        <tr>
-                                                                            <td className="border border-emerald-500 px-6 py-4 h-[150px]" rowSpan={s.indikator.length === 0 ? 2 : s.indikator.length + 1}>
-                                                                                {s.sasaran_pemda || "-"}
-                                                                            </td>
-                                                                        </tr>
-                                                                        {/* INDIKATOR */}
-                                                                        {s.indikator.length == 0 ?
-                                                                            <td className="border-r border-b border-emerald-500 px-6 py-4 bg-yellow-500 text-white" colSpan={30}>
-                                                                                Indikator Kosong / Belum di Inputkan
-                                                                            </td>
-                                                                            :
-                                                                            s.indikator.map((i: Indikator) => (
-                                                                                <tr key={i.id}>
-                                                                                    <td className="border-b border-r border-emerald-500 px-6 py-4">{i.indikator || "-"}</td>
-                                                                                    <td className="border-b border-r border-emerald-500 px-6 py-4">{i.rumus_perhitungan || "-"}</td>
-                                                                                </tr>
-                                                                            ))
-                                                                        }
-                                                                    </React.Fragment>
-                                                                ))
-                                                                :
-                                                                <td className="border-r border-b border-emerald-500 px-6 py-4 bg-red-400 text-white" colSpan={30}>
-                                                                    Sasaran Pemda belum di buat
+                                                                <td className="border border-emerald-500 px-6 py-4">
+                                                                    <p>{item.review} ({item.created_by})</p>
                                                                 </td>
-                                                            }
+                                                                <td className="border border-emerald-500 px-6 py-4">
+                                                                    <p>{item.keterangan}</p>
+                                                                </td>
+                                                                <td className="border border-emerald-500 px-6 py-4">
+                                                                    {item.created_at === item.updated_at ?
+                                                                        <>
+                                                                            <p className="font-semibold">dibuat pada :</p>
+                                                                            <p>
+                                                                                {new Date(item.created_at).toLocaleDateString("id-ID", {
+                                                                                    year: "numeric",
+                                                                                    month: "long",
+                                                                                    day: "numeric",
+                                                                                    hour: "2-digit",
+                                                                                    minute: "2-digit"
+                                                                                })}
+                                                                            </p>
+                                                                        </>
+                                                                        :
+                                                                        <>
+                                                                            <p className="font-semibold">diedit pada :</p>
+                                                                            <p>
+                                                                                {new Date(item.updated_at).toLocaleDateString("id-ID", {
+                                                                                    year: "numeric",
+                                                                                    month: "long",
+                                                                                    day: "numeric",
+                                                                                    hour: "2-digit",
+                                                                                    minute: "2-digit"
+                                                                                })}
+                                                                            </p>
+                                                                        </>
+                                                                    }
+                                                                </td>
+                                                            </tr>
                                                         </React.Fragment>
                                                     )
                                                 })

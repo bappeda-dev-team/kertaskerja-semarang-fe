@@ -30,16 +30,15 @@ const ReviewPemda = () => {
             </div>
             <div className="mt-3 rounded-xl shadow-lg border">
                 <div className="flex items-center justify-between border-b px-5 py-5">
-                    <div className="flex flex-wrap items-end">
+                    <div className="flex flex-wrap items-end gap-1">
                         <h1 className="uppercase font-bold">Review Pohon Kinerja Pemda</h1>
+                        <h1 className="uppercase font-bold">{Tahun?.label}</h1>
                     </div>
                 </div>
                 <div className="mx-3 mb-3">
                     {/* <Maintenance /> */}
                     <TablePemda 
-                        tahun_akhir="2024"
-                        tahun_awal="2020"
-                        jenis="RPJMD"
+                        tahun={Tahun?.value}
                     />
                 </div>
             </div>
