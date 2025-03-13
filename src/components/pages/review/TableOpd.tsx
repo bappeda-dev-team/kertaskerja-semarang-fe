@@ -91,10 +91,10 @@ const Table: React.FC<table> = ({ tahun, kode_opd }) => {
                     <thead>
                         <tr className="bg-emerald-500 text-white">
                             <th className="border-r border-b px-6 py-3 min-w-[50px] text-center">No</th>
-                            <th className="border-r border-b px-6 py-3 min-w-[100px]">Nama Pohon</th>
-                            <th className="border-r border-b px-6 py-3 min-w-[300px]">Review</th>
-                            <th className="border-r border-b px-6 py-3 min-w-[300px]">Keterangan</th>
-                            <th className="border-r border-b px-6 py-3 min-w-[100px]">Waktu Review</th>
+                            <th className="border-r border-b px-6 py-3 min-w-[200px]">Nama Pohon</th>
+                            <th className="border-r border-b px-6 py-3 min-w-[400px]">Review</th>
+                            <th className="border-r border-b px-6 py-3 min-w-[200px]">Keterangan</th>
+                            <th className="border-r border-b px-6 py-3 min-w-[200px]">Waktu Review</th>
                         </tr>
                     </thead>
                     <tbody>

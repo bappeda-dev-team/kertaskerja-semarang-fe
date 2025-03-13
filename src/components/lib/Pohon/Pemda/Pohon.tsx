@@ -73,7 +73,7 @@ export const Pohon: React.FC<pohon> = ({ tema, deleteTrigger, user, show_all, se
             setShow(true);
         }
         if(show_all && (Show === false)){
-            set_show_all
+            set_show_all();
         }
     }, [show_all, Show, set_show_all]);
 

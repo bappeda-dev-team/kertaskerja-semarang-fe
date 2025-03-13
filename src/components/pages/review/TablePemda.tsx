@@ -129,7 +129,7 @@ const TablePemda: React.FC<table> = ({ tahun }) => {
                                                 <td className="border-r border-b px-6 py-3 min-w-[200px]">Nama Pohon</td>
                                                 <td className="border-r border-b px-6 py-3 min-w-[400px] text-center">Review</td>
                                                 <td className="border-r border-b px-6 py-3 min-w-[200px]">Keterangan</td>
-                                                <td className="border-r border-b px-6 py-3 min-w-[100px]">Waktu Review</td>
+                                                <td className="border-r border-b px-6 py-3 min-w-[200px]">Waktu Review</td>
                                             </tr>
                                         </thead>
                                         <tbody>

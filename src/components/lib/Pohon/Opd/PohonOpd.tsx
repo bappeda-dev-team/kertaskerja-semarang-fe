@@ -79,7 +79,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, show_all, show_
             setShow(true);
         }
         if(show_all && (Show === false)){
-            set_show_all
+            set_show_all();
         }
     }, [show_all, Show, set_show_all]);
 
