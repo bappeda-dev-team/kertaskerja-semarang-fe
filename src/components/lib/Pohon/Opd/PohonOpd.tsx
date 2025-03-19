@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TbPrinter, TbLayersLinked, TbBookmarkPlus, TbCheck, TbCircleLetterXFilled, TbCirclePlus, TbHourglass, TbPencil, TbTrash, TbEye, TbEyeClosed, TbArrowAutofitWidth, TbDeviceTabletSearch, TbZoom } from 'react-icons/tb';
-import { ButtonSky, ButtonSkyBorder, ButtonRed, ButtonRedBorder, ButtonGreenBorder, ButtonBlackBorder } from '@/components/global/Button';
+import { ButtonSky, ButtonSkyBorder, ButtonRedBorder, ButtonGreenBorder, ButtonBlackBorder } from '@/components/global/Button';
 import { AlertNotification, AlertQuestion } from '@/components/global/Alert';
 import { FormPohonOpd, FormEditPohon, FormCrosscutingOpd } from './FormPohonOpd';
 import { getToken, getUser } from '../../Cookie';
@@ -427,13 +427,13 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, show_all, show_
                                 ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
                                 `}
                         >
-                            <ButtonBlackBorder
+                            <ButtonSky
                                 className='flex items-center gap-1'
                                 onClick={() => setIsCetak(true)}
                             >
                                 <TbPrinter />
                                 Cetak
-                            </ButtonBlackBorder>
+                            </ButtonSky>
                             {!['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
                                 <ButtonSkyBorder
                                     onClick={() => {
@@ -599,9 +599,9 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, show_all, show_
                 ))}
             </ul>
             <ModalCetak
+                jenis="non_cascading"
                 onClose={() => setIsCetak(false)}
                 isOpen={IsCetak}
-                onSuccess={() => null}
                 pohon={tema}
             />
         </li>
