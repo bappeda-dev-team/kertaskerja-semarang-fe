@@ -419,22 +419,22 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, show_all, show_
                             </>
                         }
                         {/* BUTTON ACTION INSIDE BOX CEK CROSSCUTTING */}
-                        {!['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
-                            <div
-                                className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
-                                    ${tema.jenis_pohon === "Strategic Pemda" && 'border-black'}
-                                    ${tema.jenis_pohon === "Tactical Pemda" && 'border-black'}
-                                    ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
-                                    ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
+                        <div
+                            className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
+                                ${tema.jenis_pohon === "Strategic Pemda" && 'border-black'}
+                                ${tema.jenis_pohon === "Tactical Pemda" && 'border-black'}
+                                ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
+                                ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
                                 `}
+                        >
+                            <ButtonBlackBorder
+                                className='flex items-center gap-1'
+                                onClick={() => setIsCetak(true)}
                             >
-                                <ButtonBlackBorder
-                                    className='flex items-center gap-1'
-                                    onClick={() => setIsCetak(true)}
-                                >
-                                    <TbPrinter />
-                                    Cetak
-                                </ButtonBlackBorder>
+                                <TbPrinter />
+                                Cetak
+                            </ButtonBlackBorder>
+                            {!['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
                                 <ButtonSkyBorder
                                     onClick={() => {
                                         fetchPohonCross(tema.id);
@@ -444,8 +444,8 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, show_all, show_
                                     <TbDeviceTabletSearch className="mr-1" />
                                     {DetailCross ? "Sembunyikan" : "Cek Crosscutting"}
                                 </ButtonSkyBorder>
-                            </div>
-                        }
+                            }
+                        </div>
                         {/* footer */}
                         <div className="flex justify-evenly my-3 py-3 hide-on-capture">
                             {(tema.level_pohon != 4 && (
