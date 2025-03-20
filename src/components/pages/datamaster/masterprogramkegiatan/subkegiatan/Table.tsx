@@ -115,15 +115,13 @@ const Table = () => {
                     <thead>
                         <tr className="bg-[#99CEF5] text-white">
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[50px]">No</th>
-                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[70px]">Aksi</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Nama Sub Kegiatan</th>
-                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Tahun</th>
-                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Perangkat Daerah</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</th>
                         </tr>
                         <tr className="bg-[#99CEF5] text-white">
-                            <th className="border-l border-b px-6 py-3 min-w-[50px]">Target</th>
-                            <th className="border-l border-b px-6 py-3 min-w-[50px]">Satuan</th>
+                            <th className="border-l border-b px-6 py-3 min-w-[100px]">Target</th>
+                            <th className="border-l border-b px-6 py-3 min-w-[100px]">Satuan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,12 +168,6 @@ const Table = () => {
                                             </td>
                                             <td className="border-r border-b px-6 py-4" rowSpan={indikatorLength + 1}>
                                                 {item.nama_sub_kegiatan || "-"}
-                                            </td>
-                                            <td className="border-r border-b px-6 py-4 text-center" rowSpan={indikatorLength + 1}>
-                                                {item.tahun || "-"}
-                                            </td>
-                                            <td className="border-r border-b px-6 py-4" rowSpan={indikatorLength + 1}>
-                                                {item.nama_opd || "-"}
                                             </td>
                                             {!hasIndikator &&
                                                 <React.Fragment>

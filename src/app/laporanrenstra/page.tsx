@@ -115,9 +115,9 @@ const LaporanRenstra = () => {
                     <OpdNull />
                 ) : (
                     Periode ?
-                        <div className="p-5">
-                            <Maintenance />
-                            {/* <TableRenstra /> */}
+                        <div className="p-1">
+                            {/* <Maintenance /> */}
+                            <TableRenstra />
                         </div>
                         :
                         <div className="m-5">
