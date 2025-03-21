@@ -150,6 +150,9 @@ export const ModalSubKegiatanOpd: React.FC<ModalProps> = ({ isOpen, onClose, kod
                                             control: (baseStyles) => ({
                                                 ...baseStyles,
                                                 borderRadius: '8px',
+                                            }),
+                                            menuPortal: (base) => ({ 
+                                                ...base, zIndex: 9999 
                                             })
                                         }}
                                     />
