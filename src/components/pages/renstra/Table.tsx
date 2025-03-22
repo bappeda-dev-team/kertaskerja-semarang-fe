@@ -124,7 +124,7 @@ export const TableRenstra: React.FC<table> = ({ jenis, tahun_awal, tahun_akhir, 
         <>
             {Matrix.map((item: matrix, index: number) => (
                 <React.Fragment key={index}>
-                    <div className="overflow-auto m-2 rounded-t-xl border">
+                    <div className="overflow-auto m-2 rounded-xl border">
                         <TableTotalPagu
                             tahun_list={tahun_list}
                             pagu_total={item.pagu_total}

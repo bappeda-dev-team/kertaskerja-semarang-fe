@@ -5,7 +5,7 @@ import { Controller, SubmitHandler, useForm, useFieldArray } from "react-hook-fo
 import { ButtonSky, ButtonRed, ButtonSkyBorder, ButtonRedBorder } from '@/components/global/Button';
 import { getToken } from "@/components/lib/Cookie";
 import Select from 'react-select';
-import { LoadingButtonClip } from "@/components/global/Loading";
+import { LoadingButtonClip, LoadingClip } from "@/components/global/Loading";
 import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 
 interface OptionTypeString {
@@ -178,6 +178,10 @@ export const ModalMatrix: React.FC<modal> = ({ isOpen, onClose, id, kode, kode_o
             <div className="fixed inset-0 flex items-center justify-center z-50">
                 <div className="fixed inset-0 bg-black opacity-30" onClick={handleClose}></div>
                 <div className={`bg-white rounded-lg p-8 z-10 w-5/6 max-h-[80%] overflow-auto`}>
+                {IsLoading ? 
+                    <LoadingClip />
+                :
+                <>
                     <div className="w-max-[500px] py-2 border-b">
                         <h1 className="text-xl uppercase text-center">{metode === 'baru' ? "Tambah" : "Edit"} Indikator tahun {tahun}</h1>
                     </div>
@@ -310,6 +314,8 @@ export const ModalMatrix: React.FC<modal> = ({ isOpen, onClose, id, kode, kode_o
                             Batal
                         </ButtonRed>
                     </form>
+                </>
+                }
                 </div>
             </div>
         )
