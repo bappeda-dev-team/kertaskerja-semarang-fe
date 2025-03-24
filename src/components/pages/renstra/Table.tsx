@@ -252,12 +252,12 @@ export const TableRenstra: React.FC<table> = ({ jenis, tahun_awal, tahun_akhir, 
 export const TheadMatrix: React.FC<Thead> = ({ jenis, tahun_list }) => {
     return (
         <thead>
-            <tr className={`text-white 
-                ${jenis === "Urusan" && "bg-[#205781]"}
-                ${jenis === "Bidang Urusan" && "bg-red-500"}
-                ${jenis === "Program" && "bg-blue-500"}
-                ${jenis === "Kegiatan" && "bg-green-500"}
-                ${jenis === "Sub Kegiatan" && "bg-emerald-500"}
+            <tr className={` 
+                ${jenis === "Urusan" && "bg-white text-black"}
+                ${jenis === "Bidang Urusan" && "bg-red-500 text-white"}
+                ${jenis === "Program" && "bg-blue-500 text-white"}
+                ${jenis === "Kegiatan" && "bg-green-700 text-white"}
+                ${jenis === "Sub Kegiatan" && "bg-emerald-500 text-white"}
             `}>
                 <td rowSpan={2} className="border-r border-b px-6 py-4 w-[200px]">Kode</td>
                 <td rowSpan={2} className="border-r border-b px-6 py-4 min-w-[200px]">{jenis}</td>
@@ -266,12 +266,12 @@ export const TheadMatrix: React.FC<Thead> = ({ jenis, tahun_list }) => {
                 ))}
 
             </tr>
-            <tr className={`text-white
-                ${jenis === "Urusan" && "bg-[#205781]"}
-                ${jenis === "Bidang Urusan" && "bg-red-500"}
-                ${jenis === "Program" && "bg-blue-500"}
-                ${jenis === "Kegiatan" && "bg-green-500"}
-                ${jenis === "Sub Kegiatan" && "bg-emerald-500"}
+            <tr className={`
+                ${jenis === "Urusan" && "bg-white text-black"}
+                ${jenis === "Bidang Urusan" && "bg-red-500 text-white"}
+                ${jenis === "Program" && "bg-blue-500 text-white"}
+                ${jenis === "Kegiatan" && "bg-green-700 text-white"}
+                ${jenis === "Sub Kegiatan" && "bg-emerald-500 text-white"}
             `}>
                 {(jenis === 'Urusan' || jenis === 'Bidang Urusan') ?
                     tahun_list.map((item: string) => (
