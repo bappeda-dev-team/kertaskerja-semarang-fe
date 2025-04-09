@@ -63,12 +63,12 @@ export const PohonLaporan: React.FC<pohon> = ({ tema, show_all, set_show_all }) 
                 </div>
                 {/* BODY */}
                 <div className="flex flex-col justify-center my-3">
-                    <TablePohon item={tema} />
+                    <TablePohonLaporan item={tema} tipe="non-cetak"/>
                     <div className="mt-3">
                         <Pagu jenis={tema.jenis_pohon}/>
                     </div>
                     <div className="mt-5">
-                        <ProgramKegiatan jenis={tema.jenis_pohon}/>
+                        <ProgramKegiatan jenis={tema.jenis_pohon} tipe="non-cetak"/>
                     </div>
                 </div>
                 {/* BUTTON ACTION TAMPILKAN DAN PELAKSANA*/}
@@ -102,7 +102,7 @@ export const PohonLaporan: React.FC<pohon> = ({ tema, show_all, set_show_all }) 
                 ))}
             </ul>
             <ModalCetak
-                jenis='cascading'
+                jenis='laporan'
                 onClose={() => setIsCetak(false)}
                 isOpen={IsCetak}
                 pohon={tema}
@@ -111,26 +111,31 @@ export const PohonLaporan: React.FC<pohon> = ({ tema, show_all, set_show_all }) 
     )
 }
 
-export const TablePohon = (props: any) => {
+export const TablePohonLaporan = (props: any) => {
 
     const tema = props.item.nama_pohon;
     const jenis = props.item.jenis_pohon;
     const pelaksana = props.item.pelaksana;
+    const tipe = props.tipe;
 
     const [ModalCekIndikator, setModalCekIndikator] = useState<boolean>(false);
+
     const [Isi, setIsi] = useState<string>('');
+    const [Indikator, setIndikator] = useState<string>('');
     const [Target, setTarget] = useState<string>('');
     const [Satuan, setSatuan] = useState<string>('');
 
-    const handleModalIndikator = (isi: string, target: string, satuan: string) => {
+    const handleModalIndikator = (isi: string, indikator: string, target: string, satuan: string) => {
         if(ModalCekIndikator){
             setModalCekIndikator(false);
             setIsi('');
+            setIndikator('');
             setTarget('');
             setSatuan('');
         } else {
             setModalCekIndikator(true);
             setIsi(isi);
+            setIndikator(indikator);
             setTarget(target);
             setSatuan(satuan);
         }
@@ -276,13 +281,15 @@ export const TablePohon = (props: any) => {
                                                 >
                                                     <div className="flex flex-col gap-2">
                                                         <p>contoh sub kegiatan</p>
-                                                        <ButtonBlackBorder 
-                                                            className='flex items-center gap-1'
-                                                            onClick={() => handleModalIndikator('contoh program', 'target', 'satuan')}
-                                                        >
-                                                            <TbEye />
-                                                            cek indikator
-                                                        </ButtonBlackBorder>
+                                                        {tipe === 'non-cetak' &&
+                                                            <ButtonBlackBorder 
+                                                                className='flex items-center gap-1'
+                                                                onClick={() => handleModalIndikator('PROGRAM KOORDINASI DAN SINKRONISASI PERENCANAAN PEMBANGUNAN DAERAH (5.01.03)' ,'contoh Indikator', 'target', 'satuan')}
+                                                            >
+                                                                <TbEye />
+                                                                cek indikator
+                                                            </ButtonBlackBorder>
+                                                        }
                                                     </div>
                                                 </td>
                                             </tr>
@@ -375,9 +382,9 @@ export const TablePohon = (props: any) => {
             }
             <ModalIndikator
                 isOpen={ModalCekIndikator}
-                onClose={() => handleModalIndikator('','','')}
-                jenis='Sub Kegiatan'
+                onClose={() => handleModalIndikator('','','','')}
                 isi={Isi}
+                indikator={Indikator}
                 target={Target}
                 satuan={Satuan}
             />
@@ -410,22 +417,25 @@ export const Pagu:React.FC<{jenis: string}> = ({ jenis }) => {
         </div>
     )
 }
-export const ProgramKegiatan:React.FC<{jenis: string}> = ({ jenis }) => {
+export const ProgramKegiatan:React.FC<{jenis: string, tipe: string}> = ({ jenis, tipe }) => {
 
     const [ModalCekIndikator, setModalCekIndikator] = useState<boolean>(false);
     const [Isi, setIsi] = useState<string>('');
+    const [Indikator, setIndikator] = useState<string>('');
     const [Target, setTarget] = useState<string>('');
     const [Satuan, setSatuan] = useState<string>('');
 
-    const handleModalIndikator = (isi: string, target: string, satuan: string) => {
+    const handleModalIndikator = (isi: string, indikator: string, target: string, satuan: string) => {
         if(ModalCekIndikator){
             setModalCekIndikator(false);
             setIsi('');
+            setIndikator('');
             setTarget('');
             setSatuan('');
         } else {
             setModalCekIndikator(true);
             setIsi(isi);
+            setIndikator(indikator);
             setTarget(target);
             setSatuan(satuan);
         }
@@ -455,25 +465,25 @@ export const ProgramKegiatan:React.FC<{jenis: string}> = ({ jenis }) => {
                             ${(jenis === 'Strategic' || jenis === 'Tactical' || jenis === 'Operational') && 'rounded-b-lg'}      
                             ${jenis === 'Operational N' && 'border-x border-b border-green-500 rounded-b-lg'}    
                         `}>
-                            <p>PROGRAM KOORDINASI DAN SINKRONISASI PERENCANAAN PEMBANGUNAN DAERAH (5.01.03)</p>
-                            <ButtonGreenBorder 
-                                className='flex items-center gap-1'
-                                onClick={() => handleModalIndikator('contoh isi indikator', 'target', 'satuan')}
-                            >
-                                <TbEye />
-                                Tampilkan indikator
-                            </ButtonGreenBorder>
+                            <p className='text-center'>PROGRAM KOORDINASI DAN SINKRONISASI PERENCANAAN PEMBANGUNAN DAERAH (5.01.03)</p>
+                            {tipe === 'non-cetak' &&
+                                <ButtonGreenBorder 
+                                    className='flex items-center gap-1'
+                                    onClick={() => handleModalIndikator('PROGRAM KOORDINASI DAN SINKRONISASI PERENCANAAN PEMBANGUNAN DAERAH (5.01.03)', 'contoh isi indikator', 'target', 'satuan')}
+                                >
+                                    <TbEye />
+                                    Tampilkan indikator
+                                </ButtonGreenBorder>
+                            }
                         </td>
                     </tr>
                 </tbody>
             </table>
             <ModalIndikator
                 isOpen={ModalCekIndikator}
-                onClose={() => handleModalIndikator('','','')}
-                jenis={
-                    (jenis === 'Strategic' || jenis === 'Tactical' || jenis === 'Strategic Pemda' || jenis === 'Tactical Pemda') ? 'Program' : 'Kegiatan'
-                }
+                onClose={() => handleModalIndikator('','','','')}
                 isi={Isi}
+                indikator={Indikator}
                 target={Target}
                 satuan={Satuan}
             />

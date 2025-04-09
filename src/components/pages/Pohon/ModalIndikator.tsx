@@ -7,13 +7,13 @@ interface modal {
     isOpen: boolean;
     onClose: () => void;
     isi: string;
+    indikator: string;
     target: string | number;
     satuan: string;
-    jenis: 'Sub Kegiatan' | 'Program' | 'Kegiatan'
 }
 
 
-export const ModalIndikator: React.FC<modal> = ({ isOpen, onClose, jenis, isi, target, satuan }) => {
+export const ModalIndikator: React.FC<modal> = ({ isOpen, onClose, isi, indikator, target, satuan }) => {
 
     if (!isOpen) {
         return null;
@@ -24,27 +24,27 @@ export const ModalIndikator: React.FC<modal> = ({ isOpen, onClose, jenis, isi, t
                 <div className="fixed inset-0 bg-black opacity-30" onClick={onClose}></div>
                 <div className={`flex flex-col gap-2 bg-white rounded-lg p-8 z-10 w-4/5`}>
                     <div className="flex items-center justify-between w-max-[500px] py-2 border-b">
-                        <h1 className="text-xl uppercase">Detail Indikator</h1>
+                        <h1 className="text-xl uppercase">{isi}</h1>
                         <ButtonRed onClick={onClose} className="py-2"><TbX /></ButtonRed>
                     </div>
                     <div className="overflow-auto">
                         <table className="w-full">
                             <thead>
                                 <tr className="bg-black text-white">
-                                    <th className="border-r border-b px-6 py-3 min-w-[400px]">{jenis}</th>
-                                    <th className="border-r border-b px-6 py-3 min-w-[100px]">Target</th>
-                                    <th className="border-r border-b px-6 py-3 min-w-[100px]">Satuan</th>
+                                    <th className="border-r border-b border-white px-6 py-3 min-w-[400px]">Indikator</th>
+                                    <th className="border-r border-b border-white px-6 py-3 min-w-[100px]">Target</th>
+                                    <th className="border-r border-b border-white px-6 py-3 min-w-[100px]">Satuan</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td className="border border-emerald-500 px-6 py-4">
-                                        <p>{isi}</p>
+                                    <td className="border border-black px-6 py-4">
+                                        <p>{indikator}</p>
                                     </td>
-                                    <td className="border border-emerald-500 px-6 py-4">
+                                    <td className="border border-black px-6 py-4">
                                         <p>{target}</p>
                                     </td>
-                                    <td className="border border-emerald-500 px-6 py-4">
+                                    <td className="border border-black px-6 py-4">
                                         <p>{satuan}</p>
                                     </td>
                                 </tr>
