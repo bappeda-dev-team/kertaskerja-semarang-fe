@@ -25,7 +25,19 @@ interface pokin {
     kode_opd: string;
     nama_opd: string;
     tahun: string;
+    tujuan_opd: tujuanopd[];
     childs: childs[]
+}
+interface tujuanopd {
+    id: number;
+    kode_opd: string;
+    tujuan: string;
+    kode_bidang_urusan: string;
+    nama_bidang_urusan: string;
+    indikator: Indikator[];
+}
+interface Indikator {
+    indikator: string;
 }
 interface childs {
     id: number;
@@ -190,13 +202,25 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
                 setLoading(false);
             }
         }
-        if (User?.roles == 'super_admin') {
-            if (SelectedOpd?.value != undefined && Tahun?.value != undefined) {
-                fetchPokinOpd(`pohon_kinerja_opd/findall/${SelectedOpd?.value}/${Tahun?.value}`);
+        if (jenis === 'non-laporan') {
+            if (User?.roles == 'super_admin' || User?.roles == 'reviewer') {
+                if (SelectedOpd?.value != undefined && Tahun?.value != undefined) {
+                    fetchPokinOpd(`pohon_kinerja_opd/findall/${SelectedOpd?.value}/${Tahun?.value}`);
+                }
+            } else if (User?.roles != 'super_admin') {
+                if (User?.kode_opd != undefined && Tahun?.value != undefined) {
+                    fetchPokinOpd(`pohon_kinerja_opd/findall/${User?.kode_opd}/${Tahun?.value}`);
+                }
             }
-        } else if (User?.roles != 'super_admin') {
-            if (User?.kode_opd != undefined && Tahun?.value != undefined) {
-                fetchPokinOpd(`pohon_kinerja_opd/findall/${User?.kode_opd}/${Tahun?.value}`);
+        } else {
+            if (User?.roles == 'super_admin' || User?.roles == 'reviewer') {
+                if (SelectedOpd?.value != undefined && Tahun?.value != undefined) {
+                    fetchPokinOpd(`cascading_opd/findall/${SelectedOpd?.value}/${Tahun?.value}`);
+                }
+            } else if (User?.roles != 'super_admin') {
+                if (User?.kode_opd != undefined && Tahun?.value != undefined) {
+                    fetchPokinOpd(`cascading_opd/findall/${User?.kode_opd}/${Tahun?.value}`);
+                }
             }
         }
     }, [User, SelectedOpd, Tahun, Deleted, token]);
@@ -298,6 +322,36 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
                                                 <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tahun</td>
                                                 <td className="min-w-[300px] border px-2 py-3 border-black text-start">{Pokin?.tahun}</td>
                                             </tr>
+                                            {Pokin?.tujuan_opd ?
+                                                Pokin?.tujuan_opd.map((item: any) => (
+                                                    <React.Fragment key={item.id}>
+                                                        <tr>
+                                                            <td className="min-w-[100px] border px-2 py-3 border-black text-start bg-gray-100">Tujuan OPD</td>
+                                                            <td className="min-w-[300px] border px-2 py-3 border-black text-start bg-gray-100">{item.tujuan}</td>
+                                                        </tr>
+                                                        {item.indikator ?
+                                                            <React.Fragment>
+                                                                {item.indikator.map((i: any) => (
+                                                                    <tr key={item.id}>
+                                                                        <td className="min-w-[100px] border px-2 py-3 border-black text-start">Indikator</td>
+                                                                        <td className="min-w-[300px] border px-2 py-3 border-black text-start">{i.indikator}</td>
+                                                                    </tr>
+                                                                ))}
+                                                            </React.Fragment>
+                                                            :
+                                                            <tr key={item.id}>
+                                                                <td className="min-w-[100px] border px-2 py-3 border-black text-start">Indikator</td>
+                                                                <td className="min-w-[300px] border px-2 py-3 border-black text-start">-</td>
+                                                            </tr>
+                                                        }
+                                                    </React.Fragment>
+                                                ))
+                                                :
+                                                <tr>
+                                                    <td className="min-w-[100px] border px-2 py-3 border-black text-start">Tujuan OPD</td>
+                                                    <td className="min-w-[300px] border px-2 py-3 border-black text-start">-</td>
+                                                </tr>
+                                            }
                                         </tbody>
                                     </table>
                                 </div>

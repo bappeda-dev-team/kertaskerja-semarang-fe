@@ -2555,7 +2555,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       // asn
       setPerencanaan(true);
       setUsulanLaporan(false);
-      setLaporan(true);
+      setLaporan(false);
       setLaporanUsulan(false);
       setReview(false);
 
