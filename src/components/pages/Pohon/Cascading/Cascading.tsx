@@ -223,7 +223,7 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
                 }
             }
         }
-    }, [User, SelectedOpd, Tahun, Deleted, token]);
+    }, [User, SelectedOpd, Tahun, Deleted, jenis, token]);
 
     if (Loading) {
         return (
@@ -330,14 +330,14 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
                                                             <td className="min-w-[300px] border px-2 py-3 border-black text-start bg-gray-100">{item.tujuan}</td>
                                                         </tr>
                                                         {item.indikator ?
-                                                            <React.Fragment>
-                                                                {item.indikator.map((i: any) => (
-                                                                    <tr key={item.id}>
+                                                            item.indikator.map((i: any) => (
+                                                                <React.Fragment key={item.id}>
+                                                                    <tr>
                                                                         <td className="min-w-[100px] border px-2 py-3 border-black text-start">Indikator</td>
                                                                         <td className="min-w-[300px] border px-2 py-3 border-black text-start">{i.indikator}</td>
                                                                     </tr>
-                                                                ))}
-                                                            </React.Fragment>
+                                                                </React.Fragment>
+                                                            ))
                                                             :
                                                             <tr key={item.id}>
                                                                 <td className="min-w-[100px] border px-2 py-3 border-black text-start">Indikator</td>

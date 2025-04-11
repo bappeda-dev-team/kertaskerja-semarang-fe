@@ -3866,16 +3866,16 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Inovasi</span>
               </li>
             </Link>
-            <Link href="/laporancascadingopd">
-              <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanCascadingOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
-                <TbListDetails className="text-xl" />
-                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Cascading OPD</span>
-              </li>
-            </Link>
             <Link href="/laporanrenstra">
               <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanRenstra ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                 <TbFileAnalytics className="text-xl" />
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Matrix Renstra</span>
+              </li>
+            </Link>
+            <Link href="/laporancascadingopd">
+              <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanCascadingOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                <TbListDetails className="text-xl" />
+                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Cascading OPD</span>
               </li>
             </Link>
           </div>
