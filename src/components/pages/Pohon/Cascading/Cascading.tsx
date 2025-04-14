@@ -1,21 +1,23 @@
 'use client'
 
 import '@/components/pages/Pohon/treeflex.css'
-import { getOpdTahun } from '@/components/lib/Cookie';
 import React, { useState, useEffect, useRef } from 'react';
 import { TbEye, TbHandStop, TbPointer, TbPrinter } from 'react-icons/tb';
 import { LoadingBeat, LoadingButtonClip } from '@/components/global/Loading';
 import { OpdTahunNull, TahunNull } from '@/components/global/OpdTahunNull';
-import { FormPohonOpd } from '@/components/lib/Pohon/Opd/FormPohonOpd';
-import { getUser, getToken } from '@/components/lib/Cookie';
+import { getToken } from '@/components/lib/Cookie';
 import { PohonCascading } from '@/components/lib/Pohon/Cascading/PohonCascading';
 import { PohonLaporan } from '@/components/lib/Pohon/Cascading/PohonLaporan';
 import { ButtonBlackBorder, ButtonSky } from '@/components/global/Button';
 import html2canvas from 'html2canvas';
-import { AlertQuestion, AlertQuestion2 } from '@/components/global/Alert';
+import { AlertQuestion2 } from '@/components/global/Alert';
 
 interface cascading {
     jenis: 'laporan' | 'non-laporan';
+    tahun: string;
+    nama_opd?: string;
+    kode_opd: string;
+    user: string;
 }
 interface opd {
     kode_opd: string;
@@ -50,17 +52,13 @@ interface childs {
     childs: childs[];
 }
 
-const Cascading: React.FC<cascading> = ({ jenis }) => {
+const Cascading: React.FC<cascading> = ({ jenis, nama_opd, kode_opd, tahun, user }) => {
 
-    const [User, setUser] = useState<any>(null);
-    const [Tahun, setTahun] = useState<any>(null);
-    const [SelectedOpd, setSelectedOpd] = useState<any>(null);
     const [Pokin, setPokin] = useState<pokin | null>(null);
     const [Loading, setLoading] = useState<boolean | null>(null);
     const [error, setError] = useState<string>('');
     const token = getToken();
 
-    const [formList, setFormList] = useState<number[]>([]); // List of form IDs
     const [Deleted, setDeleted] = useState<boolean>(false);
     const [LoadingCetak, setLoadingCetak] = useState<boolean>(false);
 
@@ -73,28 +71,6 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
     const [scrollStart, setScrollStart] = useState({ x: 0, y: 0 });
     const [cursorMode, setCursorMode] = useState<"normal" | "hand">("normal");
     const containerRef = useRef<HTMLDivElement | null>(null);
-
-    useEffect(() => {
-        const fetchUser = getUser();
-        if (fetchUser) {
-            setUser(fetchUser.user);
-        }
-        const data = getOpdTahun();
-        if (data.tahun) {
-            const tahun = {
-                value: data.tahun.value,
-                label: data.tahun.label,
-            }
-            setTahun(tahun);
-        }
-        if (data.opd) {
-            const opd = {
-                value: data.opd.value,
-                label: data.opd.label,
-            }
-            setSelectedOpd(opd);
-        }
-    }, []);
 
     const handleDownloadPdf = async () => {
         if (!containerRef.current) return;
@@ -137,10 +113,10 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
             const link = document.createElement("a");
             link.href = imgData;
             link.download =
-                User?.roles == 'super_admin'
-                    ? `cascading_${SelectedOpd?.value ?? 'opd_undetected'}_${Tahun?.label ?? 'tahun_undetected'
+                user == 'super_admin'
+                    ? `cascading_${kode_opd ?? 'opd_undetected'}_${tahun ?? 'tahun_undetected'
                     }.png`
-                    : `cascading_${User?.kode_opd ?? 'opd_undetected'}_${Tahun?.label ?? 'tahun_undetected'
+                    : `cascading_${kode_opd ?? 'opd_undetected'}_${tahun ?? 'tahun_undetected'
                     }.png`;
             link.click();
         } catch (error) {
@@ -179,6 +155,11 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
     const handleMouseUp = () => setIsDragging(false);
 
     useEffect(() => {
+        console.log("kode opd: ", kode_opd);
+        console.log("user role: ", user);
+    }, [kode_opd, user]);
+
+    useEffect(() => {
         const fetchPokinOpd = async (url: string) => {
             const API_URL = process.env.NEXT_PUBLIC_API_URL;
             setLoading(true);
@@ -196,40 +177,40 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
                 const data = result.data || [];
                 setPokin(data);
             } catch (err) {
-                setError('gagal mendapatkan data, terdapat kesalahan backend/server saat mengambil data pohon kinerja perangkat daerah');
+                setError('gagal mendapatkan data, terdapat kesalahan backend/server saat mengambil data pohon kinerja cascading opd ini');
                 console.error(err);
             } finally {
                 setLoading(false);
             }
         }
         if (jenis === 'non-laporan') {
-            if (User?.roles == 'super_admin' || User?.roles == 'reviewer') {
-                if (SelectedOpd?.value != undefined && Tahun?.value != undefined) {
-                    fetchPokinOpd(`pohon_kinerja_opd/findall/${SelectedOpd?.value}/${Tahun?.value}`);
+            if (user == 'super_admin' || user == 'reviewer') {
+                if (kode_opd != undefined && tahun != undefined) {
+                    fetchPokinOpd(`pohon_kinerja_opd/findall/${kode_opd}/${tahun}`);
                 }
-            } else if (User?.roles != 'super_admin') {
-                if (User?.kode_opd != undefined && Tahun?.value != undefined) {
-                    fetchPokinOpd(`pohon_kinerja_opd/findall/${User?.kode_opd}/${Tahun?.value}`);
+            } else if (user !== 'super_admin') {
+                if (kode_opd != undefined && tahun != undefined) {
+                    fetchPokinOpd(`pohon_kinerja_opd/findall/${kode_opd}/${tahun}`);
                 }
             }
         } else {
-            if (User?.roles == 'super_admin' || User?.roles == 'reviewer') {
-                if (SelectedOpd?.value != undefined && Tahun?.value != undefined) {
-                    fetchPokinOpd(`cascading_opd/findall/${SelectedOpd?.value}/${Tahun?.value}`);
+            if (user == 'super_admin' || user == 'reviewer') {
+                if (kode_opd != undefined && tahun != undefined) {
+                    fetchPokinOpd(`cascading_opd/findall/${kode_opd}/${tahun}`);
                 }
-            } else if (User?.roles != 'super_admin') {
-                if (User?.kode_opd != undefined && Tahun?.value != undefined) {
-                    fetchPokinOpd(`cascading_opd/findall/${User?.kode_opd}/${Tahun?.value}`);
+            } else if (user !== 'super_admin') {
+                if (kode_opd != undefined && tahun != undefined) {
+                    fetchPokinOpd(`cascading_opd/findall/${kode_opd}/${tahun}`);
                 }
             }
         }
-    }, [User, SelectedOpd, Tahun, Deleted, jenis, token]);
+    }, [tahun, kode_opd, user, Deleted, jenis, token]);
 
     if (Loading) {
         return (
             <>
                 <div className="flex flex-col p-5 border-2 rounded-t-xl mt-2">
-                    <h1>Pohon Cascading {SelectedOpd?.label}</h1>
+                    <h1>Pohon Cascading</h1>
                 </div>
                 <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl">
                     <LoadingBeat />
@@ -249,12 +230,12 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
             </>
         )
     }
-    if (User?.roles == 'super_admin') {
-        if (SelectedOpd?.value == undefined || Tahun?.value == undefined) {
+    if (user == 'super_admin') {
+        if (kode_opd == undefined || tahun === undefined) {
             return (
                 <>
                     <div className="flex flex-col p-5 border-2 rounded-t-xl mt-2">
-                        <h1>Pohon Cascading {SelectedOpd?.label}</h1>
+                        <h1>Pohon Cascading {nama_opd}</h1>
                     </div>
                     <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl">
                         <OpdTahunNull />
@@ -263,12 +244,12 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
             )
         }
     }
-    if (User?.roles != 'super_admin') {
-        if (Tahun?.value == undefined) {
+    if (user != 'super_admin') {
+        if (tahun === undefined) {
             return (
                 <>
                     <div className="flex flex-col p-5 border-2 rounded-t-xl mt-2">
-                        <h1>Pohon Cascading {SelectedOpd?.label}</h1>
+                        <h1>Pohon Cascading</h1>
                     </div>
                     <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl">
                         <TahunNull />
@@ -281,8 +262,8 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
     return (
         <div>
             <div className="flex flex-col p-5 border-2 rounded-t-xl overflow-auto mt-2">
-                {User?.roles == 'super_admin' ?
-                    <h1 className="font-bold">Pohon Cascading {SelectedOpd?.label}</h1>
+                {user == 'super_admin' ?
+                    <h1 className="font-bold">Pohon Cascading {nama_opd}</h1>
                     :
                     <h1 className="font-bold">Pohon Cascading {Pokin?.nama_opd}</h1>
                 }
@@ -301,7 +282,7 @@ const Cascading: React.FC<cascading> = ({ jenis }) => {
                         <li>
                             <div className="tf-nc tf flex flex-col w-[600px] rounded-lg">
                                 <div className="header flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 border-black">
-                                    {(User?.roles == 'super_admin' || User?.roles == 'admin_opd') ?
+                                    {(user == 'super_admin' || user == 'admin_opd') ?
                                         <h1>Pohon Cascading</h1>
                                         :
                                         <h1>Pohon Cascading</h1>

@@ -1,6 +1,6 @@
 'use client'
 
-import { TableLaporan, TablePerencanaan } from '@/components/pages/rincianbelanja/Table';
+import { TableLaporan } from '@/components/pages/rincianbelanja/Table';
 import { FiHome } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import { getOpdTahun, getUser } from '@/components/lib/Cookie';
