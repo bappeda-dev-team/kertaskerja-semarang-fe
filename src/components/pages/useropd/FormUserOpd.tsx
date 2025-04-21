@@ -211,6 +211,7 @@ export const FormUserOpd = () => {
                                     textAlign: 'start',
                                     })
                                 }}
+                                filterOption={() => false}
                             />
                         </>
                         )}
