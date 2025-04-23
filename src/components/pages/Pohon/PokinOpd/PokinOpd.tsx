@@ -321,7 +321,7 @@ const PokinOpd = () => {
                 const result = await response.json();
                 const data = result.data.detail_level || [];
                 if (data.length !== 0) {
-                        console.log('strategic : ', data[0].jumlah_pemda, 'tactical : ', data[0].jumlah_pemda, 'operatiocal : ', data[0].jumlah_pemda);
+                        // console.log('strategic : ', data[0].jumlah_pemda, 'tactical : ', data[0].jumlah_pemda, 'operatiocal : ', data[0].jumlah_pemda);
                         setStrategicPemdaLenght(data[0].jumlah_pemda);
                         setTacticalPemdaLenght(data[1].jumlah_pemda);
                         setOperationalPemdaLenght(data[2].jumlah_pemda);
@@ -672,7 +672,9 @@ const PokinOpd = () => {
                                             isOpen={Clone}
                                             onClose={() => setClone(false)}
                                             jenis='opd'
+                                            tahun={Tahun?.value}
                                             nama_opd={SelectedOpd?.label}
+                                            kode_opd={SelectedOpd?.value}
                                             onSuccess={() => setTriggerAfterPokinOutside((prev) => !prev)}
                                         />
                                     </div>
