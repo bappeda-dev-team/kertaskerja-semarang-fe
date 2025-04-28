@@ -4677,14 +4677,14 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
                 </li>
               </Link>
             }
-            {(User?.roles == 'level_2' || User?.roles == 'level_3') &&
+            {/* {(User?.roles == 'level_2' || User?.roles == 'level_3') &&
               <Link href="/manajemenresiko">
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PerencanaanManajemenResiko ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                   <TbRefreshAlert className="text-xl" />
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Manajemen Resiko</span>
                 </li>
               </Link>
-            }
+            } */}
           </div>
 
 
@@ -4703,13 +4703,13 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
           {/* SUB MENU LAPORAN */}
           <div className={`transition-all duration-300 ease-in-out ${Laporan ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
             {/* LABEL LAPORAN USULAN */}
-            <li
+            {/* <li
               className="flex items-center gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl transition-all duration-300 ease-in-out"
               onClick={() => setLaporanUsulan(LaporanUsulan ? false : true)}
             >
               <TbApps className="text-xl" />
               <span className={`${!isOpen && 'hidden'} origin-left`}>Usulan</span>
-            </li>
+            </li> */}
             {/* subs menu LAPORAN USULAN */}
             <div className={`transition-all duration-300 ease-in-out ${LaporanUsulan ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
               <Link href="#">
