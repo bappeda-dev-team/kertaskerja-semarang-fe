@@ -239,10 +239,13 @@ const FormManualIk = () => {
                 },
                 body: JSON.stringify(formData),
             });
-            if (response.ok) {
+            const result = await response.json();
+            if (result.code === 200 || result.code === 201) {
                 AlertNotification("Berhasil", "Manual Indikator Kinerja berhasil disimpan", "success", 2000);
                 setSuccess((prev) => !prev);
                 router.push('/rencanakinerja');
+            } else {
+                console.log(result);
             }
         } catch (err) {
             AlertNotification("Gagal", "periksa koneksi internet / database server", "error", 2000);
