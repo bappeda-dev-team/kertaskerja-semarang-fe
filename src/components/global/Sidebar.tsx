@@ -4803,9 +4803,9 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               </li>
             </Link>
             <Link href="/laporanrincianbelanja">
-              <li className={`flex items-center gap-x-2 text-sm cursor-pointer p-2 rounded-xl ${LaporanRincianBelanja ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+              <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${LaporanRincianBelanja ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                 <TbDeviceImacDollar className="text-xl" />
-                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Laporan Rincian Belanja</span>
+                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rincian Belanja</span>
               </li>
             </Link>
             <Link href="/laporanrenstra">

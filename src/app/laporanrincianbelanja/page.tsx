@@ -55,11 +55,6 @@ const LaporanRincianBelanja = () => {
                 </div>
                 <div className="flex m-2">
                     {(User?.roles == 'super_admin' || User?.roles == 'reviewer' || User?.roles == 'admin_opd') ?
-                        (SelectedOpd?.value === undefined || Tahun?.value === undefined) ?
-                            <div className="w-full">
-                                <OpdTahunNull />
-                            </div>
-                            :
                             <TableLaporan
                                 role={User?.roles}
                                 tahun={Tahun?.value}
