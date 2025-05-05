@@ -116,7 +116,7 @@ export const TableLaporan: React.FC<TableLaporan> = ({ tahun, kode_opd, nama_opd
         } else {
             setError(true);
         }
-    }, [role, kode_opd, nip, tahun]);
+    }, [role, kode_opd, nip, tahun, token]);
 
     function formatRupiah(angka: number) {
         if (typeof angka !== 'number') {
@@ -183,7 +183,7 @@ export const TableLaporan: React.FC<TableLaporan> = ({ tahun, kode_opd, nama_opd
                         <tbody key={index}>
                             <tr className="bg-emerald-50 text">
                                 <td className="border-r border-b px-6 py-4">{index + 1}</td>
-                                <td colSpan={2} className="border-r border-b px-6 py-4">{data.nama_subkegiatan || "-"} ({data.kode_subkegiatan || "tanpa kode"})</td>
+                                <td colSpan={2} className="border-r border-b px-6 py-4">Sub Kegiatan: {data.nama_subkegiatan || "-"} ({data.kode_subkegiatan || "tanpa kode"})</td>
                                 {data.indikator_subkegiatan === null ?
                                     <React.Fragment>
                                         <td className="border-r border-b px-6 py-4 text-center">-</td>
