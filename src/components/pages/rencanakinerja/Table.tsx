@@ -7,7 +7,6 @@ import { TbCirclePlus, TbPencil, TbPencilDown, TbTrash } from "react-icons/tb";
 import { LoadingSync } from "@/components/global/Loading";
 import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 import { ModalRencanaKinerja } from "./ModalRencanaKinerja";
-import { set } from "react-hook-form";
 
 interface type_rekin {
     id_rencana_kinerja: string;

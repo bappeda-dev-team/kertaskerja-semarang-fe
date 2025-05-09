@@ -101,7 +101,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
     const [catatan, setCatatan] = useState<string>('');
     const [statusRekin, setStatusRekin] = useState<OptionTypeString | null>(null);
     const [PokinOption, setPokinOption] = useState<pohon[]>([]);
-    
+
     const [Sasaran, setSasaran] = useState<SasaranOpd | null>(null);
     const [SasaranOption, setSasaranOption] = useState<SasaranOpd[]>([]);
 
@@ -232,7 +232,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
                         }
                         setStatusRekin(status);
                     }
-                    if(data.sasaran_opd_id){
+                    if (data.sasaran_opd_id) {
                         const sasaran = {
                             id: data.sasaran_opd_id,
                             nama_sasaran_opd: data.nama_pohon,
@@ -308,7 +308,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
             }
         };
         if (isOpen && metode === "lama") {
-            if(roles == 'level_1'){
+            if (roles == 'level_1') {
                 fetchIdLevel1();
             } else {
                 fetchIdLevel3();
@@ -390,7 +390,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
             if (result.code === 200) {
                 const sasaran = data.map((s: SasaranOpd) => ({
                     value: s.id,
-                    label: s.nama_sasaran_opd,
+                    label: `${s.nama_sasaran_opd} - (${s.tahun_awal} - ${s.tahun_akhir})`,
                     id: s.id,
                     nama_sasaran_opd: s.nama_sasaran_opd,
                     tahun_awal: s.tahun_awal,
@@ -419,6 +419,17 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
             setIsLoading(false);
         }
     }
+
+    const formatOptionLabel = (option: any) => (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ color: 'black', marginRight: '5px' }}>
+                {option.nama_sasaran_opd}
+            </span>
+            <span style={{ color: 'grey' }}>
+                ({option.tahun_awal} - {option.tahun_akhir})
+            </span>
+        </div>
+    );
 
     const statusOption: OptionTypeString[] = [
         { label: "aktif", value: "aktif" },
@@ -481,7 +492,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
             if (metode === "baru") return formDataNew;
             return {}; // Default jika metode tidak sesuai
         };
-        if(roles == 'level_1' && !Sasaran){
+        if (roles == 'level_1' && !Sasaran) {
             AlertNotification('Sasaran OPD', 'Sasaran OPD wajib di pilih', 'warning', 2000);
         }
         else if (Rekin === '') {
@@ -689,6 +700,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
                                                 isLoading={IsLoading}
                                                 isSearchable
                                                 isClearable
+                                                formatOptionLabel={formatOptionLabel}
                                                 noOptionsMessage={() => "Sasaran OPD belum di tambahkan di pohon ini"}
                                                 onMenuOpen={() => {
                                                     if (Pokin?.value != undefined) {
@@ -834,42 +846,42 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
                                     )}
                                 />
                                 {roles == 'level_1' &&
-                                <React.Fragment>
-                                    <Controller
-                                        name={`indikator.${index}.rumus_perhitungan`}
-                                        control={control}
-                                        defaultValue={field.rumus_perhitungan}
-                                        render={({ field }) => (
-                                            <div className="flex flex-col py-3">
-                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
-                                                    Rumus Perhitungan ke - {index + 1} :
-                                                </label>
-                                                <input
-                                                    {...field}
-                                                    className="border px-4 py-2 rounded-lg"
-                                                    placeholder={`Masukkan Rumus Perhitungan`}
-                                                />
-                                            </div>
-                                        )}
-                                    />
-                                    <Controller
-                                        name={`indikator.${index}.sumber_data`}
-                                        control={control}
-                                        defaultValue={field.sumber_data}
-                                        render={({ field }) => (
-                                            <div className="flex flex-col py-3">
-                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
-                                                    Sumber Data ke - {index + 1} :
-                                                </label>
-                                                <input
-                                                    {...field}
-                                                    className="border px-4 py-2 rounded-lg"
-                                                    placeholder={`Masukkan Sumber Data`}
-                                                />
-                                            </div>
-                                        )}
-                                    />
-                                </React.Fragment>
+                                    <React.Fragment>
+                                        <Controller
+                                            name={`indikator.${index}.rumus_perhitungan`}
+                                            control={control}
+                                            defaultValue={field.rumus_perhitungan}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col py-3">
+                                                    <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                        Rumus Perhitungan ke - {index + 1} :
+                                                    </label>
+                                                    <input
+                                                        {...field}
+                                                        className="border px-4 py-2 rounded-lg"
+                                                        placeholder={`Masukkan Rumus Perhitungan`}
+                                                    />
+                                                </div>
+                                            )}
+                                        />
+                                        <Controller
+                                            name={`indikator.${index}.sumber_data`}
+                                            control={control}
+                                            defaultValue={field.sumber_data}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col py-3">
+                                                    <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                        Sumber Data ke - {index + 1} :
+                                                    </label>
+                                                    <input
+                                                        {...field}
+                                                        className="border px-4 py-2 rounded-lg"
+                                                        placeholder={`Masukkan Sumber Data`}
+                                                    />
+                                                </div>
+                                            )}
+                                        />
+                                    </React.Fragment>
                                 }
                                 {field.targets.map((_, subindex) => (
                                     <React.Fragment key={subindex}>
