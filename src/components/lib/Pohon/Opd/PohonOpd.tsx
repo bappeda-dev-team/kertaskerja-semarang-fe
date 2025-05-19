@@ -2266,7 +2266,7 @@ export const TablePohonEdited = (props: any) => {
         <div className='flex flex-col w-full'>
             <table className='w-full'>
                 <tbody>
-                    {status === 'crosscutting_disetujui' &&
+                    {(status === 'crosscutting_disetujui' || status === 'crosscutting_disetujui_existing') &&
                         <tr>
                             <td
                                 className={`min-w-[100px] border px-2 py-1 text-start rounded-l-lg ${status === 'crosscutting_disetujui' && 'border-yellow-700'} bg-slate-200
