@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TbDeviceFloppy, TbX } from "react-icons/tb";
 import { Controller, SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { ButtonSky, ButtonRed } from '@/components/global/Button';
@@ -191,7 +191,7 @@ export const ModalRenaksiOpd: React.FC<modal> = ({ isOpen, onClose, onSuccess, m
                             >
                                 Rencana Kinerja OPD
                             </label>
-                            <div className="border px-4 py-2 rounded-lg">{rekin || "-"}</div>
+                            <div className="border px-4 py-2 rounded-lg bg-gray-200">{rekin || "-"}</div>
                         </div>
                         {indikator.length != 0 ?
                             indikator.map((i: indikator, index_indikator: number) => (
@@ -203,10 +203,10 @@ export const ModalRenaksiOpd: React.FC<modal> = ({ isOpen, onClose, onSuccess, m
                                         >
                                             indikator ke {index_indikator + 1}
                                         </label>
-                                        <div className="border px-4 py-2 rounded-lg">{i.indikator}</div>
+                                        <div className="border px-4 py-2 rounded-lg bg-gray-200">{i.indikator || "-"}</div>
                                         <div className="flex flex-wrap w-full gap-2 pt-2">
-                                            <div className="border px-4 py-2 rounded-lg">{i.target.target || "-"}</div>
-                                            <div className="border px-4 py-2 rounded-lg">{i.target.satuan || "-"}</div>
+                                            <div className="border px-4 py-2 rounded-lg bg-gray-200">{i.target.target || "-"}</div>
+                                            <div className="border px-4 py-2 rounded-lg bg-gray-200">{i.target.satuan || "-"}</div>
                                         </div>
                                     </div>
                                 </React.Fragment>
