@@ -199,7 +199,6 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
             if (result.code === 200) {
                 AlertNotification("Berhasil", "Data Pohon Berhasil Dihapus", "success", 1000);
                 setDeleted(true);
-                deleteTrigger();
             } else {
                 AlertNotification("Gagal", `${result.data || "terdapat kesalahan backend"}`, "error", 2000);
             }
@@ -222,7 +221,6 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
             if (result.code === 200) {
                 AlertNotification("Berhasil", "Data Pohon Berhasil Dihapus", "success", 1000);
                 setDeleted(true);
-                deleteTrigger();
             } else {
                 AlertNotification("Gagal", `${result.data || "terdapat kesalahan backend"}`, "error", 2000);
             }

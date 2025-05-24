@@ -87,7 +87,7 @@ const PohonTematik = ({ id, show_all, set_show_all }: pohontematik) => {
         if (id != undefined) {
             fetchTematikKab();
         }
-    }, [id, token]);
+    }, [id, token, Deleted]);
 
     if (error) {
         return (

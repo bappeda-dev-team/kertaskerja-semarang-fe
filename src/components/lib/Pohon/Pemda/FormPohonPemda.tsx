@@ -9,6 +9,7 @@ import Select from 'react-select';
 import { Pohon } from './Pohon';
 import { getToken } from '../../Cookie';
 import { LoadingButtonClip, LoadingSync } from '@/components/global/Loading';
+import { TbCheck } from 'react-icons/tb';
 
 interface OptionTypeString {
     value: string;
@@ -548,6 +549,8 @@ export const FormAmbilPohon: React.FC<{
     } = useForm<FormValue>();
     const [KodeOpd, setKodeOpd] = useState<OptionTypeString | null>(null);
     const [PohonOpd, setPohonOpd] = useState<OptionType | null>(null);
+    const [Turunan, setTurunan] = useState<boolean>(false);
+
     const [Tahun, setTahun] = useState<any>(null);
     const [SelectedOpd, setSelectedOpd] = useState<any>(null);
     const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
@@ -645,15 +648,20 @@ export const FormAmbilPohon: React.FC<{
             setIsLoading(false);
         }
     };
+    const handleTurunan = () => {
+        if(Turunan){
+            setTurunan(false);
+        } else {
+            setTurunan(true);
+        }
+    }
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formData = {
             //key : value
             id: data.pohon?.value,
-            jenis_pohon: (level === 0 || level === 1 || level === 2 || level === 3) ? "Strategic" :
-                level === 4 ? "Tactical" :
-                    level === 5 ? "Operational" : "Unknown",
+            turunan: Turunan,
             parent: id,
         };
         // console.log(formData);
@@ -667,14 +675,15 @@ export const FormAmbilPohon: React.FC<{
                 },
                 body: JSON.stringify(formData),
             });
-            if (response.ok) {
+            const result = await response.json();
+            if (result.code === 200 || result.code === 201) {
                 AlertNotification("Berhasil", "Berhasil menambahkan pohon", "success", 1000);
                 setIsAdded(true);
-                const result = await response.json();
                 const data = result.data;
                 setDataAdd(data);
+                console.log(result);
             } else {
-                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+                AlertNotification("Gagal", `${result.data}`, "error", 2000);
             }
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
@@ -811,6 +820,27 @@ export const FormAmbilPohon: React.FC<{
                                             </>
                                         )}
                                     />
+                                </div>
+                                <div className="flex flex-col items-center justify-center">
+                                    <div className="flex items-center justify-center gap-3 py-3">
+                                        {Turunan ?
+                                            <button
+                                                type="button"
+                                                onClick={handleTurunan}
+                                                className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                            >
+                                                <TbCheck />
+                                            </button>
+                                            :
+                                            <button
+                                                type="button"
+                                                onClick={handleTurunan}
+                                                className="w-[20px] h-[20px] border border-black rounded-full"
+                                            ></button>
+                                        }
+                                        <p onClick={handleTurunan} className={`cursor-pointer ${Turunan && 'text-emerald-500'}`}>Turunan</p>
+                                    </div>
+                                    <h1 className="text-slate-400 text-xs">*Jika di centang, turunan pohon tersebut akan ikut terambil</h1>
                                 </div>
                                 <ButtonSky type="submit" className="w-full my-3" disabled={Proses}>
                                     {Proses ?
