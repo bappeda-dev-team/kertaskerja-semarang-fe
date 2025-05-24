@@ -300,7 +300,6 @@ const PokinOpd = () => {
                 console.error(err);
             } finally {
                 setLoadingTotalPending(false);
-                console.log('fetch pemda pending dilakukan')
             }
             //FETCH STATUS POHON PEMDA
             try {
@@ -330,7 +329,6 @@ const PokinOpd = () => {
                 console.error(err);
             } finally {
                 setLoadingTotalPemda(false);
-                console.log('fetch pemda diterima dilakukan')
             }
             //FETCH STATUS POHON CROSSCUTTING
             try {
@@ -358,7 +356,6 @@ const PokinOpd = () => {
                 console.error(err);
             } finally {
                 setLoadingTotalCrosscutting(false);
-                console.log('fetch cross dilakukan')
             }
         }
         fetchControlPokin();
