@@ -13,7 +13,7 @@ import { ModalPohonPemda, ModalPohonCrosscutting } from './ModalPohonPemda';
 import { ModalTujuanOpd } from '../../tujuanopd/ModalTujuanOpd';
 import { ModalClone } from '../ModalClone';
 import html2canvas from 'html2canvas';
-import { AlertQuestion2 } from '@/components/global/Alert';
+import { AlertNotification, AlertQuestion2 } from '@/components/global/Alert';
 
 interface OptionType {
     value: number;
@@ -727,13 +727,14 @@ const PokinOpd = () => {
                                         <ButtonSky
                                             className='flex flex-wrap items-center justify-center gap-1'
                                             onClick={() => {
-                                                setShowAllDetail(true);
-                                                AlertQuestion2("Sembunyikan Sidebar untuk hasil cetak penuh", "", "warning", "Cetak", "Batal").then((result) => {
-                                                    if (result.isConfirmed) {
-                                                        handleDownloadPdf();
-                                                        console.log(containerRef.current);
-                                                    }
-                                                })
+                                                AlertNotification("Dalam Perbaikan", "Cetak Per Pohon langsung di Strategic, Tactical atau Operational", "info", 2000);
+                                                // setShowAllDetail(true);
+                                                // AlertQuestion2("Sembunyikan Sidebar untuk hasil cetak penuh", "", "warning", "Cetak", "Batal").then((result) => {
+                                                //     if (result.isConfirmed) {
+                                                //         handleDownloadPdf();
+                                                //         console.log(containerRef.current);
+                                                //     }
+                                                // })
                                             }}
                                         >
                                             <TbPrinter className='mr-1' />
