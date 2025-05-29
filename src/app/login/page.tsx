@@ -8,6 +8,7 @@ import { TbEye, TbEyeClosed } from "react-icons/tb";
 import { ButtonSky } from "@/components/global/Button";
 import { LoadingButtonClip } from "@/components/global/Loading";
 import { login } from "@/components/lib/Cookie";
+import { useBrandingContext } from "@/context/BrandingContext";
 
 interface FormValues {
   username: string;
@@ -20,6 +21,8 @@ const LoginPage = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [Proses, setProses] = useState<boolean>(false);
     const router = useRouter();
+
+    const { branding } = useBrandingContext();
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
         //   console.log(data.username, data.password);
@@ -48,8 +51,8 @@ const LoginPage = () => {
                         width={90}
                         height={90} 
                     />
-                    <h1 className="text-2xl font-bold mt-3 text-center">KINERJA PEMBANGUNAN DAERAH</h1>
-                    <h1 className="text-lg font-thin mb-6 text-center">Kabupaten Madiun</h1>
+                    <h1 className="text-2xl font-bold mt-3 text-center uppercase">{branding.title}</h1>
+                    <h1 className="text-lg font-thin mb-6 text-center">{branding.client}</h1>
                 </div>
                 {/* NIP */}
                 <div className="mb-4">

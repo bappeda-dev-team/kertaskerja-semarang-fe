@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { getUser } from "@/components/lib/Cookie";
 import NextTopLoader from "nextjs-toploader";
+import { BrandingProvider } from "@/context/BrandingContext";
 
 const font = Poppins({
   subsets: ['latin'],
@@ -67,10 +68,12 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
           />
         </head>
         <body>
-          <NextTopLoader 
-            color="linear-gradient(to right, rgb(134, 239, 172), rgb(59, 130, 246), rgb(147, 51, 234))"
-          />
-          <div className={`${font.className}`}>{children}</div>
+          <BrandingProvider>
+            <NextTopLoader 
+              color="linear-gradient(to right, rgb(134, 239, 172), rgb(59, 130, 246), rgb(147, 51, 234))"
+            />
+            <div className={`${font.className}`}>{children}</div>
+          </BrandingProvider>
         </body>
       </html>
     );
@@ -88,14 +91,16 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
         />
       </head>
       <body className="flex">
-        <NextTopLoader 
-          color="linear-gradient(to right, rgb(134, 239, 172), rgb(59, 130, 246), rgb(147, 51, 234))"
-        />
-        {!loginPage && <Sidebar isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>}
-        <div className={`w-full ${isOpen ? 'pl-[16rem]' : ''}`}>
-          {!loginPage && <Header />}
-          <div className={`${font.className} ${loginPage ? "" : "px-4 py-2"}`}>{children}</div>
-        </div>
+        <BrandingProvider>
+          <NextTopLoader 
+            color="linear-gradient(to right, rgb(134, 239, 172), rgb(59, 130, 246), rgb(147, 51, 234))"
+          />
+          {!loginPage && <Sidebar isOpen={isOpen} toggleSidebar={() => toggleSidebar()} isZoomed={isZoomed}/>}
+          <div className={`w-full ${isOpen ? 'pl-[16rem]' : ''}`}>
+            {!loginPage && <Header />}
+            <div className={`${font.className} ${loginPage ? "" : "px-4 py-2"}`}>{children}</div>
+          </div>
+        </BrandingProvider>
       </body>
     </html>
   );

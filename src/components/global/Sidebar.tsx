@@ -21,6 +21,7 @@ import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
 import "@/app/globals.css";
 import { logout, getUser } from '../lib/Cookie';
+import { BrandingProvider, useBrandingContext } from '@/context/BrandingContext';
 
 interface SidebarProps {
   isOpen: boolean | null;
@@ -34,6 +35,8 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
   const [User, setUser] = useState<any>(null);
   const { id } = useParams();
   const url = usePathname();
+
+  const { branding } = useBrandingContext();
 
   //state menu, submenu, subsmenu
   const [Dashboard, setDashboard] = useState<boolean | null>(null);
@@ -4340,10 +4343,10 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
         {/* header sidebar */}
         <div className="flex gap-x-4 items-center">
           <div className={`flex flex-wrap justify-center text-white text-center text-lg ${!isOpen && 'scale-0'} duration-300`}>
-            <h2 className='font-bold'>
-              KINERJA PEMBANGUNAN DAERAH
+            <h2 className='font-bold uppercase'>
+              {branding.title}
             </h2>
-            <h3 className='font-thin text-lg'>Kabupaten Madiun</h3>
+            <h3 className='font-thin text-lg'>{branding.client}</h3>
           </div>
         </div>
 
