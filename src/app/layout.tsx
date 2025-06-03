@@ -23,6 +23,8 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
   const pathname = usePathname();
   const loginPage = pathname === "/login"
 
+  const logo = process.env.NEXT_PUBLIC_LOGO_URL;
+
   const checkZoomLevel = () => {
     const zoomLevel = window.devicePixelRatio;
     if (zoomLevel >= 1.5) {
@@ -63,7 +65,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
           <meta name="description" content="Aplikasi Kinerja Pembangunan Daerah Pemda" />
           <link 
             rel="icon" 
-            href="/logo.png" 
+            href={logo} 
             // href="/universal.png" 
           />
         </head>
@@ -86,7 +88,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
         <meta name="description" content="Aplikasi KAK" />
         <link 
           rel="icon" 
-          href="/logo.png" 
+          href={logo} 
           // href="/universal.png" 
         />
       </head>
