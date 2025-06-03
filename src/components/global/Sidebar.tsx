@@ -4324,7 +4324,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
         <div className="flex items-center justify-center">
           <Image
             className="mb-3 transition-all duration-300 ease-in-out"
-            src="/logo.png"
+            src={branding.logo}
             // src="/universal.png"
             alt="logo"
             width={!isZoomed ? 80 : 80}

@@ -45,7 +45,7 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-8 rounded-lg shadow-md w-96">
                 <div className="flex flex-col items-center">
                     <Image 
-                        src="/logo.png"
+                        src={branding.logo}
                         // src="/universal.png"
                         alt="logo" 
                         width={90}
