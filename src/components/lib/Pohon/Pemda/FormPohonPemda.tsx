@@ -229,6 +229,7 @@ export const FormPohonPemda: React.FC<{
                     tema={DataAdd}
                     deleteTrigger={() => setDeleted((prev) => !prev)}
                     set_show_all={() => null}
+                    idForm={formId}
                 />
                 :
                 <li>

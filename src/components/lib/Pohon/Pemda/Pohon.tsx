@@ -15,6 +15,7 @@ interface pohon {
     user?: string;
     show_all?: boolean;
     tahun?: string;
+    idForm?: number;
     set_show_all: () => void;
 }
 
@@ -26,12 +27,13 @@ interface Review {
     nama_pegawai: string;
 }
 
-export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_all, set_show_all }) => {
+export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_all, set_show_all, idForm }) => {
 
     const [childPohons, setChildPohons] = useState(tema.childs || []);
     const [PutPohons, setPutPohons] = useState(tema.childs || []);
     const [formList, setFormList] = useState<number[]>([]); // List of form IDs
     const [PutList, setPutList] = useState<number[]>([]); // List of form IDs
+    const [PutListStrategic, setPutListStrategic] = useState<number[]>([]); // List of form IDs
     const [FormStrategic, setFormStrategic] = useState<number[]>([]); // List of form IDs
     const [strategicPohons, setStrategicPohons] = useState(tema.strategics || []);
     const [edit, setEdit] = useState<boolean>(false);
@@ -63,7 +65,7 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
         setPutList([...PutList, Date.now()]); // Using unique IDs
     };
     const newStrategic = () => {
-        setFormStrategic([...PutList, Date.now()]); // Using unique IDs
+        setFormStrategic([...FormStrategic, Date.now()]); // Using unique IDs
     };
     const handleEditSuccess = (data: any) => {
         setEdited(data);
@@ -423,10 +425,10 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
                                     {/* BUTTON REVIEW */}
                                     <div
                                         className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white border-black hide-on-capture
-                            ${tema.jenis_pohon === "Strategic" && 'border-white'}
-                            ${tema.jenis_pohon === "Tactical" && 'border-white'}
-                            ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-white'}
-                        `}
+                                            ${tema.jenis_pohon === "Strategic" && 'border-white'}
+                                            ${tema.jenis_pohon === "Tactical" && 'border-white'}
+                                            ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-white'}
+                                        `}
                                     >
                                         <ButtonSkyBorder onClick={handleNewReview}>
                                             <TbBookmarkPlus className="mr-1" />
@@ -631,6 +633,7 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
                                     />
                                 </React.Fragment>
                             ))}
+                            {/* FORM POHON */}
                             {formList.map((formId: number) => (
                                 <React.Fragment key={formId}>
                                     <FormPohonPemda
@@ -643,15 +646,16 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
                                     />
                                 </React.Fragment>
                             ))}
-                            {FormStrategic.map((formId: number) => (
-                                <React.Fragment key={formId}>
+                            {/* FORM STRATEGIC */}
+                            {FormStrategic.map((formIdStrategic: number) => (
+                                <React.Fragment key={formIdStrategic}>
                                     <FormPohonPemda
                                         level={3}
                                         id={tema.id}
-                                        key={formId}
-                                        formId={formId}
+                                        key={formIdStrategic}
+                                        formId={formIdStrategic}
                                         pokin={'pemda'}
-                                        onCancel={() => setFormStrategic(FormStrategic.filter((id) => id !== formId))}
+                                        onCancel={() => setFormStrategic(FormStrategic.filter((id) => id !== formIdStrategic))}
                                     />
                                 </React.Fragment>
                             ))}
