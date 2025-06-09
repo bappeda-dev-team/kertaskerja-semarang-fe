@@ -110,7 +110,8 @@ export const TablePermasalahan: React.FC<Table> = ({ kode_opd, tahun }) => {
 
                             let calculatedTotalRow2;
 
-                            if (p.childs.length === 0) {
+                            // if (p.childs.length === 0) {
+                            if (!p.childs) {
                                 calculatedTotalRow2 = 1; // Hanya baris p sendiri jika tidak ada anak taktis
                             } else {
                                 calculatedTotalRow2 = p.childs.reduce((accumulator, t_element) => {
