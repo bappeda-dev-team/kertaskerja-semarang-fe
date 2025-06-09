@@ -207,7 +207,7 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[50px] text-center">No</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Tema</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Tujuan Pemda</th>
-                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Visi / Misi</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Visi</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Rumus Perhitungan</th>
@@ -254,6 +254,7 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
                                                                 <button
                                                                     className="flex justify-between gap-1 rounded-full p-1 bg-red-500 text-white cursor-not-allowed"
                                                                     onClick={() => handleModalNewTujuan(data.pokin_id)}
+                                                                    disabled
                                                                 >
                                                                     <div className="flex gap-1">
                                                                         <TbX />
@@ -286,7 +287,9 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
                                                             {item.tujuan_pemda || "-"}
                                                         </td>
                                                         <td className="border-x border-b border-emerald-500 px-6 py-6 h-[150px]" rowSpan={item.indikator !== null ? item.indikator.length + 1 : 2}>
-                                                            {item.visi || "-"} / {item.misi || "-"}
+                                                            {item.visi || "-"}
+                                                            {/* /
+                                                            {item.misi || "-"} */}
                                                         </td>
                                                         <td className="border-x border-b border-emerald-500 px-6 py-6" rowSpan={item.indikator !== null ? item.indikator.length + 1 : 2}>
                                                             <div className="flex flex-col justify-center items-center gap-2">

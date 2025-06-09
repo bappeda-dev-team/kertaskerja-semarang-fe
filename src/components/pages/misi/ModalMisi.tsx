@@ -288,7 +288,7 @@ export const ModalMisi: React.FC<modal> = ({ isOpen, onClose, id, metode, tahun,
                                         {...field}
                                         className="border px-4 py-2 rounded-lg"
                                         id="misi"
-                                        placeholder="Masukkan Visi"
+                                        placeholder="Masukkan Misi"
                                         value={Misi}
                                         onChange={(e) => {
                                             field.onChange(e);

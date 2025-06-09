@@ -5,6 +5,7 @@ import { FiHome } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import { getOpdTahun, getUser } from '@/components/lib/Cookie';
 import Maintenance from '@/components/global/Maintenance';
+import { OpdTahunNull, TahunNull } from '@/components/global/OpdTahunNull';
 
 const PermasalahanaOpd = () => {
 
@@ -15,18 +16,18 @@ const PermasalahanaOpd = () => {
     useEffect(() => {
         const data = getOpdTahun();
         const fetchUser = getUser();
-        if(fetchUser){
+        if (fetchUser) {
             setUser(fetchUser.user);
         }
-        if(data){
-            if(data.tahun){
+        if (data) {
+            if (data.tahun) {
                 const tahun_value = {
                     value: data.tahun.value,
                     label: data.tahun.label,
                 }
                 setTahun(tahun_value);
             }
-            if(data.opd){
+            if (data.opd) {
                 const opd_value = {
                     value: data.opd.value,
                     label: data.opd.label,
@@ -34,9 +35,30 @@ const PermasalahanaOpd = () => {
                 setSelectedOpd(opd_value);
             }
         }
-    },[]);
+    }, []);
 
-    return(
+    if (User?.roles == 'super_admin' || User?.roles == 'reviewer') {
+        if (SelectedOpd?.value == undefined || Tahun?.value == undefined) {
+            return (
+                <>
+                    <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl">
+                        <OpdTahunNull />
+                    </div>
+                </>
+            )
+        }
+    }
+    if (Tahun?.value == undefined) {
+        return (
+            <>
+                <div className="flex flex-col p-5 border-b-2 border-x-2 rounded-b-xl">
+                    <TahunNull />
+                </div>
+            </>
+        )
+    }
+
+    return (
         <>
             <div className="flex items-center">
                 <a href="/" className="mr-1"><FiHome /></a>
@@ -52,7 +74,7 @@ const PermasalahanaOpd = () => {
                     </div>
                 </div>
                 <div className="m-3">
-                    <TablePermasalahan 
+                    <TablePermasalahan
                         tahun={Tahun?.value}
                         kode_opd={(User?.roles == 'super_admin' || User?.roles == 'reviewer') ? SelectedOpd?.value : User?.kode_opd}
                     />
