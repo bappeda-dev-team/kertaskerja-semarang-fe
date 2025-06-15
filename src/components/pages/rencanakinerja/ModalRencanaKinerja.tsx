@@ -98,6 +98,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
     const [Rekin, setRekin] = useState<string>('');
     const [PreviewPohon, setPreviewPohon] = useState<boolean>(false);
     const [Pokin, setPokin] = useState<pohon | null>(null);
+    const [DetailPokin, setDetailPokin] = useState<pohon | null>(null);
     const [catatan, setCatatan] = useState<string>('');
     const [statusRekin, setStatusRekin] = useState<OptionTypeString | null>(null);
     const [PokinOption, setPokinOption] = useState<pohon[]>([]);
@@ -171,6 +172,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
                             indikator: []
                         }
                         setPokin(detail);
+                        setDetailPokin(detail);
                     }
 
                     reset({
@@ -366,9 +368,9 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
             const result = await response.json();
             const data = result.data;
             if (data) {
-                setPokin(data);
+                setDetailPokin(data);
             } else {
-                setPokin(null);
+                setDetailPokin(null);
             }
         } catch (err) {
             console.log('gagal mendapatkan detail pohon, terdapat kesalahan backend server / koneksi internet');
@@ -594,6 +596,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
                                                 setPokin(option);
                                                 if (option) {
                                                     setRekin(option?.nama_pohon);
+                                                    setPreviewPohon(false);
                                                 }
                                             }}
                                             styles={{
@@ -619,12 +622,8 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
                                 <div className="flex">
                                     <ButtonGreenBorder className="mb-2" type="button"
                                         onClick={() => {
-                                            if (metode === 'baru') {
-                                                setPreviewPohon((prev) => !prev);
-                                            } else {
                                                 fetchDetailPohon(Pokin?.value);
                                                 setPreviewPohon((prev) => !prev);
-                                            }
                                         }}
                                     >
                                         {PreviewPohon ?
@@ -643,32 +642,32 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
                                     <div className="flex flex-col w-full justify-center items-center">
                                         <div
                                             className={`flex flex-col rounded-lg shadow-lg px-2
-                                            ${Pokin?.jenis_pohon === "Strategic Pemda" && 'border'}
-                                            ${Pokin?.jenis_pohon === "Tactical Pemda" && 'border'}
-                                            ${Pokin?.jenis_pohon === "OperationalPemda" && 'border'}
-                                            ${Pokin?.jenis_pohon === "Strategic" && 'bg-red-700'}
-                                            ${Pokin?.jenis_pohon === "Tactical" && 'bg-blue-500'}
-                                            ${Pokin?.jenis_pohon === "Operational" && 'bg-green-500'}
-                                            ${Pokin?.jenis_pohon === "Operational N" && 'bg-white'}
-                                            ${(Pokin?.jenis_pohon === "Strategic Crosscutting" || Pokin?.jenis_pohon === "Tactical Crosscutting" || Pokin?.jenis_pohon === "Operational Crosscutting" || Pokin?.jenis_pohon === "Operational N Crosscutting") && 'bg-yellow-700'}
-                                        `}
+                                                ${DetailPokin?.jenis_pohon === "Strategic Pemda" && 'border'}
+                                                ${DetailPokin?.jenis_pohon === "Tactical Pemda" && 'border'}
+                                                ${DetailPokin?.jenis_pohon === "OperationalPemda" && 'border'}
+                                                ${DetailPokin?.jenis_pohon === "Strategic" && 'bg-red-700'}
+                                                ${DetailPokin?.jenis_pohon === "Tactical" && 'bg-blue-500'}
+                                                ${DetailPokin?.jenis_pohon === "Operational" && 'bg-green-500'}
+                                                ${DetailPokin?.jenis_pohon === "Operational N" && 'bg-white'}
+                                                ${(DetailPokin?.jenis_pohon === "Strategic Crosscutting" || DetailPokin?.jenis_pohon === "Tactical Crosscutting" || DetailPokin?.jenis_pohon === "Operational Crosscutting" || DetailPokin?.jenis_pohon === "Operational N Crosscutting") && 'bg-yellow-700'}
+                                            `}
                                         >
                                             <div
                                                 className={`flex py-3 justify-center font-bold text-sm uppercase border my-3 rounded-lg bg-white
-                                                ${Pokin?.jenis_pohon === "Strategic Pemda" && 'border-red-500 text-white bg-gradient-to-r from-[#CA3636] from-40% to-[#BD04A1]'}
-                                                ${Pokin?.jenis_pohon === "Tactical Pemda" && 'border-blue-500 text-white bg-gradient-to-r from-[#3673CA] from-40% to-[#08D2FB]'}
-                                                ${Pokin?.jenis_pohon === "Operational Pemda" && 'border-green-500 text-white bg-gradient-to-r from-[#007982] from-40% to-[#2DCB06]'}
-                                                ${(Pokin?.jenis_pohon === "Strategic" || Pokin?.jenis_pohon === 'Strategic Crosscutting') && 'border-red-500 text-red-500'}
-                                                ${(Pokin?.jenis_pohon === "Tactical" || Pokin?.jenis_pohon === 'Tactical Crosscutting') && 'border-blue-500 text-blue-500'}
-                                                ${(Pokin?.jenis_pohon === "Operational" || Pokin?.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
-                                                ${(Pokin?.jenis_pohon === "Operational Crosscutting" || Pokin?.jenis_pohon === "Operational N Crosscutting") && 'border-green-500 text-green-500'}
-                                            `}
+                                                    ${DetailPokin?.jenis_pohon === "Strategic Pemda" && 'border-red-500 text-white bg-gradient-to-r from-[#CA3636] from-40% to-[#BD04A1]'}
+                                                    ${DetailPokin?.jenis_pohon === "Tactical Pemda" && 'border-blue-500 text-white bg-gradient-to-r from-[#3673CA] from-40% to-[#08D2FB]'}
+                                                    ${DetailPokin?.jenis_pohon === "Operational Pemda" && 'border-green-500 text-white bg-gradient-to-r from-[#007982] from-40% to-[#2DCB06]'}
+                                                    ${(DetailPokin?.jenis_pohon === "Strategic" || DetailPokin?.jenis_pohon === 'Strategic Crosscutting') && 'border-red-500 text-red-500'}
+                                                    ${(DetailPokin?.jenis_pohon === "Tactical" || DetailPokin?.jenis_pohon === 'Tactical Crosscutting') && 'border-blue-500 text-blue-500'}
+                                                    ${(DetailPokin?.jenis_pohon === "Operational" || DetailPokin?.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
+                                                    ${(DetailPokin?.jenis_pohon === "Operational Crosscutting" || DetailPokin?.jenis_pohon === "Operational N Crosscutting") && 'border-green-500 text-green-500'}
+                                                `}
                                             >
-                                                {Pokin?.jenis_pohon}
+                                                {DetailPokin?.jenis_pohon}
                                             </div>
                                             <div className="mb-3">
-                                                {Pokin &&
-                                                    <TablePohon item={Pokin} />
+                                                {DetailPokin &&
+                                                    <TablePohon item={DetailPokin} />
                                                 }
                                             </div>
                                         </div>
