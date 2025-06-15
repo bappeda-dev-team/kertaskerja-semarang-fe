@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { Pohon } from './Pohon';
 import { getToken } from '../../Cookie';
 import { LoadingButtonClip, LoadingSync } from '@/components/global/Loading';
-import { TbCheck } from 'react-icons/tb';
+import { TbCheck, TbDeviceFloppy, TbCircleX, TbCirclePlus } from 'react-icons/tb';
 
 interface OptionTypeString {
     value: string;
@@ -389,31 +389,6 @@ export const FormPohonPemda: React.FC<{
                                         />
                                     </div>
                                 }
-                                <div className="flex flex-col py-3">
-                                    <label
-                                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                                        htmlFor="keterangan"
-                                    >
-                                        Keterangan:
-                                    </label>
-                                    <Controller
-                                        name="keterangan"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <textarea
-                                                {...field}
-                                                className="border px-4 py-2 rounded-lg"
-                                                id="keterangan"
-                                                placeholder="masukkan keterangan"
-                                                value={field.value || Keterangan}
-                                                onChange={(e) => {
-                                                    field.onChange(e);
-                                                    setKeterangan(e.target.value);
-                                                }}
-                                            />
-                                        )}
-                                    />
-                                </div>
                                 <label className="uppercase text-base font-bold text-gray-700 my-2">
                                     {
                                         level == 0 ?
@@ -507,12 +482,38 @@ export const FormPohonPemda: React.FC<{
                                     </div>
                                 ))}
                                 <ButtonSkyBorder
-                                    className="mb-3 mt-2 w-full"
+                                    className="flex items-center gap-1 mb-3 mt-2 w-full"
                                     type="button"
                                     onClick={() => append({ nama_indikator: "", targets: [{ target: "", satuan: "" }] })}
                                 >
+                                    <TbCirclePlus />
                                     Tambah Indikator
                                 </ButtonSkyBorder>
+                                <div className="flex flex-col pb-3 pt-1 border-t-2">
+                                    <label
+                                        className="uppercase text-xs font-bold text-gray-700 my-2"
+                                        htmlFor="keterangan"
+                                    >
+                                        Keterangan:
+                                    </label>
+                                    <Controller
+                                        name="keterangan"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <textarea
+                                                {...field}
+                                                className="border px-4 py-2 rounded-lg"
+                                                id="keterangan"
+                                                placeholder="masukkan keterangan"
+                                                value={field.value || Keterangan}
+                                                onChange={(e) => {
+                                                    field.onChange(e);
+                                                    setKeterangan(e.target.value);
+                                                }}
+                                            />
+                                        )}
+                                    />
+                                </div>
                                 <ButtonSky type="submit" className="w-full my-3" disabled={Proses}>
                                     {Proses ?
                                         <span className="flex">
@@ -520,10 +521,14 @@ export const FormPohonPemda: React.FC<{
                                             Menyimpan...
                                         </span>
                                         :
-                                        "Simpan"
+                                        <span className="flex items-center gap-1">
+                                            <TbDeviceFloppy />
+                                            Simpan
+                                        </span>
                                     }
                                 </ButtonSky>
-                                <ButtonRed className="w-full my-3" onClick={onCancel}>
+                                <ButtonRed className="flex items-center gap-1  w-full my-3" onClick={onCancel}>
+                                    <TbCircleX />
                                     Batal
                                 </ButtonRed>
                             </form>
@@ -1272,31 +1277,6 @@ export const FormEditPohon: React.FC<{
                                 />
                             </div>
                         }
-                        <div className="flex flex-col py-3">
-                            <label
-                                className="uppercase text-xs font-bold text-gray-700 my-2"
-                                htmlFor="keterangan"
-                            >
-                                Keterangan:
-                            </label>
-                            <Controller
-                                name="keterangan"
-                                control={control}
-                                render={({ field }) => (
-                                    <textarea
-                                        {...field}
-                                        className="border px-4 py-2 rounded-lg"
-                                        id="keterangan"
-                                        placeholder="masukkan keterangan"
-                                        value={field.value || Keterangan}
-                                        onChange={(e) => {
-                                            field.onChange(e);
-                                            setKeterangan(e.target.value);
-                                        }}
-                                    />
-                                )}
-                            />
-                        </div>
                         <label className="uppercase text-base font-bold text-gray-700 my-2">
                             {
                                 level == 0 ?
@@ -1396,23 +1376,53 @@ export const FormEditPohon: React.FC<{
                             </div>
                         ))}
                         <ButtonSkyBorder
-                            className="mb-3 mt-2 w-full"
+                            className="flex items-center gap-1 mb-3 mt-2 w-full"
                             type="button"
                             onClick={() => append({ nama_indikator: "", targets: [{ target: "", satuan: "" }] })}
                         >
+                            <TbCirclePlus />
                             Tambah Indikator
                         </ButtonSkyBorder>
+                        <div className="flex flex-col pb-3 pt-1 border-t-2">
+                            <label
+                                className="uppercase text-xs font-bold text-gray-700 my-2"
+                                htmlFor="keterangan"
+                            >
+                                Keterangan:
+                            </label>
+                            <Controller
+                                name="keterangan"
+                                control={control}
+                                render={({ field }) => (
+                                    <textarea
+                                        {...field}
+                                        className="border px-4 py-2 rounded-lg"
+                                        id="keterangan"
+                                        placeholder="masukkan keterangan"
+                                        value={field.value || Keterangan}
+                                        onChange={(e) => {
+                                            field.onChange(e);
+                                            setKeterangan(e.target.value);
+                                        }}
+                                    />
+                                )}
+                            />
+                        </div>
                         <ButtonSky type="submit" className="w-full my-3" disabled={Proses}>
                             {Proses ?
-                                <span className="flex">
+                                <span className="flex items-center gap-1 ">
                                     <LoadingButtonClip />
                                     Menyimpan...
                                 </span>
                                 :
-                                "Simpan"
+                                <span className="flex items-center gap-1 ">
+                                    <TbDeviceFloppy />
+                                    Simpan
+                                </span>
                             }
                         </ButtonSky>
-                        <ButtonRed className="w-full my-3" onClick={onCancel}>
+                        <ButtonRed className="flex items-center gap-1 w-full my-3" onClick={onCancel}>
+                            <TbCircleX />
                             Batal
                         </ButtonRed>
                     </form>

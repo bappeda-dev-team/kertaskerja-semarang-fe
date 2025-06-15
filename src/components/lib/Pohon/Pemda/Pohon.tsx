@@ -435,7 +435,7 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
                                             Tambah Review
                                         </ButtonSkyBorder>
                                         <button
-                                            className={`px-3 flex justify-center items-center py-1 rounded-lg border border-red-400 text-red-400 hover:bg-red-400 hover:text-white`}
+                                            className={`px-3 flex justify-center items-center py-1 rounded-lg border border-red-400 text-red-400 hover:bg-red-400 hover:text-white ${tema.jumlah_review > 0 && "bg-yellow-200 animate-pulse"}`}
                                             onClick={() => {
                                                 setShowReview((prev) => (!prev));
                                                 fetchReview(tema.id);
