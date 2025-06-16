@@ -255,8 +255,8 @@ const Table: React.FC<table> = ({id_periode, tahun_awal, tahun_akhir, jenis, tah
                                                 <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Strategic Pemda</td>
                                                 <td rowSpan={2} colSpan={2} className="border-r border-b px-6 py-3 min-w-[400px] text-center">Sasaran Pemda</td>
                                                 <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Indikator</td>
-                                                <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Rumus Perhitungan</td>
-                                                <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Sumber Data</td>
+                                                <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Rumus Perhitungan</td>
+                                                <td rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Sumber Data</td>
                                                 {tahun_list.map((item: any) => (
                                                     <th key={item} colSpan={2} className="border-l border-b px-6 py-3 min-w-[100px]">{item}</th>
                                                 ))}
