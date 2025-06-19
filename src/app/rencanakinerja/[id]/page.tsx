@@ -47,53 +47,74 @@ const RincianRencanaKinerja = () => {
                 <p className="mr-1">/ Rencana Kinerja</p>
                 <p>/ Nama sub kegiatan</p>
             </div>
-            <div className="my-5">
-                {/* status sasaran */}
-                {/* <div className="mt-3 rounded-xl shadow-lg border px-5 py-3">
-                    <h1>Status Sasaran</h1>
-                    <div className="my-3 border"></div>
-                    <button className="w-full uppercase bg-emerald-500 rounded-lg py-1 font-bold my-1">siap ditarik skp</button>
-                    <button className="w-full uppercase bg-emerald-500 rounded-lg py-1 font-bold my-1">manrisk siap diverifikasi</button>
-                    <div className="my-3 border"></div>
-                </div> */}
-                <Musrebang
-                    id={id_rekin}
-                    nip={User?.nip}
-                />
-                <SubKegiatan
-                    id={id_rekin}
-                    tahun={Tahun?.value}
-                    nip={User?.nip}
-                    kode_opd={User?.kode_opd}
-                />
-                <Sakip id={id_rekin} />
-                <Renaksi id={id_rekin} />
-                <DasarHukum
-                    id={id_rekin}
-                    nip={User?.nip}
-                />
-                <GambaranUmum
-                    id={id_rekin}
-                    nip={User?.nip}
-                />
-                <Permasalahan
-                    id={id_rekin}
-                    nip={User?.nip}
-                />
-                {/* <Inovasi id={id_rekin}/> */}
-                <div className="w-full mt-4">
-                    <ButtonGreen
-                        onClick={() => {
-                            AlertNotification("Tersimpan", "Data rincian rencana kinerja berhasil disimpan", "success", 2000);
-                            router.push('/rencanakinerja');
-                        }}
-                        className='w-full flex items-center gap-1'
-                    >
-                        <TbDeviceFloppy />
-                        Selesai
-                    </ButtonGreen>
-                </div>
-            </div>
+            {User?.roles != 'level_4' ?
+                <>
+                    <div className="my-5">
+                        {/* status sasaran */}
+                        {/* <div className="mt-3 rounded-xl shadow-lg border px-5 py-3">
+                        <h1>Status Sasaran</h1>
+                        <div className="my-3 border"></div>
+                        <button className="w-full uppercase bg-emerald-500 rounded-lg py-1 font-bold my-1">siap ditarik skp</button>
+                        <button className="w-full uppercase bg-emerald-500 rounded-lg py-1 font-bold my-1">manrisk siap diverifikasi</button>
+                        <div className="my-3 border"></div>
+                    </div> */}
+                        <Musrebang
+                            id={id_rekin}
+                            nip={User?.nip}
+                        />
+                        <SubKegiatan
+                            id={id_rekin}
+                            tahun={Tahun?.value}
+                            nip={User?.nip}
+                            kode_opd={User?.kode_opd}
+                        />
+                        <Sakip id={id_rekin} />
+                        <Renaksi id={id_rekin} />
+                        <DasarHukum
+                            id={id_rekin}
+                            nip={User?.nip}
+                        />
+                        <GambaranUmum
+                            id={id_rekin}
+                            nip={User?.nip}
+                        />
+                        <Permasalahan
+                            id={id_rekin}
+                            nip={User?.nip}
+                        />
+                        {/* <Inovasi id={id_rekin}/> */}
+                        <div className="w-full my-4">
+                            <ButtonGreen
+                                onClick={() => {
+                                    AlertNotification("Tersimpan", "Data rincian rencana kinerja berhasil disimpan", "success", 2000);
+                                    router.push('/rencanakinerja');
+                                }}
+                                className='w-full flex items-center gap-1'
+                            >
+                                <TbDeviceFloppy />
+                                Selesai
+                            </ButtonGreen>
+                        </div>
+                    </div>
+                </>
+                :
+                <>
+                    <Sakip id={id_rekin} />
+                    <Renaksi id={id_rekin} />
+                    <div className="w-full my-4">
+                        <ButtonGreen
+                            onClick={() => {
+                                AlertNotification("Tersimpan", "Data rincian rencana kinerja berhasil disimpan", "success", 2000);
+                                router.push('/rencanakinerja');
+                            }}
+                            className='w-full flex items-center gap-1'
+                        >
+                            <TbDeviceFloppy />
+                            Selesai
+                        </ButtonGreen>
+                    </div>
+                </>
+            }
         </>
     )
 }

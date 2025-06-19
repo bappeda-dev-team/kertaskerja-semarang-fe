@@ -175,7 +175,7 @@ export const TablePerencanaan = () => {
                         <tr className="bg-gray-700 text-white">
                             <th className="border-r border-b px-6 py-3 min-w-[50px]">No</th>
                             <th className="border-r border-b px-6 py-3 min-w-[300px]">Pohon Kinerja</th>
-                            <th className="border-r border-b px-6 py-3 min-w-[400px]">Rencana Kinerja</th>
+                            <th className="border-r border-b px-6 py-3 min-w-[300px]">Rencana Kinerja</th>
                             <th className="border-r border-b px-6 py-3 min-w-[100px]">Tahun</th>
                             <th className="border-r border-b px-6 py-3 min-w-[400px]">Indikator Rencana Kinerja</th>
                             <th className="border-r border-b px-6 py-3 min-w-[200px]">target / Satuan</th>
@@ -286,13 +286,17 @@ export const TablePerencanaan = () => {
                                                 <TbPencil className="mr-1" />
                                                 Edit Rekin
                                             </ButtonSkyBorder>
-                                            {user?.roles == 'level_3' &&
+                                            {(user?.roles == 'level_3' || user?.roles == 'level_4') &&
                                                 <ButtonGreenBorder
                                                     className="w-full"
                                                     halaman_url={`/rencanakinerja/${data.id_rencana_kinerja}`}
                                                 >
                                                     <TbPencilDown className="mr-1" />
-                                                    Rincian
+                                                    {user?.roles == 'level_4' ?
+                                                        "Renaksi"
+                                                        :
+                                                        "Rincian"
+                                                    }
                                                 </ButtonGreenBorder>
                                             }
                                             <ButtonRedBorder className="w-full"
