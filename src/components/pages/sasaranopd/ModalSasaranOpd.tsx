@@ -6,6 +6,7 @@ import { ButtonSky, ButtonRed, ButtonSkyBorder, ButtonRedBorder } from '@/compon
 import { getToken } from "@/components/lib/Cookie";
 import { LoadingButtonClip, LoadingSync } from "@/components/global/Loading";
 import { AlertNotification } from "@/components/global/Alert";
+import Select from 'react-select';
 
 interface OptionType {
     value: number;
@@ -19,6 +20,7 @@ interface OptionTypeString {
 interface FormValue {
     id_pohon: OptionType;
     nama_rencana_kinerja: string;
+    id_tujuan_opd: OptionType;
     tahun: string;
     status_rencana_kinerja: string;
     catatan: string;
@@ -62,7 +64,7 @@ interface modal {
     onSuccess: () => void;
 }
 
-export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon, jenis_periode, tahun, tahun_akhir, tahun_awal, tahun_list, periode, nama_pohon, metode, onSuccess }) => {
+export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon, jenis_periode, kode_opd, tahun, tahun_akhir, tahun_awal, tahun_list, periode, nama_pohon, metode, onSuccess }) => {
 
     const {
         control,
@@ -74,9 +76,12 @@ export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon
     const token = getToken();
 
     const [SasaranOpd, setSasaranOpd] = useState<string>('');
+    const [OptionTujuan, setOptionTujuan] = useState<OptionType[]>([]);
+    const [TujuanOpd, setTujuanOpd] = useState<OptionType | null>(null);
 
     const [Proses, setProses] = useState<boolean>(false);
     const [Loading, setLoading] = useState<boolean>(false);
+    const [IsLoading, setIsLoading] = useState<boolean>(false);
 
     const { fields, append, remove, replace } = useFieldArray({
         control,
@@ -104,6 +109,13 @@ export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon
                 // console.log(hasil);
                 if (hasil.nama_sasaran_opd) {
                     setSasaranOpd(hasil.nama_sasaran_opd);
+                }
+                if(hasil.id_tujuan_opd){
+                    const tujuan = {
+                        value: hasil.id_tujuan_opd,
+                        label: hasil.nama_tujuan_opd
+                    }
+                    setTujuanOpd(tujuan);
                 }
                 reset({
                     indikator: hasil.indikator?.map((item: indikator) => ({
@@ -161,7 +173,7 @@ export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon
                 replace(indikatorData);
             } catch (err) {
                 console.log(err);
-            } finally{
+            } finally {
                 setLoading(false);
             }
         };
@@ -172,12 +184,43 @@ export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon
         }
     }, [token, isOpen, metode, tahun, id, replace, reset, id_pohon, jenis_periode]);
 
+    const fetchOptionTujuanOpd = async () => {
+        setIsLoading(true)
+        try {
+            const API_URL = process.env.NEXT_PUBLIC_API_URL;
+            const response = await fetch(`${API_URL}/tujuan_opd/findall_only_name/${kode_opd}/tahunawal/${tahun_awal}/tahunakhir/${tahun_akhir}/jenisperiode/${jenis_periode}`, {
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            const result = await response.json();
+            const data = result.data;
+            if (data.length == 0) {
+                setOptionTujuan([]);
+            } else if (result.code == 500) {
+                setOptionTujuan([]);
+            } else {
+                const hasil = data.map((item: any) => ({
+                    label: item.tujuan,
+                    value: item.id_tujuan_opd,
+                }));
+                setOptionTujuan(hasil);
+            }
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formDataNew = {
             //key : value
             id_pohon: id_pohon,
             nama_sasaran: SasaranOpd,
+            id_tujuan_opd: TujuanOpd?.value,
             tahun_awal: tahun_awal,
             tahun_akhir: tahun_akhir,
             jenis_periode: jenis_periode,
@@ -196,6 +239,7 @@ export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon
             //key : value
             id: id_pohon,
             nama_sasaran: SasaranOpd,
+            id_tujuan_opd: TujuanOpd?.value,
             tahun_awal: tahun_awal,
             tahun_akhir: tahun_akhir,
             jenis_periode: jenis_periode,
@@ -262,6 +306,7 @@ export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon
         onClose();
         setSasaranOpd('');
         reset();
+        setTujuanOpd(null);
     }
 
     if (!isOpen) {
@@ -275,11 +320,11 @@ export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon
                     <div className="w-max-[500px] py-2 border-b">
                         <h1 className="text-xl uppercase text-center">{metode === 'baru' ? "Tambah" : "Edit"} Sasaran OPD</h1>
                     </div>
-                    {Loading ? 
+                    {Loading ?
                         <div className="py-5">
                             <LoadingSync />
                         </div>
-                    :
+                        :
                         <form
                             onSubmit={handleSubmit(onSubmit)}
                             className="flex flex-col mx-5 py-5"
@@ -314,6 +359,44 @@ export const ModalSasaranOpd: React.FC<modal> = ({ isOpen, onClose, id, id_pohon
                                                 setSasaranOpd(e.target.value);
                                             }}
                                         />
+                                    )}
+                                />
+                            </div>
+                            <div className="flex flex-col py-3">
+                                <label
+                                    className="uppercase text-xs font-bold text-gray-700 my-2"
+                                    htmlFor="id_tujuan_opd"
+                                >
+                                    Tujuan OPD :
+                                </label>
+                                <Controller
+                                    name="id_tujuan_opd"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <>
+                                            <Select
+                                                {...field}
+                                                placeholder="Pilih Tujuan OPD"
+                                                isLoading={IsLoading}
+                                                options={OptionTujuan}
+                                                isSearchable
+                                                value={TujuanOpd}
+                                                isClearable
+                                                onMenuOpen={() => {
+                                                    fetchOptionTujuanOpd();
+                                                }}
+                                                onChange={(option: any) => {
+                                                    field.onChange(option);
+                                                    setTujuanOpd(option);
+                                                }}
+                                                styles={{
+                                                    control: (baseStyles: any) => ({
+                                                        ...baseStyles,
+                                                        borderRadius: '8px',
+                                                    })
+                                                }}
+                                            />
+                                        </>
                                     )}
                                 />
                             </div>

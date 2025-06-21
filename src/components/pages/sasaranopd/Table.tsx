@@ -42,6 +42,8 @@ interface SasaranOpd {
     tahun_akhir: string;
     jenis_periode: string;
     nama_sasaran_opd: string;
+    id_tujuan_opd: number,
+    nama_tujuan_opd: string,
     nip: string;
     indikator: Indikator[];
 }
@@ -250,6 +252,7 @@ const Table: React.FC<table> = ({ tipe, id_periode, tahun_awal, tahun_akhir, jen
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Strategic OPD</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Pemilik</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Sasaran OPD</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Tujuan OPD</th>
                             {tipe === "opd" &&
                                 <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</th>
                             }
@@ -330,6 +333,13 @@ const Table: React.FC<table> = ({ tipe, id_periode, tahun_awal, tahun_akhir, jen
                                                     <tr>
                                                         <td className="border-x border-b border-emerald-500 px-6 py-6 h-[150px]" rowSpan={item.indikator.length !== 0 ? item.indikator.length + 1 : 2}>
                                                             {item.nama_sasaran_opd || "-"}
+                                                        </td>
+                                                        <td className="border-x border-b border-emerald-500 px-6 py-6 h-[150px]" rowSpan={item.indikator.length !== 0 ? item.indikator.length + 1 : 2}>
+                                                            {item.nama_tujuan_opd ?
+                                                                <p>{item.nama_tujuan_opd || "-"}</p>
+                                                                :
+                                                                <p className="italic text-red-300 font-thin">tujuan opd belum di pilih</p>
+                                                            }
                                                         </td>
                                                         {tipe === "opd" &&
                                                             <td className="border-x border-b border-emerald-500 px-6 py-6" rowSpan={item.indikator.length !== 0 ? item.indikator.length + 1 : 2}>
