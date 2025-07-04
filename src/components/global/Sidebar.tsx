@@ -14,14 +14,15 @@ import {
   TbAlertCircle,
   TbDatabasePlus,
   TbCalendarPlus,
-  TbDeviceImacDollar
+  TbDeviceImacDollar,
+  TbFocus2
 } from "react-icons/tb";
 import Image from 'next/image';
 import { usePathname, useParams } from 'next/navigation';
 import Link from 'next/link';
 import "@/app/globals.css";
 import { logout, getUser } from '../lib/Cookie';
-import { BrandingProvider, useBrandingContext } from '@/context/BrandingContext';
+import { useBrandingContext } from '@/context/BrandingContext';
 
 interface SidebarProps {
   isOpen: boolean | null;
@@ -78,13 +79,12 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
   const [pohonKinerjaOpd, setPohonKinerjaOpd] = useState<boolean | null>(null);
   const [PohonCascadingOpd, setPohonCascadingOpd] = useState<boolean | null>(null);
   const [Renstra, setRenstra] = useState<boolean | null>(null);
+  const [PermasalahanOpd, setPermasalahanOpd] = useState<boolean | null>(null);
+  const [IsuStrategisOpd, setIsuStrategisOpd] = useState<boolean | null>(null);
   const [TujuanOpd, setTujuanOpd] = useState<boolean | null>(null);
   const [SasaranOpd, setSasaranOpd] = useState<boolean | null>(null);
   const [IKUOpd, setIKUOpd] = useState<boolean | null>(null);
   const [RencanaAksiOpd, setRencanaAksiOpd] = useState<boolean | null>(null);
-  const [PermasalahanOpd, setPermasalahanOpd] = useState<boolean | null>(null);
-  const [Permasalahan, setPermasalahan] = useState<boolean | null>(null);
-  const [IsuStrategis, setIsuStrategis] = useState<boolean | null>(null);
   const [MasterUsulanOpd, setMasterUsulanOpd] = useState<boolean | null>(null);
   const [MasterUsulanMusrenbang, setMasterUsulanMusrenbang] = useState<boolean | null>(null);
   const [MasterUsulanPokir, setMasterUsulanPokir] = useState<boolean | null>(null);
@@ -120,7 +120,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
   const [TujuanOpdView, setTujuanOpdView] = useState<boolean | null>(null);
   const [SasaranOpdView, setSasaranOpdView] = useState<boolean | null>(null);
   const [IkuOpdView, setIkuOpdView] = useState<boolean | null>(null);
-  
+
 
   const [ManajemenResiko, setManajemenResiko] = useState<boolean | null>(null);
   const [Inovasi, setInovasi] = useState<boolean | null>(null);
@@ -190,8 +190,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -276,8 +274,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -361,8 +357,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -446,8 +440,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -531,8 +523,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -616,8 +606,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -702,8 +690,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -787,8 +773,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -872,8 +856,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -957,8 +939,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1042,8 +1022,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1127,8 +1105,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1212,8 +1188,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1297,8 +1271,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1382,8 +1354,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1469,8 +1439,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1555,8 +1523,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1641,8 +1607,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1727,8 +1691,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1813,8 +1775,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1899,8 +1859,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -1985,8 +1943,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       //Renstra
       setRencanaAksiOpd(false);
@@ -2072,8 +2028,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -2158,8 +2112,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -2244,8 +2196,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -2330,8 +2280,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(true);
       //Renstra
@@ -2376,7 +2324,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPerencanaanOPD(true);
       setSubKegiatanOpd(false);
       setMasterUsulanOpd(false);
-      setRenstra(false);
+      setRenstra(true);
       // asn
       setPerencanaan(false);
       setUsulanLaporan(false);
@@ -2415,12 +2363,11 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       // perencanaan opd
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
-      setPermasalahanOpd(true);
-      setPermasalahan(true);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
+      setPermasalahanOpd(true);
+      setIsuStrategisOpd(false);
       setTujuanOpd(false);
       setSasaranOpd(false);
       setIKUOpd(false);
@@ -2450,7 +2397,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setLaporanRenstra(false);
       setLaporanCascadingOpd(false);
     }
-    if (url == "/isustrategis") {
+    if (url == "/isustrategisopd") {
       // SLIDE MENU
       // super_admin
       setDataMaster(false);
@@ -2462,7 +2409,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPerencanaanOPD(true);
       setSubKegiatanOpd(false);
       setMasterUsulanOpd(false);
-      setRenstra(false);
+      setRenstra(true);
       // asn
       setPerencanaan(false);
       setUsulanLaporan(false);
@@ -2501,9 +2448,8 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       // perencanaan opd
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
-      setPermasalahanOpd(true);
-      setPermasalahan(false);
-      setIsuStrategis(true);
+      setPermasalahanOpd(false);
+      setIsuStrategisOpd(true);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -2588,8 +2534,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -2866,8 +2810,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(true);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -2952,8 +2894,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(true);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3038,8 +2978,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(true);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3130,8 +3068,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3216,8 +3152,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3497,8 +3431,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3583,8 +3515,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3669,8 +3599,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3755,8 +3683,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3841,8 +3767,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -3927,8 +3851,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -4013,8 +3935,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -4099,8 +4019,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -4185,8 +4103,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -4271,8 +4187,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPohonKinerjaOpd(false);
       setPohonCascadingOpd(false);
       setPermasalahanOpd(false);
-      setPermasalahan(false);
-      setIsuStrategis(false);
       setUserOpd(false);
       setRencanaAksiOpd(false);
       //Renstra
@@ -4641,6 +4555,18 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               </li>
               {/* SUBS MENU RENSTRA */}
               <div className={`transition-all duration-300 ease-in-out ${Renstra ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
+                <Link href="/permasalahanopd">
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${PermasalahanOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                    <TbAlertTriangle className="text-xl" />
+                    <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Permasalahan</span>
+                  </li>
+                </Link>
+                <Link href="/isustrategisopd">
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${IsuStrategisOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                    <TbFocus2 className="text-xl" />
+                    <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Isu Strategis</span>
+                  </li>
+                </Link>
                 <Link href="/tujuanopd">
                   <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${TujuanOpd ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                     <TbMapPin className="text-xl" />
@@ -4666,32 +4592,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rencana Aksi OPD</span>
                 </li>
               </Link>
-              {/* LABEL PERMASALAHAN */}
-              <li
-                className={`flex justify-between font-medium items-center gap-x-2 cursor-pointer p-2 rounded-xl hover:bg-slate-500 transition-all duration-300 ease-in-out`}
-                onClick={() => setPermasalahanOpd(PermasalahanOpd ? false : true)}
-              >
-                <div className="flex items-center gap-2">
-                  <TbAlertCircle className="text-xl" />
-                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Permasalahan</span>
-                </div>
-                <TbChevronRight className={`transition-all duration-200 ease-in-out ${Renstra ? "rotate-90" : ""}`} />
-              </li>
-              {/* SUBS MENU PERMASALAHAN */}
-              <div className={`transition-all duration-300 ease-in-out ${PermasalahanOpd ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
-                <Link href="/permasalahanopd">
-                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${Permasalahan ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
-                    <TbAlertTriangle className="text-xl" />
-                    <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Permasalahan</span>
-                  </li>
-                </Link>
-                <Link href="/isustrategis">
-                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${IsuStrategis ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
-                    <TbTarget className="text-xl" />
-                    <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Isu Strategis</span>
-                  </li>
-                </Link>
-              </div>
               {/* LABEL MASTER USULAN OPD */}
               {/* <li 
                 className="flex items-center gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl transition-all duration-300 ease-in-out"

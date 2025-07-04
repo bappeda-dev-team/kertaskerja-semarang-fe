@@ -1097,11 +1097,11 @@ export const tambahPohonName = (jenis: string): string => {
         case 'Strategic Pemda':
             return 'Tactical';;
         case 'Tactical Pemda':
-            return 'Opertional';
+            return 'Operational';
         case 'Strategic':
             return 'Tactical';;
         case 'Tactical':
-            return 'Opertional';
+            return 'Operational';
         default:
             return '-'
     }
@@ -1123,7 +1123,7 @@ export const ambilPohonName = (jenis: string): string => {
         case 'Strategic Pemda':
             return 'Tactical';
         case 'Tactical Pemda':
-            return 'Opertional';
+            return 'Operational';
         default:
             return '-'
     }
