@@ -21,8 +21,11 @@ interface OptionType {
 }
 interface FormValue {
     id: number;
-    penyebab_permasalahan?: string;
+    peryataan_kondisi?: string;
+    alasan_kondisi?: string;
+    data_pendukung?: string;
     data_terukur?: string;
+    penyebab_permasalahan?: string;
     isu_strategis?: string;
     parent: string;
     nama_pohon: string;
@@ -887,7 +890,7 @@ export const FormEditPohon: React.FC<{
     onCancel: () => void
     pokin: 'pemda' | 'opd';
     EditBerhasil: (data: any) => void;
-}> = ({ id, level, formId, EditBerhasil, onCancel, pokin }) => {
+}> = ({ id, level, EditBerhasil, onCancel, pokin }) => {
 
     const {
         control,
@@ -933,7 +936,7 @@ export const FormEditPohon: React.FC<{
 
     const { fields, append, remove, replace } = useFieldArray({
         control,
-        name: "indikator",
+        name: "indikator"
     });
 
     const fetchOpd = async () => {
