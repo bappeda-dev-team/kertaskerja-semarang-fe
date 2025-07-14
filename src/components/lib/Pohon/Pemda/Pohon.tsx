@@ -685,6 +685,7 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
 }
 
 export const TablePohon = (props: any) => {
+    const csf = props.item.csf;
     const tema = props.item.tema;
     const nama_pohon = props.item.nama_pohon;
     const keterangan = props.item.keterangan;
@@ -696,7 +697,7 @@ export const TablePohon = (props: any) => {
         <table className='w-full'>
             <tbody>
                 {jenis === "Tematik" &&
-                    <CSF />
+                    <CSF data={csf}/>
                 }
                 {jenis === "Sub Tematik" &&
                     <Outcome />
@@ -1138,45 +1139,96 @@ export const ambilPohonName = (jenis: string): string => {
     }
 }
 
-export const CSF = () => {
+export const CSF = (data: any) => {
     return (
         <>
-            <tr>
-                <td
-                    className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
-                >
-                    Isu Strategis
-                </td>
-                <td
-                    className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
-                >
-                    isu strategis
-                </td>
-            </tr>
-            <tr>
-                <td
-                    className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
-                >
-                    Alasan Kondisi Strategis
-                </td>
-                <td
-                    className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
-                >
-                    -
-                </td>
-            </tr>
-            <tr>
-                <td
-                    className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
-                >
-                    Data Terukur Pendukung
-                </td>
-                <td
-                    className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
-                >
-                    -
-                </td>
-            </tr>
+            {data.data == null ? 
+                <>
+                    <tr>
+                        <td
+                            className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
+                        >
+                            Isu Strategis
+                        </td>
+                        <td
+                            className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
+                        >
+                            -
+                        </td>
+                    </tr>
+                    <tr>
+                        <td
+                            className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
+                        >
+                            Alasan Kondisi Strategis
+                        </td>
+                        <td
+                            className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
+                        >
+                            -
+                        </td>
+                    </tr>
+                    <tr>
+                        <td
+                            className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
+                        >
+                            Data Terukur Pendukung
+                        </td>
+                        <td
+                            className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
+                        >
+                            -
+                        </td>
+                    </tr>
+                </>
+                :
+                data.data.map((item: any, index: number) => (
+                    <React.Fragment key={index}>
+                        <tr>
+                            <td
+                                className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
+                            >
+                                Isu Strategis
+                            </td>
+                            <td
+                                className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
+                            >
+                                {item.pernyataan_kondisi_strategis || "-"}
+                            </td>
+                        </tr>
+                        {item.alasan_kondisi.map((a: any, sub_index: number) => (
+                            <React.Fragment key={sub_index}>
+                                <tr>
+                                    <td
+                                        className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
+                                    >
+                                        Alasan Kondisi Strategis {item.alasan_kondisi.length > 1 && `${sub_index + 1}`}
+                                    </td>
+                                    <td
+                                        className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
+                                    >
+                                        {a.alasan_kondisi_strategis || "-"}
+                                    </td>
+                                </tr>
+                                {a.data_terukur.map((dt: any, subs_index: number) => (
+                                    <tr key={subs_index}>
+                                        <td
+                                            className={`min-w-[100px] border px-2 py-3 bg-yellow-50 text-start rounded-tl-lg border-black`}
+                                        >
+                                            Data Terukur Pendukung {(a.data_terukur.length > 1) && `${subs_index + 1}`}
+                                        </td>
+                                        <td
+                                            className={`min-w-[300px] border px-2 py-3 bg-yellow-50 text-start rounded-tr-lg border-black`}
+                                        >
+                                            {dt.data_terukur || "-"}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </React.Fragment>
+                        ))}
+                    </React.Fragment>
+                ))
+            }
         </>
     )
 }
