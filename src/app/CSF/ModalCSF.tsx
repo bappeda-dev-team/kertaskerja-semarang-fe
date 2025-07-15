@@ -15,7 +15,7 @@ interface FormValue {
 interface Alasan {
     csf_id?: number;
     alasan_kondisi_strategis: string;
-    data_terukur_pendukung_pernyataan: DataTerukur[];
+    data_terukur: DataTerukur[];
 }
 interface DataTerukur {
     alasan_kondisi_id?: number;
@@ -38,7 +38,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
             pernyataan_kondisi_strategis: DataValue?.pernyataan_kondisi_strategis ?? "",
             alasan_kondisi: DataValue?.alasan_kondisi?.map((a: any) => ({
                 alasan_kondisi_strategis: a.alasan_kondisi_strategis,
-                data_terukur_pendukung_pernyataan: a.data_terukur?.map((dt: any) => ({
+                data_terukur: a.data_terukur?.map((dt: any) => ({
                     data_terukur: dt.data_terukur,
                 })) || [],
             })) || [],
@@ -57,7 +57,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
             pernyataan_kondisi_strategis: dataValue.pernyataan_kondisi_strategis,
             alasan_kondisi: dataValue.alasan_kondisi.map((a) => ({
                 alasan_kondisi_strategis: a.alasan_kondisi_strategis,
-                data_terukur_pendukung_pernyataan: a.data_terukur_pendukung_pernyataan.map((dt) => ({
+                data_terukur: a.data_terukur.map((dt) => ({
                     data_terukur: dt.data_terukur,
                 }))
             }))
@@ -69,7 +69,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
             if (jenis === 'baru') {
                 url = `csf`
             } else if (jenis === 'edit') {
-                url = `csf/${data.id}`
+                url = `csf/${data.csf[0].id}`
             }
             const response = await fetch(`${API_URL_CSF}/${url}`, {
                 method: jenis === "baru" ? "POST" : "PUT",
@@ -123,7 +123,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
             remove: removeDataTerukur,
         } = useFieldArray({
             control,
-            name: `alasan_kondisi.${alasanIndex}.data_terukur_pendukung_pernyataan`, // Kunci di sini adalah path lengkap ke array bersarang
+            name: `alasan_kondisi.${alasanIndex}.data_terukur`, // Kunci di sini adalah path lengkap ke array bersarang
         });
 
         return (
@@ -132,7 +132,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
                 {dataTerukurFields.map((dataTerukurField, dataTerukurIndex) => (
                     <div key={dataTerukurField.id} className="flex items-center gap-2 mb-2">
                         <Controller
-                            name={`alasan_kondisi.${alasanIndex}.data_terukur_pendukung_pernyataan.${dataTerukurIndex}.data_terukur`}
+                            name={`alasan_kondisi.${alasanIndex}.data_terukur.${dataTerukurIndex}.data_terukur`}
                             control={control}
                             render={({ field }) => (
                                 <input
@@ -250,7 +250,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
                                 type="button"
                                 onClick={() => appendAlasan({
                                     alasan_kondisi_strategis: "",
-                                    data_terukur_pendukung_pernyataan: [{ data_terukur: "" }] // Tambahkan satu data_terukur kosong saat alasan baru
+                                    data_terukur: [{ data_terukur: "" }] // Tambahkan satu data_terukur kosong saat alasan baru
                                 })}
                                 className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors mt-4"
                             >
