@@ -96,7 +96,7 @@ export const FormTematikKab = () => {
           });
           if(response.ok){
               AlertNotification("Berhasil", "Berhasil menambahkan data tematik pemda", "success", 1000);
-              router.push("/tematikpemda");
+              router.push("/CSF");
           } else {
               AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
           }
