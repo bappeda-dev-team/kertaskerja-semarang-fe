@@ -48,7 +48,7 @@ type target = {
 
 interface AksiCSF {
     buttonDelete: boolean;
-    onDelete?: () => void;
+    onDelete: () => void;
     onEdit: () => void;
 }
 interface TableTematik {
@@ -135,12 +135,15 @@ export const Table = () => {
                     Authorization: `${token}`,
                     'Content-Type': 'application/json',
                 },
-            })
+            });
+            const result = await response.json();
             if (!response.ok) {
-                alert("cant fetch data")
+                AlertNotification("Gagal", `${result.data}`, "error", 2000);
+                console.error(result);
+            } else {
+                setTematik(Tematik.filter((data) => (data.id !== id)))
+                AlertNotification("Berhasil", "Data Tematik Berhasil Dihapus", "success", 1000);
             }
-            setTematik(Tematik.filter((data) => (data.id !== id)))
-            AlertNotification("Berhasil", "Data Tematik Berhasil Dihapus", "success", 1000);
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
         }
@@ -154,12 +157,15 @@ export const Table = () => {
                     // Authorization: `${token}`,
                     'Content-Type': 'application/json',
                 },
-            })
+            });
+            const result = await response.json();
             if (!response.ok) {
-                alert("cant fetch data")
+                AlertNotification("Gagal", `${result.data}`, "error", 2000);
+                console.error(result);
+            } else {
+                AlertNotification("Berhasil", "Data CSF Berhasil dihapus", "success", 1000);
+                setFetchTrigger((prev) => !prev);
             }
-            setTematik(Tematik.filter((data) => (data.id !== id)))
-            AlertNotification("Berhasil", "Data CSF Berhasil dihapus", "success", 1000);
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet atau database server", "error", 2000);
         }
@@ -204,9 +210,9 @@ export const Table = () => {
                             <th className="border-r border-b px-6 py-3 min-w-[300px]">Data Terukur Pendukung Pernyataan</th>
                             <th className="border-r border-b px-6 py-3 min-w-[100px]">Aksi</th>
                             <th className="border-r border-b px-6 py-3 min-w-[300px]">Kondisi Terukur Yang Diharapkan (Tema)</th>
-                            <th className="border-l border-b px-6 py-3 min-w-[200px]">Keterangan</th>
                             <th className="border-l border-b px-6 py-3 min-w-[200px]">Indikator</th>
                             <th className="border-l border-b px-6 py-3 min-w-[200px]">Target/Satuan</th>
+                            <th className="border-l border-b px-6 py-3 min-w-[200px]">Keterangan</th>
                             <th className="border-l border-b px-6 py-3 min-w-[100px]">Aksi</th>
                         </tr>
                     </thead>
@@ -262,7 +268,10 @@ export const Table = () => {
                                                         <TableTematik
                                                             data={data}
                                                             rowSpan={c.alasan_kondisi != null ? c.alasan_kondisi.length + 1 : 2}
-                                                            onDelete={() => hapusTematik(data.id)}
+                                                            onDelete={() => {
+                                                                hapusTematik(data.id);
+                                                                hapusCsf(data.id);
+                                                            }}
                                                         />
                                                     </tr>
                                                     {c.alasan_kondisi === null &&
@@ -305,6 +314,7 @@ export const Table = () => {
                                                 <td className="border-r border-b bg-blue-100 border-white px-6 py-4 text-center">
                                                     <AksiCsf
                                                         buttonDelete={false}
+                                                        onDelete={() => hapusCsf(data.id)}
                                                         onEdit={() => {
                                                             if (data.csf === null) {
                                                                 handleModal("baru", data);
@@ -357,7 +367,7 @@ export const AksiCsf: React.FC<AksiCSF> = ({ buttonDelete, onDelete, onEdit }) =
                     onClick={() => {
                         AlertQuestion("Hapus?", "Hapus CSF yang dipilih?", "question", "Hapus", "Batal").then((result) => {
                             if (result.isConfirmed) {
-                                onDelete
+                                onDelete();
                             }
                         });
                     }}
@@ -374,14 +384,13 @@ export const TableTematik: React.FC<TableTematik> = ({ data, rowSpan, onDelete }
     return (
         <React.Fragment>
             <td rowSpan={rowSpan} className="border-r border-b px-6 py-4 text-center">{data.tema || "-"}</td>
-            <td rowSpan={rowSpan} className="border-r border-b px-6 py-4 text-center">{data.keterangan ? data.keterangan : "-"}</td>
             {data.indikator ?
                 <>
                     <td rowSpan={rowSpan} className="border-r border-b px-6 py-4 text-center">
                         {data.indikator.map((item: indikator) => (
                             <p 
-                                key={item.id_indikator}
-                                className={`${data.indikator.length > 1 && "border-b"} py-3`}
+                            key={item.id_indikator}
+                            className={`${data.indikator.length > 1 && "border-b"} py-3`}
                             >
                                 {item.nama_indikator}
                             </p>
@@ -391,8 +400,8 @@ export const TableTematik: React.FC<TableTematik> = ({ data, rowSpan, onDelete }
                         {data.indikator.map((item: indikator) => (
                             item.targets.map((t: target) => (
                                 <p 
-                                    key={t.id_target}
-                                    className={`${data.indikator.length > 1 && "border-b"} py-3`}
+                                key={t.id_target}
+                                className={`${data.indikator.length > 1 && "border-b"} py-3`}
                                 >
                                     {t.target} / {t.satuan}
                                 </p>
@@ -406,6 +415,7 @@ export const TableTematik: React.FC<TableTematik> = ({ data, rowSpan, onDelete }
                     <td rowSpan={rowSpan} className="border-r border-b px-6 py-4 text-center">-</td>
                 </>
             }
+            <td rowSpan={rowSpan} className="border-r border-b px-6 py-4 text-center">{data.keterangan ? data.keterangan : "-"}</td>
             <td rowSpan={rowSpan} className="border-r border-b px-6 py-4">
                 <div className="flex flex-col jutify-center items-center gap-2">
                     <ButtonGreenBorder
@@ -419,7 +429,7 @@ export const TableTematik: React.FC<TableTematik> = ({ data, rowSpan, onDelete }
                     <ButtonRedBorder
                         className="flex items-center gap-1 w-full"
                         onClick={() => {
-                            AlertQuestion("Hapus?", "Hapus tematik pemda yang dipilih?", "question", "Hapus", "Batal").then((result) => {
+                            AlertQuestion("Hapus?", "Data Tematik dan CSF akan di hapus?", "question", "Hapus", "Batal").then((result) => {
                                 if (result.isConfirmed) {
                                     onDelete
                                 }

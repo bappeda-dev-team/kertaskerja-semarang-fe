@@ -321,7 +321,7 @@ export const FormTematikKab = () => {
                         "Simpan"
                     }
                 </ButtonGreen>
-                <ButtonRed type="button" halaman_url="/tematikpemda">
+                <ButtonRed type="button" halaman_url="/CSF">
                     Kembali
                 </ButtonRed>
             </form>
@@ -467,7 +467,7 @@ export const FormEditTematikKab = () => {
             });
             if(response.ok){
                 AlertNotification("Berhasil", "Berhasil edit data tematik kabupaten", "success", 1000);
-                router.push("/tematikpemda");
+                router.push("/CSF");
             } else {
                 AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
             }
@@ -714,7 +714,7 @@ export const FormEditTematikKab = () => {
                             "Simpan"
                         }
                     </ButtonGreen>
-                    <ButtonRed type="button" halaman_url="/tematikpemda">
+                    <ButtonRed type="button" halaman_url="/CSF">
                         Kembali
                     </ButtonRed>
                 </form>
