@@ -696,7 +696,7 @@ export const TablePohon = (props: any) => {
     return (
         <table className='w-full'>
             <tbody>
-                {jenis === "Tematik" &&
+                {/* {jenis === "Tematik" &&
                     <CSF data={csf}/>
                 }
                 {jenis === "Sub Tematik" &&
@@ -704,7 +704,7 @@ export const TablePohon = (props: any) => {
                 }
                 {jenis === "Sub Sub Tematik" &&
                     <Intermediate />
-                }
+                } */}
                 <tr>
                     <td
                         className={`min-w-[100px] border px-2 py-3 bg-white text-start rounded-tl-lg

@@ -198,33 +198,33 @@ export const FormPohonPemda: React.FC<{
                 })),
             })
         };
-        console.log(formData);
-        // try {
-        //     setProses(true);
-        //     const url = '/pohon_kinerja_admin/create';
-        //     const response = await fetch(`${API_URL}${url}`, {
-        //         method: "POST",
-        //         headers: {
-        //             Authorization: `${token}`,
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(formData),
-        //     });
-        //     if (response.ok) {
-        //         AlertNotification("Berhasil", "Berhasil menambahkan pohon", "success", 1000);
-        //         setIsAdded(true);
-        //         const result = await response.json();
-        //         const data = result.data;
-        //         setDataAdd(data);
-        //     } else {
-        //         AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
-        //     }
-        // } catch (err) {
-        //     AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
-        //     console.error(err);
-        // } finally {
-        //     setProses(false);
-        // }
+        // console.log(formData);
+        try {
+            setProses(true);
+            const url = '/pohon_kinerja_admin/create';
+            const response = await fetch(`${API_URL}${url}`, {
+                method: "POST",
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            if (response.ok) {
+                AlertNotification("Berhasil", "Berhasil menambahkan pohon", "success", 1000);
+                setIsAdded(true);
+                const result = await response.json();
+                const data = result.data;
+                setDataAdd(data);
+            } else {
+                AlertNotification("Gagal", "terdapat kesalahan pada backend / database server", "error", 2000);
+            }
+        } catch (err) {
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+            console.error(err);
+        } finally {
+            setProses(false);
+        }
     };
 
     return (
@@ -264,7 +264,7 @@ export const FormPohonPemda: React.FC<{
                                 onSubmit={handleSubmit(onSubmit)}
                                 className='w-full'
                             >
-                                {(level === 0 || level === 1) &&
+                                {/* {(level === 0 || level === 1) &&
                                     <div className="flex flex-col py-3">
                                         <label
                                             className="uppercase text-xs font-bold text-gray-700 my-2"
@@ -315,7 +315,7 @@ export const FormPohonPemda: React.FC<{
                                             )}
                                         />
                                     </div>
-                                }
+                                } */}
                                 <div className="flex flex-col py-3">
                                     <label
                                         className="uppercase text-xs font-bold text-gray-700 my-2"
@@ -1095,34 +1095,34 @@ export const FormEditPohon: React.FC<{
                 })),
             }),
         };
-        console.log(formData);
-        // try {
-        //     setProses(true);
-        //     const response = await fetch(`${API_URL}/pohon_kinerja_admin/update/${id}`, {
-        //         method: "PUT",
-        //         headers: {
-        //             Authorization: `${token}`,
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify(formData),
-        //     });
-        //     const result = await response.json();
-        //     if (result.code === 200) {
-        //         AlertNotification("Berhasil", "Berhasil edit pohon", "success", 1000);
-        //         const berhasil = true;
-        //         const data = result.data;
-        //         if (berhasil) {
-        //             EditBerhasil(data);
-        //         }
-        //     } else {
-        //         AlertNotification("Gagal", `${result.data || 'terdapat kesalahan pada backend'}`, "error", 2000);
-        //     }
-        // } catch (err) {
-        //     AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
-        //     console.error(err);
-        // } finally {
-        //     setProses(false);
-        // }
+        // console.log(formData);
+        try {
+            setProses(true);
+            const response = await fetch(`${API_URL}/pohon_kinerja_admin/update/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const result = await response.json();
+            if (result.code === 200) {
+                AlertNotification("Berhasil", "Berhasil edit pohon", "success", 1000);
+                const berhasil = true;
+                const data = result.data;
+                if (berhasil) {
+                    EditBerhasil(data);
+                }
+            } else {
+                AlertNotification("Gagal", `${result.data || 'terdapat kesalahan pada backend'}`, "error", 2000);
+            }
+        } catch (err) {
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+            console.error(err);
+        } finally {
+            setProses(false);
+        }
     };
 
     if (ProsesDetail) {
@@ -1164,7 +1164,7 @@ export const FormEditPohon: React.FC<{
                         onSubmit={handleSubmit(onSubmit)}
                         className='w-full'
                     >
-                        {(level === 2 || level === 1) &&
+                        {/* {(level === 2 || level === 1) &&
                             <div className="flex flex-col py-3">
                                 <label
                                     className="uppercase text-xs font-bold text-gray-700 my-2"
@@ -1215,7 +1215,7 @@ export const FormEditPohon: React.FC<{
                                     )}
                                 />
                             </div>
-                        }
+                        } */}
                         <div className="flex flex-col py-3">
                             <label
                                 className="uppercase text-xs font-bold text-gray-700 my-2"
