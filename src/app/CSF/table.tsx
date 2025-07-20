@@ -270,7 +270,6 @@ export const Table = () => {
                                                             rowSpan={c.alasan_kondisi != null ? c.alasan_kondisi.length + 1 : 2}
                                                             onDelete={() => {
                                                                 hapusTematik(data.id);
-                                                                hapusCsf(data.id);
                                                             }}
                                                         />
                                                     </tr>
