@@ -91,6 +91,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
             }
         } catch (err) {
             AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+            console.log(err);
         } finally {
             setProses(false);
         }

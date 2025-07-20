@@ -316,7 +316,7 @@ export const Table = () => {
                                                         buttonDelete={false}
                                                         onDelete={() => hapusCsf(data.id)}
                                                         onEdit={() => {
-                                                            if (data.csf === null) {
+                                                            if (!data.csf) {
                                                                 handleModal("baru", data);
                                                             } else {
                                                                 handleModal("edit", data);
