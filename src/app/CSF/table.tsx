@@ -244,19 +244,15 @@ export const Table = () => {
                                                         </td>
                                                         <td className="h-0"></td>
                                                         <td className="h-0"></td>
-                                                        <td 
-                                                            rowSpan={c.alasan_kondisi != null ? c.alasan_kondisi.length + 1 : 2} 
+                                                        <td
+                                                            rowSpan={c.alasan_kondisi != null ? c.alasan_kondisi.length + 1 : 2}
                                                             className="border-r border-b bg-blue-100 border-white px-6 py-4 text-center"
                                                         >
                                                             <AksiCsf
                                                                 buttonDelete={true}
                                                                 onDelete={() => hapusCsf(data.id)}
                                                                 onEdit={() => {
-                                                                    if (data.csf === null) {
-                                                                        handleModal("baru", data);
-                                                                    } else {
-                                                                        handleModal("edit", data);
-                                                                    }
+                                                                    handleModal("baru", data);
                                                                 }}
                                                             />
                                                         </td>
@@ -387,9 +383,9 @@ export const TableTematik: React.FC<TableTematik> = ({ data, rowSpan, onDelete }
                 <>
                     <td rowSpan={rowSpan} className="border-r border-b px-6 py-4 text-center">
                         {data.indikator.map((item: indikator) => (
-                            <p 
-                            key={item.id_indikator}
-                            className={`${data.indikator.length > 1 && "border-b"} py-3`}
+                            <p
+                                key={item.id_indikator}
+                                className={`${data.indikator.length > 1 && "border-b"} py-3`}
                             >
                                 {item.nama_indikator}
                             </p>
@@ -398,9 +394,9 @@ export const TableTematik: React.FC<TableTematik> = ({ data, rowSpan, onDelete }
                     <td rowSpan={rowSpan} className="border-r border-b px-6 py-4 text-center">
                         {data.indikator.map((item: indikator) => (
                             item.targets.map((t: target) => (
-                                <p 
-                                key={t.id_target}
-                                className={`${data.indikator.length > 1 && "border-b"} py-3`}
+                                <p
+                                    key={t.id_target}
+                                    className={`${data.indikator.length > 1 && "border-b"} py-3`}
                                 >
                                     {t.target} / {t.satuan}
                                 </p>
