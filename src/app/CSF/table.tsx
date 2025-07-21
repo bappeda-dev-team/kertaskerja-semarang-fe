@@ -266,7 +266,6 @@ export const Table = () => {
                                                             rowSpan={c.alasan_kondisi != null ? c.alasan_kondisi.length + 1 : 2}
                                                             onDelete={() => {
                                                                 hapusTematik(data.id);
-                                                                hapusCsf(data.id);
                                                             }}
                                                         />
                                                     </tr>
@@ -312,7 +311,7 @@ export const Table = () => {
                                                         buttonDelete={false}
                                                         onDelete={() => hapusCsf(data.id)}
                                                         onEdit={() => {
-                                                            if (data.csf === null) {
+                                                            if (!data.csf) {
                                                                 handleModal("baru", data);
                                                             } else {
                                                                 handleModal("edit", data);
