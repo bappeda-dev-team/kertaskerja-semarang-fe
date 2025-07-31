@@ -303,6 +303,7 @@ export const ModalPohonPemda: React.FC<modal> = ({ isOpen, onClose, onSuccess, i
     const handleClose = () => {
         setPohonParent(null);
         setPohonPemda(null);
+        setButtonDetailPohonPemda(false);
         onClose();
     };
 
@@ -321,7 +322,7 @@ export const ModalPohonPemda: React.FC<modal> = ({ isOpen, onClose, onSuccess, i
                     </div>
                     <div className="py-5 my-5">
                         <div className="mb-1">
-                            <label htmlFor="" className='uppercase text-xs font-medium text-gray-700 my-2 ml-1'>
+                            <label htmlFor="" className='uppercase text-xs font-bold text-gray-700 my-2 ml-1'>
                                 {isLevel === 4 ? 'Strategic Pemda' :
                                     isLevel === 5 ? 'Tactical Pemda' :
                                         isLevel === 6 ? 'Operational Pemda' :

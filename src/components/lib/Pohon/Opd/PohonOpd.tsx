@@ -192,19 +192,19 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                 <React.Fragment></React.Fragment>
                 :
                 <React.Fragment>
-                        <li>
-                            {edit ?
-                                    <FormEditPohon
-                                        level={tema.level_pohon}
-                                        id={tema.id}
-                                        key={tema.id}
-                                        formId={tema.id}
-                                        onCancel={() => setEdit(false)}
-                                        EditBerhasil={handleEditSuccess}
-                                    />
-                                :
-                                <div
-                                    className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg pohon-opd
+                    <li>
+                        {edit ?
+                            <FormEditPohon
+                                level={tema.level_pohon}
+                                id={tema.id}
+                                key={tema.id}
+                                formId={tema.id}
+                                onCancel={() => setEdit(false)}
+                                EditBerhasil={handleEditSuccess}
+                            />
+                            :
+                            <div
+                                className={`tf-nc tf flex flex-col w-[600px] rounded-lg shadow-lg pohon-opd
                                         ${tema.jenis_pohon === "Strategic Pemda" && 'shadow-slate-500'}
                                         ${tema.jenis_pohon === "Tactical Pemda" && 'shadow-slate-500'}
                                         ${tema.jenis_pohon === "OperationalPemda" && 'shadow-slate-500'}
@@ -214,10 +214,10 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                         ${tema.jenis_pohon === "Operational N" && 'shadow-slate-500 bg-white'}
                                         ${(tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohon === "Operational N Crosscutting") && 'shadow-yellow-700 bg-yellow-700'}
                                     `}
-                                >
-                                    {/* HEADER */}
-                                    <div
-                                        className={`flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 rounded-lg bg-white
+                            >
+                                {/* HEADER */}
+                                <div
+                                    className={`flex pt-3 justify-center font-bold text-lg uppercase border my-3 py-3 rounded-lg bg-white
                                             ${tema.jenis_pohon === "Strategic Pemda" && 'border-red-700 text-white bg-gradient-to-r from-[#CA3636] from-40% to-[#BD04A1]'}
                                             ${tema.jenis_pohon === "Tactical Pemda" && 'border-blue-500 text-white bg-gradient-to-r from-[#3673CA] from-40% to-[#08D2FB]'}
                                             ${tema.jenis_pohon === "Operational Pemda" && 'border-green-500 text-white bg-gradient-to-r from-[#007982] from-40% to-[#2DCB06]'}
@@ -226,409 +226,425 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                             ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-green-500 text-green-500'}
                                             ${(tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohon === "Operational N Crosscutting") && 'border-green-500 text-green-500'}
                                         `}
+                                >
+                                    {tema.jenis_pohon === 'Operational N' ?
+                                        <h1>Operational {tema.level_pohon - 6} {tema.id}</h1>
+                                        :
+                                        <h1>{tema.jenis_pohon} {tema.id}</h1>
+                                    }
+                                </div>
+                                {/* BODY */}
+                                <div className="flex justify-center my-3">
+                                    {Edited ?
+                                        <TablePohon
+                                            item={Edited}
+                                            user={User?.roles}
+                                            ShowDetail={show_detail}
+                                        />
+                                        :
+                                        <TablePohon
+                                            item={tema}
+                                            user={User?.roles}
+                                            ShowDetail={show_detail}
+                                        />
+                                    }
+                                </div>
+                                {/* BUTTON ACTION INSIDE BOX SUPER ADMIN, ADMIN OPD, ASN LEVEL 1 */}
+                                {(User?.roles == 'super_admin' || User?.roles == 'admin_opd' || User?.roles == 'level_1') &&
+                                    !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
+                                    <div
+                                        className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
+                                                        ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
+                                                    `}
                                     >
-                                        {tema.jenis_pohon === 'Operational N' ?
-                                            <h1>Operational {tema.level_pohon - 6} {tema.id}</h1>
-                                            :
-                                            <h1>{tema.jenis_pohon} {tema.id}</h1>
-                                        }
+                                        <ButtonSkyBorder onClick={() => setEdit(true)}>
+                                            <TbPencil className="mr-1" />
+                                            Edit
+                                        </ButtonSkyBorder>
+                                        <ButtonGreenBorder onClick={handleCross}>
+                                            <TbLayersLinked className="mr-1" />
+                                            CrossCuting
+                                        </ButtonGreenBorder>
+                                        <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
+                                        <ButtonRedBorder
+                                            onClick={() => {
+                                                AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
+                                                            hapusPohonCross(tema.id)
+                                                        } else {
+                                                            hapusPohonOpd(tema.id);
+                                                        }
+                                                    }
+                                                });
+                                            }}
+                                        >
+                                            <TbTrash className='mr-1' />
+                                            Hapus
+                                        </ButtonRedBorder>
                                     </div>
-                                    {/* BODY */}
-                                    <div className="flex justify-center my-3">
-                                        {Edited ?
-                                            <TablePohon
-                                                item={Edited}
-                                                user={User?.roles}
-                                                ShowDetail={show_detail}
-                                            />
-                                            :
-                                            <TablePohon
-                                                item={tema}
-                                                user={User?.roles}
-                                                ShowDetail={show_detail}
-                                            />
-                                        }
+                                }
+                                {/* BUTTON ACTION INSIDE BOX ASN LEVEL 2*/}
+                                {(User?.roles == 'level_2' &&
+                                    (
+                                        tema.jenis_pohon === 'Tactical' ||
+                                        tema.jenis_pohon === 'Tactical Crosscutting' ||
+                                        tema.jenis_pohon === 'Operational' ||
+                                        tema.jenis_pohon === 'Operational Crosscutting' ||
+                                        tema.jenis_pohon === 'Operational N' ||
+                                        tema.jenis_pohon === 'Operational N Crosscutting'
+                                    )) &&
+                                    !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
+                                    <div
+                                        className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
+                                                    ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
+                                                `}
+                                    >
+                                        <ButtonSkyBorder onClick={() => setEdit(true)}>
+                                            <TbPencil className="mr-1" />
+                                            Edit
+                                        </ButtonSkyBorder>
+                                        <ButtonGreenBorder onClick={handleCross}>
+                                            <TbLayersLinked className="mr-1" />
+                                            CrossCuting
+                                        </ButtonGreenBorder>
+                                        <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
+                                        <ButtonRedBorder
+                                            onClick={() => {
+                                                AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
+                                                            hapusPohonCross(tema.id)
+                                                        } else {
+                                                            hapusPohonOpd(tema.id);
+                                                        }
+                                                    }
+                                                });
+                                            }}
+                                        >
+                                            <TbTrash className='mr-1' />
+                                            Hapus
+                                        </ButtonRedBorder>
                                     </div>
-                                    {/* BUTTON ACTION INSIDE BOX SUPER ADMIN, ADMIN OPD, ASN LEVEL 1 */}
-                                    {(User?.roles == 'super_admin' || User?.roles == 'admin_opd' || User?.roles == 'level_1') &&
-                                        !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
-                                        <div
-                                            className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
+                                }
+                                {/* BUTTON ACTION INSIDE BOX ASN LEVEL 3*/}
+                                {(User?.roles == 'level_3' &&
+                                    (
+                                        tema.jenis_pohon === 'Operational' ||
+                                        tema.jenis_pohon === 'Operational Crosscutting' ||
+                                        tema.jenis_pohon === 'Operational N' ||
+                                        tema.jenis_pohon === 'Operational N Crosscutting'
+                                    )) &&
+                                    !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
+                                    <div
+                                        className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
                                                     ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
                                                 `}
-                                        >
-                                            <ButtonSkyBorder onClick={() => setEdit(true)}>
-                                                <TbPencil className="mr-1" />
-                                                Edit
-                                            </ButtonSkyBorder>
-                                            <ButtonGreenBorder onClick={handleCross}>
-                                                <TbLayersLinked className="mr-1" />
-                                                CrossCuting
-                                            </ButtonGreenBorder>
-                                            <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
-                                            <ButtonRedBorder
-                                                onClick={() => {
-                                                    AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
-                                                        if (result.isConfirmed) {
-                                                            if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
-                                                                hapusPohonCross(tema.id)
-                                                            } else {
-                                                                hapusPohonOpd(tema.id);
-                                                            }
+                                    >
+                                        <ButtonSkyBorder onClick={() => setEdit(true)}>
+                                            <TbPencil className="mr-1" />
+                                            Edit
+                                        </ButtonSkyBorder>
+                                        <ButtonGreenBorder onClick={handleCross}>
+                                            <TbLayersLinked className="mr-1" />
+                                            CrossCuting
+                                        </ButtonGreenBorder>
+                                        <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
+                                        <ButtonRedBorder
+                                            onClick={() => {
+                                                AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
+                                                            hapusPohonCross(tema.id)
+                                                        } else {
+                                                            hapusPohonOpd(tema.id);
                                                         }
-                                                    });
-                                                }}
-                                            >
-                                                <TbTrash className='mr-1' />
-                                                Hapus
-                                            </ButtonRedBorder>
-                                        </div>
-                                    }
-                                    {/* BUTTON ACTION INSIDE BOX ASN LEVEL 2*/}
-                                    {(User?.roles == 'level_2' &&
-                                        (
-                                            tema.jenis_pohon === 'Tactical' ||
-                                            tema.jenis_pohon === 'Tactical Crosscutting' ||
-                                            tema.jenis_pohon === 'Operational' ||
-                                            tema.jenis_pohon === 'Operational Crosscutting' ||
-                                            tema.jenis_pohon === 'Operational N' ||
-                                            tema.jenis_pohon === 'Operational N Crosscutting'
-                                        )) &&
-                                        !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
-                                        <div
-                                            className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
-                                                    ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
-                                                `}
+                                                    }
+                                                });
+                                            }}
                                         >
-                                            <ButtonSkyBorder onClick={() => setEdit(true)}>
-                                                <TbPencil className="mr-1" />
-                                                Edit
-                                            </ButtonSkyBorder>
-                                            <ButtonGreenBorder onClick={handleCross}>
-                                                <TbLayersLinked className="mr-1" />
-                                                CrossCuting
-                                            </ButtonGreenBorder>
-                                            <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
-                                            <ButtonRedBorder
-                                                onClick={() => {
-                                                    AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
-                                                        if (result.isConfirmed) {
-                                                            if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
-                                                                hapusPohonCross(tema.id)
-                                                            } else {
-                                                                hapusPohonOpd(tema.id);
-                                                            }
-                                                        }
-                                                    });
-                                                }}
-                                            >
-                                                <TbTrash className='mr-1' />
-                                                Hapus
-                                            </ButtonRedBorder>
-                                        </div>
-                                    }
-                                    {/* BUTTON ACTION INSIDE BOX ASN LEVEL 3*/}
-                                    {(User?.roles == 'level_3' &&
-                                        (
-                                            tema.jenis_pohon === 'Operational' ||
-                                            tema.jenis_pohon === 'Operational Crosscutting' ||
-                                            tema.jenis_pohon === 'Operational N' ||
-                                            tema.jenis_pohon === 'Operational N Crosscutting'
-                                        )) &&
-                                        !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
-                                        <div
-                                            className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
-                                                    ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
-                                                `}
-                                        >
-                                            <ButtonSkyBorder onClick={() => setEdit(true)}>
-                                                <TbPencil className="mr-1" />
-                                                Edit
-                                            </ButtonSkyBorder>
-                                            <ButtonGreenBorder onClick={handleCross}>
-                                                <TbLayersLinked className="mr-1" />
-                                                CrossCuting
-                                            </ButtonGreenBorder>
-                                            <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
-                                            <ButtonRedBorder
-                                                onClick={() => {
-                                                    AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
-                                                        if (result.isConfirmed) {
-                                                            if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
-                                                                hapusPohonCross(tema.id)
-                                                            } else {
-                                                                hapusPohonOpd(tema.id);
-                                                            }
-                                                        }
-                                                    });
-                                                }}
-                                            >
-                                                <TbTrash className='mr-1' />
-                                                Hapus
-                                            </ButtonRedBorder>
-                                        </div>
-                                    }
-                                    {/* BUTTON ACTION INSIDE BOX ASN LEVEL 4*/}
-                                    {(User?.roles == 'level_4' &&
-                                        (
-                                            tema.jenis_pohon === 'Operational N' ||
-                                            tema.jenis_pohon === 'Operational N Crosscutting'
-                                        )) &&
-                                        !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
-                                        <div
-                                            className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
+                                            <TbTrash className='mr-1' />
+                                            Hapus
+                                        </ButtonRedBorder>
+                                    </div>
+                                }
+                                {/* BUTTON ACTION INSIDE BOX ASN LEVEL 4*/}
+                                {(User?.roles == 'level_4' &&
+                                    (
+                                        tema.jenis_pohon === 'Operational N' ||
+                                        tema.jenis_pohon === 'Operational N Crosscutting'
+                                    )) &&
+                                    !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
+                                    <div
+                                        className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
                                                     ${tema.jenis_pohon === "Strategic Pemda" && 'border-black'}
                                                     ${tema.jenis_pohon === "Tactical Pemda" && 'border-black'}
                                                     ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
                                                     ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
                                                 `}
-                                        >
-                                            <ButtonSkyBorder onClick={() => setEdit(true)}>
-                                                <TbPencil className="mr-1" />
-                                                Edit
-                                            </ButtonSkyBorder>
-                                            <ButtonGreenBorder onClick={handleCross}>
-                                                <TbLayersLinked className="mr-1" />
-                                                CrossCuting
-                                            </ButtonGreenBorder>
-                                            <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
-                                            <ButtonRedBorder
-                                                onClick={() => {
-                                                    AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
-                                                        if (result.isConfirmed) {
-                                                            if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
-                                                                hapusPohonCross(tema.id)
-                                                            } else {
-                                                                hapusPohonOpd(tema.id);
-                                                            }
+                                    >
+                                        <ButtonSkyBorder onClick={() => setEdit(true)}>
+                                            <TbPencil className="mr-1" />
+                                            Edit
+                                        </ButtonSkyBorder>
+                                        <ButtonGreenBorder onClick={handleCross}>
+                                            <TbLayersLinked className="mr-1" />
+                                            CrossCuting
+                                        </ButtonGreenBorder>
+                                        <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
+                                        <ButtonRedBorder
+                                            onClick={() => {
+                                                AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
+                                                            hapusPohonCross(tema.id)
+                                                        } else {
+                                                            hapusPohonOpd(tema.id);
                                                         }
-                                                    });
-                                                }}
-                                            >
-                                                <TbTrash className='mr-1' />
-                                                Hapus
-                                            </ButtonRedBorder>
-                                        </div>
-                                    }
-                                    {/* BUTTON CROSSCUTTING KHUSUS POHON PEMDA */}
-                                    {['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
-                                        <div
-                                            className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
+                                                    }
+                                                });
+                                            }}
+                                        >
+                                            <TbTrash className='mr-1' />
+                                            Hapus
+                                        </ButtonRedBorder>
+                                    </div>
+                                }
+                                {/* BUTTON CROSSCUTTING KHUSUS POHON PEMDA */}
+                                {['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
+                                    <div
+                                        className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
                                                 ${tema.jenis_pohon === "Strategic Pemda" && 'border-black'}
                                                 ${tema.jenis_pohon === "Tactical Pemda" && 'border-black'}
                                                 ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
                                                 ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
                                                 `}
+                                    >
+                                        <ButtonGreenBorder
+                                            className='flex items-center gap-1'
+                                            onClick={handleCross}
                                         >
-                                            <ButtonGreenBorder
-                                                className='flex items-center gap-1'
-                                                onClick={handleCross}
-                                            >
-                                                <TbLayersLinked />
-                                                Crosscutting
-                                            </ButtonGreenBorder>
-                                            <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
-                                        </div>
-                                    }
-                                    {/* DETAIL DATA CROSSCUTTING */}
-                                    {DetailCross &&
-                                        <>
-                                            <div className="flex justify-center my-3">
-                                                {CrossLoading ? (
-                                                    <p className="bg-white w-full rounded-lg py-3 text-center">Loading...</p>
-                                                ) : PohonCross.length === 0 ? (
-                                                    <p
-                                                        className={`bg-white w-full rounded-lg py-3
+                                            <TbLayersLinked />
+                                            Crosscutting
+                                        </ButtonGreenBorder>
+                                        <ButtonRedBorder
+                                            onClick={() => {
+                                                AlertQuestion("Hapus?", "DATA POHON yang terkait kebawah jika ada akan terhapus juga", "question", "Hapus", "Batal").then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        if (tema.jenis_pohon === "Strategic Crosscutting" || tema.jenis_pohon === "Tactical Crosscutting" || tema.jenis_pohon === "Operational Crosscutting" || tema.jenis_pohn === "Operational N Crosscutting") {
+                                                            hapusPohonCross(tema.id)
+                                                        } else {
+                                                            hapusPohonOpd(tema.id);
+                                                        }
+                                                    }
+                                                });
+                                            }}
+                                        >
+                                            <TbTrash className='mr-1' />
+                                            Hapus
+                                        </ButtonRedBorder>
+                                        <ModalAddCrosscutting isOpen={Cross} onClose={handleCross} id={tema.id} nama_pohon={tema.nama_pohon} />
+                                    </div>
+                                }
+                                {/* DETAIL DATA CROSSCUTTING */}
+                                {DetailCross &&
+                                    <>
+                                        <div className="flex justify-center my-3">
+                                            {CrossLoading ? (
+                                                <p className="bg-white w-full rounded-lg py-3 text-center">Loading...</p>
+                                            ) : PohonCross.length === 0 ? (
+                                                <p
+                                                    className={`bg-white w-full rounded-lg py-3
                                                             ${tema.jenis_pohon === 'Operational N' && 'border border-green-500'}
                                                         `}
-                                                    >
-                                                        tidak ada crosscuting
-                                                    </p>
-                                                ) : (
-                                                    <TableCrosscuting item={PohonCross} ori={tema.id} hapusPohonOpd={hapusPohonOpd} />
-                                                )}
-                                            </div>
-                                        </>
-                                    }
-                                    {/* BUTTON ACTION INSIDE BOX CEK CROSSCUTTING */}
-                                    <div
-                                        className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
+                                                >
+                                                    tidak ada crosscuting
+                                                </p>
+                                            ) : (
+                                                <TableCrosscuting item={PohonCross} ori={tema.id} hapusPohonOpd={hapusPohonOpd} />
+                                            )}
+                                        </div>
+                                    </>
+                                }
+                                {/* BUTTON ACTION INSIDE BOX CEK CROSSCUTTING */}
+                                <div
+                                    className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
                                             ${tema.jenis_pohon === "Strategic Pemda" && 'border-black'}
                                             ${tema.jenis_pohon === "Tactical Pemda" && 'border-black'}
                                             ${tema.jenis_pohon === "Operational Pemda" && 'border-black'}
                                             ${tema.jenis_pohon === "Operational N" && 'border-green-500'}
                                             `}
+                                >
+                                    <ButtonSky
+                                        className='flex items-center gap-1'
+                                        onClick={() => setIsCetak(true)}
                                     >
-                                        <ButtonSky
-                                            className='flex items-center gap-1'
-                                            onClick={() => setIsCetak(true)}
-                                        >
-                                            <TbPrinter />
-                                            Cetak
-                                        </ButtonSky>
-                                        {/* {!['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) && */}
-                                        <ButtonSkyBorder
-                                            onClick={() => {
-                                                fetchPohonCross(tema.id);
-                                                handleDetailCross();
-                                            }}
-                                        >
-                                            <TbDeviceTabletSearch className="mr-1" />
-                                            {DetailCross ? "Sembunyikan" : "Cek Crosscutting"}
-                                        </ButtonSkyBorder>
-                                        {/* } */}
-                                    </div>
-                                    {/* footer */}
-                                    <div className="flex justify-evenly my-3 py-3 hide-on-capture">
-                                        {(tema.level_pohon != 4 && (
-                                            User?.roles == 'super_admin' ||
-                                            User?.roles == 'admin_opd' ||
-                                            User?.roles == 'level_1' ||
-                                            User?.roles == 'level_2'
-                                        )) &&
-                                            <>
-                                                <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
-                                                    onClick={handlePindahPohon}
-                                                >
-                                                    <TbArrowAutofitWidth className='mr-1' />
-                                                    Pindah
-                                                </ButtonBlackBorder>
-                                                <ModalPindahPohonOpd
-                                                    onClose={handlePindahPohon}
-                                                    isOpen={PindahPohon}
-                                                    id={tema.id}
-                                                    pohon={tema}
-                                                    onSuccess={fetchTrigger}
-                                                />
-                                            </>
-                                        }
-                                        {(User?.roles == 'level_3' && (
-                                            tema.jenis_pohon == "Operational" ||
-                                            tema.jenis_pohon == "Operational Pemda" ||
-                                            tema.jenis_pohon == "Operational Crosscutting" ||
-                                            tema.jenis_pohon == "Operational N" ||
-                                            tema.jenis_pohon == "Operational N Crosscutting"
-                                        )) &&
-                                            <>
-                                                <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
-                                                    onClick={handlePindahPohon}
-                                                >
-                                                    <TbArrowAutofitWidth className='mr-1' />
-                                                    Pindah
-                                                </ButtonBlackBorder>
-                                                <ModalPindahPohonOpd
-                                                    onClose={handlePindahPohon}
-                                                    isOpen={PindahPohon}
-                                                    id={tema.id}
-                                                    pohon={tema}
-                                                    onSuccess={deleteTrigger}
-                                                />
-                                            </>
-                                        }
-                                        {(User?.roles == 'level_4' && (
-                                            tema.jenis_pohon == "Operational N" ||
-                                            tema.jenis_pohon == "Operational N Crosscutting"
-                                        )) &&
-                                            <>
-                                                <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
-                                                    onClick={handlePindahPohon}
-                                                >
-                                                    <TbArrowAutofitWidth className='mr-1' />
-                                                    Pindah
-                                                </ButtonBlackBorder>
-                                                <ModalPindahPohonOpd
-                                                    onClose={handlePindahPohon}
-                                                    isOpen={PindahPohon}
-                                                    id={tema.id}
-                                                    pohon={tema}
-                                                    onSuccess={deleteTrigger}
-                                                />
-                                            </>
-                                        }
-                                        <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
-                                            onClick={handleShow}
-                                        >
-                                            <TbEye className='mr-1' />
-                                            {Show ? 'Sembunyikan' : 'Tampilkan'}
-                                        </ButtonBlackBorder>
-                                        {/* BUTTON TAMBAH POKIN OPD SUPER ADMIN, ADMIN OPD, ASN LEVEL 1 & 2 */}
-                                        {(User?.roles == 'super_admin' || User?.roles == 'admin_opd' || User?.roles == 'level_1' || User?.roles == 'level_2') &&
-                                            Show &&
-                                            <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
-                                                onClick={newChild}
-                                            >
-                                                <TbCirclePlus className='mr-1' />
-                                                {newChildButtonName(tema.jenis_pohon)}
-                                            </ButtonGreenBorder>
-                                        }
-                                        {/* BUTTON TAMBAH POKIN OPD ASN LEVEL 3 */}
-                                        {(User?.roles == 'level_3' &&
-                                            (
-                                                tema.jenis_pohon === 'Tactical' ||
-                                                tema.jenis_pohon === 'Tactical Pemda' ||
-                                                tema.jenis_pohon === 'Operational' ||
-                                                tema.jenis_pohon === 'Operational Pemda' ||
-                                                tema.jenis_pohon === 'Operational N' ||
-                                                tema.jenis_pohon === 'Operational N Pemda'
-                                            )) &&
-                                            Show &&
-                                            <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
-                                                onClick={newChild}
-                                            >
-                                                <TbCirclePlus className='mr-1' />
-                                                {newChildButtonName(tema.jenis_pohon)}
-                                            </ButtonGreenBorder>
-                                        }
-                                        {/* BUTTON TAMBAH POKIN OPD ASN LEVEL 4 */}
-                                        {(User?.roles == 'level_4' &&
-                                            (
-                                                tema.jenis_pohon === 'Operational' ||
-                                                tema.jenis_pohon === 'Operational Pemda' ||
-                                                tema.jenis_pohon === 'Operational N' ||
-                                                tema.jenis_pohon === 'Operational N Pemda'
-                                            )) &&
-                                            Show &&
-                                            <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
-                                                onClick={newChild}
-                                            >
-                                                <TbCirclePlus className='mr-1' />
-                                                {newChildButtonName(tema.jenis_pohon)}
-                                            </ButtonGreenBorder>
-                                        }
-                                    </div>
+                                        <TbPrinter />
+                                        Cetak
+                                    </ButtonSky>
+                                    {/* {!['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) && */}
+                                    <ButtonSkyBorder
+                                        onClick={() => {
+                                            fetchPohonCross(tema.id);
+                                            handleDetailCross();
+                                        }}
+                                    >
+                                        <TbDeviceTabletSearch className="mr-1" />
+                                        {DetailCross ? "Sembunyikan" : "Cek Crosscutting"}
+                                    </ButtonSkyBorder>
+                                    {/* } */}
                                 </div>
-                            }
-                            <ul style={{ display: Show ? '' : 'none' }}>
-                                {childPohons.map((dahan: any, index: any) => (
-                                    <PohonOpd
-                                        tema={dahan}
-                                        key={index}
-                                        deleteTrigger={deleteTrigger}
-                                        fetchTrigger={fetchTrigger}
-                                        show_all={show_all}
-                                        show_detail={show_detail}
-                                        set_show_all={() => set_show_all()}
-                                    />
-                                ))}
-                                {formList.map((formId) => (
-                                    <FormPohonOpd
-                                        level={tema.level_pohon}
-                                        id={tema.id}
-                                        key={formId}
-                                        formId={formId}
-                                        onCancel={() => setFormList(formList.filter((id) => id !== formId))}
-                                        deleteTrigger={deleteTrigger}
-                                        fetchTrigger={fetchTrigger}
-                                    />
-                                ))}
-                            </ul>
-                            <ModalCetak
-                                jenis="non_cascading"
-                                onClose={() => setIsCetak(false)}
-                                isOpen={IsCetak}
-                                pohon={tema}
-                            />
-                        </li>
+                                {/* footer */}
+                                <div className="flex justify-evenly my-3 py-3 hide-on-capture">
+                                    {(tema.level_pohon != 4 && (
+                                        User?.roles == 'super_admin' ||
+                                        User?.roles == 'admin_opd' ||
+                                        User?.roles == 'level_1' ||
+                                        User?.roles == 'level_2'
+                                    )) &&
+                                        <>
+                                            <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                                onClick={handlePindahPohon}
+                                            >
+                                                <TbArrowAutofitWidth className='mr-1' />
+                                                Pindah
+                                            </ButtonBlackBorder>
+                                            <ModalPindahPohonOpd
+                                                onClose={handlePindahPohon}
+                                                isOpen={PindahPohon}
+                                                id={tema.id}
+                                                pohon={tema}
+                                                onSuccess={fetchTrigger}
+                                            />
+                                        </>
+                                    }
+                                    {(User?.roles == 'level_3' && (
+                                        tema.jenis_pohon == "Operational" ||
+                                        tema.jenis_pohon == "Operational Pemda" ||
+                                        tema.jenis_pohon == "Operational Crosscutting" ||
+                                        tema.jenis_pohon == "Operational N" ||
+                                        tema.jenis_pohon == "Operational N Crosscutting"
+                                    )) &&
+                                        <>
+                                            <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                                onClick={handlePindahPohon}
+                                            >
+                                                <TbArrowAutofitWidth className='mr-1' />
+                                                Pindah
+                                            </ButtonBlackBorder>
+                                            <ModalPindahPohonOpd
+                                                onClose={handlePindahPohon}
+                                                isOpen={PindahPohon}
+                                                id={tema.id}
+                                                pohon={tema}
+                                                onSuccess={deleteTrigger}
+                                            />
+                                        </>
+                                    }
+                                    {(User?.roles == 'level_4' && (
+                                        tema.jenis_pohon == "Operational N" ||
+                                        tema.jenis_pohon == "Operational N Crosscutting"
+                                    )) &&
+                                        <>
+                                            <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                                onClick={handlePindahPohon}
+                                            >
+                                                <TbArrowAutofitWidth className='mr-1' />
+                                                Pindah
+                                            </ButtonBlackBorder>
+                                            <ModalPindahPohonOpd
+                                                onClose={handlePindahPohon}
+                                                isOpen={PindahPohon}
+                                                id={tema.id}
+                                                pohon={tema}
+                                                onSuccess={deleteTrigger}
+                                            />
+                                        </>
+                                    }
+                                    <ButtonBlackBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                        onClick={handleShow}
+                                    >
+                                        <TbEye className='mr-1' />
+                                        {Show ? 'Sembunyikan' : 'Tampilkan'}
+                                    </ButtonBlackBorder>
+                                    {/* BUTTON TAMBAH POKIN OPD SUPER ADMIN, ADMIN OPD, ASN LEVEL 1 & 2 */}
+                                    {(User?.roles == 'super_admin' || User?.roles == 'admin_opd' || User?.roles == 'level_1' || User?.roles == 'level_2') &&
+                                        Show &&
+                                        <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                            onClick={newChild}
+                                        >
+                                            <TbCirclePlus className='mr-1' />
+                                            {newChildButtonName(tema.jenis_pohon)}
+                                        </ButtonGreenBorder>
+                                    }
+                                    {/* BUTTON TAMBAH POKIN OPD ASN LEVEL 3 */}
+                                    {(User?.roles == 'level_3' &&
+                                        (
+                                            tema.jenis_pohon === 'Tactical' ||
+                                            tema.jenis_pohon === 'Tactical Pemda' ||
+                                            tema.jenis_pohon === 'Operational' ||
+                                            tema.jenis_pohon === 'Operational Pemda' ||
+                                            tema.jenis_pohon === 'Operational N' ||
+                                            tema.jenis_pohon === 'Operational N Pemda'
+                                        )) &&
+                                        Show &&
+                                        <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                            onClick={newChild}
+                                        >
+                                            <TbCirclePlus className='mr-1' />
+                                            {newChildButtonName(tema.jenis_pohon)}
+                                        </ButtonGreenBorder>
+                                    }
+                                    {/* BUTTON TAMBAH POKIN OPD ASN LEVEL 4 */}
+                                    {(User?.roles == 'level_4' &&
+                                        (
+                                            tema.jenis_pohon === 'Operational' ||
+                                            tema.jenis_pohon === 'Operational Pemda' ||
+                                            tema.jenis_pohon === 'Operational N' ||
+                                            tema.jenis_pohon === 'Operational N Pemda'
+                                        )) &&
+                                        Show &&
+                                        <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
+                                            onClick={newChild}
+                                        >
+                                            <TbCirclePlus className='mr-1' />
+                                            {newChildButtonName(tema.jenis_pohon)}
+                                        </ButtonGreenBorder>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        <ul style={{ display: Show ? '' : 'none' }}>
+                            {childPohons.map((dahan: any, index: any) => (
+                                <PohonOpd
+                                    tema={dahan}
+                                    key={index}
+                                    deleteTrigger={deleteTrigger}
+                                    fetchTrigger={fetchTrigger}
+                                    show_all={show_all}
+                                    show_detail={show_detail}
+                                    set_show_all={() => set_show_all()}
+                                />
+                            ))}
+                            {formList.map((formId) => (
+                                <FormPohonOpd
+                                    level={tema.level_pohon}
+                                    id={tema.id}
+                                    key={formId}
+                                    formId={formId}
+                                    onCancel={() => setFormList(formList.filter((id) => id !== formId))}
+                                    deleteTrigger={deleteTrigger}
+                                    fetchTrigger={fetchTrigger}
+                                />
+                            ))}
+                        </ul>
+                        <ModalCetak
+                            jenis="non_cascading"
+                            onClose={() => setIsCetak(false)}
+                            isOpen={IsCetak}
+                            pohon={tema}
+                        />
+                    </li>
                 </React.Fragment>
             }
         </React.Fragment>
