@@ -44,7 +44,7 @@ interface pagu {
     pagu_indikatif: number;
 }
 interface table {
-    jenis: "Urusan" | "Bidang Urusan" | "Program" | "Kegiatan" | "Sub Kegiatan";
+    jenis: "laporan" | "opd";
     tahun_awal: string;
     tahun_akhir: string;
     tahun_list: string[];
@@ -53,6 +53,7 @@ interface table {
 interface Thead {
     jenis: "Urusan" | "Bidang Urusan" | "Program" | "Kegiatan" | "Sub Kegiatan";
     tahun_list: string[];
+    type: "laporan" | "opd";
 }
 interface Tr {
     indikator: any[];
@@ -60,6 +61,7 @@ interface Tr {
     kode: string;
     kode_opd: string;
     jenis: "Urusan" | "Bidang Urusan" | "Program" | "Kegiatan" | "Sub Kegiatan";
+    type: "laporan" | "opd";
     fetchTrigger: () => void;
 }
 interface TablePagu {
@@ -140,10 +142,12 @@ export const TableRenstra: React.FC<table> = ({ jenis, tahun_awal, tahun_akhir, 
                                         <TheadMatrix
                                             tahun_list={tahun_list}
                                             jenis="Urusan"
+                                            type={jenis}
                                         />
                                         <tbody>
                                             <TrMatrix
                                                 jenis="Urusan"
+                                                type={jenis}
                                                 indikator={u.indikator}
                                                 kode={u.kode}
                                                 nama={u.nama}
@@ -158,10 +162,12 @@ export const TableRenstra: React.FC<table> = ({ jenis, tahun_awal, tahun_akhir, 
                                                         <TheadMatrix
                                                             tahun_list={tahun_list}
                                                             jenis="Bidang Urusan"
+                                                            type={jenis}
                                                         />
                                                         <tbody>
                                                             <TrMatrix
                                                                 jenis="Bidang Urusan"
+                                                                type={jenis}
                                                                 indikator={br.indikator}
                                                                 kode={br.kode}
                                                                 nama={br.nama}
@@ -176,10 +182,12 @@ export const TableRenstra: React.FC<table> = ({ jenis, tahun_awal, tahun_akhir, 
                                                                         <TheadMatrix
                                                                             tahun_list={tahun_list}
                                                                             jenis="Program"
+                                                                            type={jenis}
                                                                         />
                                                                         <tbody>
                                                                             <TrMatrix
                                                                                 jenis="Program"
+                                                                                type={jenis}
                                                                                 indikator={p.indikator}
                                                                                 kode={p.kode}
                                                                                 nama={p.nama}
@@ -194,10 +202,12 @@ export const TableRenstra: React.FC<table> = ({ jenis, tahun_awal, tahun_akhir, 
                                                                                         <TheadMatrix
                                                                                             tahun_list={tahun_list}
                                                                                             jenis="Kegiatan"
+                                                                                            type={jenis}
                                                                                         />
                                                                                         <tbody>
                                                                                             <TrMatrix
                                                                                                 jenis="Kegiatan"
+                                                                                                type={jenis}
                                                                                                 indikator={k.indikator}
                                                                                                 kode={k.kode}
                                                                                                 nama={k.nama}
@@ -210,12 +220,14 @@ export const TableRenstra: React.FC<table> = ({ jenis, tahun_awal, tahun_akhir, 
                                                                                                 <TheadMatrix
                                                                                                     tahun_list={tahun_list}
                                                                                                     jenis="Sub Kegiatan"
+                                                                                                    type={jenis}
                                                                                                 />
                                                                                                 {k.subkegiatan.map((sk: renstra, sk_index: number) => (
                                                                                                     <React.Fragment key={sk_index}>
                                                                                                         <tbody>
                                                                                                             <TrMatrix
                                                                                                                 jenis="Sub Kegiatan"
+                                                                                                                type={jenis}
                                                                                                                 indikator={sk.indikator}
                                                                                                                 kode={sk.kode}
                                                                                                                 nama={sk.nama}
@@ -249,7 +261,7 @@ export const TableRenstra: React.FC<table> = ({ jenis, tahun_awal, tahun_akhir, 
         </>
     )
 }
-export const TheadMatrix: React.FC<Thead> = ({ jenis, tahun_list }) => {
+export const TheadMatrix: React.FC<Thead> = ({ jenis, type, tahun_list }) => {
     return (
         <thead>
             <tr className={` 
@@ -262,7 +274,7 @@ export const TheadMatrix: React.FC<Thead> = ({ jenis, tahun_list }) => {
                 <td rowSpan={2} className="border-r border-b px-6 py-4 w-[200px]">Kode</td>
                 <td rowSpan={2} className="border-r border-b px-6 py-4 min-w-[200px]">{jenis}</td>
                 {tahun_list.map((item: any) => (
-                    <td key={item} colSpan={5} className="border-r border-b px-6 py-3 min-w-[100px] text-center">{item}</td>
+                    <td key={item} colSpan={type === "opd" ? 5 : 4} className="border-r border-b px-6 py-3 min-w-[100px] text-center">{item}</td>
                 ))}
 
             </tr>
@@ -276,7 +288,7 @@ export const TheadMatrix: React.FC<Thead> = ({ jenis, tahun_list }) => {
                 {(jenis === 'Urusan' || jenis === 'Bidang Urusan') ?
                     tahun_list.map((item: string) => (
                         <React.Fragment key={item}>
-                            <td colSpan={5} className="border-l border-b px-6 py-3 min-w-[200px] text-center">Pagu</td>
+                            <td colSpan={type === "opd" ? 5 : 4} className="border-l border-b px-6 py-3 min-w-[200px] text-center">Pagu</td>
                         </React.Fragment>
                     ))
                     :
@@ -286,7 +298,9 @@ export const TheadMatrix: React.FC<Thead> = ({ jenis, tahun_list }) => {
                             <td className="border-l border-b px-6 py-3 min-w-[50px]">Target</td>
                             <td className="border-l border-b px-6 py-3 min-w-[50px]">Satuan</td>
                             <td className="border-l border-b px-6 py-3 min-w-[200px] text-center">Pagu</td>
-                            <td className="border-l border-b px-6 py-3 min-w-[50px] text-center">Aksi</td>
+                            {type === "opd" &&
+                                <td className="border-l border-b px-6 py-3 min-w-[50px] text-center">Aksi</td>
+                            }
                         </React.Fragment>
                     ))
                 }
@@ -294,7 +308,7 @@ export const TheadMatrix: React.FC<Thead> = ({ jenis, tahun_list }) => {
         </thead>
     )
 }
-export const TrMatrix: React.FC<Tr> = ({ jenis, kode_opd, kode, nama, indikator, fetchTrigger }) => {
+export const TrMatrix: React.FC<Tr> = ({ jenis, type, kode_opd, kode, nama, indikator, fetchTrigger }) => {
 
     const [ModalTambah, setModalTambah] = useState<boolean>(false);
     const [ModalEdit, setModalEdit] = useState<boolean>(false);
@@ -343,7 +357,9 @@ export const TrMatrix: React.FC<Tr> = ({ jenis, kode_opd, kode, nama, indikator,
                             <td className={`border-b px-6 py-4 w-full text-center`}></td>
                             <td className={`border-r border-b px-6 py-4 w-full text-center`}></td>
                             <td className={`border-b px-6 py-4 w-full`}>Rp.{formatRupiah(i.pagu_anggaran)}</td>
-                            <td className={`border-r border-b px-6 py-4 w-full`}></td>
+                            {type === "opd" &&
+                                <td className={`border-r border-b px-6 py-4 w-full`}></td>
+                            }
                         </React.Fragment>
                     ))}
                 </tr>
@@ -361,25 +377,27 @@ export const TrMatrix: React.FC<Tr> = ({ jenis, kode_opd, kode, nama, indikator,
                                 </React.Fragment>
                             ))}
                             <td className={`border-r border-b px-6 py-4 w-full`}>Rp.{formatRupiah(i.pagu_anggaran)}</td>
-                            <td className={`border-r border-b px-6 py-4 w-full`}>
-                                {i.id !== "" ?
-                                    <ButtonGreenBorder
-                                        className="flex items-center gap-1"
-                                        onClick={() => handleModalEdit(i.id, i.tahun)}
-                                    >
-                                        <TbPencil />
-                                        Edit
-                                    </ButtonGreenBorder>
-                                    :
-                                    <ButtonSkyBorder
-                                        className="flex items-center gap-1"
-                                        onClick={() => handleModalTambah(i.tahun)}
-                                    >
-                                        <TbPencil />
-                                        Edit
-                                    </ButtonSkyBorder>
-                                }
-                            </td>
+                            {type === "opd" &&
+                                <td className={`border-r border-b px-6 py-4 w-full`}>
+                                    {i.id !== "" ?
+                                        <ButtonGreenBorder
+                                            className="flex items-center gap-1"
+                                            onClick={() => handleModalEdit(i.id, i.tahun)}
+                                        >
+                                            <TbPencil />
+                                            Edit
+                                        </ButtonGreenBorder>
+                                        :
+                                        <ButtonSkyBorder
+                                            className="flex items-center gap-1"
+                                            onClick={() => handleModalTambah(i.tahun)}
+                                        >
+                                            <TbPencil />
+                                            Edit
+                                        </ButtonSkyBorder>
+                                    }
+                                </td>
+                            }
                         </React.Fragment>
                     ))}
                 </tr>

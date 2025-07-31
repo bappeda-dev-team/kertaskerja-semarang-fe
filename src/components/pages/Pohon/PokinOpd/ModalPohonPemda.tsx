@@ -415,7 +415,7 @@ export const ModalPohonPemda: React.FC<modal> = ({ isOpen, onClose, onSuccess, i
                                 </ButtonBlackBorder>
                             </div>
                         }
-                        {/* DETAIL PARENT POHON PEMDA */}
+                        {/* DETAIL RELASI DENGAN PARENT POHON PEMDA */}
                         {ButtonDetailPohonPemda && (
                             IsLoading ?
                                 <LoadingBeat />
@@ -509,58 +509,61 @@ export const ModalPohonPemda: React.FC<modal> = ({ isOpen, onClose, onSuccess, i
                             </>
                         }
                     </div>
-                    <div className="flex gap-1 justify-between my-2">
-                        <ButtonRedBorder
-                            className='w-full'
-                            disabled={Proses}
-                            onClick={() => {
-                                if (PohonPemda?.value == null || undefined) {
-                                    AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
-                                } else {
-                                    AlertQuestion2("Tolak?", "'koordinasikan ulang dengan BAPERIDA sebelum tolak, apakah anda yakin akan menghapus?", "warning", "Ya", "Tidak").then((result) => {
-                                        if (result.isConfirmed) {
-                                            tolakPohonPemda(PohonPemda?.value);
-                                        }
-                                    })
+                    {/* TOMBOL TOLAK & TERIMA */}
+                    {PohonPemda &&
+                        <div className="flex gap-1 justify-between my-2">
+                            <ButtonRedBorder
+                                className='w-full'
+                                disabled={Proses}
+                                onClick={() => {
+                                    if (PohonPemda?.value == null || undefined) {
+                                        AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
+                                    } else {
+                                        AlertQuestion2("Tolak?", "'koordinasikan ulang dengan BAPERIDA sebelum tolak, apakah anda yakin akan menghapus?", "warning", "Ya", "Tidak").then((result) => {
+                                            if (result.isConfirmed) {
+                                                tolakPohonPemda(PohonPemda?.value);
+                                            }
+                                        })
+                                    }
+                                }}
+                            >
+                                {Proses ?
+                                    <span className="flex">
+                                        <LoadingButtonClip />
+                                        Menolak...
+                                    </span>
+                                    :
+                                    <span className="flex items-center">
+                                        <TbCircleLetterXFilled className='mr-1' />
+                                        Tolak
+                                    </span>
                                 }
-                            }}
-                        >
-                            {Proses ?
-                                <span className="flex">
-                                    <LoadingButtonClip />
-                                    Menolak...
-                                </span>
-                                :
-                                <span className="flex items-center">
-                                    <TbCircleLetterXFilled className='mr-1' />
-                                    Tolak
-                                </span>
-                            }
-                        </ButtonRedBorder>
-                        <ButtonSkyBorder
-                            onClick={() => {
-                                if (PohonPemda?.value == null || undefined) {
-                                    AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
-                                } else {
-                                    terimaPohonPemda(PohonPemda?.value);
+                            </ButtonRedBorder>
+                            <ButtonSkyBorder
+                                onClick={() => {
+                                    if (PohonPemda?.value == null || undefined) {
+                                        AlertNotification("Pilih", "Pilih Pohon dari pemda terlebih dahulu", "warning", 1000);
+                                    } else {
+                                        terimaPohonPemda(PohonPemda?.value);
+                                    }
+                                }}
+                                className='w-full'
+                                disabled={Proses}
+                            >
+                                {Proses ?
+                                    <span className="flex">
+                                        <LoadingButtonClip />
+                                        Menerima...
+                                    </span>
+                                    :
+                                    <span className="flex items-center">
+                                        <TbCircleCheckFilled className='mr-1' />
+                                        Terima
+                                    </span>
                                 }
-                            }}
-                            className='w-full'
-                            disabled={Proses}
-                        >
-                            {Proses ?
-                                <span className="flex">
-                                    <LoadingButtonClip />
-                                    Menerima...
-                                </span>
-                                :
-                                <span className="flex items-center">
-                                    <TbCircleCheckFilled className='mr-1' />
-                                    Terima
-                                </span>
-                            }
-                        </ButtonSkyBorder>
-                    </div>
+                            </ButtonSkyBorder>
+                        </div>
+                    }
                     <ButtonRed className="w-full" onClick={handleClose}>
                         Batal
                     </ButtonRed>

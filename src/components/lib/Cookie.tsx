@@ -64,6 +64,7 @@ export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('opd');
   localStorage.removeItem('user');
+  localStorage.removeItem('periode');
 
   // Hapus semua cookie yang terkait
   document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
@@ -111,4 +112,17 @@ export const getOpdTahun = () => {
   }
 
   return { tahun: null, opd: null };
+};
+
+export const getPeriode = () => {
+  const get_periode = getCookie("periode");
+
+  if (get_periode) {
+    return {
+      periode: JSON.parse(get_periode)
+    };
+  } else {
+    return { periode: null };
+  }
+
 };

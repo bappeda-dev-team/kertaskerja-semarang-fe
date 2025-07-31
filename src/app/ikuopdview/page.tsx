@@ -2,7 +2,7 @@
 
 import { FiHome } from "react-icons/fi";
 import TableOpd from "@/components/pages/iku/TableOpd";
-import { getUser, getOpdTahun, getToken } from "@/components/lib/Cookie";
+import { getUser, getOpdTahun, getToken, getPeriode, setCookie } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
 import Select from 'react-select';
 import { OpdTahunNull } from "@/components/global/OpdTahunNull";
@@ -31,6 +31,7 @@ const IkuOpd = () => {
 
     useEffect(() => {
         const data = getOpdTahun();
+        const fetchPeriode = getPeriode();
         const fetchUser = getUser();
         if (fetchUser) {
             setUser(fetchUser.user);
@@ -48,6 +49,18 @@ const IkuOpd = () => {
                 label: data.opd.label,
             }
             setSelectedOpd(opd);
+        }
+        if (fetchPeriode.periode) {
+            const data = {
+                value: fetchPeriode.periode.value,
+                label: fetchPeriode.periode.label,
+                id: fetchPeriode.periode.value,
+                tahun_awal: fetchPeriode.periode.tahun_awal,
+                tahun_akhir: fetchPeriode.periode.tahun_akhir,
+                jenis_periode: fetchPeriode.periode.jenis_periode,
+                tahun_list: fetchPeriode.periode.tahun_list
+            }
+            setPeriode(data);
         }
     }, []);
 
@@ -103,7 +116,7 @@ const IkuOpd = () => {
                 <div className="flex items-center justify-between border-b px-5 py-5">
                     <div className="flex flex-wrap items-end">
                         <h1 className="uppercase font-bold">Indikator Utama OPD</h1>
-                        <h1 className="uppercase font-bold ml-1">{Tahun ? Tahun?.label : ""}</h1>
+                        <h1 className="uppercase font-bold ml-1 text-emerald-500">Periode {Periode?.tahun_awal || "-"} - {Periode?.tahun_akhir || "-"} ({Periode?.jenis_periode || "-"})</h1>
                     </div>
                     <Select
                         styles={{
@@ -116,6 +129,7 @@ const IkuOpd = () => {
                         }}
                         onChange={(option) => {
                             setPeriode(option);
+                            setCookie("periode", JSON.stringify(option));
                         }}
                         options={PeriodeOption}
                         isLoading={Loading}

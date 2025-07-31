@@ -90,10 +90,11 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setPerencanaanOPD(false);
       setLaporan(false);
     }
-    //PERENCANAAN KOTA
+    //PERENCANAAN PEMDA
     if (
       url === "/CSF" || url === "/outcome" || url === "/intermediate" ||
       url.startsWith("/RKPD") ||
+      url === "/tematikpemda" ||
       url === "/pohonkinerjapemda" ||
       url === "/visi" ||
       url === "/misi" ||
@@ -146,8 +147,8 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       url === "/pohonkinerjaopd" ||
       url === "/pohoncascadingopd" ||
       url === "/permasalahanopd" ||
-      url === "/isustrategisopd" || 
-      url === "/tujuanopd" || url === "/sasaranopd" || url === "/ikuopd" ||
+      url === "/isustrategisopd" ||
+      url === "/tujuanopd" || url === "/sasaranopd" || url === "/ikuopd" || url === "/matrix-renstra" ||
       url.startsWith("/renja") ||
       url === "/rencanaaksiopd"
     ) {
@@ -161,17 +162,18 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       setRenstra(false);
       setRenja(false);
     }
-    if(
+    if (
       url === "/permasalahanopd" ||
       url === "/isustrategisopd" ||
       url === "/tujuanopd" ||
       url === "/sasaranopd" ||
-      url === "/ikuopd"
+      url === "/ikuopd" ||
+      url === "/matrix-renstra"
     ) {
       setRenstra(true);
       setRenja(false);
     }
-    if(
+    if (
       url.startsWith("/renja")
     ) {
       setRenstra(false);
@@ -212,9 +214,9 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       url === "/tujuanopdview" ||
       url === "/sasaranopdview" ||
       url === "/ikuopdview" ||
+      url === `/laporanrenstra` ||
       url === "/rencanakinerja-kak" ||
       url === `/laporanrincianbelanja` ||
-      url === `/laporanrenstra` ||
       url === "/laporancascadingopd"
     ) {
       setDataMaster(false);
@@ -227,15 +229,16 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
     if (
       url === "/reviewpemda" ||
       url === "/reviewopd"
-      ) {
+    ) {
       setReview(true);
       setRenstraView(false);
     }
     if (
       url === "/tujuanopdview" ||
       url === "/sasaranopdview" ||
-      url === "/ikuopdview"
-      ) {
+      url === "/ikuopdview" ||
+      url === "/laporanrenstra"
+    ) {
       setReview(false);
       setRenstraView(true);
     }
@@ -283,7 +286,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
             <h3 className='font-thin text-lg'>{branding.client}</h3>
           </div>
         </div>
-        
+
         {/* AWAL MENU SIDEBAR */}
         <ul className="pt-6">
 
@@ -460,7 +463,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               {User?.roles != 'reviewer' ?
                 <div className={`transition-all duration-300 ease-in-out ${PerencanaanKota ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
                   <Link href="/tematikpemda">
-                    <li className={`flex items-center text-sm gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/pohonkinerjapemda" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                    <li className={`flex items-center text-sm gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/tematikpemda" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                       <TbBinaryTree className="text-xl" />
                       <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tematik</span>
                     </li>
@@ -666,6 +669,12 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
                     <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>IKU OPD</span>
                   </li>
                 </Link>
+                <Link href="/matrix-renstra">
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/matrix-renstra" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                    <TbShoppingCartDollar className="text-xl" />
+                    <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Matrix Renstra</span>
+                  </li>
+                </Link>
               </div>
               {/* LABEL RENJA */}
               <li
@@ -696,6 +705,12 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
                   <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/Renja/ikuopd" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                     <TbChartBar className="text-xl" />
                     <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>IKU OPD</span>
+                  </li>
+                </Link>
+                <Link href="/Renja/matrix-renja">
+                  <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/Renja/matrix-renja" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                    <TbShoppingCartDollar className="text-xl" />
+                    <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Matrix Renja</span>
                   </li>
                 </Link>
               </div>
@@ -832,7 +847,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               </div>
               <TbChevronRight className={`transition-all duration-200 ease-in-out ${Review ? "rotate-90" : ""}`} />
             </li>
-            {/* subs menu LAPORAN REVIEW */}
+            {/* SUBS MENU LAPORAN REVIEW */}
             <div className={`transition-all duration-300 ease-in-out ${Review ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
               <Link href="/reviewpemda">
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/reviewpemda" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
@@ -847,7 +862,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
                 </li>
               </Link>
             </div>
-            {/* LABEL LAPORAN RENAKSI OPD (view only) */}
+            {/* LABEL LAPORAN RENSTRA OPD (view only) */}
             <li
               className="flex justify-between items-center gap-x-2 cursor-pointer p-2 hover:bg-slate-500 rounded-xl transition-all duration-300 ease-in-out"
               onClick={() => setRenstraView(RenstraView ? false : true)}
@@ -858,7 +873,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               </div>
               <TbChevronRight className={`transition-all duration-200 ease-in-out ${RenstraView ? "rotate-90" : ""}`} />
             </li>
-            {/* subs menu LAPORAN REVIEW */}
+            {/* SUBS MENU LAPORAN RENSTRA OPD */}
             <div className={`transition-all duration-300 ease-in-out ${RenstraView ? 'px-3 py-2 flex flex-col border-l-2 border-white rounded-b-xl ml-2  max-h-screen opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}>
               <Link href="/tujuanopdview">
                 <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/tujuanopdview" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
@@ -878,6 +893,12 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
                   <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>IKU OPD</span>
                 </li>
               </Link>
+              <Link href="/laporanrenstra">
+                <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/laporanrenstra" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                  <TbShoppingCartDollar className="text-xl" />
+                  <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Matrix Renstra</span>
+                </li>
+              </Link>
             </div>
             <Link href="#">
               <li className={`flex items-center gap-x-2 text-sm cursor-pointer p-2 rounded-xl ${url === "/rencanakinerja-kak" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
@@ -889,12 +910,6 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/laporanrincianbelanja" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                 <TbDeviceImacDollar className="text-xl" />
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rincian Belanja</span>
-              </li>
-            </Link>
-            <Link href="/laporanrenstra">
-              <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/laporanrenstra" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
-                <TbShoppingCartDollar className="text-xl" />
-                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Matrix Renstra</span>
               </li>
             </Link>
             <Link href="/laporancascadingopd">

@@ -79,7 +79,7 @@ export const TablePermasalahan: React.FC<Table> = ({ kode_opd, tahun }) => {
             }
         }
         fetchPohon();
-    }, [kode_opd, tahun, token, FetchTrigger]);
+    }, [kode_opd, tahun, token, api_permasalahan, FetchTrigger]);
 
     if (Loading) {
         return (

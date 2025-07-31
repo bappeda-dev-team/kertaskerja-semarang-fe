@@ -2,7 +2,7 @@
 
 import { FiHome } from "react-icons/fi";
 import TablePemda from "@/components/pages/iku/TablePemda";
-import { getOpdTahun, getToken } from "@/components/lib/Cookie";
+import { getOpdTahun, getToken, getPeriode, setCookie } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
 import Select from 'react-select';
 
@@ -28,12 +28,25 @@ const IkuPemda = () => {
 
     useEffect(() => {
         const data = getOpdTahun();
+        const fetchPeriode = getPeriode();
         if (data.tahun) {
             const tahun = {
                 value: data.tahun.value,
                 label: data.tahun.label,
             }
             setTahun(tahun);
+        }
+        if (fetchPeriode.periode) {
+            const data = {
+                value: fetchPeriode.periode.value,
+                label: fetchPeriode.periode.label,
+                id: fetchPeriode.periode.value,
+                tahun_awal: fetchPeriode.periode.tahun_awal,
+                tahun_akhir: fetchPeriode.periode.tahun_akhir,
+                jenis_periode: fetchPeriode.periode.jenis_periode,
+                tahun_list: fetchPeriode.periode.tahun_list
+            }
+            setPeriode(data);
         }
     }, []);
 
@@ -76,7 +89,7 @@ const IkuPemda = () => {
                 <div className="flex items-center justify-between border-b px-5 py-5">
                     <div className="flex flex-wrap items-end">
                         <h1 className="uppercase font-bold">Indikator Utama Pemda</h1>
-                        <h1 className="uppercase font-bold ml-1">{Tahun ? Tahun?.label : ""}</h1>
+                        <h1 className="uppercase font-bold ml-1">(Periode {Periode?.tahun_awal} - {Periode?.tahun_akhir})</h1>
                     </div>
                     <Select
                         styles={{
@@ -89,6 +102,7 @@ const IkuPemda = () => {
                         }}
                         onChange={(option) => {
                             setPeriode(option);
+                            setCookie("periode", JSON.stringify(option));
                         }}
                         options={PeriodeOption}
                         isLoading={Loading}

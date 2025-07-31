@@ -214,6 +214,7 @@ export const FormPohonOpd: React.FC<{
                                                 className="border px-4 py-2 rounded-lg"
                                                 id="nama_pohon"
                                                 type="text"
+                                                maxLength={255}
                                                 placeholder="masukkan Pohon"
                                                 value={field.value || NamaPohon}
                                                 onChange={(e) => {
@@ -250,6 +251,7 @@ export const FormPohonOpd: React.FC<{
                                                     </label>
                                                     <input
                                                         {...field}
+                                                        maxLength={255}
                                                         className="border px-4 py-2 rounded-lg"
                                                         placeholder={`Masukkan nama indikator ${index + 1}`}
                                                     />
@@ -605,6 +607,7 @@ export const FormEditPohon: React.FC<{
                                             className="border px-4 py-2 rounded-lg"
                                             id="nama_pohon"
                                             type="text"
+                                            maxLength={255}
                                             placeholder="masukkan Pohon"
                                             value={field.value || NamaPohon}
                                             onChange={(e) => {
@@ -641,6 +644,7 @@ export const FormEditPohon: React.FC<{
                                                 </label>
                                                 <input
                                                     {...field}
+                                                    maxLength={255}
                                                     className="border px-4 py-2 rounded-lg"
                                                     placeholder={`Masukkan nama indikator ${index + 1}`}
                                                 />

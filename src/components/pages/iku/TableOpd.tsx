@@ -68,9 +68,15 @@ const TableOpd: React.FC<table> = ({kode_opd, tahun_awal, tahun_akhir, jenis, ta
                 if (data.length == 0) {
                     setDataNull(true);
                     setIKU([]);
-                } else {
+                } else if(result.code == 200 || result.code == 201){
                     setDataNull(false);
                     setIKU(data);
+                    setError(false);
+                } else {
+                    setDataNull(false);
+                    setIKU([]);
+                    setError(true);
+                    console.log(data);
                 }
             } catch (err) {
                 setError(true);
@@ -93,7 +99,7 @@ const TableOpd: React.FC<table> = ({kode_opd, tahun_awal, tahun_akhir, jenis, ta
     } else if (Error) {
         return (
             <div className="border p-5 rounded-xl shadow-xl">
-                <h1 className="text-red-500 font-bold mx-5 py-5">Periksa koneksi internet atau database server</h1>
+                <h1 className="text-red-500 font-bold mx-5 py-5">Error, Periksa koneksi internet atau database server, jika error berlanjut silakan hubungi tim developer</h1>
             </div>
         )
     } else if (Tahun?.value == undefined) {

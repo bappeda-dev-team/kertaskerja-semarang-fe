@@ -2,9 +2,8 @@
 
 import { FiHome } from "react-icons/fi";
 import Table from "@/components/pages/sasaranopd/Table";
-import { getOpdTahun, getToken } from "@/components/lib/Cookie";
+import { getToken, getPeriode, setCookie } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
-import Maintenance from "@/components/global/Maintenance";
 import Select from 'react-select';
 
 interface Periode {
@@ -19,7 +18,6 @@ interface Periode {
 
 const SasaranOpd = () => {
 
-    const [Tahun, setTahun] = useState<any>(null);
     const token = getToken();
     const [Periode, setPeriode] = useState<Periode | null>(null);
     const [PeriodeOption, setPeriodeOption] = useState<Periode[]>([]);
@@ -27,13 +25,18 @@ const SasaranOpd = () => {
     const [Loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        const data = getOpdTahun();
-        if (data.tahun) {
-            const tahun = {
-                value: data.tahun.value,
-                label: data.tahun.label,
+        const fetchPeriode = getPeriode();
+        if (fetchPeriode.periode) {
+            const data = {
+                value: fetchPeriode.periode.value,
+                label: fetchPeriode.periode.label,
+                id: fetchPeriode.periode.value,
+                tahun_awal: fetchPeriode.periode.tahun_awal,
+                tahun_akhir: fetchPeriode.periode.tahun_akhir,
+                jenis_periode: fetchPeriode.periode.jenis_periode,
+                tahun_list: fetchPeriode.periode.tahun_list
             }
-            setTahun(tahun);
+            setPeriode(data);
         }
     }, []);
 
@@ -89,6 +92,7 @@ const SasaranOpd = () => {
                         }}
                         onChange={(option) => {
                             setPeriode(option);
+                            setCookie("periode", JSON.stringify(option));
                         }}
                         options={PeriodeOption}
                         isLoading={Loading}

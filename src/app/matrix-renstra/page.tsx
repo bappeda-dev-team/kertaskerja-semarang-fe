@@ -1,10 +1,11 @@
 'use client'
 
 import { FiHome } from "react-icons/fi";
-import Table from "@/components/pages/tujuanpemda/Table";
-import { getToken, getPeriode, setCookie } from "@/components/lib/Cookie";
-import { useState, useEffect } from "react";
+import { TableRenstra } from "@/components/pages/renstra/Table";
+import { getToken, getOpdTahun, getUser, getPeriode } from "@/components/lib/Cookie";
+import { useEffect, useState } from "react";
 import Select from 'react-select';
+import { OpdNull } from "@/components/global/OpdTahunNull";
 
 interface Periode {
     value: number;
@@ -16,16 +17,30 @@ interface Periode {
     tahun_list: string[];
 }
 
-const TujuanPemda = () => {
+const MatrixRenstra = () => {
 
     const token = getToken();
     const [Periode, setPeriode] = useState<Periode | null>(null);
     const [PeriodeOption, setPeriodeOption] = useState<Periode[]>([]);
 
+    const [User, setUser] = useState<any>(null);
+    const [SelectedOpd, setSelectedOpd] = useState<any>(null);
     const [Loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
+        const fetchUser = getUser();
+        const data = getOpdTahun();
         const fetchPeriode = getPeriode();
+        if (fetchUser) {
+            setUser(fetchUser.user);
+        }
+        if (data.opd) {
+            const opd = {
+                label: data.opd.label,
+                value: data.opd.value,
+            }
+            setSelectedOpd(opd);
+        }
         if (fetchPeriode.periode) {
             const data = {
                 value: fetchPeriode.periode.value,
@@ -72,13 +87,17 @@ const TujuanPemda = () => {
         <>
             <div className="flex items-center">
                 <a href="/" className="mr-1"><FiHome /></a>
-                <p className="mr-1">/ Perencanaan Pemda</p>
-                <p className="mr-1">/ Tujuan Pemda</p>
+                <p className="mr-1">/ Perencanaan OPD</p>
+                <p className="mr-1">/ Renstra</p>
+                <p className="mr-1">/ Matrix</p>
             </div>
             <div className="mt-3 rounded-xl shadow-lg border">
                 <div className="flex items-center justify-between border-b px-5 py-5">
                     <div className="flex flex-wrap items-end">
-                        <h1 className="uppercase font-bold">Tujuan Pemda</h1>
+                        <h1 className="uppercase font-bold">Matrix Renstra |</h1>
+                        {User?.roles == 'super_admin' &&
+                            <h1 className="uppercase font-bold ml-1">{SelectedOpd?.label} |</h1>
+                        }
                         <h1 className="uppercase font-bold ml-1">(Periode {Periode?.tahun_awal} - {Periode?.tahun_akhir})</h1>
                     </div>
                     <Select
@@ -92,7 +111,6 @@ const TujuanPemda = () => {
                         }}
                         onChange={(option) => {
                             setPeriode(option);
-                            setCookie("periode", JSON.stringify(option));
                         }}
                         options={PeriodeOption}
                         isClearable
@@ -105,22 +123,30 @@ const TujuanPemda = () => {
                         }}
                     />
                 </div>
-                {Periode ?
-                    <Table
-                        id_periode={Periode?.value}
-                        tahun_awal={Periode?.tahun_awal ? Periode?.tahun_awal : ""}
-                        tahun_akhir={Periode?.tahun_akhir ? Periode?.tahun_akhir : ""}
-                        jenis={Periode?.jenis_periode ? Periode?.jenis_periode : ""}
-                        tahun_list={Periode?.tahun_list ? Periode?.tahun_list : []}
-                    />
-                    :
-                    <div className="m-5">
-                        <h1>Pilih Periode terlebih dahulu</h1>
-                    </div>
+                {(User?.roles == 'super_admin' || User?.roles == 'reviewer') &&
+                    SelectedOpd?.value === undefined ? (
+                    <OpdNull />
+                ) : (
+                    Periode ?
+                        <div className="p-1">
+                            {/* <Maintenance /> */}
+                            <TableRenstra
+                                jenis="opd"
+                                tahun_awal={Periode?.tahun_awal ? Periode?.tahun_awal : ""}
+                                tahun_akhir={Periode?.tahun_akhir ? Periode?.tahun_akhir : ""}
+                                tahun_list={Periode?.tahun_list ? Periode?.tahun_list : []}
+                                kode_opd={(User?.roles == 'super_admin' || User?.roles == 'reviewer') ? SelectedOpd?.value : User?.kode_opd}
+                            />
+                        </div>
+                        :
+                        <div className="m-5">
+                            <h1>Pilih Periode terlebih dahulu</h1>
+                        </div>
+                )
                 }
             </div>
         </>
     )
 }
 
-export default TujuanPemda;
+export default MatrixRenstra;

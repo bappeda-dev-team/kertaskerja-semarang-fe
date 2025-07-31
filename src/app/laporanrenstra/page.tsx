@@ -2,10 +2,9 @@
 
 import { FiHome } from "react-icons/fi";
 import { TableRenstra } from "@/components/pages/renstra/Table";
-import { getToken, getOpdTahun, getUser } from "@/components/lib/Cookie";
+import { getToken, getOpdTahun, getUser, getPeriode, setCookie } from "@/components/lib/Cookie";
 import { useEffect, useState } from "react";
 import Select from 'react-select';
-import Maintenance from "@/components/global/Maintenance";
 import { OpdNull } from "@/components/global/OpdTahunNull";
 
 interface Periode {
@@ -31,6 +30,7 @@ const LaporanRenstra = () => {
     useEffect(() => {
         const fetchUser = getUser();
         const data = getOpdTahun();
+        const fetchPeriode = getPeriode();
         if (fetchUser) {
             setUser(fetchUser.user);
         }
@@ -40,6 +40,18 @@ const LaporanRenstra = () => {
                 value: data.opd.value,
             }
             setSelectedOpd(opd);
+        }
+        if (fetchPeriode.periode) {
+            const data = {
+                value: fetchPeriode.periode.value,
+                label: fetchPeriode.periode.label,
+                id: fetchPeriode.periode.value,
+                tahun_awal: fetchPeriode.periode.tahun_awal,
+                tahun_akhir: fetchPeriode.periode.tahun_akhir,
+                jenis_periode: fetchPeriode.periode.jenis_periode,
+                tahun_list: fetchPeriode.periode.tahun_list
+            }
+            setPeriode(data);
         }
     }, []);
 
@@ -98,6 +110,7 @@ const LaporanRenstra = () => {
                         }}
                         onChange={(option) => {
                             setPeriode(option);
+                            setCookie("periode", JSON.stringify(option));
                         }}
                         options={PeriodeOption}
                         isClearable
@@ -118,7 +131,7 @@ const LaporanRenstra = () => {
                         <div className="p-1">
                             {/* <Maintenance /> */}
                             <TableRenstra
-                                jenis="Urusan"
+                                jenis="laporan"
                                 tahun_awal={Periode?.tahun_awal ? Periode?.tahun_awal : ""}
                                 tahun_akhir={Periode?.tahun_akhir ? Periode?.tahun_akhir : ""}
                                 tahun_list={Periode?.tahun_list ? Periode?.tahun_list : []}

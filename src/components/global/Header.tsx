@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { FiAperture } from "react-icons/fi"
 import Select from "react-select"
 import { getOpdTahun, getUser } from "../lib/Cookie"
 import { AlertNotification } from "./Alert"
@@ -49,9 +48,9 @@ const Header = () => {
                 }
                 setOpd(valueOpd);
             }
-            if (fetchUser) {
-                setUser(fetchUser.user);
-            }
+        }
+        if (fetchUser) {
+            setUser(fetchUser.user);
         }
     }, [])
 

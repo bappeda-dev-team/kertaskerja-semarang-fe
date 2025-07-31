@@ -2,9 +2,8 @@
 
 import { FiHome } from "react-icons/fi";
 import Table from "@/components/pages/sasaranopd/Table";
-import { getToken } from "@/components/lib/Cookie";
-import { useState } from "react";
-import Maintenance from "@/components/global/Maintenance";
+import { getToken, getPeriode, setCookie } from "@/components/lib/Cookie";
+import { useState, useEffect } from "react";
 import Select from 'react-select';
 
 interface Periode {
@@ -24,6 +23,22 @@ const SasaranOpdView = () => {
     const [PeriodeOption, setPeriodeOption] = useState<Periode[]>([]);
 
     const [Loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        const fetchPeriode = getPeriode();
+        if (fetchPeriode.periode) {
+            const data = {
+                value: fetchPeriode.periode.value,
+                label: fetchPeriode.periode.label,
+                id: fetchPeriode.periode.value,
+                tahun_awal: fetchPeriode.periode.tahun_awal,
+                tahun_akhir: fetchPeriode.periode.tahun_akhir,
+                jenis_periode: fetchPeriode.periode.jenis_periode,
+                tahun_list: fetchPeriode.periode.tahun_list
+            }
+            setPeriode(data);
+        }
+    }, []);
 
     const fetchPeriode = async () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -65,7 +80,7 @@ const SasaranOpdView = () => {
                 <div className="flex items-center justify-between border-b px-5 py-5">
                     <div className="flex flex-wrap items-end">
                         <h1 className="uppercase font-bold">Sasaran OPD</h1>
-                        <h1 className="uppercase font-bold ml-1">(Periode {Periode?.tahun_awal} - {Periode?.tahun_akhir})</h1>
+                        <h1 className="uppercase font-bold ml-1 text-emerald-500">Periode {Periode?.tahun_awal || ""} - {Periode?.tahun_akhir || ""} ({Periode?.jenis_periode || ""})</h1>
                     </div>
                     <Select
                         styles={{
@@ -78,6 +93,7 @@ const SasaranOpdView = () => {
                         }}
                         onChange={(option) => {
                             setPeriode(option);
+                            setCookie("periode", JSON.stringify(option));
                         }}
                         options={PeriodeOption}
                         isLoading={Loading}

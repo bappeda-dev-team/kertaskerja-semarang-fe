@@ -2,7 +2,7 @@
 
 import { FiHome } from "react-icons/fi";
 import TableOpd from "@/components/pages/iku/TableOpd";
-import { getUser, getOpdTahun, getToken } from "@/components/lib/Cookie";
+import { getUser, getOpdTahun, getToken, getPeriode, setCookie } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
 import Select from 'react-select';
 import { OpdTahunNull } from "@/components/global/OpdTahunNull";
@@ -32,6 +32,7 @@ const IkuOpd = () => {
     useEffect(() => {
         const data = getOpdTahun();
         const fetchUser = getUser();
+        const fetchPeriode = getPeriode();
         if (fetchUser) {
             setUser(fetchUser.user);
         }
@@ -48,6 +49,18 @@ const IkuOpd = () => {
                 label: data.opd.label,
             }
             setSelectedOpd(opd);
+        }
+        if (fetchPeriode.periode) {
+            const data = {
+                value: fetchPeriode.periode.value,
+                label: fetchPeriode.periode.label,
+                id: fetchPeriode.periode.value,
+                tahun_awal: fetchPeriode.periode.tahun_awal,
+                tahun_akhir: fetchPeriode.periode.tahun_akhir,
+                jenis_periode: fetchPeriode.periode.jenis_periode,
+                tahun_list: fetchPeriode.periode.tahun_list
+            }
+            setPeriode(data);
         }
     }, []);
 
@@ -116,6 +129,7 @@ const IkuOpd = () => {
                         }}
                         onChange={(option) => {
                             setPeriode(option);
+                            setCookie("periode", JSON.stringify(option));
                         }}
                         options={PeriodeOption}
                         isLoading={Loading}

@@ -2,8 +2,8 @@
 
 import { FiHome } from "react-icons/fi";
 import Table from "@/components/pages/tujuanopd/Table";
-import { getToken } from "@/components/lib/Cookie";
-import { useState } from "react";
+import { getToken, getPeriode, setCookie } from "@/components/lib/Cookie";
+import { useState, useEffect } from "react";
 import Select from 'react-select';
 
 interface Periode {
@@ -23,6 +23,22 @@ const TujuanOpd = () => {
     const [PeriodeOption, setPeriodeOption] = useState<Periode[]>([]);
 
     const [Loading, setLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        const fetchPeriode = getPeriode();
+        if (fetchPeriode.periode) {
+            const data = {
+                value: fetchPeriode.periode.value,
+                label: fetchPeriode.periode.label,
+                id: fetchPeriode.periode.value,
+                tahun_awal: fetchPeriode.periode.tahun_awal,
+                tahun_akhir: fetchPeriode.periode.tahun_akhir,
+                jenis_periode: fetchPeriode.periode.jenis_periode,
+                tahun_list: fetchPeriode.periode.tahun_list
+            }
+            setPeriode(data);
+        }
+    }, []);
 
     const fetchPeriode = async () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -76,6 +92,7 @@ const TujuanOpd = () => {
                         }}
                         onChange={(option) => {
                             setPeriode(option);
+                            setCookie("periode", JSON.stringify(option));
                         }}
                         options={PeriodeOption}
                         isClearable
@@ -102,7 +119,7 @@ const TujuanOpd = () => {
                         <h1>Pilih Periode terlebih dahulu</h1>
                     </div>
                 }
-                </div>
+            </div>
         </>
     )
 }
