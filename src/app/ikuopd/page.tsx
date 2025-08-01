@@ -116,7 +116,7 @@ const IkuOpd = () => {
                 <div className="flex items-center justify-between border-b px-5 py-5">
                     <div className="flex flex-wrap items-end">
                         <h1 className="uppercase font-bold">Indikator Utama OPD</h1>
-                        <h1 className="uppercase font-bold ml-1">{Tahun ? Tahun?.label : ""}</h1>
+                        <h1 className="uppercase font-bold ml-1">(Periode {Periode?.tahun_awal} - {Periode?.tahun_akhir})</h1>
                     </div>
                     <Select
                         styles={{

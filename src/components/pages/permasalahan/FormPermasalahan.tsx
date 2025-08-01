@@ -11,7 +11,7 @@ interface FormPermasalahan {
     data?: Childs;
     rowSpan: number;
     jenis: "edit" | "baru" | "";
-    editing?: () => void;
+    editing: () => void;
 }
 interface Childs {
     id: number;
@@ -38,6 +38,7 @@ interface FormValue {
 export const FormPermasalahan: React.FC<FormPermasalahan> = ({ data, jenis, rowSpan, editing }) => {
 
     const { branding } = useBrandingContext();
+    const branding_tahun = branding?.tahun ? branding?.tahun?.value : 0;
     const [Proses, setProses] = useState<boolean>(false);
     const [Success, setSuccess] = useState<boolean>(false);
     const [DataResult, setDataResult] = useState<any>(null);
@@ -104,7 +105,7 @@ export const FormPermasalahan: React.FC<FormPermasalahan> = ({ data, jenis, rowS
 
     const handleClose = () => {
         reset();
-        editing;
+        editing();
     }
 
     return (
@@ -113,6 +114,7 @@ export const FormPermasalahan: React.FC<FormPermasalahan> = ({ data, jenis, rowS
                 <Childs
                     data={DataResult}
                     rowSpan={rowSpan}
+                    tahun={branding_tahun}
                 />
                 :
                 <td rowSpan={rowSpan} colSpan={2} className="border-r border-b border-black px-6 py-4">
@@ -140,7 +142,9 @@ export const FormPermasalahan: React.FC<FormPermasalahan> = ({ data, jenis, rowS
                                     "Edit"
                                 }
                             </ButtonGreenBorder>
-                            <ButtonRedBorder className="w-full"
+                            <ButtonRedBorder 
+                                className="w-full"
+                                type="button"
                                 onClick={handleClose}
                             >
                                 <TbCircleX className="mr-1" />

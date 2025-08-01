@@ -4,7 +4,7 @@ import { ButtonSkyBorder, ButtonBlack } from "@/components/global/Button";
 import React, { useState, useEffect } from "react";
 import { LoadingSync } from "@/components/global/Loading";
 import { TbPencil, TbCheckbox } from "react-icons/tb";
-import { AlertQuestion } from "@/components/global/Alert";
+import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 import { getToken } from "@/components/lib/Cookie";
 import { FormPermasalahan } from "./FormPermasalahan";
 import { useBrandingContext } from "@/context/BrandingContext";
@@ -26,17 +26,20 @@ interface Pohon {
     }
     jenis_masalah: string;
     is_permasalahan: boolean;
+    permasalahan_terpilih: boolean;
     childs: Pohon[]
 }
 interface Childs {
     data?: Pohon;
     rowSpan: number;
+    tahun: number;
     editing?: () => void;
 }
 
 export const TablePermasalahan: React.FC<Table> = ({ kode_opd, tahun }) => {
 
     const { branding } = useBrandingContext();
+    const branding_tahun = branding?.tahun ? branding?.tahun.value : 0;
     const api_permasalahan = branding.api_permasalahan;
 
     const [Pohon, setPohon] = useState<Pohon[]>([]);
@@ -142,6 +145,7 @@ export const TablePermasalahan: React.FC<Table> = ({ kode_opd, tahun }) => {
                                         <Childs
                                             data={p}
                                             rowSpan={p.childs ? calculatedTotalRow2 + 1 : 2}
+                                            tahun={branding_tahun}
                                         />
                                     </tr>
                                     {/* TACTICAL */}
@@ -156,6 +160,7 @@ export const TablePermasalahan: React.FC<Table> = ({ kode_opd, tahun }) => {
                                                     <Childs
                                                         data={t}
                                                         rowSpan={t.childs ? t.childs.length + 1 : 2}
+                                                        tahun={branding_tahun}
                                                     />
                                                 </tr>
                                                 {/* OPERATIONAL */}
@@ -169,6 +174,7 @@ export const TablePermasalahan: React.FC<Table> = ({ kode_opd, tahun }) => {
                                                             <Childs
                                                                 data={o}
                                                                 rowSpan={1}
+                                                                tahun={branding_tahun}
                                                             />
                                                         </tr>
                                                     ))
@@ -187,10 +193,11 @@ export const TablePermasalahan: React.FC<Table> = ({ kode_opd, tahun }) => {
 
 }
 
-export const Childs: React.FC<Childs> = ({ data, rowSpan }) => {
+export const Childs: React.FC<Childs> = ({ data, rowSpan, tahun }) => {
 
     const [Edit, setEdit] = useState<boolean>(false);
     const [JenisForm, setJenisForm] = useState<"baru" | "edit" | "">("");
+    const [LoadingPilih, setLoadingPilih] = useState<boolean>(false);
 
     const handleEdit = (jenis: "baru" | "edit" | "") => {
         if (Edit) {
@@ -199,6 +206,36 @@ export const Childs: React.FC<Childs> = ({ data, rowSpan }) => {
         } else {
             setEdit(true);
             setJenisForm(jenis);
+        }
+    }
+
+    const handlePilih = async (id: number) => {
+        const API_URL_PERMASALAHAN = process.env.NEXT_PUBLIC_API_URL_PERMASALAHAN;
+        const formData = {
+            masalah_id: id,
+            kode_opd: data?.perangkat_daerah.kode_opd,
+            tahun: String(tahun),
+        }
+        // console.log(formData);
+        try{
+            setLoadingPilih(true);
+            const response = await fetch(`${API_URL_PERMASALAHAN}/permasalahan_terpilih/create`, {
+                method: "POST",
+                headers: {
+                    'Content-Type' : "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+            const result = await response.json();
+            if(result.code === 200){
+                AlertNotification("Berhasil", "Berhasil memilih data permasalahan, lanjut ke halaman isu strategis", "success", 2000, true);
+            } else {
+                AlertNotification("Gagal", `${result.data}`, "error");
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoadingPilih(false);
         }
     }
 
@@ -211,7 +248,11 @@ export const Childs: React.FC<Childs> = ({ data, rowSpan }) => {
                 jenis={JenisForm}
             />
         )
-    } else {
+    } else if(LoadingPilih) {
+        return(
+            <td>Loading...</td>
+        )
+    }else {
         return (
             <React.Fragment>
                 <td
@@ -236,28 +277,39 @@ export const Childs: React.FC<Childs> = ({ data, rowSpan }) => {
                         <ButtonSkyBorder
                             className="w-full"
                             onClick={() => {
-                                if (data?.id_permasalahan === 0) {
-                                    handleEdit("baru");
-                                } else {
+                                if (data?.is_permasalahan) {
                                     handleEdit("edit");
+                                } else {
+                                    handleEdit("baru");
                                 }
                             }}
                         >
                             <TbPencil className="mr-1" />
                             Edit
                         </ButtonSkyBorder>
-                        <ButtonBlack className="w-full"
-                            onClick={() => {
-                                AlertQuestion("Pilih?", "", "question", "Hapus", "Batal").then((result) => {
-                                    if (result.isConfirmed) {
-
-                                    }
-                                });
-                            }}
-                        >
-                            <TbCheckbox className="mr-1" />
-                            Pilih
-                        </ButtonBlack>
+                        {data?.permasalahan_terpilih &&
+                            <ButtonBlack className="cursor-not-allowed">
+                                Terpilih
+                            </ButtonBlack>
+                        }
+                        {(data?.is_permasalahan && !data?.permasalahan_terpilih) &&
+                            <ButtonBlack className="w-full"
+                                onClick={() => {
+                                    AlertQuestion("Pilih?", `${data?.nama_pohon}`, "question", "Pilih", "Batal").then((result) => {
+                                        if (result.isConfirmed) {
+                                            if (data?.id_permasalahan) {
+                                                handlePilih(data.id_permasalahan);
+                                            } else {
+                                                AlertNotification("ERROR", "ID permasalahan tidak ditemukan / kosong, hubungi tim developer", "error");
+                                            }
+                                        }
+                                    });
+                                }}
+                            >
+                                <TbCheckbox className="mr-1" />
+                                Pilih
+                            </ButtonBlack>
+                        }
                     </div>
                 </td>
             </React.Fragment>
