@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { ButtonRedBorder } from "@/components/global/Button";
-import { AlertQuestion } from "@/components/global/Alert";
+import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 import { TbTrash } from "react-icons/tb";
+import { LoadingBeat } from "@/components/global/Loading";
 
 interface table {
     tahun: number;
@@ -61,14 +62,39 @@ const TablePermasalahan: React.FC<table> = ({ tahun, kode_opd }) => {
         }
     }, [tahun, kode_opd]);
 
-    const hapusPermasalahan = (id: number) => {
-        
+    const hapusPermasalahan = async(id: number) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL_PERMASALAHAN;
+        console.log(id);
+        try{
+            const response = await fetch(`${API_URL}/permasalahan/${id}/hapus_permasalahan_terpilih`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type" : "application/json",
+                }
+            });
+            const result = await response.json();
+            if(result.code === 200){
+                AlertNotification("Berhasil", "Data Permasalahan berhasil di hapus", "success", 2000, true);
+                setData(Data.filter((data) => (data.id !== id)));
+            } else {
+                AlertNotification("Gagal", `${result.data}`, "error", 2000);
+                console.log(result.data);
+            }
+        } catch(err){
+            console.error(err);
+        }
     }
 
     if (Error) {
         return (
             <div className="text-red-500">
                 Error, Periksa koneksi internet, jika error berlajut silakan hubungi tim developer
+            </div>
+        )
+    } else if(Loading) {
+        return(
+            <div className="border rounded-lg m-2">
+                <LoadingBeat />
             </div>
         )
     }
@@ -110,7 +136,7 @@ const TablePermasalahan: React.FC<table> = ({ tahun, kode_opd }) => {
                                             onClick={() => {
                                                 AlertQuestion("Hapus?", "Data Permasalahan akan di hapus?", "question", "Hapus", "Batal").then((result) => {
                                                     if (result.isConfirmed) {
-
+                                                        hapusPermasalahan(data.id_permasalahan);
                                                     }
                                                 });
                                             }}

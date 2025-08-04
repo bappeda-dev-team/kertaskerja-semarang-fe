@@ -7,12 +7,14 @@ import { TahunNull } from "@/components/global/OpdTahunNull";
 import { getToken } from "@/components/lib/Cookie";
 import { TbCircleX, TbCircleCheck, TbMistOff, TbMist } from "react-icons/tb";
 import { ButtonBlackBorder } from "@/components/global/Button";
-import { AlertQuestion } from "@/components/global/Alert";
+import { AlertQuestion, AlertNotification } from "@/components/global/Alert";
+import { useBrandingContext } from "@/context/BrandingContext";
 
 interface IKU {
     indikator_id: string;
     sumber: string;
     asal_iku: string;
+    iku_active: boolean;
     rumus_perhitungan: string;
     sumber_data: string;
     is_active: boolean;
@@ -45,19 +47,10 @@ const TableOpd: React.FC<table> = ({ kode_opd, tahun_awal, tahun_akhir, jenis, t
     const [DataNull, setDataNull] = useState<boolean | null>(null);
 
     const [Loading, setLoading] = useState<boolean | null>(null);
-    const [Tahun, setTahun] = useState<any>(null);
+    const [Proses, setProses] = useState<boolean | null>(null);
     const token = getToken();
-
-    useEffect(() => {
-        const data = getOpdTahun();
-        if (data.tahun) {
-            const tahun = {
-                value: data.tahun.value,
-                label: data.tahun.label,
-            }
-            setTahun(tahun);
-        }
-    }, []);
+    const {branding} = useBrandingContext();
+    const Tahun = branding?.tahun ? branding?.tahun?.value : 0;
 
     useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -74,7 +67,7 @@ const TableOpd: React.FC<table> = ({ kode_opd, tahun_awal, tahun_akhir, jenis, t
                 });
                 const result = await response.json();
                 const isActiveFilter = TableAktif;
-                const filteredData = result.data?.filter((n: any) => n.is_active === isActiveFilter) || [];
+                const filteredData = result.data?.filter((n: any) => n.iku_active === isActiveFilter) || [];
 
                 if (result.code === 200 || result.code === 201) {
                     if (filteredData.length === 0) {
@@ -84,8 +77,9 @@ const TableOpd: React.FC<table> = ({ kode_opd, tahun_awal, tahun_akhir, jenis, t
                 } else {
                     console.error(result.data);
                     setError(true);
-                    setIKU([]); // Kosongkan data jika ada error dari API
+                    setIKU([]);
                 }
+
             } catch (err) {
                 setError(true);
                 console.error(err)
@@ -93,10 +87,43 @@ const TableOpd: React.FC<table> = ({ kode_opd, tahun_awal, tahun_akhir, jenis, t
                 setLoading(false);
             }
         }
-        if (Tahun?.value != undefined) {
+        if (Tahun != undefined) {
             fetchIkuOpd();
         }
     }, [token, Tahun, tahun_awal, tahun_akhir, jenis, kode_opd, TableAktif, TableNonAktif]);
+
+    const UpdateStatusIku = async (id: string,) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const formData = {
+            indikator_id: id,
+            is_active: !TableAktif,
+        }
+        // console.log(formData);
+        try {
+            setProses(true);
+            const response = await fetch(`${API_URL}/indikator_utama/status/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const result = await response.json();
+            if (result.code === 200 || result.code === 201) {
+                AlertNotification("Berhasil", "berhasil mengubah status IKU", "success");
+                setIKU(IKU.filter((data) => (data.indikator_id !== id)));
+            } else {
+                console.error(result.data);
+                AlertNotification("Gagal", `${result.data}`, "error");
+            }
+        } catch (err) {
+            console.error(err);
+            AlertNotification("Gagal", `cek koneksi internet/database server, error catch`, "error");
+        } finally {
+            setProses(false);
+        }
+    }
 
     if (Loading) {
         return (
@@ -110,8 +137,6 @@ const TableOpd: React.FC<table> = ({ kode_opd, tahun_awal, tahun_akhir, jenis, t
                 <h1 className="text-red-500 font-bold mx-5 py-5">Error, Periksa koneksi internet atau database server, jika error berlanjut silakan hubungi tim developer</h1>
             </div>
         )
-    } else if (Tahun?.value == undefined) {
-        return <TahunNull />
     }
 
     return (
@@ -145,16 +170,16 @@ const TableOpd: React.FC<table> = ({ kode_opd, tahun_awal, tahun_akhir, jenis, t
             <div className="overflow-auto m-2 rounded-t-xl border">
                 <table className="w-full">
                     <thead>
-                        <tr className="bg-emerald-500 text-white">
+                        <tr className={`${TableAktif ? "bg-emerald-500" : "bg-orange-500"} text-white`}>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 text-center">No</th>
-                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[300px]">Indikator Utama</th>
+                            <th rowSpan={2} colSpan={2} className="border-r border-b px-6 py-3 min-w-[400px]">Indikator Utama</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Rumus Perhitungan</th>
                             <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[200px]">Sumber Data</th>
                             {tahun_list.map((item: any) => (
                                 <th key={item} colSpan={2} className="border-l border-b px-6 py-3 min-w-[100px]">{item}</th>
                             ))}
                         </tr>
-                        <tr className="bg-emerald-500 text-white">
+                        <tr className={`${TableAktif ? "bg-emerald-600" : "bg-orange-600"} text-white`}>
                             {tahun_list.map((item: any) => (
                                 <React.Fragment key={item}>
                                     <th className="border-l border-b px-6 py-3 min-w-[50px]">Target</th>
@@ -189,13 +214,13 @@ const TableOpd: React.FC<table> = ({ kode_opd, tahun_awal, tahun_akhir, jenis, t
                                                     if (TableAktif) {
                                                         AlertQuestion("Non Aktifkan IKU?", "", "question", "NonAktifkan", "Batal").then((result) => {
                                                             if (result.isConfirmed) {
-
+                                                                UpdateStatusIku(item.indikator_id);
                                                             }
                                                         });
                                                     } else {
                                                         AlertQuestion("Aktifkan IKU?", "", "question", "Aktifkan", "Batal").then((result) => {
                                                             if (result.isConfirmed) {
-
+                                                                UpdateStatusIku(item.indikator_id);
                                                             }
                                                         });
                                                     }

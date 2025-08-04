@@ -7,13 +7,15 @@ import { LoadingClip } from "@/components/global/Loading";
 import { getOpdTahun } from "@/components/lib/Cookie";
 import { TahunNull } from "@/components/global/OpdTahunNull";
 import { getToken } from "@/components/lib/Cookie";
-import { AlertQuestion } from "@/components/global/Alert";
+import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
+import { useBrandingContext } from "@/context/BrandingContext";
 
 interface IKU {
     indikator_id: string;
     asal_iku: string;
     sumber: string;
     is_active: boolean;
+    iku_active: boolean;
     rumus_perhitungan: string;
     sumber_data: string;
     indikator: string;
@@ -36,28 +38,19 @@ interface table {
 
 const TablePemda: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jenis, tahun_list }) => {
 
+    const { branding } = useBrandingContext();
+    const Tahun = branding?.tahun ? branding?.tahun?.value : 0;
     const [IKU, setIKU] = useState<IKU[]>([]);
 
     const [TableAktif, setTableAktif] = useState<boolean>(true);
     const [TableNonAktif, setTableNonAktif] = useState<boolean>(false);
-
+    
     const [Error, setError] = useState<boolean | null>(null);
     const [DataNull, setDataNull] = useState<boolean | null>(null);
-
+    
     const [Loading, setLoading] = useState<boolean | null>(null);
-    const [Tahun, setTahun] = useState<any>(null);
+    const [Proses, setProses] = useState<boolean>(false);
     const token = getToken();
-
-    useEffect(() => {
-        const data = getOpdTahun();
-        if (data.tahun) {
-            const tahun = {
-                value: data.tahun.value,
-                label: data.tahun.label,
-            }
-            setTahun(tahun);
-        }
-    }, []);
 
     useEffect(() => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -74,7 +67,7 @@ const TablePemda: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jeni
                 });
                 const result = await response.json();
                 const isActiveFilter = TableAktif;
-                const filteredData = result.data?.filter((n: any) => n.is_active === isActiveFilter) || [];
+                const filteredData = result.data?.filter((n: any) => n.iku_active === isActiveFilter) || [];
 
                 if (result.code === 200 || result.code === 201) {
                     if (filteredData.length === 0) {
@@ -93,10 +86,43 @@ const TablePemda: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jeni
                 setLoading(false);
             }
         }
-        if (Tahun?.value != undefined) {
+        if (Tahun != undefined) {
             fetchIkuPemda();
         }
     }, [token, Tahun, tahun_awal, tahun_akhir, jenis, TableNonAktif, TableAktif]);
+
+    const UpdateStatusIku = async (id: string,) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const formData = {
+            indikator_id: id,
+            is_active: !TableAktif,
+        }
+        // console.log(formData);
+        try {
+            setProses(true);
+            const response = await fetch(`${API_URL}/indikator_utama/status/${id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const result = await response.json();
+            if(result.code === 200 || result.code === 201){
+                AlertNotification("Berhasil", "berhasil mengubah status IKU", "success");
+                setIKU(IKU.filter((data) => (data.indikator_id !== id)));
+            } else {
+                console.error(result.data);
+                AlertNotification("Gagal", `${result.data}`, "error");
+            }
+        } catch(err){
+            console.error(err);
+            AlertNotification("Gagal", `cek koneksi internet/database server, error catch`, "error");
+        } finally{
+            setProses(false);
+        }
+    }
 
     if (Loading) {
         return (
@@ -110,8 +136,6 @@ const TablePemda: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jeni
                 <h1 className="text-red-500 font-bold mx-5 py-5">Error, Periksa koneksi internet atau database server, jika error berlanjut silakan hubungi tim developer</h1>
             </div>
         )
-    } else if (Tahun?.value == undefined) {
-        return <TahunNull />
     }
 
     return (
@@ -184,18 +208,19 @@ const TablePemda: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jeni
                                     <td className={`border-r border-b ${TableAktif ? "border-emerald-500" : "border-orange-500"} pr-6`}>
                                         <div className={`flex flex-col justify-center items-center gap-2`}>
                                             <ButtonBlackBorder
+                                                disabled={Proses}
                                                 className={`flex items-center gap-1 w-full text-sm`}
                                                 onClick={() => {
                                                     if (TableAktif) {
                                                         AlertQuestion("Non Aktifkan IKU?", "", "question", "NonAktifkan", "Batal").then((result) => {
                                                             if (result.isConfirmed) {
-
+                                                                UpdateStatusIku(item.indikator_id);
                                                             }
                                                         });
                                                     } else {
                                                         AlertQuestion("Aktifkan IKU?", "", "question", "Aktifkan", "Batal").then((result) => {
                                                             if (result.isConfirmed) {
-
+                                                                UpdateStatusIku(item.indikator_id);
                                                             }
                                                         });
                                                     }
