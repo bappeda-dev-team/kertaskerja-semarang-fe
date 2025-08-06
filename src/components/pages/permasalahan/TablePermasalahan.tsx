@@ -198,6 +198,7 @@ export const Childs: React.FC<Childs> = ({ data, rowSpan, tahun }) => {
     const [Edit, setEdit] = useState<boolean>(false);
     const [JenisForm, setJenisForm] = useState<"baru" | "edit" | "">("");
     const [LoadingPilih, setLoadingPilih] = useState<boolean>(false);
+    const [Terpilih, setTerpilh] = useState<boolean>(false);
 
     const handleEdit = (jenis: "baru" | "edit" | "") => {
         if (Edit) {
@@ -217,18 +218,19 @@ export const Childs: React.FC<Childs> = ({ data, rowSpan, tahun }) => {
             tahun: String(tahun),
         }
         // console.log(formData);
-        try{
+        try {
             setLoadingPilih(true);
             const response = await fetch(`${API_URL_PERMASALAHAN}/permasalahan_terpilih/create`, {
                 method: "POST",
                 headers: {
-                    'Content-Type' : "application/json",
+                    'Content-Type': "application/json",
                 },
                 body: JSON.stringify(formData),
             });
             const result = await response.json();
-            if(result.code === 200){
+            if (result.code === 200) {
                 AlertNotification("Berhasil", "Berhasil memilih data permasalahan, lanjut ke halaman isu strategis", "success", 2000, true);
+                setTerpilh(true);
             } else {
                 AlertNotification("Gagal", `${result.data}`, "error");
             }
@@ -248,11 +250,11 @@ export const Childs: React.FC<Childs> = ({ data, rowSpan, tahun }) => {
                 jenis={JenisForm}
             />
         )
-    } else if(LoadingPilih) {
-        return(
+    } else if (LoadingPilih) {
+        return (
             <td>Loading...</td>
         )
-    }else {
+    } else {
         return (
             <React.Fragment>
                 <td
@@ -287,12 +289,12 @@ export const Childs: React.FC<Childs> = ({ data, rowSpan, tahun }) => {
                             <TbPencil className="mr-1" />
                             Edit
                         </ButtonSkyBorder>
-                        {data?.permasalahan_terpilih &&
+                        {(data?.permasalahan_terpilih || Terpilih) &&
                             <ButtonBlack className="cursor-not-allowed">
                                 Terpilih
                             </ButtonBlack>
                         }
-                        {(data?.is_permasalahan && !data?.permasalahan_terpilih) &&
+                        {(data?.is_permasalahan && !data?.permasalahan_terpilih && !Terpilih) &&
                             <ButtonBlack className="w-full"
                                 onClick={() => {
                                     AlertQuestion("Pilih?", `${data?.nama_pohon}`, "question", "Pilih", "Batal").then((result) => {

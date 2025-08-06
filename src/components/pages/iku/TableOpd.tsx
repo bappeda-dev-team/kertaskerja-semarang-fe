@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { LoadingClip } from "@/components/global/Loading";
-import { getOpdTahun } from "@/components/lib/Cookie";
-import { TahunNull } from "@/components/global/OpdTahunNull";
 import { getToken } from "@/components/lib/Cookie";
 import { TbCircleX, TbCircleCheck, TbMistOff, TbMist } from "react-icons/tb";
 import { ButtonBlackBorder } from "@/components/global/Button";

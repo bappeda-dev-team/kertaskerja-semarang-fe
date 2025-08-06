@@ -1,7 +1,13 @@
-import { ButtonSkyBorder, ButtonRedBorder } from "@/components/global/Button";
-import { TbPencil, TbTrash } from "react-icons/tb";
+'use client'
+
+import React, { useEffect, useState } from "react";
+import { ButtonSkyBorder, ButtonRedBorder, ButtonGreenBorder } from "@/components/global/Button";
+import { TbCirclePlus, TbPencil, TbTrash } from "react-icons/tb";
 import { AlertQuestion } from "@/components/global/Alert";
-import React from "react";
+import { ModalIsu } from "./ModalIsu";
+import { LoadingBeat } from "@/components/global/Loading";
+import { useBrandingContext } from "@/context/BrandingContext";
+import { IsuStrategis, DataDukung, TargetJumlahData, PermasalahanOpd } from "@/types";
 
 interface table {
     id_periode: number;
@@ -12,97 +18,189 @@ interface table {
 }
 
 const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhir, jenis, tahun_list }) => {
+
+    const { branding } = useBrandingContext();
+    const [Isu, setIsu] = useState<IsuStrategis[]>([]);
+    const [Modal, setModal] = useState<boolean>(false);
+    const [JenisModal, setJenisModal] = useState<"baru" | "edit" | "">("");
+
+    const [Loading, setLoading] = useState<boolean>(false);
+    const [Error, setError] = useState<boolean>(false);
+    const [FetchTrigger, setFetchTrigger] = useState<boolean>(false);
+
+    const handleModal = (jenis: "baru" | "edit" | "") => {
+        if (Modal) {
+            setJenisModal('');
+            setModal(false);
+        } else {
+            setJenisModal(jenis);
+            setModal(true);
+        }
+    }
+
+    useEffect(() => {
+        const API_URL = branding?.api_permasalahan;
+        const fetchIsuStrategis = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch(`${API_URL}/isu_strategis/${branding?.opd?.value}/${tahun_awal}/${tahun_akhir}`, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const result = await response.json();
+                if (result.code === 200) {
+                    setIsu(result.data);
+                    setError(false);
+                    console.log(result.data);
+                } else {
+                    console.log(result.data);
+                    setError(true);
+                }
+            } catch (err) {
+                setError(true);
+                console.log(err);
+            } finally {
+                setLoading(false);
+            }
+        }
+        if (tahun_awal && tahun_akhir) {
+            fetchIsuStrategis();
+        }
+    }, [branding, tahun_akhir, tahun_awal]);
+
+    if (Error) {
+        return (
+            <div className="text-red-500">
+                Error data permasalahan, Periksa koneksi internet, jika error berlajut silakan hubungi tim developer
+            </div>
+        )
+    } else if (Loading) {
+        return (
+            <div className="border rounded-lg m-2">
+                <LoadingBeat />
+            </div>
+        )
+    }
+
     return (
-        <div className="overflow-auto m-2 rounded-t-xl border">
-            <table className="w-full">
-                <thead>
-                    <tr className="bg-emerald-500 text-white">
-                        <th rowSpan={2} className="border-r border-b px-3 py-3 w-[50px]">No</th>
-                        <th rowSpan={2} className="border-r border-b px-6 py-3">Bidang Urusan</th>
-                        <th rowSpan={2} colSpan={2} className="border-r border-b px-6 py-3">Isu Strategis</th>
-                        <th rowSpan={2} className="border-r border-b px-6 py-3">Permasalahan</th>
-                        <th rowSpan={2} className="border-r border-b px-6 py-3">Nama Data Dukung</th>
-                        <th rowSpan={2} className="border-r border-b px-6 py-3">Narasi Data Dukung</th>
-                        {tahun_list.map((item: any) => (
-                            <th key={item} colSpan={2} className="border-r border-b px-6 py-3">{item}</th>
-                        ))}
-                        <th rowSpan={2} className="border-r border-b px-6 py-3">Aksi</th>
-                    </tr>
-                    <tr className={`bg-emerald-600 text-white`}>
-                        {tahun_list.map((item: any) => (
-                            <React.Fragment key={item}>
-                                <th className="border-r border-b px-6 py-1 min-w-[50px]">Jumlah</th>
-                                <th className="border-r border-b px-6 py-1 min-w-[50px]">Satuan</th>
-                            </React.Fragment>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="border-x border-b border-emerald-500 py-4 px-3 text-center">1</td>
-                        <td className="border-r border-b border-emerald-500 px-6 py-4">(5.01) Penelitian dan Pengembangan</td>
-                        <td className="border-r border-b border-emerald-500 px-6 py-4">Peningkatan Kualitas Perencanaan Inovasi Daerah</td>
-                        <td className="border-r border-b border-emerald-500 px-6 py-4">
-                            <div className="flex flex-col jutify-center items-center gap-2">
-                                <ButtonSkyBorder
-                                    className="flex items-center gap-1 w-full"
-                                >
+        <>
+            <div className="flex my-3 ml-3">
+                <ButtonGreenBorder
+                    className="flex items-center gap-1"
+                    onClick={() => handleModal("baru")}
+                >
+                    <TbCirclePlus />
+                    Tambah Isu Strategis
+                </ButtonGreenBorder>
+            </div>
+            <div className="overflow-auto m-2 rounded-t-xl border">
+                <table className="w-full">
+                    <thead>
+                        <tr className="bg-emerald-500 text-white">
+                            <th rowSpan={2} className="border-r border-b px-3 py-3 w-[50px]">No</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[250px]">Bidang Urusan</th>
+                            <th rowSpan={2} colSpan={2} className="border-r border-b px-6 py-3 min-w-[400px]">Isu Strategis</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[250px]">Permasalahan</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[250px]">Nama Data Dukung</th>
+                            <th rowSpan={2} className="border-r border-b px-6 py-3 min-w-[250px]">Narasi Data Dukung</th>
+                            {tahun_list.map((item: any) => (
+                                <th key={item} colSpan={2} className="border-r border-b px-6 py-3">{item}</th>
+                            ))}
+                        </tr>
+                        <tr className={`bg-emerald-600 text-white`}>
+                            {tahun_list.map((item: any) => (
+                                <React.Fragment key={item}>
+                                    <th className="border-r border-b px-6 py-1 min-w-[50px]">Jumlah</th>
+                                    <th className="border-r border-b px-6 py-1 min-w-[50px]">Satuan</th>
+                                </React.Fragment>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Isu.length === 0 ?
+                            <tr>
+                                <td colSpan={12} className="border-x border-b border-emerald-500 py-4 px-5">
+                                    Data Isu Strategis Kosong
+                                </td>
+                            </tr>
+                            :
+                            Isu.map((i: IsuStrategis, index: number) => (
+                                <React.Fragment key={index}>
+                                    <tr>
+                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-x border-b border-emerald-500 py-4 px-3 text-center">{index + 1}</td>
+                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">{i.kode_bidang_urusan || "no code"} - {i.nama_bidang_urusan || "-"}</td>
+                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">{i.isu_strategis || "-"} ({i.id})</td>
+                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">
+                                            <div className="flex flex-col jutify-center items-center gap-2">
+                                                <ButtonSkyBorder
+                                                    className="flex items-center gap-1 w-full"
+                                                    onClick={() => handleModal("edit")}
+                                                >
+                                                    <TbPencil />
+                                                    Edit
+                                                </ButtonSkyBorder>
+                                                <ButtonRedBorder
+                                                    className="flex items-center gap-1 w-full"
+                                                    onClick={() => {
+                                                        AlertQuestion("Hapus?", "Data Isu Strategis akan di hapus?", "question", "Hapus", "Batal").then((result) => {
+                                                            if (result.isConfirmed) {
 
-                                    <TbPencil />
-                                    Edit
-                                </ButtonSkyBorder>
-                                <ButtonRedBorder
-                                    className="flex items-center gap-1 w-full"
-                                    onClick={() => {
-                                        AlertQuestion("Hapus?", "Data Isu Strategis akan di hapus?", "question", "Hapus", "Batal").then((result) => {
-                                            if (result.isConfirmed) {
+                                                            }
+                                                        });
+                                                    }}
+                                                >
+                                                    <TbTrash />
+                                                    Hapus
+                                                </ButtonRedBorder>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {i.permasalahan_opd.length === 0 ?
+                                        <tr>
 
-                                            }
-                                        });
-                                    }}
-                                >
-                                    <TbTrash />
-                                    Hapus
-                                </ButtonRedBorder>
-                            </div>
-                        </td>
-                        <td className="border-r border-b border-emerald-500 px-6 py-4">Belum optimalnya antusiasme dan partisipasi Perangkat Daerah/masyarakat dalam melakukan inovasi</td>
-                        <td className="border-r border-b border-emerald-500 px-6 py-4">Rekapitulasi Penyusunan Proposal Inovasi</td>
-                        <td className="border-r border-b border-emerald-500 px-6 py-4">Narasi Data Dukung</td>
-                        {tahun_list.map((item: any) => (
-                            <React.Fragment key={item}>
-                                <td className="border-r border-b border-emerald-500 px-6 py-4 text-center">50</td>
-                                <td className="border-r border-b border-emerald-500 px-6 py-4 text-center">%</td>
-                            </React.Fragment>
-                        ))}
-                        <td className="border-r border-b border-emerald-500 px-6 py-4">
-                            <div className="flex flex-col jutify-center items-center gap-2">
-                                <ButtonSkyBorder
-                                    className="flex items-center gap-1 w-full"
-                                >
-
-                                    <TbPencil />
-                                    Edit
-                                </ButtonSkyBorder>
-                                <ButtonRedBorder
-                                    className="flex items-center gap-1 w-full"
-                                    onClick={() => {
-                                        AlertQuestion("Hapus?", "Data Permasalahan akan di hapus?", "question", "Hapus", "Batal").then((result) => {
-                                            if (result.isConfirmed) {
-
-                                            }
-                                        });
-                                    }}
-                                >
-                                    <TbTrash />
-                                    Hapus
-                                </ButtonRedBorder>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                                        </tr>
+                                        :
+                                        i.permasalahan_opd.map((p: PermasalahanOpd, sub_index: number) => (
+                                            <tr key={sub_index}>
+                                                <td className="border-r border-b border-emerald-500 px-6 py-4">{p.masalah || "-"}</td>
+                                                {p.data_dukung.map((dd: DataDukung, dd_index) => (
+                                                    <React.Fragment key={dd_index}>
+                                                        <td className="border-r border-b border-emerald-500 px-6 py-4">{dd.data_dukung || "-"}</td>
+                                                        <td className="border-r border-b border-emerald-500 px-6 py-4">{dd.narasi_data_dukung || "-"}</td>
+                                                        {dd.jumlah_data.length === 0 ? 
+                                                            tahun_list.map((tl: any, tl_index: number) => (
+                                                                <React.Fragment key={tl_index}>
+                                                                    <td className="border-r border-b border-emerald-500 px-6 py-4 text-center">-</td>
+                                                                    <td className="border-r border-b border-emerald-500 px-6 py-4 text-center">-</td>
+                                                                </React.Fragment>
+                                                            ))
+                                                        :
+                                                            dd.jumlah_data.map((d: TargetJumlahData, d_index: number) => (
+                                                                <React.Fragment key={d_index}>
+                                                                    <td className="border-r border-b border-emerald-500 px-6 py-4 text-center">{d.jumlah_data || "-"}</td>
+                                                                    <td className="border-r border-b border-emerald-500 px-6 py-4 text-center">{d.satuan || "-"}</td>
+                                                                </React.Fragment>
+                                                            ))
+                                                        }
+                                                    </React.Fragment>
+                                                ))}
+                                            </tr>
+                                        ))
+                                    }
+                                </React.Fragment>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <ModalIsu
+                isOpen={Modal}
+                onClose={() => handleModal("")}
+                metode={JenisModal}
+                onSuccess={() => setFetchTrigger((prev) => !prev)}
+            />
+        </>
     )
 }
 

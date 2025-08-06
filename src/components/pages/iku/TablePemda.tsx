@@ -4,8 +4,6 @@ import React, { useEffect, useState } from "react";
 import { ButtonBlackBorder } from "@/components/global/Button";
 import { TbMistOff, TbCircleCheck, TbCircleX, TbMist } from "react-icons/tb";
 import { LoadingClip } from "@/components/global/Loading";
-import { getOpdTahun } from "@/components/lib/Cookie";
-import { TahunNull } from "@/components/global/OpdTahunNull";
 import { getToken } from "@/components/lib/Cookie";
 import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 import { useBrandingContext } from "@/context/BrandingContext";

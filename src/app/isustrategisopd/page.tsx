@@ -123,7 +123,7 @@ const IsuStrategis = () => {
                             tahun={tahun}
                             kode_opd={User?.roles == 'super_admin' ? branding?.opd?.value : User?.kode_opd}
                         />
-                        <TableBidangUrusan />
+                        {/* <TableBidangUrusan /> */}
                         <TableIsuStrategis
                             id_periode={Periode?.value}
                             tahun_awal={Periode?.tahun_awal ? Periode?.tahun_awal : ""}

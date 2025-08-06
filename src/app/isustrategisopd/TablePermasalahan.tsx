@@ -5,16 +5,12 @@ import { ButtonRedBorder } from "@/components/global/Button";
 import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 import { TbTrash } from "react-icons/tb";
 import { LoadingBeat } from "@/components/global/Loading";
+import { PerangkatDaerah } from "@/types";
 
 interface table {
     tahun: number;
     kode_opd: string;
 }
-interface PerangkatDaerah {
-    kode_opd: string;
-    nama_opd: string;
-}
-
 interface PohonData {
     id: number;
     id_permasalahan: number;
@@ -88,7 +84,7 @@ const TablePermasalahan: React.FC<table> = ({ tahun, kode_opd }) => {
     if (Error) {
         return (
             <div className="text-red-500">
-                Error, Periksa koneksi internet, jika error berlajut silakan hubungi tim developer
+                Error data permasalahan, Periksa koneksi internet, jika error berlajut silakan hubungi tim developer
             </div>
         )
     } else if(Loading) {
@@ -124,7 +120,7 @@ const TablePermasalahan: React.FC<table> = ({ tahun, kode_opd }) => {
                                     {index + 1}
                                 </td>
                                 <td className="border-r border-b border-orange-500 px-6 py-4">
-                                    {data.nama_pohon || "-"}
+                                    {data.nama_pohon || "-"} - ({data.id || "id not found"})
                                 </td>
                                 <td className="border-r border-b border-orange-500 px-6 py-4 text-center">
                                     {data.jenis_masalah || "-"}
@@ -136,7 +132,7 @@ const TablePermasalahan: React.FC<table> = ({ tahun, kode_opd }) => {
                                             onClick={() => {
                                                 AlertQuestion("Hapus?", "Data Permasalahan akan di hapus?", "question", "Hapus", "Batal").then((result) => {
                                                     if (result.isConfirmed) {
-                                                        hapusPermasalahan(data.id_permasalahan);
+                                                        hapusPermasalahan(data.id);
                                                     }
                                                 });
                                             }}

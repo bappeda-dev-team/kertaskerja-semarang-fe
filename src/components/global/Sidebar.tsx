@@ -217,6 +217,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       url === `/laporanrenstra` ||
       url === "/rencanakinerja-kak" ||
       url === `/laporanrincianbelanja` ||
+      url === `/laporancascadingpemda` ||
       url === "/laporancascadingopd"
     ) {
       setDataMaster(false);
@@ -916,6 +917,12 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/laporancascadingopd" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                 <TbListDetails className="text-xl" />
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Cascading OPD</span>
+              </li>
+            </Link>
+            <Link href="/laporancascadingpemda">
+              <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/laporancascadingpemda" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                <TbListDetails className="text-xl" />
+                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Cascading PEMDA</span>
               </li>
             </Link>
           </div>
