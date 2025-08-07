@@ -52,7 +52,7 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                 if (result.code === 200) {
                     setIsu(result.data);
                     setError(false);
-                    console.log(result.data);
+                    // console.log(result.data);
                 } else {
                     console.log(result.data);
                     setError(true);
@@ -120,7 +120,7 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                     <tbody>
                         {Isu.length === 0 ?
                             <tr>
-                                <td colSpan={12} className="border-x border-b border-emerald-500 py-4 px-5">
+                                <td colSpan={18} className="border-x border-b border-emerald-500 py-4 px-5">
                                     Data Isu Strategis Kosong
                                 </td>
                             </tr>
@@ -130,7 +130,7 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                                     <tr>
                                         <td rowSpan={i.permasalahan_opd.length + 1} className="border-x border-b border-emerald-500 py-4 px-3 text-center">{index + 1}</td>
                                         <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">{i.kode_bidang_urusan || "no code"} - {i.nama_bidang_urusan || "-"}</td>
-                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">{i.isu_strategis || "-"} ({i.id})</td>
+                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">{i.isu_strategis || "-"}</td>
                                         <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">
                                             <div className="flex flex-col jutify-center items-center gap-2">
                                                 <ButtonSkyBorder
@@ -158,7 +158,9 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                                     </tr>
                                     {i.permasalahan_opd.length === 0 ?
                                         <tr>
+                                            <td colSpan={15} className="border-r border-b border-emerald-500 px-6 py-4 text-red-400 italic">Permasalahan belum di tambahkan</td>
 
+                                            
                                         </tr>
                                         :
                                         i.permasalahan_opd.map((p: PermasalahanOpd, sub_index: number) => (

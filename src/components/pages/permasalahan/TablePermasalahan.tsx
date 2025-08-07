@@ -265,7 +265,7 @@ export const Childs: React.FC<Childs> = ({ data, rowSpan, tahun }) => {
                         ${data?.level_pohon === 6 && 'bg-emerald-200'}
                     `}
                 >
-                    {data?.nama_pohon || "-"} {data?.id_permasalahan}
+                    {data?.nama_pohon || "-"}
                 </td>
                 <td
                     rowSpan={rowSpan}
