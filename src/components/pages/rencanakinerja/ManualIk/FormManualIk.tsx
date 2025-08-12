@@ -97,7 +97,7 @@ const FormManualIk = () => {
                     throw new Error("response tidak OK, permasalahan di URL Endpoint");
                 }
                 const hasil = await response.json();
-                // console.log(data);
+                // console.log(hasil.data);
                 const detail = hasil.data;
                 if (detail.perspektif || detail.formula || detail.sumber_data) {
                     setDataNew(false);
@@ -179,6 +179,10 @@ const FormManualIk = () => {
                         setDataNew(false);
                     } else {   
                         setDataNew(true);
+                    }
+                    if(detail.nama_parent){
+                        setTujuanRekin(detail.nama_parent);
+                        reset({ tujuan_rekin: detail.nama_parent });
                     }
                     if (detail.rencana_kinerja) {
                         setRekin(detail.rencana_kinerja.Nama_rencana_kinerja);
