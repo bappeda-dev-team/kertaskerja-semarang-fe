@@ -125,12 +125,6 @@ export const TableLaporan: React.FC<TableLaporan> = ({ tahun, kode_opd, nama_opd
         return angka.toLocaleString('id-ID'); // 'id-ID' untuk format Indonesia
     }
 
-    // useEffect(() => {
-    //     console.log('nip :', nip)
-    //     console.log('kode_opd :', kode_opd)
-    //     console.log('role :', role)
-    // }, []);
-
     if (Loading) {
         return (
             <div className="w-full border p-5 rounded-xl shadow-xl">
@@ -168,6 +162,7 @@ export const TableLaporan: React.FC<TableLaporan> = ({ tahun, kode_opd, nama_opd
                         <th className="border-r border-b px-6 py-3 min-w-[300px]">Indikator Kinerja</th>
                         <th className="border-r border-b px-6 py-3 min-w-[100px]">Target/Satuan</th>
                         <th className="border-r border-b px-6 py-3 min-w-[170px]">Anggaran</th>
+                        <th className="border-r border-b px-6 py-3 min-w-[170px]">Dokumen</th>
                     </tr>
                 </thead>
                 {DataNull ?
@@ -246,19 +241,21 @@ export const TableLaporan: React.FC<TableLaporan> = ({ tahun, kode_opd, nama_opd
                                         :
                                             <tr>
                                                 <td className="border-r border-b px-6 py-4">-</td>
-                                                    <td className="border-r border-b px-6 py-4 text-center">-</td>
+                                                <td className="border-r border-b px-6 py-4 text-center">-</td>
                                             </tr>
                                     }
                                     {rekin.rencana_aksi === null ?
                                         <tr>
                                             <td colSpan={5} className="border-r border-b px-6 py-4 text-red-500">Renaksi Belum di tambahkan di rencana kinerja</td>
                                             <td className="border-r border-b px-6 py-4">Rp.0</td>
+                                            <td className="border-r border-b px-6 py-4">-</td>
                                         </tr>
                                         :
                                         rekin.rencana_aksi.map((renaksi: RencanaAksi, index_renaksi: number) => (
                                             <tr key={renaksi.renaksi_id || index_renaksi}>
                                                 <td colSpan={5} className="border-r border-b px-6 py-4">Renaksi {index_renaksi + 1}: {renaksi.renaksi}</td>
                                                 <td className="border-r border-b px-6 py-4">Rp.{formatRupiah(renaksi.anggaran || 0)}</td>
+                                                <td className="border-r border-b px-6 py-4">tombol</td>
                                             </tr>
                                         ))
                                     }

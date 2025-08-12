@@ -3,10 +3,12 @@ import { useState, useEffect, useRef } from 'react';
 import { LoadingBeat } from '@/components/global/Loading';
 import { Pohon } from '@/components/lib/Pohon/Pemda/Pohon';
 import { getOpdTahun, getToken, getUser } from '@/components/lib/Cookie';
+import { PohonLaporan } from '@/components/lib/Pohon/Cascading/PohonLaporan';
 
 interface pohontematik {
     id: number;
     show_all: boolean;
+    jenis: "laporan" | "pemda" | ""
     set_show_all: () => void;
 }
 interface opd {
@@ -34,7 +36,7 @@ interface childs {
     strategics: childs[];
 }
 
-const PohonTematik = ({ id, show_all, set_show_all }: pohontematik) => {
+const PohonTematik = ({ id, jenis, show_all, set_show_all }: pohontematik) => {
 
     const [Pokin, setPokin] = useState<tematik[]>([]);
     const [Loading, setLoading] = useState<boolean | null>(null);
@@ -103,14 +105,23 @@ const PohonTematik = ({ id, show_all, set_show_all }: pohontematik) => {
     return (
         <>
             <ul>
-                <Pohon
-                    user={User?.roles}
-                    tema={Pokin}
-                    tahun={Tahun?.value}
-                    deleteTrigger={() => setDeleted((prev) => !prev)}
-                    show_all={show_all}
-                    set_show_all={set_show_all}
-                />
+                {jenis === "pemda" &&
+                    <Pohon
+                        user={User?.roles}
+                        tema={Pokin}
+                        tahun={Tahun?.value}
+                        deleteTrigger={() => setDeleted((prev) => !prev)}
+                        show_all={show_all}
+                        set_show_all={set_show_all}
+                    />
+                }
+                {jenis === "laporan" &&
+                    <PohonLaporan
+                        tema={Pokin}
+                        show_all={show_all}
+                        set_show_all={set_show_all}
+                    />
+                }
             </ul>
         </>
     )
