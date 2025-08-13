@@ -744,7 +744,6 @@ export const TablePohon = (props: any) => {
                     </td>
                 </tr>
                 {indikator ?
-                    indikator.length > 1 ?
                         indikator.map((data: any, index: number) => (
                             <React.Fragment key={data.id_indikator}>
                                 <tr>
@@ -762,7 +761,11 @@ export const TablePohon = (props: any) => {
                                     ${jenis === "Operational Pemda" && "border-black"}
                                 `}
                                     >
-                                        Indikator {index + 1}
+                                        {indikator.length > 1 ? 
+                                            <p>Indikator {index + 1}</p>
+                                            :
+                                            <p>Indikator</p>
+                                        }
                                     </td>
                                     <td
                                         className={`min-w-[300px] border px-2 py-3 bg-white text-start
@@ -797,7 +800,11 @@ export const TablePohon = (props: any) => {
                                         ${jenis === "Operational Pemda" && "border-black"}    
                                     `}
                                         >
-                                            Target/Satuan {index + 1}
+                                            {indikator.length > 1 ? 
+                                                <p>Target/Satuan {index + 1}</p>
+                                                :
+                                                <p>Target/Satuan</p>
+                                            }
                                         </td>
                                         <td
                                             className={`min-w-[300px] border px-2 py-3 bg-white text-start
@@ -812,81 +819,6 @@ export const TablePohon = (props: any) => {
                                         ${jenis === "Tactical Pemda" && "border-black"}
                                         ${jenis === "Operational Pemda" && "border-black"}    
                                     `}
-                                        >
-                                            {data.target ? data.target : "-"} / {data.satuan ? data.satuan : "-"}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </React.Fragment>
-                        ))
-                        :
-                        indikator.map((data: any) => (
-                            <React.Fragment key={data.id_indikator}>
-                                <tr>
-                                    <td
-                                        className={`min-w-[100px] border px-2 py-3 bg-white text-start
-                                            ${jenis === "Tematik" && "border-black"}
-                                            ${jenis === "Sub Tematik" && "border-black"}
-                                            ${jenis === "Sub Sub Tematik" && "border-black"}
-                                            ${jenis === "Super Sub Tematik" && "border-black"}
-                                            ${jenis === "Strategic" && "border-red-700"}
-                                            ${jenis === "Tactical" && "border-blue-500"}
-                                            ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
-                                            ${jenis === "Strategic Pemda" && "border-black"}
-                                            ${jenis === "Tactical Pemda" && "border-black"}
-                                            ${jenis === "Operational Pemda" && "border-black"}
-                                        `}
-                                    >
-                                        Indikator
-                                    </td>
-                                    <td
-                                        className={`min-w-[300px] border px-2 py-3 bg-white text-start
-                                            ${jenis === "Tematik" && "border-black"}
-                                            ${jenis === "Sub Tematik" && "border-black"}
-                                            ${jenis === "Sub Sub Tematik" && "border-black"}
-                                            ${jenis === "Super Sub Tematik" && "border-black"}
-                                            ${jenis === "Strategic" && "border-red-700"}
-                                            ${jenis === "Tactical" && "border-blue-500"}
-                                            ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
-                                            ${jenis === "Strategic Pemda" && "border-black"}
-                                            ${jenis === "Tactical Pemda" && "border-black"}
-                                            ${jenis === "Operational Pemda" && "border-black"}
-                                        `}
-                                    >
-                                        {data.nama_indikator ? data.nama_indikator : "-"}
-                                    </td>
-                                </tr>
-                                {data.targets.map((data: any, index: number) => (
-                                    <tr key={data.id_target}>
-                                        <td
-                                            className={`min-w-[100px] border px-2 py-3 bg-white text-start
-                                                ${jenis === "Tematik" && "border-black"}
-                                                ${jenis === "Sub Tematik" && "border-black"}
-                                                ${jenis === "Sub Sub Tematik" && "border-black"}
-                                                ${jenis === "Super Sub Tematik" && "border-black"}
-                                                ${jenis === "Strategic" && "border-red-700"}
-                                                ${jenis === "Tactical" && "border-blue-500"}
-                                                ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
-                                                ${jenis === "Strategic Pemda" && "border-black"}
-                                                ${jenis === "Tactical Pemda" && "border-black"}
-                                                ${jenis === "Operational Pemda" && "border-black"}    
-                                            `}
-                                        >
-                                            Target/Satuan
-                                        </td>
-                                        <td
-                                            className={`min-w-[300px] border px-2 py-3 bg-white text-start
-                                                ${jenis === "Tematik" && "border-black"}
-                                                ${jenis === "Sub Tematik" && "border-black"}
-                                                ${jenis === "Sub Sub Tematik" && "border-black"}
-                                                ${jenis === "Super Sub Tematik" && "border-black"}
-                                                ${jenis === "Strategic" && "border-red-700"}
-                                                ${jenis === "Tactical" && "border-blue-500"}
-                                                ${(jenis === "Operational" || jenis === "Operational N") && "border-green-500"}
-                                                ${jenis === "Strategic Pemda" && "border-black"}
-                                                ${jenis === "Tactical Pemda" && "border-black"}
-                                                ${jenis === "Operational Pemda" && "border-black"}    
-                                            `}
                                         >
                                             {data.target ? data.target : "-"} / {data.satuan ? data.satuan : "-"}
                                         </td>

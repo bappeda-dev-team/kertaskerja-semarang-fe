@@ -239,6 +239,7 @@ const TematikKab = () => {
                             <PohonTematik
                                 id={Tematik?.value}
                                 show_all={ShowAll}
+                                jenis='pemda'
                                 set_show_all={() => {
                                     setShowAll(true)
                                 }}

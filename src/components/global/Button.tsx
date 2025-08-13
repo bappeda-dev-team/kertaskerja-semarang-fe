@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { LoadingButtonClip } from "./Loading";
+import { LoadingButtonClip2 } from "./Loading";
 
 interface button {
     onClick? : () => void;
@@ -34,7 +34,7 @@ export const ButtonSky: React.FC<button> = ({children, type, className, halaman_
             {Loading ? 
                 (
                 <>
-                    <LoadingButtonClip />
+                    <LoadingButtonClip2 />
                     {children}
                 </>
                 )
@@ -65,7 +65,7 @@ export const ButtonSkyBorder: React.FC<button> = ({children, type, className, ha
             {Loading ? 
                 (
                 <>
-                    <LoadingButtonClip />
+                    <LoadingButtonClip2 />
                     {children}
                 </>
                 )
@@ -96,7 +96,7 @@ export const ButtonGreen: React.FC<button> = ({children, type, className, halama
             {Loading ? 
                 (
                 <>
-                    <LoadingButtonClip />
+                    <LoadingButtonClip2 />
                     {children}
                 </>
                 )
@@ -127,7 +127,7 @@ export const ButtonBlack: React.FC<button> = ({children, type, className, halama
             {Loading ? 
                 (
                 <>
-                    <LoadingButtonClip />
+                    <LoadingButtonClip2 />
                     {children}
                 </>
                 )
@@ -158,7 +158,7 @@ export const ButtonGreenBorder: React.FC<button> = ({children, type, className, 
             {Loading ? 
                 (
                 <>
-                    <LoadingButtonClip />
+                    <LoadingButtonClip2 />
                     {children}
                 </>
                 )
@@ -189,7 +189,7 @@ export const ButtonBlackBorder: React.FC<button> = ({children, type, className, 
             {Loading ? 
                 (
                 <>
-                    <LoadingButtonClip />
+                    <LoadingButtonClip2 />
                     {children}
                 </>
                 )
@@ -220,7 +220,7 @@ export const ButtonRed: React.FC<button> = ({children, type, className, halaman_
             {Loading ? 
                 (
                 <>
-                    <LoadingButtonClip />
+                    <LoadingButtonClip2 />
                     {children}
                 </>
                 )
@@ -251,7 +251,7 @@ export const ButtonRedBorder: React.FC<button> = ({children, type, className, ha
             {Loading ? 
                 (
                 <>
-                    <LoadingButtonClip />
+                    <LoadingButtonClip2 />
                     {children}
                 </>
                 )

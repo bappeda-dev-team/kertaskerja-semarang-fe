@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { ButtonSkyBorder, ButtonRedBorder, ButtonGreenBorder } from "@/components/global/Button";
 import { TbCirclePlus, TbPencil, TbTrash } from "react-icons/tb";
-import { AlertQuestion } from "@/components/global/Alert";
+import { AlertNotification, AlertQuestion } from "@/components/global/Alert";
 import { ModalIsu } from "./ModalIsu";
 import { LoadingBeat } from "@/components/global/Loading";
 import { useBrandingContext } from "@/context/BrandingContext";
@@ -69,6 +69,28 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
         }
     }, [branding, tahun_akhir, tahun_awal]);
 
+    const hapusIsu = async(id: number) => {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL_PERMASALAHAN;
+        try{
+            const response = await fetch(`${API_URL}/isu_strategis/${id}`, {
+                method: "DELETE",
+                headers: {
+                    'Content-Type' : 'application/json'
+                }
+            });
+            const result = await response.json();
+            if(result.code === 200 || result.code == 201){
+                setIsu(Isu.filter((data) => (data.id !== id)))
+                AlertNotification("Berhasil", `Berhasil menghapus data isu strategis`, "success");
+            } else {
+                AlertNotification("Gagal", `${result.data}`, "error");
+                console.log(result.data);
+            }
+        } catch(err){
+            console.error(err);
+        }
+    }
+
     if (Error) {
         return (
             <div className="text-red-500">
@@ -128,10 +150,10 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                             Isu.map((i: IsuStrategis, index: number) => (
                                 <React.Fragment key={index}>
                                     <tr>
-                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-x border-b border-emerald-500 py-4 px-3 text-center">{index + 1}</td>
-                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">{i.kode_bidang_urusan || "no code"} - {i.nama_bidang_urusan || "-"}</td>
-                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">{i.isu_strategis || "-"}</td>
-                                        <td rowSpan={i.permasalahan_opd.length + 1} className="border-r border-b border-emerald-500 px-6 py-4">
+                                        <td rowSpan={i.permasalahan_opd ? i.permasalahan_opd.length + 1 : 2} className="border-x border-b border-emerald-500 py-4 px-3 text-center">{index + 1}</td>
+                                        <td rowSpan={i.permasalahan_opd ? i.permasalahan_opd.length + 1 : 2} className="border-r border-b border-emerald-500 px-6 py-4">{i.kode_bidang_urusan || "no code"} - {i.nama_bidang_urusan || "-"}</td>
+                                        <td rowSpan={i.permasalahan_opd ? i.permasalahan_opd.length + 1 : 2} className="border-r border-b border-emerald-500 px-6 py-4">{i.isu_strategis || "-"}</td>
+                                        <td rowSpan={i.permasalahan_opd ? i.permasalahan_opd.length + 1 : 2} className="border-r border-b border-emerald-500 px-6 py-4">
                                             <div className="flex flex-col jutify-center items-center gap-2">
                                                 <ButtonSkyBorder
                                                     className="flex items-center gap-1 w-full"
@@ -145,7 +167,7 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                                                     onClick={() => {
                                                         AlertQuestion("Hapus?", "Data Isu Strategis akan di hapus?", "question", "Hapus", "Batal").then((result) => {
                                                             if (result.isConfirmed) {
-
+                                                                hapusIsu(i.id);
                                                             }
                                                         });
                                                     }}
@@ -156,11 +178,9 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                                             </div>
                                         </td>
                                     </tr>
-                                    {i.permasalahan_opd.length === 0 ?
+                                    {!i.permasalahan_opd || i.permasalahan_opd.length === 0 ?
                                         <tr>
                                             <td colSpan={15} className="border-r border-b border-emerald-500 px-6 py-4 text-red-400 italic">Permasalahan belum di tambahkan</td>
-
-                                            
                                         </tr>
                                         :
                                         i.permasalahan_opd.map((p: PermasalahanOpd, sub_index: number) => (

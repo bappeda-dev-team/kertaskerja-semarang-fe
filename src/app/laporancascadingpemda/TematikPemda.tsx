@@ -8,6 +8,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { ButtonBlackBorder } from '@/components/global/Button';
 import { TbEye } from 'react-icons/tb';
 import { useBrandingContext } from '@/context/BrandingContext';
+import { PohonLaporan } from '@/components/lib/Pohon/Cascading/PohonLaporan';
+import PohonTematik from '@/components/pages/Pohon/TematikKab/PohonTematik';
 
 interface OptionType {
     value: number;
@@ -149,13 +151,14 @@ const TematikPemda = () => {
                 <div className='flex flex-col py-3 px-3 border-b-2 border-x-2 rounded-b-xl relative w-full h-[calc(100vh-50px)] max-h-screen overflow-auto'>
                     <div className="flex flex-col p-2 rounded-b-xl">
                         <div ref={containerRef} className="tf-tree text-center mt-3">
-                            {/* <PohonTematik
+                            <PohonTematik
                                 id={Tematik?.value}
                                 show_all={ShowAll}
+                                jenis='laporan'
                                 set_show_all={() => {
                                     setShowAll(true)
                                 }}
-                            /> */}
+                            />
                         </div>
                     </div>
                 </div>
