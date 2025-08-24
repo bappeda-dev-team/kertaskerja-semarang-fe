@@ -7,7 +7,8 @@ import { useBrandingContext } from '@/context/BrandingContext';
 import { FiHome } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import Select from 'react-select';
-import { getOpdTahun, getUser, getPeriode, getToken, setCookie } from '@/components/lib/Cookie';
+import { OpdTahunNull, TahunNull } from '@/components/global/OpdTahunNull';
+import { getUser, getPeriode, getToken, setCookie } from '@/components/lib/Cookie';
 
 interface Periode {
     value: number;
@@ -30,7 +31,6 @@ const IsuStrategis = () => {
     const token = getToken();
 
     useEffect(() => {
-        const data = getOpdTahun();
         const fetchUser = getUser();
         const fetchPeriode = getPeriode();
         if (fetchUser) {
@@ -78,6 +78,24 @@ const IsuStrategis = () => {
         }
     };
 
+    if(User?.roles ==  "super_admin"){
+        if(branding?.opd?.value === undefined || branding?.tahun?.value === undefined){
+            return(
+                <OpdTahunNull />
+            )
+        }
+    } else if(User?.roles != "super_admin"){
+        if(branding?.tahun?.value){
+            return(
+                <TahunNull />
+            )
+        }
+    } else if(User?.roles != "super_admin" || User?.roles != "admin_opd" || User?.roles != 'reviewer'){
+        return(
+            <h1>Forbidden Access for {User?.roles || "this role"}</h1>
+        )
+    }
+
     return (
         <>
             <div className="flex items-center">
@@ -119,6 +137,7 @@ const IsuStrategis = () => {
                 </div>
                 {Periode ?
                     <>
+                        <p className='text-sm italic text-gray-400 ml-3 mt-2'>*data permasalahan per tahun {tahun} (header)</p>
                         <TablePermasalahan 
                             tahun={tahun}
                             kode_opd={User?.roles == 'super_admin' ? branding?.opd?.value : User?.kode_opd}

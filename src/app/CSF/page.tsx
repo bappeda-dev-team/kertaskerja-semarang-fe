@@ -6,8 +6,9 @@ import { TbCirclePlus } from "react-icons/tb";
 import { Table } from "./table";
 import { getOpdTahun } from "@/components/lib/Cookie";
 import { useState, useEffect } from "react";
+import { TahunNull } from "@/components/global/OpdTahunNull";
 
-const TematikPemda = () => {
+const CSF = () => {
 
     const [Tahun, setTahun] = useState<any>(null);
 
@@ -22,6 +23,10 @@ const TematikPemda = () => {
         }
     },[]);
 
+    if(Tahun?.value === undefined){
+        return <TahunNull />
+    }
+    
     return(
         <>
             <div className="flex items-center">
@@ -45,10 +50,12 @@ const TematikPemda = () => {
                         </ButtonSky>
                     </div>
                 </div>
-                <Table />
+                <Table
+                    tahun={Tahun?.value}
+                />
             </div>
         </>
     )
 }
 
-export default TematikPemda;
+export default CSF;

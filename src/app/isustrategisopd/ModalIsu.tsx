@@ -1,21 +1,21 @@
 'use client'
 
 import { useState, useEffect } from "react";
-import { Controller, SubmitHandler, useForm, useFieldArray } from "react-hook-form";
+import { Controller, SubmitHandler, useForm, useFieldArray, Control } from "react-hook-form";
 import { ButtonSky, ButtonSkyBorder, ButtonRed, ButtonRedBorder } from '@/components/global/Button';
 import { getToken, getUser, getPeriode } from "@/components/lib/Cookie";
 import { LoadingButtonClip } from "@/components/global/Loading";
-import { OptionType, PermasalahanOpd, DataDukung, BidangUrusan, TargetJumlahData, TablePermasalahan } from "@/types";
+import { OptionType, PermasalahanOpd, IsuStrategis, BidangUrusan, TargetJumlahData, TablePermasalahan } from "@/types";
 import Select from "react-select";
 import { AlertNotification } from "@/components/global/Alert";
 import { TbCirclePlus, TbPlus, TbTrash } from "react-icons/tb";
 import { useBrandingContext } from "@/context/BrandingContext";
 
 interface FormValue {
-    id?: string;
+    id?: number;
     kode_opd: string;
     nama_opd: string;
-    kode_bidang_urusan: BidangUrusan;
+    kode_bidang_urusan: BidangUrusan | null;
     tahun_awal: string;
     tahun_akhir: string;
     isu_strategis: string;
@@ -23,9 +23,14 @@ interface FormValue {
 }
 interface FormPermasalahan {
     data_dukung: FormDataDukung[];
-    id_permasalahan: TablePermasalahan | null;
+    id_permasalahan?: TablePermasalahan | null;
+    jenis_masalah?: string;
+    level_pohon?: number;
+    masalah?: string;
+    id?: number;
 }
 interface FormDataDukung {
+    id?: number;
     data_dukung: string;
     jumlah_data: TargetJumlahData[];
     narasi_data_dukung: string;
@@ -34,21 +39,55 @@ interface modal {
     isOpen: boolean;
     onClose: () => void;
     metode: 'edit' | 'baru' | '';
-    id?: string;
+    Data?: IsuStrategis | null;
+    tahun_list: string[];
     onSuccess: () => void;
 }
 
 
-export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, id, metode, onSuccess }) => {
+export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, Data, metode, tahun_list, onSuccess }) => {
 
     const {
         control,
         handleSubmit,
         reset,
-        formState: { errors },
-    } = useForm<FormValue>();
+        formState: { errors }
+    } = useForm<FormValue>({
+        defaultValues: {
+            id: Data?.id,
+            kode_opd: Data?.kode_opd,
+            nama_opd: Data?.nama_opd,
+            kode_bidang_urusan: Data?.kode_bidang_urusan ? {
+                value: Data?.kode_bidang_urusan,
+                label: `(${Data?.kode_bidang_urusan}) ${Data?.nama_bidang_urusan}`,
+                kode_bidang_urusan: Data?.kode_bidang_urusan,
+                nama_bidang_urusan: Data?.nama_bidang_urusan
+            } : null,
+            tahun_awal: Data?.tahun_awal,
+            tahun_akhir: Data?.tahun_akhir,
+            isu_strategis: Data?.isu_strategis,
+            permasalahan_opd: Data?.permasalahan_opd?.map((po: FormPermasalahan) => ({
+                id_permasalahan: {
+                    value: po.id,
+                    label: po.masalah,
+                },
+                data_dukung: po.data_dukung?.map((dd: FormDataDukung) => ({
+                    id: dd.id,
+                    data_dukung: dd.data_dukung,
+                    narasi_data_dukung: dd.narasi_data_dukung,
+                    jumlah_data: dd.jumlah_data?.map((jd: TargetJumlahData) => ({
+                        id: jd.id,
+                        id_data_dukung: jd.id_data_dukung,
+                        tahun: jd.tahun,
+                        jumlah_data: jd.jumlah_data,
+                        satuan: jd.satuan
+                    })) || [],
+                })) || [],
+            })) || []
+        }
+    });
 
-    const { fields: PermasalahanField, append, remove } = useFieldArray({
+    const { fields: PermasalahanField, append: PermasalahanAppend, remove: PermasalahanRemove } = useFieldArray({
         control,
         name: 'permasalahan_opd'
     });
@@ -146,6 +185,15 @@ export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, id, metode, onSucce
             setLoadingOption(false);
         }
     }
+    const handleTambahPermasalahan = () => {
+        const defaultData = Array((tahun_list && tahun_list.length)).fill({ jumlah_data: "", satuan: "" });
+        PermasalahanAppend({
+            id_permasalahan: null,
+            data_dukung: [
+                { data_dukung: "", narasi_data_dukung: "", jumlah_data: defaultData }
+            ]
+        });
+    }
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL_PERMASALAHAN;
@@ -153,8 +201,8 @@ export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, id, metode, onSucce
             //key : value
             nama_opd: branding?.opd?.label,
             kode_opd: branding?.opd?.value,
-            kode_bidang_urusan: data.kode_bidang_urusan.value,
-            nama_bidang_urusan: data.kode_bidang_urusan.nama_bidang_urusan,
+            kode_bidang_urusan: data.kode_bidang_urusan?.value,
+            nama_bidang_urusan: data.kode_bidang_urusan?.nama_bidang_urusan,
             tahun_awal: Periode.tahun_awal,
             tahun_akhir: Periode.tahun_akhir,
             isu_strategis: data.isu_strategis,
@@ -162,29 +210,85 @@ export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, id, metode, onSucce
                 data_dukung: p.data_dukung.map((dd) => ({
                     data_dukung: dd.data_dukung,
                     narasi_data_dukung: dd.narasi_data_dukung,
-                    jumlah_data: [],
+                    permasalahan_opd_id: p.id_permasalahan?.value,
+                    jumlah_data: dd.jumlah_data.map((jd, index) => ({
+                        jumlah_data: Number(jd.jumlah_data),
+                        satuan: jd.satuan,
+                        tahun: tahun_list[index],
+                    })),
                 })),
-                id_permasalahan: p.id_permasalahan?.id_permasalahan,
+                id_permasalahan: p.id_permasalahan?.value,
             }))
         };
         const formDataEdit = {
             //key : value
-            id: id,
-            nama_opd: branding?.opd?.label,
-            kode_opd: branding?.opd?.value,
-            kode_bidang_urusan: data.kode_bidang_urusan.value,
-            nama_bidang_urusan: data.kode_bidang_urusan.nama_bidang_urusan,
-            tahun_awal: Periode.tahun_awal,
-            tahun_akhir: Periode.tahun_akhir, 
-            isu_strategis: data.isu_strategis, 
+            id: Data?.id,
+            nama_opd: Data?.nama_opd,
+            kode_opd: Data?.kode_opd,
+            kode_bidang_urusan: data.kode_bidang_urusan?.value,
+            nama_bidang_urusan: data.kode_bidang_urusan?.nama_bidang_urusan,
+            tahun_awal: Data?.tahun_awal,
+            tahun_akhir: Data?.tahun_akhir,
+            isu_strategis: data.isu_strategis,
+            permasalahan_opd: data.permasalahan_opd.map((p) => ({
+                data_dukung: p.data_dukung.map((dd) => ({
+                    id: dd.id,
+                    data_dukung: dd.data_dukung,
+                    narasi_data_dukung: dd.narasi_data_dukung,
+                    permasalahan_opd_id: p.id_permasalahan?.value,
+                    jumlah_data: dd.jumlah_data.map((jd) => ({
+                        id: jd.id,
+                        id_data_dukung: jd.id_data_dukung,
+                        tahun: jd.tahun,
+                        jumlah_data: Number(jd.jumlah_data),
+                        satuan: jd.satuan
+                    })),
+                })),
+                id_permasalahan: p.id_permasalahan?.value,
+            }))
         };
         const getBody = () => {
             if (metode === "edit") return formDataEdit;
             if (metode === "baru") return formDataNew;
             return {}; // Default jika metode tidak sesuai
         };
-        metode === 'baru' && console.log("baru :", formDataNew);
-        metode === 'edit' && console.log("edit :", formDataEdit);
+        // metode === 'baru' && console.log("baru :", formDataNew);
+        // metode === 'edit' && console.log("edit :", formDataEdit);
+        if (data?.kode_bidang_urusan?.value === undefined) {
+            AlertNotification("Bidang Urusan", "Bidang Urusan wajib terisi", "warning");
+        } else {
+            try {
+                setProses(true);
+                let url = "";
+                if (metode === "edit") {
+                    url = `isu_strategis/${Data?.id}`
+                } else if (metode) {
+                    url = "isu_strategis"
+                }
+                const response = await fetch(`${API_URL}/${url}`, {
+                    method: metode === "baru" ? "POST" : "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(getBody()),
+                });
+                const result = await response.json();
+                if (result.code === 200 || result.code === 201) {
+                    AlertNotification("Berhasil", "Berhasil menyimpan data", "success", 1000);
+                    onClose();
+                    onSuccess();
+                    reset();
+                } else {
+                    console.log(result);
+                    AlertNotification("Error", `${result.data}`, "error", 10000, true);
+                }
+            } catch (err) {
+                console.error(err);
+                AlertNotification("Error", "Cek koneksi internet, jika error berlanjut hubungi tim developer", "error", 2000, true);
+            } finally {
+                setProses(false);
+            }
+        }
     };
 
     const handleClose = () => {
@@ -192,66 +296,125 @@ export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, id, metode, onSucce
         reset();
     }
 
-    const DataTerukurField = (alasanIndex: number) => {
-        const { fields: dataDukungFields, append: appendDataDukung, remove: removeDataDukung } = useFieldArray({
-            control,
-            name: `permasalahan_opd.${alasanIndex}.data_dukung`, // Path ke array bersarang
-        });
-        return (
-            PermasalahanField.map((permasalahanField, index) => {
-                // Di sini, kita buat useFieldArray kedua untuk 'data_dukung'
-
-                return (
-                    <>
-                        <div key={permasalahanField.id}>
-                            {/* ... bagian lain dari form untuk permasalahan_opd */}
-
-                            {/* Loop untuk 'data_dukung' */}
-                            {dataDukungFields.map((dataDukungField, dataDukungIndex) => (
-                                <div className="border rounded-lg p-2" key={dataDukungField.id}>
-                                    {/* Input Controller yang diperbaiki */}
-                                    <Controller
-                                        name={`permasalahan_opd.${index}.data_dukung.${dataDukungIndex}.data_dukung`}
-                                        control={control}
-                                        defaultValue={dataDukungField.data_dukung} // Perbaikan: Gunakan dataDukungField
-                                        render={({ field }) => (
-                                            <textarea
-                                                {...field}
-                                                placeholder="masukkan data dukung"
-                                                id={`permasalahan_opd.${index}.data_dukung.${dataDukungIndex}.data_dukung`}
-                                            />
-                                        )}
-                                    />
-                                    {/* Tombol hapus untuk 'data_dukung' */}
-                                    <ButtonRedBorder
-                                        type="button"
-                                        onClick={() =>
-                                            removeDataDukung(dataDukungIndex)
-                                        }
-                                    >
-                                        Hapus Data Dukung
-                                    </ButtonRedBorder>
-                                </div>
-                            ))}
-                            {/* Tombol tambah untuk 'data_dukung' */}
-                            <ButtonSkyBorder
-                                type="button"
-                                onClick={() => appendDataDukung({
-                                    data_dukung: '',
-                                    narasi_data_dukung: '',
-                                    jumlah_data: []
-                                }
-                                )}
-                            >
-                                <TbPlus />
-                                Tambah Data Dukung
-                            </ButtonSkyBorder>
-                        </div>
-                    </>
-                );
-            })
-        )
+    interface DataDukungListProps {
+        control: Control<FormValue>; // Tipe Control dari useForm
+        permasalahan_index: number; // Indeks alasan di mana data_terukur ini berada
     }
+
+    const DataTerukurList: React.FC<DataDukungListProps> = ({ control, permasalahan_index }) => {
+        // useFieldArray untuk mengelola array 'data_terukur' yang bersarang
+        const {
+            fields: dataTerukurFields,
+            append: appendDataTerukur,
+            remove: removeDataTerukur,
+        } = useFieldArray({
+            control,
+            name: `permasalahan_opd.${permasalahan_index}.data_dukung`, // Kunci di sini adalah path lengkap ke array bersarang
+        });
+
+        const handleTambahDataDukung = () => {
+            const defaultData = Array((tahun_list && tahun_list.length)).fill({ jumlah_data: "", satuan: "" });
+            appendDataTerukur({ data_dukung: "", narasi_data_dukung: "", jumlah_data: defaultData });
+        }
+
+        return (
+            <>
+                {dataTerukurFields.map((dataTerukurField, dataTerukurIndex) => (
+                    <div key={dataTerukurIndex} className="ml-4 pl-4 border border-cyan-400 rounded-xl mt-4 p-2">
+                        <div className="flex items-center justify-between">
+                            <label className="text-xs uppercase font-semibold text-gray-700 my-2">Data Dukung:</label>
+                            <button
+                                type="button"
+                                onClick={() => removeDataTerukur(dataTerukurIndex)}
+                                className="text-red-400 hover:text-red-600 p-1 rounded-full hover:bg-red-100 transition-colors"
+                                title="Hapus Data Terukur Ini"
+                            >
+                                <TbTrash size={14} />
+                            </button>
+                        </div>
+                        <div key={dataTerukurField.id} className="flex flex-col items-center gap-2 mb-2">
+                            <Controller
+                                name={`permasalahan_opd.${permasalahan_index}.data_dukung.${dataTerukurIndex}.data_dukung`}
+                                control={control}
+                                render={({ field }) => (
+                                    <input
+                                        {...field}
+                                        className="border px-3 py-1 rounded-lg flex-grow w-full "
+                                        type="text"
+                                        placeholder={`Masukkan Data Dukung`}
+                                    />
+                                )}
+                            />
+                            <Controller
+                                name={`permasalahan_opd.${permasalahan_index}.data_dukung.${dataTerukurIndex}.narasi_data_dukung`}
+                                control={control}
+                                render={({ field }) => (
+                                    <input
+                                        {...field}
+                                        className="border px-3 py-1 rounded-lg flex-grow w-full "
+                                        type="text"
+                                        placeholder={`Masukkan Narasi Data Dukung`}
+                                    />
+                                )}
+                            />
+                            <div className="flex flex-wrap justify-between gap-1">
+                                {dataTerukurField.jumlah_data.map((_, subindex) => (
+                                    <div key={`${permasalahan_index}-${subindex}`} className="flex flex-col py-1 px-3 border border-gray-200 rounded-lg">
+                                        <label className="text-base text-center text-gray-700">
+                                            <p>{tahun_list[subindex]}</p>
+                                        </label>
+                                        <Controller
+                                            name={`permasalahan_opd.${permasalahan_index}.data_dukung.${dataTerukurIndex}.jumlah_data.${subindex}.jumlah_data`}
+                                            control={control}
+                                            defaultValue={_.jumlah_data}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col py-3">
+                                                    <label className="uppercase text-xs font-semibold text-gray-700 mb-2">
+                                                        Jumlah Data :
+                                                    </label>
+                                                    <input
+                                                        {...field}
+                                                        type="text"
+                                                        className="border px-4 py-2 rounded-lg"
+                                                        placeholder="Masukkan jumlah data"
+                                                    />
+                                                </div>
+                                            )}
+                                        />
+                                        <Controller
+                                            name={`permasalahan_opd.${permasalahan_index}.data_dukung.${dataTerukurIndex}.jumlah_data.${subindex}.satuan`}
+                                            control={control}
+                                            defaultValue={_.satuan}
+                                            render={({ field }) => (
+                                                <div className="flex flex-col py-3">
+                                                    <label className="uppercase text-xs font-semibold text-gray-700 mb-2">
+                                                        Satuan :
+                                                    </label>
+                                                    <input
+                                                        {...field}
+                                                        className="border px-4 py-2 rounded-lg"
+                                                        placeholder="Masukkan satuan"
+                                                    />
+                                                </div>
+                                            )}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+                {/* Tombol Tambah Data Terukur */}
+                <ButtonSky
+                    type="button"
+                    onClick={handleTambahDataDukung}
+                    className="flex items-center justify-center gap-1 ml-4 my-2"
+                >
+                    <TbPlus size={12} /> Tambah Data Dukung
+                </ButtonSky>
+            </>
+        );
+    };
 
     if (!isOpen) {
         return null;
@@ -316,18 +479,28 @@ export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, id, metode, onSucce
                             </label>
                             <Controller
                                 name="isu_strategis"
+                                rules={{ required: "Isu Strategis Wajib Diisi" }}
                                 control={control}
-                                render={({ field }) => (
-                                    <textarea
-                                        {...field}
-                                        className="border px-4 py-2 rounded-lg"
-                                        id="isu_strategis"
-                                        placeholder="masukkan Isu Strategis"
-                                        onChange={(e) => {
-                                            field.onChange(e);
-                                        }}
-                                    />
-                                )}
+                                render={({ field }) => {
+                                    return(
+                                        <>
+                                            <textarea
+                                                {...field}
+                                                className="border px-4 py-2 rounded-lg"
+                                                id="isu_strategis"
+                                                placeholder="masukkan Isu Strategis"
+                                                onChange={(e) => {
+                                                    field.onChange(e);
+                                                }}
+                                            />
+                                            {errors.isu_strategis ?
+                                                <p className="text-red-400 text-sm italic">*Isu Strategis Wajib Terisi</p>
+                                                :
+                                                <></>
+                                            }
+                                        </>
+                                    )
+                                }}
                             />
                         </div>
                         {/* PERMASALAHAN ARRAY */}
@@ -346,7 +519,7 @@ export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, id, metode, onSucce
                                                 {index >= 0 && (
                                                     <button
                                                         type="button"
-                                                        onClick={() => remove(index)}
+                                                        onClick={() => PermasalahanRemove(index)}
                                                         className="border border-red-500 text-red-500 rounded-full p-1 hover:bg-red-500 hover:text-white"
                                                     >
                                                         <TbTrash />
@@ -380,18 +553,13 @@ export const ModalIsu: React.FC<modal> = ({ isOpen, onClose, id, metode, onSucce
                                         </div>
                                     )}
                                 />
-                                {/* <DataTerukurField alasanIndex={index} /> */}
+                                <DataTerukurList control={control} permasalahan_index={index} />
                             </div>
                         ))}
                         <ButtonSkyBorder
                             className="flex items-center gap-1 mb-3 mt-2 w-full"
                             type="button"
-                            onClick={() =>
-                                append({
-                                    data_dukung: [],
-                                    id_permasalahan: null,
-                                })
-                            }
+                            onClick={handleTambahPermasalahan}
                         >
                             <TbCirclePlus />
                             Tambah Pemasalahan

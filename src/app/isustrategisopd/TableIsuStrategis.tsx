@@ -21,20 +21,24 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
 
     const { branding } = useBrandingContext();
     const [Isu, setIsu] = useState<IsuStrategis[]>([]);
+
     const [Modal, setModal] = useState<boolean>(false);
+    const [DataEdit, setDataEdit] = useState<IsuStrategis | null>(null);
     const [JenisModal, setJenisModal] = useState<"baru" | "edit" | "">("");
 
     const [Loading, setLoading] = useState<boolean>(false);
     const [Error, setError] = useState<boolean>(false);
     const [FetchTrigger, setFetchTrigger] = useState<boolean>(false);
 
-    const handleModal = (jenis: "baru" | "edit" | "") => {
+    const handleModal = (jenis: "baru" | "edit" | "", data: IsuStrategis | null) => {
         if (Modal) {
             setJenisModal('');
             setModal(false);
+            setDataEdit(null);
         } else {
             setJenisModal(jenis);
             setModal(true);
+            setDataEdit(data);
         }
     }
 
@@ -67,7 +71,7 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
         if (tahun_awal && tahun_akhir) {
             fetchIsuStrategis();
         }
-    }, [branding, tahun_akhir, tahun_awal]);
+    }, [branding, tahun_akhir, tahun_awal, FetchTrigger]);
 
     const hapusIsu = async(id: number) => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL_PERMASALAHAN;
@@ -107,10 +111,11 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
 
     return (
         <>
-            <div className="flex my-3 ml-3">
+            <div className="flex items-center justify-between my-3 mx-3">
+                <p className="text-gray-400 text-sm italic">*data isu strategis berdasarkan periode {tahun_awal} - {tahun_akhir}</p>
                 <ButtonGreenBorder
                     className="flex items-center gap-1"
-                    onClick={() => handleModal("baru")}
+                    onClick={() => handleModal("baru", null)}
                 >
                     <TbCirclePlus />
                     Tambah Isu Strategis
@@ -142,7 +147,7 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                     <tbody>
                         {Isu.length === 0 ?
                             <tr>
-                                <td colSpan={18} className="border-x border-b border-emerald-500 py-4 px-5">
+                                <td colSpan={19} className="border-x border-b border-emerald-500 py-4 px-5">
                                     Data Isu Strategis Kosong
                                 </td>
                             </tr>
@@ -157,7 +162,7 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                                             <div className="flex flex-col jutify-center items-center gap-2">
                                                 <ButtonSkyBorder
                                                     className="flex items-center gap-1 w-full"
-                                                    onClick={() => handleModal("edit")}
+                                                    onClick={() => handleModal("edit", i)}
                                                 >
                                                     <TbPencil />
                                                     Edit
@@ -216,12 +221,16 @@ const TableIsuStrategis: React.FC<table> = ({ id_periode, tahun_awal, tahun_akhi
                     </tbody>
                 </table>
             </div>
-            <ModalIsu
-                isOpen={Modal}
-                onClose={() => handleModal("")}
-                metode={JenisModal}
-                onSuccess={() => setFetchTrigger((prev) => !prev)}
-            />
+            {Modal &&
+                <ModalIsu
+                    isOpen={Modal}
+                    onClose={() => handleModal("", null)}
+                    metode={JenisModal}
+                    tahun_list={tahun_list}
+                    Data={DataEdit ? DataEdit : null}
+                    onSuccess={() => setFetchTrigger((prev) => !prev)}
+                />
+            }
         </>
     )
 }
