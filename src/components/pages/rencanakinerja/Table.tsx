@@ -1,7 +1,7 @@
 'use client'
 
 import { ButtonGreenBorder, ButtonRedBorder, ButtonSky, ButtonSkyBorder } from "@/components/global/Button";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getOpdTahun, getUser, getToken } from "@/components/lib/Cookie";
 import { TbCirclePlus, TbPencil, TbPencilDown, TbTrash } from "react-icons/tb";
 import { LoadingSync } from "@/components/global/Loading";
@@ -244,21 +244,33 @@ export const TablePerencanaan = () => {
                                             {data.indikator.length > 1 ?
                                                 <td className="border-r border-b text-center">
                                                     {data.indikator.map((item: any, index: number) => (
-                                                        item.targets.map((t: any) => (
-                                                            <p key={t.id_target} className={`${index !== data.indikator.length - 1 && "border-b"} py-4 px-6`}>
-                                                                {t.target ? t.target : "-"} / {t.satuan ? t.satuan : "-"}
-                                                            </p>
-                                                        ))
+                                                        <React.Fragment key={index}>
+                                                            {item.target ?
+                                                                item.targets.map((t: any) => (
+                                                                    <p key={t.id_target} className={`${index !== data.indikator.length - 1 && "border-b"} py-4 px-6`}>
+                                                                        {t.target ? t.target : "-"} / {t.satuan ? t.satuan : "-"}
+                                                                    </p>
+                                                                ))
+                                                                :
+                                                                <p className={`border-b py-4 px-6`}>-</p>
+                                                            }
+                                                        </React.Fragment>
                                                     ))}
                                                 </td>
                                                 :
                                                 <td className="border-r border-b px-6 py-4 text-center">
-                                                    {data.indikator.map((item: any) => (
-                                                        item.targets.map((t: any) => (
-                                                            <p key={t.id_target}>
-                                                                {t.target ? t.target : "-"} / {t.satuan ? t.satuan : "-"}
-                                                            </p>
-                                                        ))
+                                                    {data.indikator.map((item: any, index: number) => (
+                                                        <React.Fragment key={index}>
+                                                            {item.targets ?
+                                                                item.targets.map((t: any) => (
+                                                                    <p key={t.id_target}>
+                                                                        {t.target ? t.target : "-"} / {t.satuan ? t.satuan : "-"}
+                                                                    </p>
+                                                                ))
+                                                                :
+                                                                <p>-</p>
+                                                            }
+                                                        </React.Fragment>
                                                     ))}
                                                 </td>
                                             }

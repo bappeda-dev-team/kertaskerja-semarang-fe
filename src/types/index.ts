@@ -36,10 +36,13 @@ export interface BidangUrusan {
     tahun: string;
 }
 export interface TablePermasalahan {
+    value?: number;
+    label?: string;
     id?: number;
-    id_permasalahan: number;
+    id_permasalahan: TablePermasalahan[];
     parent: number | null;
     nama_pohon: string;
+    masalah?: string;
     level_pohon: number;
     perangkat_daerah: {
         nama_opd: string;

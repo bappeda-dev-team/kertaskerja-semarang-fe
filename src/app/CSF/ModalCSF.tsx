@@ -6,6 +6,7 @@ import { ButtonSky, ButtonRed } from '@/components/global/Button';
 import { AlertNotification } from "@/components/global/Alert";
 import { LoadingButtonClip } from "@/components/global/Loading";
 import { TbDeviceFloppy, TbPlus, TbTrash, TbX } from "react-icons/tb";
+import { useBrandingContext } from "@/context/BrandingContext";
 
 interface FormValue {
     pohon_id?: number;
@@ -26,17 +27,18 @@ interface modal {
     onClose: () => void;
     onSuccess: () => void;
     jenis: string;
-    id?: string;
+    tematik: any;
     data?: any;
 }
 
-export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jenis, data }) => {
+export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, tematik, jenis, data }) => {
 
-    const DataValue = data.csf ? data.csf[0] : null;
+    const {branding} = useBrandingContext();
+    const tahun = branding?.tahun ? branding?.tahun.value : 0;
     const { control, handleSubmit, reset } = useForm<FormValue>({
         defaultValues: {
-            pernyataan_kondisi_strategis: DataValue?.pernyataan_kondisi_strategis ?? "",
-            alasan_kondisi: DataValue?.alasan_kondisi?.map((a: any) => ({
+            pernyataan_kondisi_strategis: data?.pernyataan_kondisi_strategis ?? "",
+            alasan_kondisi: data?.alasan_kondisi?.map((a: any) => ({
                 alasan_kondisi_strategis: a.alasan_kondisi_strategis,
                 data_terukur: a.data_terukur?.map((dt: any) => ({
                     data_terukur: dt.data_terukur,
@@ -53,14 +55,16 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
         const API_URL_CSF = process.env.NEXT_PUBLIC_API_URL_CSF;
         const formData = {
             //key : value
-            pohon_id: data.id,
+            ...(jenis === "edit" && { id: data.id }),
+            pohon_id: tematik.id,
             pernyataan_kondisi_strategis: dataValue.pernyataan_kondisi_strategis,
             alasan_kondisi: dataValue.alasan_kondisi.map((a) => ({
                 alasan_kondisi_strategis: a.alasan_kondisi_strategis,
                 data_terukur: a.data_terukur.map((dt) => ({
                     data_terukur: dt.data_terukur,
                 }))
-            }))
+            })),
+            tahun: String(tahun)
         };
         // console.log(formData);
         try {
@@ -69,7 +73,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
             if (jenis === 'baru') {
                 url = `csf`
             } else if (jenis === 'edit') {
-                url = `csf/${data.csf[0].id}`
+                url = `csf/${data.id}`
             }
             const response = await fetch(`${API_URL_CSF}/${url}`, {
                 method: jenis === "baru" ? "POST" : "PUT",
@@ -188,7 +192,7 @@ export const ModalCSF: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, jeni
                             >
                                 Kondisi Terukur Yang Diharapkan (TEMA) :
                             </label>
-                            <div className="border px-4 py-2 rounded-lg">{data.tema || "-"}</div>
+                            <div className="border px-4 py-2 rounded-lg">{tematik.tema || "-"}</div>
                         </div>
                         <div className="flex flex-col py-3">
                             <label

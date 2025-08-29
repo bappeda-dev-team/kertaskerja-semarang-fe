@@ -59,7 +59,7 @@ const Table = () => {
         const fetchTematik = async() => {
             setLoading(true)
             try{
-                const response = await fetch(`${API_URL}/pohon_kinerja_admin/findall/${Tahun?.value}`, {
+                const response = await fetch(`${API_URL}/tematik_pemda/${Tahun?.value}`, {
                     headers: {
                       Authorization: `${token}`,
                       'Content-Type': 'application/json',

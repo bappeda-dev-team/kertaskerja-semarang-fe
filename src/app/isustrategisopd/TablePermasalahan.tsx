@@ -96,7 +96,7 @@ const TablePermasalahan: React.FC<table> = ({ tahun, kode_opd }) => {
     }
 
     return (
-        <div className="overflow-auto m-2 rounded-t-xl border">
+        <div className="overflow-auto mb-2 mx-2 rounded-t-xl border">
             <table className="w-full">
                 <thead>
                     <tr className="bg-orange-500 text-white">
@@ -120,7 +120,7 @@ const TablePermasalahan: React.FC<table> = ({ tahun, kode_opd }) => {
                                     {index + 1}
                                 </td>
                                 <td className="border-r border-b border-orange-500 px-6 py-4">
-                                    {data.nama_pohon || "-"} ({data.id_permasalahan})
+                                    {data.nama_pohon || "-"} {data.id_permasalahan}
                                 </td>
                                 <td className="border-r border-b border-orange-500 px-6 py-4 text-center">
                                     {data.jenis_masalah || "-"}
