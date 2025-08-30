@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import {
-  TbBook, TbApps, TbChecklist, TbShoppingCartDollar, TbRefreshAlert,
+  TbBook, TbApps, TbChecklist, TbShoppingCartDollar,
   TbLogout, TbBook2, TbBulb, TbFileAlert, TbTooltip, TbBinaryTree, TbBuildingFortress,
   TbBuildingCommunity, TbDatabaseCog, TbHome, TbFileDelta, TbFile3D,
-  TbCircleArrowLeftFilled, TbBadges, TbBuilding, TbChevronRight,
-  TbBuildingEstate, TbFileChart, TbFileDots, TbFileCode, TbFileCode2, TbUsers, TbArrowUpFromArc,
+  TbCircleArrowLeftFilled, TbBadges, TbBuilding, TbChevronRight, TbCircleCheck,
+  TbBuildingEstate, TbFileChart, TbFileDots, TbFileCode, TbFileCode2, TbUsers,
   TbUser, TbHexagonLetterR, TbBinaryTree2, TbTarget, TbMapPin, TbChartBar, TbCalendarShare,
-  TbMessageReport, TbCalendar, TbHexagonLetterV, TbHexagonLetterM, TbClipboardText, TbZoomExclamation,
-  TbFileAnalytics, TbListDetails, TbCalendarTime, TbAlertTriangle,
-  TbAlertCircle, TbDatabasePlus, TbCalendarPlus, TbDeviceImacDollar, TbFocus2, TbHexagonLetterC, TbHexagonLetterO, TbHexagonLetterI,
+  TbCalendar, TbHexagonLetterV, TbHexagonLetterM, TbClipboardText, TbZoomExclamation,
+  TbListDetails, TbAlertTriangle,
+  TbDatabasePlus, TbCalendarPlus, TbDeviceImacDollar, TbFocus2, TbHexagonLetterC, TbHexagonLetterO, TbHexagonLetterI,
   TbBuildingCottage,
   TbCalendarStar
 } from "react-icons/tb";
@@ -217,6 +217,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       url === `/laporanrenstra` ||
       url === "/rencanakinerja-kak" ||
       url === `/laporanrincianbelanja` ||
+      url === `/laporantaggingpohon` ||
       url === `/laporancascadingpemda` ||
       url === "/laporancascadingopd"
     ) {
@@ -911,6 +912,12 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/laporanrincianbelanja" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                 <TbDeviceImacDollar className="text-xl" />
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Rincian Belanja</span>
+              </li>
+            </Link>
+            <Link href="/laporantaggingpohon">
+              <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/laporantaggingpohon" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                <TbCircleCheck className="text-xl" />
+                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Tagging Pokin</span>
               </li>
             </Link>
             <Link href="/laporancascadingopd">

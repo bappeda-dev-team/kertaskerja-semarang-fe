@@ -659,6 +659,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
 export const TablePohon = (props: any) => {
     const id = props.item.id;
     const tema = props.item.nama_pohon;
+    const nama_tematik = props.item.nama_tematik;
     const tagging = props.item.tagging;
     const keterangan = props.item.keterangan;
     const keterangan_crosscutting = props.item.keterangan_crosscutting;
@@ -1199,7 +1200,7 @@ export const TablePohon = (props: any) => {
                                                 <TbCircleLetterXFilled />
                                             </div>
                                         ) : (
-                                            <span>{status || "-"}</span>
+                                            <span>{status || "-"} / {nama_tematik || "-"}</span>
                                         )}
                                     </td>
                                 </tr>
