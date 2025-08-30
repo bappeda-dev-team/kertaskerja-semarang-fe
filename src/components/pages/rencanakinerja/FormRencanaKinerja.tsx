@@ -34,6 +34,11 @@ interface pohon {
     nama_opd: string;
     pelaksana: OptionTypeString[];
     indikator: indikator[];
+    tagging: Tagging[];
+}
+interface Tagging {
+    nama_tagging: string;
+    keterangan_tagging: string;
 }
 interface FormValue {
     id_pohon: OptionType;
@@ -98,12 +103,6 @@ export const FormRencanaKinerja = () => {
         }
         setIsClient(true);
     }, []);
-
-    // useEffect(() => {
-    //     if (fields.length === 0) {
-    //         append({ nama_indikator: "", targets: [{ target: "", satuan: "" }] });
-    //     }
-    // }, [fields, append]);
 
     const fetchPokinByPelaksana = async () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
