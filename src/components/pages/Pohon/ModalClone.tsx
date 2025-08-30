@@ -20,7 +20,7 @@ interface modal {
     id?: number;
     nama_pohon?: string;
     nama_opd?: string;
-    kode_opd?: string;
+    kode_opd: string;
     tahun: string;
     onSuccess: () => void;
 }
@@ -71,7 +71,7 @@ export const ModalClone: React.FC<modal> = ({ isOpen, onClose, onSuccess, id, ta
             tahun_sumber: String(tahun),
             tahun_tujuan: TahunTarget?.value,
         };
-        // console.log(formData);
+        console.log(formData);
         try {
             setProses(true);
             const response = await fetch(`${API_URL}/pohon_kinerja_opd/clone`, {
