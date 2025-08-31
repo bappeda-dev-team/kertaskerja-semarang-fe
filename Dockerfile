@@ -45,6 +45,9 @@ ENV NEXT_PUBLIC_LINK_MANUAL_USER=${NEXT_PUBLIC_LINK_MANUAL_USER}
 ARG NEXT_PUBLIC_API_URL_CSF
 ENV NEXT_PUBLIC_API_URL_CSF=${NEXT_PUBLIC_API_URL_CSF}
 
+ARG NEXT_PUBLIC_API_URL_TAGGING
+ENV NEXT_PUBLIC_API_URL_TAGGING=${NEXT_PUBLIC_API_URL_TAGGING}
+
 # Next.js collects completely anonymous telemetry data about general usage. Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line to disable telemetry at build time
 # ENV NEXT_TELEMETRY_DISABLED 1
@@ -97,8 +100,11 @@ ENV NEXT_PUBLIC_LINK_MANUAL_USER=${NEXT_PUBLIC_LINK_MANUAL_USER}
 
 ARG NEXT_PUBLIC_API_URL_CSF
 ENV NEXT_PUBLIC_API_URL_CSF=${NEXT_PUBLIC_API_URL_CSF}
+
+ARG NEXT_PUBLIC_API_URL_TAGGING
+ENV NEXT_PUBLIC_API_URL_TAGGING=${NEXT_PUBLIC_API_URL_TAGGING}
 # Uncomment the following line to disable telemetry at run time
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 
 # Note: Don't expose ports here, Compose will handle that for us
 
