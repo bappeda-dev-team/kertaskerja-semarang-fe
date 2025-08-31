@@ -29,6 +29,11 @@ interface FormValue {
     pelaksana: OptionTypeString[];
     pohon?: OptionType;
     indikator: indikator[];
+    tagging: Tagging[];
+}
+interface Tagging {
+    nama_tagging: string;
+    keterangan_tagging: string;
 }
 interface indikator {
     nama_indikator: string;
@@ -66,6 +71,7 @@ export const FormEditCascading: React.FC<{
     const [Parent, setParent] = useState<number | null>(null);
     const [KodeOpd, setKodeOpd] = useState<number | null>(null);
     const [JenisPohon, setJenisPohon] = useState<string | null>(null);
+    const [Tagging, setTagging] = useState<Tagging[]>([]);
     const [Tahun, setTahun] = useState<any>(null);
     const [Pelaksana, setPelaksana] = useState<OptionTypeString[]>([]);
     const [PelaksanaOption, setPelaksanaOption] = useState<OptionTypeString[]>([]);
@@ -193,6 +199,9 @@ export const FormEditCascading: React.FC<{
                 if (data.status) {
                     setStatus(data.status);
                 }
+                if (data.tagging){
+                    setTagging(data.tagging);
+                }
                 reset({
                     nama_pohon: data.nama_pohon || '',
                     keterangan: data.keterangan || '',
@@ -208,6 +217,7 @@ export const FormEditCascading: React.FC<{
                             satuan: t.satuan,
                         })),
                     })),
+                    tagging: data.tagging,
                 });
                 setPelaksana(
                     data.pelaksana?.map((item: any) => ({
@@ -247,6 +257,7 @@ export const FormEditCascading: React.FC<{
                     })),
                 })),
             }),
+            tagging: Tagging,
         };
         // console.log(formData);
         try {
