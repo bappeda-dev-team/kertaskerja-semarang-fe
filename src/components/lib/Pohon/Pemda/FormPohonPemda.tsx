@@ -871,97 +871,101 @@ export const FormAmbilPohon: React.FC<{
                                         )}
                                     />
                                 </div>
-                                <div className="flex flex-col py-3">
-                                    <label
-                                        className="uppercase text-xs font-bold text-gray-700 my-2"
-                                        htmlFor="pohon"
-                                    >
-                                        {(level === 0 || level === 1 || level === 2 || level === 3) &&
-                                            <h1>Strategic</h1>
-                                        }
-                                        {level == 4 &&
-                                            <h1>Tactical</h1>
-                                        }
-                                        {level == 5 &&
-                                            <h1>Operational</h1>
-                                        }
-                                    </label>
-                                    <Controller
-                                        name="pohon"
-                                        control={control}
-                                        rules={{ required: "Pohon Harus Terisi" }}
-                                        render={({ field }) => (
-                                            <>
-                                                <Select
-                                                    {...field}
-                                                    placeholder="Pilih OPD terlebih dahulu"
-                                                    value={PohonOpd}
-                                                    options={PohonOption}
-                                                    isLoading={isLoading}
-                                                    isSearchable
-                                                    isClearable
-                                                    onMenuOpen={() => {
-                                                        if (KodeOpd?.value != null) {
-                                                            fetchPohon(KodeOpd?.value);
-                                                        } else if (KodeOpd?.value == null) {
-                                                            setPohonOption([]);
-                                                            setPohonOpd(null);
-                                                        }
-                                                    }}
-                                                    onChange={(option) => {
-                                                        field.onChange(option);
-                                                        setPohonOpd(option);
-                                                    }}
-                                                    styles={{
-                                                        control: (baseStyles) => ({
-                                                            ...baseStyles,
-                                                            borderRadius: '8px',
-                                                            textAlign: 'start',
-                                                        })
-                                                    }}
-                                                />
-                                                {errors.pohon ?
-                                                    <h1 className="text-red-500">
-                                                        {errors.pohon.message}
-                                                    </h1>
-                                                    :
-                                                    <h1 className="text-slate-300 text-xs">*Pohon Harus Terisi</h1>
-                                                }
-                                            </>
-                                        )}
-                                    />
-                                </div>
-                                <div className="flex flex-col items-center justify-center">
-                                    <div className="flex items-center justify-center gap-3 py-3">
-                                        {Turunan ?
-                                            <button
-                                                type="button"
-                                                onClick={handleTurunan}
-                                                className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                {KodeOpd &&
+                                    <>
+                                        <div className="flex flex-col py-3">
+                                            <label
+                                                className="uppercase text-xs font-bold text-gray-700 my-2"
+                                                htmlFor="pohon"
                                             >
-                                                <TbCheck />
-                                            </button>
-                                            :
-                                            <button
-                                                type="button"
-                                                onClick={handleTurunan}
-                                                className="w-[20px] h-[20px] border border-black rounded-full"
-                                            ></button>
-                                        }
-                                        <p onClick={handleTurunan} className={`cursor-pointer ${Turunan && 'text-emerald-500'}`}>Turunan</p>
-                                    </div>
-                                    <h1 className="text-slate-400 text-xs">*Jika di centang, turunan pohon tersebut akan ikut terambil</h1>
-                                </div>
-                                <ButtonSky type="submit" className="w-full my-3" disabled={Proses}>
-                                    {Proses ?
-                                        <span className="flex">
-                                            <LoadingButtonClip />
-                                            Menyimpan...
-                                        </span>
-                                        :
-                                        "Simpan"
-                                    }
-                                </ButtonSky>
+                                                {(level === 0 || level === 1 || level === 2 || level === 3) &&
+                                                    <h1>Strategic</h1>
+                                                }
+                                                {level == 4 &&
+                                                    <h1>Tactical</h1>
+                                                }
+                                                {level == 5 &&
+                                                    <h1>Operational</h1>
+                                                }
+                                            </label>
+                                            <Controller
+                                                name="pohon"
+                                                control={control}
+                                                rules={{ required: "Pohon Harus Terisi" }}
+                                                render={({ field }) => (
+                                                    <>
+                                                        <Select
+                                                            {...field}
+                                                            placeholder="Pilih Pohon"
+                                                            value={PohonOpd}
+                                                            options={PohonOption}
+                                                            isLoading={isLoading}
+                                                            isSearchable
+                                                            isClearable
+                                                            onMenuOpen={() => {
+                                                                if (KodeOpd?.value != null) {
+                                                                    fetchPohon(KodeOpd?.value);
+                                                                } else if (KodeOpd?.value == null) {
+                                                                    setPohonOption([]);
+                                                                    setPohonOpd(null);
+                                                                }
+                                                            }}
+                                                            onChange={(option) => {
+                                                                field.onChange(option);
+                                                                setPohonOpd(option);
+                                                            }}
+                                                            styles={{
+                                                                control: (baseStyles) => ({
+                                                                    ...baseStyles,
+                                                                    borderRadius: '8px',
+                                                                    textAlign: 'start',
+                                                                })
+                                                            }}
+                                                        />
+                                                        {errors.pohon ?
+                                                            <h1 className="text-red-500">
+                                                                {errors.pohon.message}
+                                                            </h1>
+                                                            :
+                                                            <h1 className="text-slate-300 text-xs">*Pohon Harus Terisi</h1>
+                                                        }
+                                                    </>
+                                                )}
+                                            />
+                                        </div>
+                                        <div className="flex flex-col items-center justify-center">
+                                            <div className="flex items-center justify-center gap-3 py-3">
+                                                {Turunan ?
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleTurunan}
+                                                        className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                                    >
+                                                        <TbCheck />
+                                                    </button>
+                                                    :
+                                                    <button
+                                                        type="button"
+                                                        onClick={handleTurunan}
+                                                        className="w-[20px] h-[20px] border border-black rounded-full"
+                                                    ></button>
+                                                }
+                                                <p onClick={handleTurunan} className={`cursor-pointer ${Turunan && 'text-emerald-500'}`}>Turunan</p>
+                                            </div>
+                                            <h1 className="text-slate-400 text-xs">*Jika di centang, turunan pohon tersebut akan ikut terambil</h1>
+                                        </div>
+                                        <ButtonSky type="submit" className="w-full my-3" disabled={Proses}>
+                                            {Proses ?
+                                                <span className="flex">
+                                                    <LoadingButtonClip />
+                                                    Menyimpan...
+                                                </span>
+                                                :
+                                                "Simpan"
+                                            }
+                                        </ButtonSky>
+                                    </>
+                                }
                                 <ButtonRed className="w-full my-3" onClick={onCancel}>
                                     Batal
                                 </ButtonRed>
