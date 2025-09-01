@@ -85,20 +85,20 @@ export const Table: React.FC<Table> = ({ tahun }) => {
         <div className="flex flex-col gap-2 p-2 w-full">
             <div className="flex items-center gap-2">
                 <button
-                    className={`flex items-center gap-1 p-2 border ${NamaTagging === "Program Unggulan Bupati" ? 'bg-sky-500 text-white' : 'border-sky-500 text-sky-500'} rounded-lg hover:bg-sky-500 hover:text-white
+                    className={`flex items-center gap-1 p-2 border ${NamaTagging === "Program Unggulan Kepala Daerah" ? 'bg-sky-500 text-white' : 'border-sky-500 text-sky-500'} rounded-lg hover:bg-sky-500 hover:text-white
                         `}
-                    onClick={() => setNamaTagging("Program Unggulan Bupati")}
+                    onClick={() => setNamaTagging("Program Unggulan Kepala Daerah")}
                 >
                     <TbCircleCheckFilled />
-                    Program Unggulan Bupati
+                    Program Unggulan Kepala Daerah
                 </button>
                 <button
-                    className={`flex items-center gap-1 p-2 border ${NamaTagging === "100 Hari Kerja Bupati" ? 'bg-sky-500 text-white' : 'border-sky-500 text-sky-500'} rounded-lg hover:bg-sky-500 hover:text-white
+                    className={`flex items-center gap-1 p-2 border ${NamaTagging === "100 Hari Kerja Kepala Daerah" ? 'bg-sky-500 text-white' : 'border-sky-500 text-sky-500'} rounded-lg hover:bg-sky-500 hover:text-white
                         `}
-                    onClick={() => setNamaTagging("100 Hari Kerja Bupati")}
+                    onClick={() => setNamaTagging("100 Hari Kerja Kepala Daerah")}
                 >
                     <TbCircleCheckFilled />
-                    100 Hari Kerja Bupati
+                    100 Hari Kerja Kepala Daerah
                 </button>
                 <button
                     className={`flex items-center gap-1 p-2 border ${NamaTagging === "Program Unggulan Pemerintah Pusat" ? 'bg-sky-500 text-white' : 'border-sky-500 text-sky-500'} rounded-lg hover:bg-sky-500 hover:text-white

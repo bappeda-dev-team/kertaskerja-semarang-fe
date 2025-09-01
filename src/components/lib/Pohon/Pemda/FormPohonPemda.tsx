@@ -171,11 +171,11 @@ export const FormPohonPemda: React.FC<{
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const taggingData = [
             ...(UnggulanBupati ? [{
-                nama_tagging: "Program Unggulan Bupati",
+                nama_tagging: "Program Unggulan Kepala Daerah",
                 keterangan_tagging: data.tagging?.['0']?.keterangan_tagging || '',
             }] : []),
             ...(HariKerja ? [{
-                nama_tagging: "100 Hari Kerja Bupati",
+                nama_tagging: "100 Hari Kerja Kepala Daerah",
                 keterangan_tagging: data.tagging?.['1']?.keterangan_tagging || '',
             }] : []),
             ...(UnggulanPusat ? [{
@@ -332,122 +332,122 @@ export const FormPohonPemda: React.FC<{
                                     />
                                 </div>
                                 {/* TAGGING */}
-                                {level > 3 &&
-                                <>
-                                    <label className="uppercase text-xs font-bold text-gray-700 my-2">
-                                        Tagging :
-                                    </label>
-                                    <div className="grid grid-flow-col gap-2 items-center border border-sky-700 rounded-lg p-3">
-                                        <div className="flex flex-col items-center">
-                                            {UnggulanBupati ?
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setUnggulanBupati(false)}
-                                                    className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                                >
-                                                    <TbCheck />
-                                                </button>
-                                                :
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setUnggulanBupati(true)}
-                                                    className="w-[20px] h-[20px] border border-black rounded-full"
-                                                ></button>
-                                            }
-                                            <p onClick={() => setUnggulanBupati((prev) => !prev)} className={`cursor-pointer ${UnggulanBupati && 'text-emerald-500'}`}>Program Bupati</p>
+                                {level > 2 &&
+                                    <>
+                                        <label className="uppercase text-xs font-bold text-gray-700 my-2">
+                                            Tagging :
+                                        </label>
+                                        <div className="grid grid-flow-col gap-2 items-center justify-between border border-sky-700 rounded-lg p-3">
+                                            <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${UnggulanBupati ? "border-emerald-500" : "border-gray-700"}`}>
+                                                {UnggulanBupati ?
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setUnggulanBupati(false)}
+                                                        className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                                    >
+                                                        <TbCheck />
+                                                    </button>
+                                                    :
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setUnggulanBupati(true)}
+                                                        className="w-[20px] h-[20px] border border-black rounded-full"
+                                                    ></button>
+                                                }
+                                                <p onClick={() => setUnggulanBupati((prev) => !prev)} className={`cursor-pointer ${UnggulanBupati && 'text-emerald-500'}`}>Program Kepala Daerah</p>
+                                            </div>
+                                            <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${HariKerja ? "border-emerald-500" : "border-gray-700"}`}>
+                                                {HariKerja ?
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setHariKerja(false)}
+                                                        className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                                    >
+                                                        <TbCheck />
+                                                    </button>
+                                                    :
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setHariKerja(true)}
+                                                        className="w-[20px] h-[20px] border border-black rounded-full"
+                                                    ></button>
+                                                }
+                                                <p onClick={() => setHariKerja((prev) => !prev)} className={`cursor-pointer ${HariKerja && 'text-emerald-500'}`}>100 Hari Kerja Kepala Daerah</p>
+                                            </div>
+                                            <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${UnggulanPusat ? "border-emerald-500" : "border-gray-700"}`}>
+                                                {UnggulanPusat ?
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setUnggulanPusat(false)}
+                                                        className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                                    >
+                                                        <TbCheck />
+                                                    </button>
+                                                    :
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setUnggulanPusat(true)}
+                                                        className="w-[20px] h-[20px] border border-black rounded-full"
+                                                    ></button>
+                                                }
+                                                <p onClick={() => setUnggulanPusat((prev) => !prev)} className={`cursor-pointer ${UnggulanPusat && 'text-emerald-500'}`}>Program Pemerintah Pusat</p>
+                                            </div>
                                         </div>
-                                        <div className="flex flex-col items-center">
-                                            {HariKerja ?
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setHariKerja(false)}
-                                                    className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                                >
-                                                    <TbCheck />
-                                                </button>
-                                                :
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setHariKerja(true)}
-                                                    className="w-[20px] h-[20px] border border-black rounded-full"
-                                                ></button>
-                                            }
-                                            <p onClick={() => setHariKerja((prev) => !prev)} className={`cursor-pointer ${HariKerja && 'text-emerald-500'}`}>100 Hari Kerja Bupati</p>
-                                        </div>
-                                        <div className="flex flex-col items-center">
-                                            {UnggulanPusat ?
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setUnggulanPusat(false)}
-                                                    className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                                >
-                                                    <TbCheck />
-                                                </button>
-                                                :
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setUnggulanPusat(true)}
-                                                    className="w-[20px] h-[20px] border border-black rounded-full"
-                                                ></button>
-                                            }
-                                            <p onClick={() => setUnggulanPusat((prev) => !prev)} className={`cursor-pointer ${UnggulanPusat && 'text-emerald-500'}`}>Program Pusat</p>
-                                        </div>
-                                    </div>
-                                    {UnggulanBupati &&
-                                        <Controller
-                                            name={`tagging.0.keterangan_tagging`}
-                                            control={control}
-                                            render={({ field }) => (
-                                                <div className="flex flex-col py-3">
-                                                    <label className="uppercase text-xs font-bold text-gray-700 mb-2">
-                                                        Keterangan Program Unggulan Bupati :
-                                                    </label>
-                                                    <input
-                                                        {...field}
-                                                        className="border px-4 py-2 rounded-lg"
-                                                        placeholder="Masukkan Keterangan Program Unggulan Bupati"
-                                                    />
-                                                </div>
-                                            )}
-                                        />
-                                    }
-                                    {HariKerja &&
-                                        <Controller
-                                            name={`tagging.1.keterangan_tagging`}
-                                            control={control}
-                                            render={({ field }) => (
-                                                <div className="flex flex-col py-3">
-                                                    <label className="uppercase text-xs font-bold text-gray-700 mb-2">
-                                                        Keterangan 100 Hari Kerja Bupati :
-                                                    </label>
-                                                    <input
-                                                        {...field}
-                                                        className="border px-4 py-2 rounded-lg"
-                                                        placeholder="Masukkan Keterangan 100 Hari Kerja Bupati"
-                                                    />
-                                                </div>
-                                            )}
-                                        />
-                                    }
-                                    {UnggulanPusat &&
-                                        <Controller
-                                            name={`tagging.2.keterangan_tagging`}
-                                            control={control}
-                                            render={({ field }) => (
-                                                <div className="flex flex-col py-3">
-                                                    <label className="uppercase text-xs font-bold text-gray-700 mb-2">
-                                                        Keterangan Program Unggulan Pemerintah Pusat :
-                                                    </label>
-                                                    <input
-                                                        {...field}
-                                                        className="border px-4 py-2 rounded-lg"
-                                                        placeholder="Masukkan Keterangan Program Unggulan Pemerintah Pusat"
-                                                    />
-                                                </div>
-                                            )}
-                                        />
-                                    }
-                                </>
+                                        {UnggulanBupati &&
+                                            <Controller
+                                                name={`tagging.0.keterangan_tagging`}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <div className="flex flex-col py-3">
+                                                        <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                            Keterangan Program Unggulan Bupati :
+                                                        </label>
+                                                        <input
+                                                            {...field}
+                                                            className="border px-4 py-2 rounded-lg"
+                                                            placeholder="Masukkan Keterangan Program Unggulan Bupati"
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                        }
+                                        {HariKerja &&
+                                            <Controller
+                                                name={`tagging.1.keterangan_tagging`}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <div className="flex flex-col py-3">
+                                                        <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                            Keterangan 100 Hari Kerja Bupati :
+                                                        </label>
+                                                        <input
+                                                            {...field}
+                                                            className="border px-4 py-2 rounded-lg"
+                                                            placeholder="Masukkan Keterangan 100 Hari Kerja Bupati"
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                        }
+                                        {UnggulanPusat &&
+                                            <Controller
+                                                name={`tagging.2.keterangan_tagging`}
+                                                control={control}
+                                                render={({ field }) => (
+                                                    <div className="flex flex-col py-3">
+                                                        <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                            Keterangan Program Unggulan Pemerintah Pusat :
+                                                        </label>
+                                                        <input
+                                                            {...field}
+                                                            className="border px-4 py-2 rounded-lg"
+                                                            placeholder="Masukkan Keterangan Program Unggulan Pemerintah Pusat"
+                                                        />
+                                                    </div>
+                                                )}
+                                            />
+                                        }
+                                    </>
                                 }
                                 {(level === 3 || level === 4 || level === 5 || level === 6) &&
                                     <div className="flex flex-col py-3">
@@ -1118,8 +1118,8 @@ export const FormEditPohon: React.FC<{
                 }
                 const { tagging } = data;
 
-                const unggulanBupatiTag = tagging?.find((t: Tagging) => t.nama_tagging === "Program Unggulan Bupati");
-                const hariKerjaTag = tagging?.find((t: Tagging) => t.nama_tagging === "100 Hari Kerja Bupati");
+                const unggulanBupatiTag = tagging?.find((t: Tagging) => t.nama_tagging === "Program Unggulan Kepala Daerah");
+                const hariKerjaTag = tagging?.find((t: Tagging) => t.nama_tagging === "100 Hari Kerja Kepala Daerah");
                 const unggulanPusatTag = tagging?.find((t: Tagging) => t.nama_tagging === "Program Unggulan Pemerintah Pusat");
 
                 const taggingFieldsDefaultValue = {
@@ -1174,11 +1174,11 @@ export const FormEditPohon: React.FC<{
         })) || [];
         const taggingData = [
             ...(UnggulanBupati ? [{
-                nama_tagging: "Program Unggulan Bupati",
+                nama_tagging: "Program Unggulan Kepala Daerah",
                 keterangan_tagging: data.tagging?.['0']?.keterangan_tagging || '',
             }] : []),
             ...(HariKerja ? [{
-                nama_tagging: "100 Hari Kerja Bupati",
+                nama_tagging: "100 Hari Kerja Kepala Daerah",
                 keterangan_tagging: data.tagging?.['1']?.keterangan_tagging || '',
             }] : []),
             ...(UnggulanPusat ? [{
@@ -1338,122 +1338,122 @@ export const FormEditPohon: React.FC<{
                             />
                         </div>
                         {/* TAGGING */}
-                        {level > 3 &&
-                        <>
-                            <label className="uppercase text-xs font-bold text-gray-700 my-2">
-                                Tagging :
-                            </label>
-                            <div className="grid grid-flow-col gap-2 items-center border border-sky-700 rounded-lg p-3">
-                                <div className="flex flex-col items-center">
-                                    {UnggulanBupati ?
-                                        <button
-                                            type="button"
-                                            onClick={() => setUnggulanBupati(false)}
-                                            className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                        >
-                                            <TbCheck />
-                                        </button>
-                                        :
-                                        <button
-                                            type="button"
-                                            onClick={() => setUnggulanBupati(true)}
-                                            className="w-[20px] h-[20px] border border-black rounded-full"
-                                        ></button>
-                                    }
-                                    <p onClick={() => setUnggulanBupati((prev) => !prev)} className={`cursor-pointer ${UnggulanBupati && 'text-emerald-500'}`}>Program Bupati</p>
+                        {level > 2 &&
+                            <>
+                                <label className="uppercase text-xs font-bold text-gray-700 my-2">
+                                    Tagging :
+                                </label>
+                                <div className="grid grid-flow-col gap-2 items-center justify-between border border-sky-700 rounded-lg p-3">
+                                    <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${UnggulanBupati ? "border-emerald-500" : "border-gray-700"}`}>
+                                        {UnggulanBupati ?
+                                            <button
+                                                type="button"
+                                                onClick={() => setUnggulanBupati(false)}
+                                                className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                            >
+                                                <TbCheck />
+                                            </button>
+                                            :
+                                            <button
+                                                type="button"
+                                                onClick={() => setUnggulanBupati(true)}
+                                                className="w-[20px] h-[20px] border border-black rounded-full"
+                                            ></button>
+                                        }
+                                        <p onClick={() => setUnggulanBupati((prev) => !prev)} className={`cursor-pointer ${UnggulanBupati && 'text-emerald-500'}`}>Program Kepala Daerah</p>
+                                    </div>
+                                    <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${HariKerja ? "border-emerald-500" : "border-gray-700"}`}>
+                                        {HariKerja ?
+                                            <button
+                                                type="button"
+                                                onClick={() => setHariKerja(false)}
+                                                className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                            >
+                                                <TbCheck />
+                                            </button>
+                                            :
+                                            <button
+                                                type="button"
+                                                onClick={() => setHariKerja(true)}
+                                                className="w-[20px] h-[20px] border border-black rounded-full"
+                                            ></button>
+                                        }
+                                        <p onClick={() => setHariKerja((prev) => !prev)} className={`cursor-pointer ${HariKerja && 'text-emerald-500'}`}>100 Hari Kerja Kepala Daerah</p>
+                                    </div>
+                                    <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${UnggulanPusat ? "border-emerald-500" : "border-gray-700"}`}>
+                                        {UnggulanPusat ?
+                                            <button
+                                                type="button"
+                                                onClick={() => setUnggulanPusat(false)}
+                                                className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                            >
+                                                <TbCheck />
+                                            </button>
+                                            :
+                                            <button
+                                                type="button"
+                                                onClick={() => setUnggulanPusat(true)}
+                                                className="w-[20px] h-[20px] border border-black rounded-full"
+                                            ></button>
+                                        }
+                                        <p onClick={() => setUnggulanPusat((prev) => !prev)} className={`cursor-pointer ${UnggulanPusat && 'text-emerald-500'}`}>Program Pemerintah Pusat</p>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col items-center">
-                                    {HariKerja ?
-                                        <button
-                                            type="button"
-                                            onClick={() => setHariKerja(false)}
-                                            className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                        >
-                                            <TbCheck />
-                                        </button>
-                                        :
-                                        <button
-                                            type="button"
-                                            onClick={() => setHariKerja(true)}
-                                            className="w-[20px] h-[20px] border border-black rounded-full"
-                                        ></button>
-                                    }
-                                    <p onClick={() => setHariKerja((prev) => !prev)} className={`cursor-pointer ${HariKerja && 'text-emerald-500'}`}>100 Hari Kerja Bupati</p>
-                                </div>
-                                <div className="flex flex-col items-center">
-                                    {UnggulanPusat ?
-                                        <button
-                                            type="button"
-                                            onClick={() => setUnggulanPusat(false)}
-                                            className="border w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
-                                        >
-                                            <TbCheck />
-                                        </button>
-                                        :
-                                        <button
-                                            type="button"
-                                            onClick={() => setUnggulanPusat(true)}
-                                            className="w-[20px] h-[20px] border border-black rounded-full"
-                                        ></button>
-                                    }
-                                    <p onClick={() => setUnggulanPusat((prev) => !prev)} className={`cursor-pointer ${UnggulanPusat && 'text-emerald-500'}`}>Program Pusat</p>
-                                </div>
-                            </div>
-                            {UnggulanBupati &&
-                                <Controller
-                                    name={`tagging.0.keterangan_tagging`}
-                                    control={control}
-                                    render={({ field }) => (
-                                        <div className="flex flex-col py-3">
-                                            <label className="uppercase text-xs font-bold text-gray-700 mb-2">
-                                                Keterangan Program Unggulan Bupati :
-                                            </label>
-                                            <input
-                                                {...field}
-                                                className="border px-4 py-2 rounded-lg"
-                                                placeholder="Masukkan Keterangan Program Unggulan Bupati"
-                                            />
-                                        </div>
-                                    )}
-                                />
-                            }
-                            {HariKerja &&
-                                <Controller
-                                    name={`tagging.1.keterangan_tagging`}
-                                    control={control}
-                                    render={({ field }) => (
-                                        <div className="flex flex-col py-3">
-                                            <label className="uppercase text-xs font-bold text-gray-700 mb-2">
-                                                Keterangan 100 Hari Kerja Bupati :
-                                            </label>
-                                            <input
-                                                {...field}
-                                                className="border px-4 py-2 rounded-lg"
-                                                placeholder="Masukkan Keterangan 100 Hari Kerja Bupati"
-                                            />
-                                        </div>
-                                    )}
-                                />
-                            }
-                            {UnggulanPusat &&
-                                <Controller
-                                    name={`tagging.2.keterangan_tagging`}
-                                    control={control}
-                                    render={({ field }) => (
-                                        <div className="flex flex-col py-3">
-                                            <label className="uppercase text-xs font-bold text-gray-700 mb-2">
-                                                Keterangan Program Unggulan Pemerintah Pusat :
-                                            </label>
-                                            <input
-                                                {...field}
-                                                className="border px-4 py-2 rounded-lg"
-                                                placeholder="Masukkan Keterangan Program Unggulan Pemerintah Pusat"
-                                            />
-                                        </div>
-                                    )}
-                                />
-                            }
-                        </>
+                                {UnggulanBupati &&
+                                    <Controller
+                                        name={`tagging.0.keterangan_tagging`}
+                                        control={control}
+                                        render={({ field }) => (
+                                            <div className="flex flex-col py-3">
+                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                    Keterangan Program Unggulan Bupati :
+                                                </label>
+                                                <input
+                                                    {...field}
+                                                    className="border px-4 py-2 rounded-lg"
+                                                    placeholder="Masukkan Keterangan Program Unggulan Bupati"
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                }
+                                {HariKerja &&
+                                    <Controller
+                                        name={`tagging.1.keterangan_tagging`}
+                                        control={control}
+                                        render={({ field }) => (
+                                            <div className="flex flex-col py-3">
+                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                    Keterangan 100 Hari Kerja Bupati :
+                                                </label>
+                                                <input
+                                                    {...field}
+                                                    className="border px-4 py-2 rounded-lg"
+                                                    placeholder="Masukkan Keterangan 100 Hari Kerja Bupati"
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                }
+                                {UnggulanPusat &&
+                                    <Controller
+                                        name={`tagging.2.keterangan_tagging`}
+                                        control={control}
+                                        render={({ field }) => (
+                                            <div className="flex flex-col py-3">
+                                                <label className="uppercase text-xs font-bold text-gray-700 mb-2">
+                                                    Keterangan Program Unggulan Pemerintah Pusat :
+                                                </label>
+                                                <input
+                                                    {...field}
+                                                    className="border px-4 py-2 rounded-lg"
+                                                    placeholder="Masukkan Keterangan Program Unggulan Pemerintah Pusat"
+                                                />
+                                            </div>
+                                        )}
+                                    />
+                                }
+                            </>
                         }
                         {(level == 4 || level == 5 || level == 6) &&
                             <div className="flex flex-col py-3">

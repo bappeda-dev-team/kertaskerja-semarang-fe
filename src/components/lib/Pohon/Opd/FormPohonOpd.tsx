@@ -103,11 +103,11 @@ export const FormPohonOpd: React.FC<{
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const taggingData = [
             ...(UnggulanBupati ? [{
-                nama_tagging: "Program Unggulan Bupati",
+                nama_tagging: "Program Unggulan Kepala Daerah",
                 keterangan_tagging: data.tagging?.['0']?.keterangan_tagging || '',
             }] : []),
             ...(HariKerja ? [{
-                nama_tagging: "100 Hari Kerja Bupati",
+                nama_tagging: "100 Hari Kerja Kepala Daerah",
                 keterangan_tagging: data.tagging?.['1']?.keterangan_tagging || '',
             }] : []),
             ...(UnggulanPusat ? [{
@@ -250,8 +250,8 @@ export const FormPohonOpd: React.FC<{
                                 <label className="uppercase text-xs font-bold text-gray-700 my-2">
                                     Tagging :
                                 </label>
-                                <div className="grid grid-flow-col gap-2 items-center border border-sky-700 rounded-lg p-3">
-                                    <div className="flex flex-col items-center">
+                                <div className="grid grid-flow-col gap-2 items-center justify-between border border-sky-700 rounded-lg p-3">
+                                    <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${UnggulanBupati ? "border-emerald-500" : "border-gray-700"}`}>
                                         {UnggulanBupati ?
                                             <button
                                                 type="button"
@@ -267,9 +267,9 @@ export const FormPohonOpd: React.FC<{
                                                 className="w-[20px] h-[20px] border border-black rounded-full"
                                             ></button>
                                         }
-                                        <p onClick={() => setUnggulanBupati((prev) => !prev)} className={`cursor-pointer ${UnggulanBupati && 'text-emerald-500'}`}>Program Bupati</p>
+                                        <p onClick={() => setUnggulanBupati((prev) => !prev)} className={`cursor-pointer ${UnggulanBupati && 'text-emerald-500'}`}>Program Kepala Daerah</p>
                                     </div>
-                                    <div className="flex flex-col items-center">
+                                    <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${HariKerja ? "border-emerald-500" : "border-gray-700"}`}>
                                         {HariKerja ?
                                             <button
                                                 type="button"
@@ -285,9 +285,9 @@ export const FormPohonOpd: React.FC<{
                                                 className="w-[20px] h-[20px] border border-black rounded-full"
                                             ></button>
                                         }
-                                        <p onClick={() => setHariKerja((prev) => !prev)} className={`cursor-pointer ${HariKerja && 'text-emerald-500'}`}>100 Hari Kerja Bupati</p>
+                                        <p onClick={() => setHariKerja((prev) => !prev)} className={`cursor-pointer ${HariKerja && 'text-emerald-500'}`}>100 Hari Kerja Kepala Daerah</p>
                                     </div>
-                                    <div className="flex flex-col items-center">
+                                    <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${UnggulanPusat ? "border-emerald-500" : "border-gray-700"}`}>
                                         {UnggulanPusat ?
                                             <button
                                                 type="button"
@@ -303,7 +303,7 @@ export const FormPohonOpd: React.FC<{
                                                 className="w-[20px] h-[20px] border border-black rounded-full"
                                             ></button>
                                         }
-                                        <p onClick={() => setUnggulanPusat((prev) => !prev)} className={`cursor-pointer ${UnggulanPusat && 'text-emerald-500'}`}>Program Pusat</p>
+                                        <p onClick={() => setUnggulanPusat((prev) => !prev)} className={`cursor-pointer ${UnggulanPusat && 'text-emerald-500'}`}>Program Pemerintah Pusat</p>
                                     </div>
                                 </div>
                                 {UnggulanBupati &&
@@ -591,8 +591,8 @@ export const FormEditPohon: React.FC<{
                 }
                 const { tagging } = data;
 
-                const unggulanBupatiTag = tagging?.find((t: Tagging) => t.nama_tagging === "Program Unggulan Bupati");
-                const hariKerjaTag = tagging?.find((t: Tagging) => t.nama_tagging === "100 Hari Kerja Bupati");
+                const unggulanBupatiTag = tagging?.find((t: Tagging) => t.nama_tagging === "Program Unggulan Kepala Daerah");
+                const hariKerjaTag = tagging?.find((t: Tagging) => t.nama_tagging === "100 Hari Kerja Kepala Daerah");
                 const unggulanPusatTag = tagging?.find((t: Tagging) => t.nama_tagging === "Program Unggulan Pemerintah Pusat");
 
                 const taggingFieldsDefaultValue = {
@@ -647,11 +647,11 @@ export const FormEditPohon: React.FC<{
         })) || [];
         const taggingData = [
             ...(UnggulanBupati ? [{
-                nama_tagging: "Program Unggulan Bupati",
+                nama_tagging: "Program Unggulan Kepala Daerah",
                 keterangan_tagging: data.tagging?.['0']?.keterangan_tagging || '',
             }] : []),
             ...(HariKerja ? [{
-                nama_tagging: "100 Hari Kerja Bupati",
+                nama_tagging: "100 Hari Kerja Kepala Daerah",
                 keterangan_tagging: data.tagging?.['1']?.keterangan_tagging || '',
             }] : []),
             ...(UnggulanPusat ? [{
@@ -788,8 +788,8 @@ export const FormEditPohon: React.FC<{
                         <label className="uppercase text-xs font-bold text-gray-700 my-2">
                             Tagging :
                         </label>
-                        <div className="grid grid-flow-col gap-2 items-center border border-sky-700 rounded-lg p-3">
-                            <div className="flex flex-col items-center">
+                        <div className="grid grid-flow-col gap-2 items-center justify-between border border-sky-700 rounded-lg p-3">
+                            <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${UnggulanBupati ? "border-emerald-500" : "border-gray-700"}`}>
                                 {UnggulanBupati ?
                                     <button
                                         type="button"
@@ -805,9 +805,9 @@ export const FormEditPohon: React.FC<{
                                         className="w-[20px] h-[20px] border border-black rounded-full"
                                     ></button>
                                 }
-                                <p onClick={() => setUnggulanBupati((prev) => !prev)} className={`cursor-pointer ${UnggulanBupati && 'text-emerald-500'}`}>Program Bupati</p>
+                                <p onClick={() => setUnggulanBupati((prev) => !prev)} className={`cursor-pointer ${UnggulanBupati && 'text-emerald-500'}`}>Program Kepala Daerah</p>
                             </div>
-                            <div className="flex flex-col items-center">
+                            <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${HariKerja ? "border-emerald-500" : "border-gray-700"}`}>
                                 {HariKerja ?
                                     <button
                                         type="button"
@@ -823,9 +823,9 @@ export const FormEditPohon: React.FC<{
                                         className="w-[20px] h-[20px] border border-black rounded-full"
                                     ></button>
                                 }
-                                <p onClick={() => setHariKerja((prev) => !prev)} className={`cursor-pointer ${HariKerja && 'text-emerald-500'}`}>100 Hari Kerja Bupati</p>
+                                <p onClick={() => setHariKerja((prev) => !prev)} className={`cursor-pointer ${HariKerja && 'text-emerald-500'}`}>100 Hari Kerja Kepala Daerah</p>
                             </div>
-                            <div className="flex flex-col items-center">
+                            <div className={`flex flex-col items-center border rounded-xl py-1 max-w-[150px] ${UnggulanPusat ? "border-emerald-500" : "border-gray-700"}`}>
                                 {UnggulanPusat ?
                                     <button
                                         type="button"
@@ -841,7 +841,7 @@ export const FormEditPohon: React.FC<{
                                         className="w-[20px] h-[20px] border border-black rounded-full"
                                     ></button>
                                 }
-                                <p onClick={() => setUnggulanPusat((prev) => !prev)} className={`cursor-pointer ${UnggulanPusat && 'text-emerald-500'}`}>Program Pusat</p>
+                                <p onClick={() => setUnggulanPusat((prev) => !prev)} className={`cursor-pointer ${UnggulanPusat && 'text-emerald-500'}`}>Program Pemerintah Pusat</p>
                             </div>
                         </div>
                         {UnggulanBupati &&
