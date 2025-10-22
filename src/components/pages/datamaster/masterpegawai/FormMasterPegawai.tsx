@@ -153,7 +153,10 @@ export const FormMasterPegawai = () => {
                                 {Plt ?
                                     <button
                                         type="button"
-                                        onClick={() => setPlt(false)}
+                                        onClick={() => {
+                                            setPlt(false)
+                                            setPbt(false)
+                                        }}
                                         className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
                                     >
                                         <TbCheck />
@@ -161,7 +164,10 @@ export const FormMasterPegawai = () => {
                                     :
                                     <button
                                         type="button"
-                                        onClick={() => setPlt(true)}
+                                        onClick={() => {
+                                            setPlt(true)
+                                            setPbt(false)
+                                        }}
                                         className="w-[20px] h-[20px] border border-black rounded-full"
                                     ></button>
                                 }
