@@ -32,6 +32,7 @@ export const FormMasterPegawai = () => {
     const [NamaPegawai, setNamaPegawai] = useState<string>('');
     const [KodeOpd, setKodeOpd] = useState<OptionTypeString | null>(null);
     const [Plt, setPlt] = useState<boolean>(false);
+    const [Pbt, setPbt] = useState<boolean>(false);
     const [Nip, setNip] = useState<string>('');
     const [OpdOption, setOpdOption] = useState<OptionTypeString[]>([]);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
@@ -68,33 +69,33 @@ export const FormMasterPegawai = () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         const formData = {
             //key : value
-            nama_pegawai: `${data.nama_pegawai} ${Plt ? '(PLT)' : ''}`,
-            nip: `${Plt ? `${data.nip}_plt` : data.nip}`,
+            nama_pegawai: `${data.nama_pegawai} ${Plt ? '(PLT)' : ''} ${Pbt ? "(PBT)" : ""}`,
+            nip: `${Plt ? `${data.nip}_plt` : Pbt ? `${data.nip}_pbt` : data.nip}`,
             kode_opd: data.kode_opd?.value,
         };
         // console.log(formData);
-          try{
-              setProses(true);
-              const response = await fetch(`${API_URL}/pegawai/create`, {
-                  method: "POST",
-                  headers: {
+        try {
+            setProses(true);
+            const response = await fetch(`${API_URL}/pegawai/create`, {
+                method: "POST",
+                headers: {
                     Authorization: `${token}`,
                     'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(formData),
-              });
-              const result = await response.json();
-              if(result.code === 200 || result.code === 201){
-                  AlertNotification("Berhasil", "Berhasil menambahkan data master pegawai", "success", 1000);
-                  router.push("/DataMaster/masterpegawai");
-              } else {
-                  AlertNotification("Gagal", `${result.data}`, "error", 2000);
-              }
-          } catch(err){
-              AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
-          } finally {
+                },
+                body: JSON.stringify(formData),
+            });
+            const result = await response.json();
+            if (result.code === 200 || result.code === 201) {
+                AlertNotification("Berhasil", "Berhasil menambahkan data master pegawai", "success", 1000);
+                router.push("/DataMaster/masterpegawai");
+            } else {
+                AlertNotification("Gagal", `${result.data}`, "error", 2000);
+            }
+        } catch (err) {
+            AlertNotification("Gagal", "cek koneksi internet/terdapat kesalahan pada database server", "error", 2000);
+        } finally {
             setProses(false);
-          }
+        }
     };
 
 
@@ -165,6 +166,28 @@ export const FormMasterPegawai = () => {
                                     ></button>
                                 }
                                 <p className="text-lg">PLT</p>
+                                {Pbt ?
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setPbt(false)
+                                            setPlt(false)
+                                        }}
+                                        className="w-[20px] h-[20px] bg-emerald-500 rounded-full text-white p-1 flex justify-center items-center"
+                                    >
+                                        <TbCheck />
+                                    </button>
+                                    :
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setPbt(true)
+                                            setPlt(false)
+                                        }}
+                                        className="w-[20px] h-[20px] border border-black rounded-full"
+                                    ></button>
+                                }
+                                <p className="text-lg">PBT</p>
                             </div>
                         </label>
                         <Controller
