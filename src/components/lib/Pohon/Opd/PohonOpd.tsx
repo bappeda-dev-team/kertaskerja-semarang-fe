@@ -255,7 +255,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                     }
                                 </div>
                                 {/* BUTTON ACTION INSIDE BOX SUPER ADMIN, ADMIN OPD, ASN LEVEL 1 */}
-                                {(User?.roles == 'super_admin' || User?.roles == 'admin_opd' || User?.roles == 'level_1') &&
+                                {(User?.roles == 'super_admin' || User?.roles == 'admin_opd') &&
                                     !['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
                                     <div
                                         className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white hide-on-capture
@@ -290,7 +290,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                     </div>
                                 }
                                 {/* BUTTON ACTION INSIDE BOX ASN LEVEL 2*/}
-                                {(User?.roles == 'level_2' &&
+                                {/* {(User?.roles == 'level_2' &&
                                     (
                                         tema.jenis_pohon === 'Tactical' ||
                                         tema.jenis_pohon === 'Tactical Crosscutting' ||
@@ -331,9 +331,9 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                             Hapus
                                         </ButtonRedBorder>
                                     </div>
-                                }
+                                } */}
                                 {/* BUTTON ACTION INSIDE BOX ASN LEVEL 3*/}
-                                {(User?.roles == 'level_3' &&
+                                {/* {(User?.roles == 'level_3' &&
                                     (
                                         tema.jenis_pohon === 'Operational' ||
                                         tema.jenis_pohon === 'Operational Crosscutting' ||
@@ -372,9 +372,9 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                             Hapus
                                         </ButtonRedBorder>
                                     </div>
-                                }
+                                } */}
                                 {/* BUTTON ACTION INSIDE BOX ASN LEVEL 4*/}
-                                {(User?.roles == 'level_4' &&
+                                {/* {(User?.roles == 'level_4' &&
                                     (
                                         tema.jenis_pohon === 'Operational N' ||
                                         tema.jenis_pohon === 'Operational N Crosscutting'
@@ -414,7 +414,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                             Hapus
                                         </ButtonRedBorder>
                                     </div>
-                                }
+                                } */}
                                 {/* BUTTON CROSSCUTTING KHUSUS POHON PEMDA */}
                                 {['Strategic Pemda', 'Tactical Pemda', 'Operational Pemda'].includes(tema.jenis_pohon) &&
                                     <div
@@ -572,8 +572,8 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                         <TbEye className='mr-1' />
                                         {Show ? 'Sembunyikan' : 'Tampilkan'}
                                     </ButtonBlackBorder>
-                                    {/* BUTTON TAMBAH POKIN OPD SUPER ADMIN, ADMIN OPD, ASN LEVEL 1 & 2 */}
-                                    {(User?.roles == 'super_admin' || User?.roles == 'admin_opd' || User?.roles == 'level_1' || User?.roles == 'level_2') &&
+                                    {/* BUTTON TAMBAH POKIN OPD SUPER ADMIN, ADMIN OPD, ASN LEVEL 1 & 2 sementara di hidden */}
+                                    {(User?.roles == 'super_admin' || User?.roles == 'admin_opd') &&
                                         Show &&
                                         <ButtonGreenBorder className={`px-3 bg-white flex justify-center items-center py-1 bg-gradient-to-r rounded-lg`}
                                             onClick={newChild}
@@ -583,7 +583,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                         </ButtonGreenBorder>
                                     }
                                     {/* BUTTON TAMBAH POKIN OPD ASN LEVEL 3 */}
-                                    {(User?.roles == 'level_3' &&
+                                    {/* {(User?.roles == 'level_3' &&
                                         (
                                             tema.jenis_pohon === 'Tactical' ||
                                             tema.jenis_pohon === 'Tactical Pemda' ||
@@ -599,9 +599,9 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                             <TbCirclePlus className='mr-1' />
                                             {newChildButtonName(tema.jenis_pohon)}
                                         </ButtonGreenBorder>
-                                    }
+                                    } */}
                                     {/* BUTTON TAMBAH POKIN OPD ASN LEVEL 4 */}
-                                    {(User?.roles == 'level_4' &&
+                                    {/* {(User?.roles == 'level_4' &&
                                         (
                                             tema.jenis_pohon === 'Operational' ||
                                             tema.jenis_pohon === 'Operational Pemda' ||
@@ -615,7 +615,7 @@ export const PohonOpd: React.FC<pohon> = ({ tema, deleteTrigger, fetchTrigger, s
                                             <TbCirclePlus className='mr-1' />
                                             {newChildButtonName(tema.jenis_pohon)}
                                         </ButtonGreenBorder>
-                                    }
+                                    } */}
                                 </div>
                             </div>
                         }

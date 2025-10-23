@@ -108,7 +108,7 @@ export const FormRencanaKinerja = () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         setIsLoading(true);
         try {
-            const response = await fetch(`${API_URL}/rencana_kinerja_pokin/pokin_by_pelaksana/${User?.pegawai_id}/${Tahun?.value}`, {
+            const response = await fetch(`${API_URL}/rencana_kinerja_pokin/pokin_by_pelaksana/${User?.nip}/${Tahun?.value}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `${token}`,
@@ -545,7 +545,7 @@ export const FormEditRencanaKinerja = () => {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         setIsLoading(true);
         try {
-            const response = await fetch(`${API_URL}/rencana_kinerja_pokin/pokin_by_pelaksana/${User?.pegawai_id}/${Tahun?.value}`, {
+            const response = await fetch(`${API_URL}/rencana_kinerja_pokin/pokin_by_pelaksana/${User?.nip}/${Tahun?.value}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `${token}`,

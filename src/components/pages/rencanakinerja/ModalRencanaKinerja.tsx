@@ -9,6 +9,7 @@ import { getToken } from "@/components/lib/Cookie";
 import { TablePohon } from "../Pohon/ModalPindahPohonOpd";
 import Select from 'react-select';
 import { LoadingClip, LoadingButtonClip, LoadingBeat } from "@/components/global/Loading";
+import { useBrandingContext } from "@/context/BrandingContext";
 
 interface ModalProps {
     isOpen: boolean;
@@ -116,6 +117,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
     const [LoadingDetail, setLoadingDetail] = useState<boolean>(false);
     const [Proses, setProses] = useState<boolean>(false);
     const token = getToken();
+    const {branding} = useBrandingContext();
 
     const { fields, append, remove, replace } = useFieldArray({
         control,
@@ -329,7 +331,7 @@ export const ModalRencanaKinerja: React.FC<ModalProps> = ({ isOpen, onClose, id,
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         try {
             setIsLoading(true);
-            const response = await fetch(`${API_URL}/rencana_kinerja_pokin/pokin_by_pelaksana/${pegawai_id}/${tahun}`, {
+            const response = await fetch(`${API_URL}/rencana_kinerja_pokin/pokin_by_pelaksana/${branding?.user.nip}/${tahun}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `${token}`,

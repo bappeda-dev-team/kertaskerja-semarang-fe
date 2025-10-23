@@ -479,13 +479,13 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
                                         />
                                     </div>
                                     {/* BUTTON ACTION INSIDE BOX */}
-                                    {user != 'reviewer' &&
+                                    {(user != 'reviewer' && user == "super_admin") &&
                                         <div
                                             className={`flex justify-evenly border my-3 py-3 rounded-lg bg-white border-black hide-on-capture
-                                ${tema.jenis_pohon === "Strategic" && 'border-white'}
-                                ${tema.jenis_pohon === "Tactical" && 'border-white'}
-                                ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-white'}
-                            `}
+                                                ${tema.jenis_pohon === "Strategic" && 'border-white'}
+                                                ${tema.jenis_pohon === "Tactical" && 'border-white'}
+                                                ${(tema.jenis_pohon === "Operational" || tema.jenis_pohon === "Operational N") && 'border-white'}
+                                            `}
                                         >
                                             <React.Fragment>
                                                 {!['Strategic', 'Tactical', 'Operational', 'Operational N'].includes(tema.jenis_pohon) &&
@@ -568,7 +568,8 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
                                     {(
                                         tema.jenis_pohon !== 'Operational Pemda' &&
                                         tema.jenis_pohon !== 'Operational' &&
-                                        tema.jenis_pohon !== 'Operational N'
+                                        tema.jenis_pohon !== 'Operational N' &&
+                                        user == "super_admin"
                                     ) &&
                                         <div className="flex flex-wrap gap-3 justify-evenly my-3 py-3 hide-on-capture">
                                             <ButtonBlackBorder
@@ -578,7 +579,7 @@ export const Pohon: React.FC<pohon> = ({ tema, tahun, deleteTrigger, user, show_
                                                 <TbEye className='mr-1' />
                                                 {Show ? 'Sembunyikan' : 'Tampilkan'}
                                             </ButtonBlackBorder>
-                                            {(Show && user != 'reviewer') &&
+                                            {Show &&
                                                 <>
                                                     {/* TOMBOL ADD POHON SESUAI URUTAN AKARNYA */}
                                                     {tema.level_pohon !== 3 &&
