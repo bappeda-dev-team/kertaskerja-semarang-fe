@@ -9,10 +9,8 @@ import {
   TbBuildingEstate, TbFileChart, TbFileDots, TbFileCode, TbFileCode2, TbUsers,
   TbUser, TbHexagonLetterR, TbBinaryTree2, TbTarget, TbMapPin, TbChartBar, TbCalendarShare,
   TbCalendar, TbHexagonLetterV, TbHexagonLetterM, TbClipboardText, TbZoomExclamation,
-  TbListDetails, TbAlertTriangle,
+  TbListDetails, TbAlertTriangle, TbBuildingCottage, TbCalendarStar, TbListTree,
   TbDatabasePlus, TbCalendarPlus, TbDeviceImacDollar, TbFocus2, TbHexagonLetterC, TbHexagonLetterO, TbHexagonLetterI,
-  TbBuildingCottage,
-  TbCalendarStar
 } from "react-icons/tb";
 import Image from 'next/image';
 import { usePathname, useParams } from 'next/navigation';
@@ -219,6 +217,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       url === `/laporanrincianbelanja` ||
       url === `/laporantaggingpohon` ||
       url === `/laporancascadingpemda` ||
+      url === `/controlpokin` ||
       url === "/laporancascadingopd"
     ) {
       setDataMaster(false);
@@ -836,6 +835,12 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               <li className={`flex items-center gap-x-2 text-sm cursor-pointer p-2 rounded-xl ${url === "/listopd" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                 <TbListDetails className="text-xl" />
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>List OPD di Tematik</span>
+              </li>
+            </Link>
+            <Link href="/controlpokin">
+              <li className={`flex items-center gap-x-2 text-sm cursor-pointer p-2 rounded-xl ${url === "/controlpokin" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                <TbListTree className="text-xl" />
+                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Control Pokin</span>
               </li>
             </Link>
             {/* LABEL LAPORAN REVIEW */}
