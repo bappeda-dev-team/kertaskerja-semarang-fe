@@ -218,6 +218,7 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
       url === `/laporantaggingpohon` ||
       url === `/laporancascadingpemda` ||
       url === `/controlpokin` ||
+      url === `/perjanjian-kinerja` ||
       url === "/laporancascadingopd"
     ) {
       setDataMaster(false);
@@ -935,6 +936,12 @@ export const Sidebar = ({ isZoomed, isOpen, toggleSidebar }: SidebarProps) => {
               <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/laporancascadingpemda" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
                 <TbListDetails className="text-xl" />
                 <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Cascading PEMDA</span>
+              </li>
+            </Link>
+            <Link href="/perjanjian-kinerja">
+              <li className={`flex items-center gap-x-2 cursor-pointer p-2 rounded-xl ${url === "/perjanjian-kinerja" ? "bg-white text-gray-800" : "hover:bg-slate-500"}`}>
+                <TbClipboardText className="text-xl" />
+                <span className={`${!isOpen && 'hidden'} origin-left duration-200`}>Perjanjian Kinerja</span>
               </li>
             </Link>
           </div>
